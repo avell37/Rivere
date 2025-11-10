@@ -1,0 +1,36 @@
+{
+    "home": {
+        "title": "Главная страница"
+    },
+    "auth": {
+        "login": {
+            "heading": "Вход в аккаунт",
+            "loginLabel": "Логин",
+            "loginPlaceholder": "Введите свой e-mail или имя пользователя",
+            "passwordLabel": "Пароль",
+            "passwordPlaceholder": "Введите свой пароль",
+            "label": "Нет аккаунта?",
+            "submitButton": "Войти",
+            "navigationButton": "Создать"
+        },
+        "register": {
+            "heading": "Регистрация",
+            "usernameLabel": "Имя пользователя",
+            "usernamePlaceholder": "Введите ваше имя пользователя",
+            "emailLabel": "Почта",
+            "emailPlaceholder": "Введите свою почту",
+            "passwordLabel": "Пароль",
+            "passwordPlaceholder": "Введите свой пароль",
+            "label": "Уже есть аккаунт?",
+            "submitButton": "Создать",
+            "navigationButton": "Войти"
+        },
+        "google": "Продолжить с Google",
+        "yandex": "Продолжить с Яндекс"
+    },
+    "theme": {
+        "selectTheme": "Выберите тему...",
+        "light": "Светлая",
+        "dark": "Темная"
+    }
+}

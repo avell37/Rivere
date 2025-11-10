@@ -1,3 +1,7 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_URL")
@@ -6,9 +10,13 @@ datasource db {
 model User {
   id String @id @default(uuid())
 
-  username String
-  email    String @unique
-  password String
+  username        String  @unique
+  email           String  @unique
+  password        String
+  displayUsername String  @map("display_username")
+  avatar          String?
+
+  boards BoardMember[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -16,33 +24,35 @@ model User {
   @@map("users")
 }
 
-model Workspace {
-  id String @id @default(uuid())
-
-  name String
-
-  boards Board[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("workspaces")
-}
-
 model Board {
   id String @id @default(uuid())
 
   title String
 
-  workspaceId String    @map("workspace_id")
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-
   columns Column[]
+  members BoardMember[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("boards")
+}
+
+model BoardMember {
+  id String @id @default(uuid())
+
+  role     Role     @default(MEMBER)
+  joinedAt DateTime @default(now())
+
+  userId  String @map("user_id")
+  user    User   @relation(fields: [userId], references: [id])
+  boardId String @map("board_id")
+  board   Board  @relation(fields: [boardId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("board_members")
 }
 
 model Column {
@@ -69,4 +79,10 @@ model Task {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("tasks")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
 }

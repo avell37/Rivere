@@ -1,0 +1,43 @@
+import {
+    CanActivate,
+    ExecutionContext,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
+import type { Request } from 'express';
+import { PrismaService } from 'src/core/prisma/prisma.service';
+
+@Injectable()
+export class SessionAuthGuard implements CanActivate {
+    constructor(private readonly prisma: PrismaService) {}
+
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+        const request = context.switchToHttp().getRequest<Request>();
+        const session = request.cookies?.session;
+
+        if (!session && typeof request.session.userId === 'undefined') {
+            throw new UnauthorizedException('Необходима авторизация');
+        }
+
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: request.session.userId,
+            },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                displayUsername: true,
+                avatar: true,
+            },
+        });
+
+        if (!user) {
+            throw new UnauthorizedException('Пользователь не найден');
+        }
+
+        request.user = user;
+
+        return true;
+    }
+}
