@@ -1,34 +1,53 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Montserrat } from "next/font/google";
+import { NextIntlClientProvider } from 'next-intl'
 import "./globals.css";
+import { getLocale, getMessages } from "next-intl/server";
+import { SITE_DESCRIPTION, SITE_NAME } from "@/shared/libs/constants/seo.const";
+import { ThemeProvider } from "@/shared/providers/ThemeProvider";
+import { ToastProvider } from "@/shared/providers/ToastProvider";
+import { QueryProvider } from "@/shared/providers/QueryProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  weight: "500"
+})
 
 export const metadata: Metadata = {
-  title: "Rivere",
-  description: "A small project, inspired by Trello",
-};
+	title: {
+		absolute: SITE_NAME,
+		template: `%s | ${SITE_NAME}`
+	},
+	description: SITE_DESCRIPTION,
+}
 
-export default function RootLayout({
-  children,
+export default async function RootLayout({
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+	const locale = await getLocale();
+	const messages = await getMessages();
+
+	return (
+		<html lang={locale} suppressHydrationWarning>
+			<body
+				className={`${montserrat.variable} antialiased`}
+			>
+				<NextIntlClientProvider messages={messages}>
+					<QueryProvider>
+						<ThemeProvider
+							attribute="class"
+							defaultTheme="dark"
+							enableSystem
+							disableTransitionOnChange
+						>
+							<ToastProvider />
+							{children}
+						</ThemeProvider>
+					</QueryProvider>
+				</NextIntlClientProvider>
+			</body>
+		</html>
+	);
 }
