@@ -5,6 +5,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { RedisModule } from './redis/redis.module';
 import { BoardModule } from 'src/modules/board/board.module';
+import { ColumnModule } from 'src/modules/column/column.module';
+import { CardModule } from 'src/modules/card/card.module';
 
 @Module({
     imports: [
@@ -16,6 +18,8 @@ import { BoardModule } from 'src/modules/board/board.module';
         PrismaModule,
         RedisModule,
         BoardModule,
+        ColumnModule,
+        CardModule,
     ],
 })
 export class CoreModule {}

@@ -28,6 +28,12 @@
         "google": "Continue with Google",
         "yandex": "Continue with Yandex"
     },
+    "dashboard": {
+        "heading": "Dashboard"
+    },
+    "boards": {
+        "heading": "Boards"
+    },
     "theme": {
         "selectTheme": "Select theme...",
         "light": "Light",

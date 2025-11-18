@@ -29,8 +29,11 @@ model Board {
 
   title String
 
-  columns Column[]
-  members BoardMember[]
+  background String? @default("#bd7b00ff")
+
+  columns      Column[]
+  members      BoardMember[]
+  boardInvites BoardInvite[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -55,6 +58,23 @@ model BoardMember {
   @@map("board_members")
 }
 
+model BoardInvite {
+  id String @id @default(uuid())
+
+  token String @unique
+
+  boardId String @map("board_id")
+  board   Board  @relation(fields: [boardId], references: [id])
+
+  createdBy String   @map("created_by")
+  expiresAt DateTime @map("expires_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("board_invite")
+}
+
 model Column {
   id String @id @default(uuid())
 
@@ -64,21 +84,27 @@ model Column {
   boardId String @map("board_id")
   board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
 
+  cards Card[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("columns")
 }
 
-model Task {
+model Card {
   id String @id @default(uuid())
 
-  title String
+  title       String
+  description String?
+
+  columnId String @map("column_id")
+  column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("tasks")
+  @@map("cards")
 }
 
 enum Role {

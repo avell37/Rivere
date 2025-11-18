@@ -13,10 +13,10 @@ export function middleware(req: NextRequest) {
     }
 
     if (!session) {
-        return NextResponse.redirect(new URL("/auth", req.url));
+        return NextResponse.redirect(new URL("/auth/login", req.url));
     }
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*"],
+    matcher: ["/dashboard/:path*", "/boards/:path*"],
 };
