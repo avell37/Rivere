@@ -6,10 +6,16 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateBoardInput } from './inputs/create-board.input';
+import { randomBytes } from 'crypto';
+import { addDays } from 'date-fns';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class BoardService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly config: ConfigService,
+    ) {}
 
     async create(userId: string, input: CreateBoardInput) {
         const { title } = input;
@@ -74,13 +80,17 @@ export class BoardService {
                     include: {
                         user: {
                             select: {
-                                id: true,
                                 username: true,
                                 email: true,
                                 displayUsername: true,
                                 avatar: true,
                             },
                         },
+                    },
+                },
+                columns: {
+                    include: {
+                        cards: true,
                     },
                 },
             },
@@ -90,20 +100,108 @@ export class BoardService {
             throw new NotFoundException('Доска не найдена');
         }
 
-        const isMember = board.members.some(
-            (member) => member.userId === userId,
-        );
-
-        if (!isMember) {
-            throw new ForbiddenException('Отказано в доступе');
-        }
-
         return board;
     }
 
-    async getUserBoards() {}
+    async getUserBoards(userId: string) {
+        const boards = await this.prisma.board.findMany({
+            where: {
+                members: {
+                    some: { userId },
+                },
+            },
+            include: {
+                members: {
+                    include: {
+                        user: {
+                            select: {
+                                username: true,
+                                email: true,
+                                displayUsername: true,
+                                avatar: true,
+                            },
+                        },
+                    },
+                },
+                columns: true,
+            },
+            orderBy: {
+                updatedAt: 'desc',
+            },
+        });
 
-    async updateBoard() {}
+        return boards;
+    }
 
-    async deleteBoard() {}
+    async updateBoard(boardId: string) {}
+
+    async deleteBoard(boardId: string) {
+        await this.prisma.board.delete({
+            where: { id: boardId },
+        });
+
+        return true;
+    }
+
+    async createInvite(userId: string, boardId: string) {
+        const boardMember = await this.prisma.boardMember.findFirst({
+            where: { boardId, userId },
+        });
+
+        if (!boardMember) {
+            throw new ForbiddenException(
+                'Вы не являетесь участником этой доски',
+            );
+        }
+
+        const token = randomBytes(16).toString('hex');
+        const invite = await this.prisma.boardInvite.create({
+            data: {
+                token,
+                boardId,
+                createdBy: userId,
+                expiresAt: addDays(new Date(), 1),
+            },
+        });
+
+        return {
+            link: `${this.config.getOrThrow<string>('ALLOWED_ORIGIN')}/invite/${invite.token}`,
+            expiresAt: invite.expiresAt,
+        };
+    }
+
+    async acceptInvite(userId: string, token: string) {
+        const invite = await this.prisma.boardInvite.findUnique({
+            where: { token },
+            include: { board: true },
+        });
+
+        if (!invite) {
+            throw new NotFoundException('Приглашение не найдено');
+        }
+        if (invite.expiresAt < new Date()) {
+            throw new ForbiddenException('Приглашение истекло');
+        }
+
+        const isAlreadyMember = await this.prisma.boardMember.findFirst({
+            where: {
+                boardId: invite.boardId,
+                userId,
+            },
+        });
+
+        if (isAlreadyMember) {
+            throw new ConflictException('Вы уже участник этой доски');
+        }
+
+        await this.prisma.boardMember.create({
+            data: {
+                userId,
+                boardId: invite.boardId,
+                role: 'MEMBER',
+            },
+        });
+
+        return true;
+    }
 }

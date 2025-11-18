@@ -6,4 +6,5 @@ export const API_URL = {
     auth: (url = "") => API_URL.root(`/account/${url}`),
     account: (url = "") => API_URL.root(`/account/${url}`),
     session: (url = "") => API_URL.root(`/session/${url}`),
+    boards: (url = "") => API_URL.root(`/boards/${url}`),
 };

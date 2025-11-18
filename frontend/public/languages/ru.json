@@ -28,6 +28,12 @@
         "google": "Продолжить с Google",
         "yandex": "Продолжить с Яндекс"
     },
+    "dashboard": {
+        "heading": "Главная"
+    },
+    "boards": {
+        "heading": "Доски"
+    },
     "theme": {
         "selectTheme": "Выберите тему...",
         "light": "Светлая",
