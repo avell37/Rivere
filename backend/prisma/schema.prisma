@@ -1,10 +1,13 @@
 generator client {
-  provider = "prisma-client-js"
+  provider            = "prisma-client"
+  output              = "../generated/prisma"
+  moduleFormat        = "cjs"
+  engineType          = "client"
+  importFileExtension = ""
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
 }
 
 model User {
@@ -29,7 +32,7 @@ model Board {
 
   title String
 
-  background String? @default("#bd7b00ff")
+  background Json
 
   columns      Column[]
   members      BoardMember[]
@@ -97,6 +100,9 @@ model Card {
 
   title       String
   description String?
+  priority    Priority
+  deadline    DateTime?
+  tags        Tag[]
 
   columnId String @map("column_id")
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
@@ -107,8 +113,29 @@ model Card {
   @@map("cards")
 }
 
+model Tag {
+  id String @id @default(uuid())
+
+  title      String
+  background String
+
+  cardId String @map("card_id")
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tags")
+}
+
 enum Role {
   OWNER
   ADMIN
   MEMBER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
 }

@@ -13,7 +13,7 @@ export class CardService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(userId: string, input: CreateCardInput) {
-        const { columnId, title, description } = input;
+        const { columnId, title, description, priority, deadline } = input;
 
         await checkBoardAccess({ prisma: this.prisma, userId, columnId });
 
@@ -22,6 +22,8 @@ export class CardService {
                 columnId,
                 title,
                 description,
+                priority,
+                deadline,
             },
         });
     }

@@ -1,8 +1,4 @@
-import {
-    ForbiddenException,
-    Injectable,
-    NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateColumnInput } from './inputs/create-column.input';
 import { UpdateColumnInput } from './inputs/update-column.input';

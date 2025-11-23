@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    MaxLength,
+    MinLength,
+} from 'class-validator';
 
 export class CreateBoardInput {
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
@@ -10,4 +16,15 @@ export class CreateBoardInput {
         message: 'Максимальная длина названия доски - 32 символа',
     })
     title: string;
+
+    @IsOptional()
+    @IsString({ message: 'Название доски должно быть строкой' })
+    url: string;
+
+    @IsOptional()
+    @IsString({ message: 'Название доски должно быть строкой' })
+    @MinLength(3, {
+        message: 'Минимальная длина цвета доски - 3 символа',
+    })
+    color: string;
 }
