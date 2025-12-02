@@ -13,6 +13,7 @@ import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { CreateColumnInput } from './inputs/create-column.input';
 import { UpdateColumnInput } from './inputs/update-column.input';
 import { ApiOperation } from '@nestjs/swagger';
+import { ReorderColumnInput } from './inputs/reorder-column.input';
 
 @Controller('columns')
 export class ColumnController {
@@ -44,6 +45,19 @@ export class ColumnController {
         @Body() input: UpdateColumnInput,
     ) {
         return this.columnService.update(userId, columnId, input);
+    }
+
+    @ApiOperation({
+        summary: 'Обновление позиции',
+        description: 'Обновляет позицию колонки в доске.',
+    })
+    @Authorization()
+    @Post('reorder')
+    async reorder(
+        @SessionUser('id') userId: string,
+        @Body() input: ReorderColumnInput,
+    ) {
+        return this.columnService.reorder(userId, input);
     }
 
     @ApiOperation({
