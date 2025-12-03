@@ -42,16 +42,6 @@ export class BoardController {
         return this.boardService.getUserBoards(userId);
     }
 
-    @ApiOperation({
-        summary: 'Получение доски',
-        description: 'Отдает определенную доску по ID.',
-    })
-    @Authorization()
-    @Get('userBoards')
-    async getUserBoards(@SessionUser('id') userId: string) {
-        return this.boardService.getUserBoards(userId);
-    }
-
     @Authorization()
     @Get(':id')
     async getBoard(
@@ -61,27 +51,21 @@ export class BoardController {
         return this.boardService.getBoard(userId, boardId);
     }
 
-<<<<<<< HEAD
     @ApiOperation({
         summary: 'Удаление доски',
         description: 'Удаляет определенную доску по ID.',
     })
-=======
->>>>>>> e9ea10581c220012cc13d30ecbef474d38d3d224
     @Authorization()
     @Delete()
     async deleteBoard(@Param('id') boardId: string) {
         return this.boardService.deleteBoard(boardId);
     }
 
-<<<<<<< HEAD
     @ApiOperation({
         summary: 'Создание инвайта',
         description: 'Создает инвайт-ссылку, чтобы присоединиться к доске.',
     })
     @HttpCode(200)
-=======
->>>>>>> e9ea10581c220012cc13d30ecbef474d38d3d224
     @Authorization()
     @Post('invite/:boardId')
     async createInvite(
@@ -91,14 +75,11 @@ export class BoardController {
         return this.boardService.createInvite(userId, boardId);
     }
 
-<<<<<<< HEAD
     @ApiOperation({
         summary: 'Принять инвайт',
         description: 'При вызове метода принимается приглашение в доску.',
     })
     @HttpCode(200)
-=======
->>>>>>> e9ea10581c220012cc13d30ecbef474d38d3d224
     @Authorization()
     @Post('invite/accept/:token')
     async acceptInvite(

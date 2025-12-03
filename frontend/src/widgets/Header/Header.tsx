@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use client'
 import { ThemeSwitcher } from '@/shared/ui/custom/ThemeSwitcher/ThemeSwitcher'
 import { SidebarTrigger, useSidebar } from '@/shared/ui/external'
@@ -20,22 +19,4 @@ export const Header = () => {
 			</div>
 		</div>
 	)
-=======
-import { SidebarTrigger } from "@/shared/ui/external"
-import { UserMenu } from "../UserMenu/ui/UserMenu"
-import { ThemeSwitcher } from "@/shared/ui/custom/ThemeSwitcher/ThemeSwitcher"
-
-export const Header = () => {
-    return (
-        <div className="flex items-center justify-between bg-white/70 dark:bg-neutral-900/60 px-4">
-            <SidebarTrigger
-                className="cursor-pointer"
-            />
-            <div className="flex items-center gap-2">
-                <ThemeSwitcher />
-                <UserMenu />
-            </div>
-        </div>
-    )
->>>>>>> e9ea10581c220012cc13d30ecbef474d38d3d224
 }
