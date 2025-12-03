@@ -1,58 +1,58 @@
 'use client'
-import { DndContext } from '@dnd-kit/core'
-import { SortableContext } from '@dnd-kit/sortable'
+import { DndContext, closestCorners } from '@dnd-kit/core'
 
-import { IColumn } from '@/entities/Column/model/types/IColumn'
-import { Column } from '@/entities/Column/ui/Column'
+import { ColumnList } from '@/entities/Column/ui/ColumnList'
 
 import { useBoard } from '../model/hooks/useBoard'
+import { useCardDnd } from '../model/hooks/useCardDnd'
+import { useColumnDnd } from '../model/hooks/useColumnDnd'
+import { useDndStore } from '../model/store/useDndStore'
+
+import { BoardDragOverlay } from './BoardDragOverlay'
 
 interface BoardViewProps {
 	id: string
 }
 
 export const BoardView = ({ id }: BoardViewProps) => {
-	const { data: board, isLoading } = useBoard(id)
+	const { columns, board, isLoading, backgroundStyle, sensors } = useBoard(id)
+	const { onColumnDragStart, onColumnDragEnd, onColumnDragOver } =
+		useColumnDnd({ boardId: id })
+	const { onCardDragStart, onCardDragEnd } = useCardDnd()
+	const { activeCard, activeColumn } = useDndStore()
 
 	if (isLoading || !board) return <div>Loading...</div>
 
-	console.log(board)
-	const backgroundStyle: React.CSSProperties = {}
-
-	if (board?.background?.color)
-		backgroundStyle.backgroundColor = board?.background?.color
-	if (board?.background?.url) {
-		backgroundStyle.backgroundImage = `url(${board?.background?.url})`
-		backgroundStyle.backgroundSize = 'cover'
-		backgroundStyle.backgroundPosition = 'center'
-	}
-
 	return (
-		<DndContext>
-			<div
-				className={`flex flex-col gap-6 p-4 h-full`}
-				style={backgroundStyle}
+		<div className={`h-full w-full`} style={backgroundStyle}>
+			<DndContext
+				sensors={sensors}
+				collisionDetection={closestCorners}
+				onDragStart={event => {
+					const type = event.active.data.current?.type
+
+					if (type === 'column') onColumnDragStart(event)
+					if (type === 'card') onCardDragStart(event)
+				}}
+				onDragEnd={event => {
+					const type = event.active.data.current?.type
+
+					if (type === 'column') onColumnDragEnd(event)
+					if (type === 'card') onCardDragEnd(event)
+				}}
+				onDragOver={event => {
+					onColumnDragOver(event)
+				}}
 			>
-				<h1 className='font-bold'>{board?.title}</h1>
-				<div className='flex gap-4'>
-					<SortableContext
-						items={
-							board?.columns.map(
-								(column: IColumn) => column.id
-							) ?? []
-						}
-					>
-						{board?.columns?.map((column: IColumn) => (
-							<Column
-								key={column.id}
-								id={column.id}
-								title={column.title}
-								cards={column.cards}
-							/>
-						))}
-					</SortableContext>
+				<div className='flex flex-col gap-6 p-4 h-full w-full mt-16'>
+					<h1 className='font-bold'>{board?.title}</h1>
+					<ColumnList boardId={id} columns={columns} />
 				</div>
-			</div>
-		</DndContext>
+				<BoardDragOverlay
+					activeCard={activeCard}
+					activeColumn={activeColumn}
+				/>
+			</DndContext>
+		</div>
 	)
 }

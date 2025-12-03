@@ -3,6 +3,7 @@ import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateColumnInput } from './inputs/create-column.input';
 import { UpdateColumnInput } from './inputs/update-column.input';
 import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
+import { ReorderColumnInput } from './inputs/reorder-column.input';
 
 @Injectable()
 export class ColumnService {
@@ -45,6 +46,46 @@ export class ColumnService {
             data: {
                 title,
             },
+        });
+    }
+
+    async reorder(userId: string, input: ReorderColumnInput) {
+        const { boardId, columns } = input;
+
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
+        const existingColumns = await this.prisma.column.findMany({
+            where: {
+                id: {
+                    in: columns,
+                },
+                boardId,
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        if (existingColumns.length !== columns.length) {
+            throw new NotFoundException('Некоторые колонки не найдены');
+        }
+
+        const operations = columns.map((id, index) => {
+            return this.prisma.column.update({
+                where: { id },
+                data: { position: index + 1 },
+            });
+        });
+
+        await this.prisma.$transaction(operations);
+
+        return this.prisma.column.findMany({
+            where: { boardId },
+            orderBy: { position: 'asc' },
         });
     }
 

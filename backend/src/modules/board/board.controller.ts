@@ -42,10 +42,6 @@ export class BoardController {
         return this.boardService.getUserBoards(userId);
     }
 
-    @ApiOperation({
-        summary: 'Получение доски',
-        description: 'Отдает определенную доску по ID.',
-    })
     @Authorization()
     @Get(':id')
     async getBoard(

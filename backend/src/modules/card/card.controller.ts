@@ -13,6 +13,8 @@ import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { CreateCardInput } from './inputs/create-card.input';
 import { UpdateCardInput } from './inputs/update-card.input';
 import { ApiOperation } from '@nestjs/swagger';
+import { ReorderCardInput } from './inputs/reorder-card.input';
+import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
 
 @Controller('cards')
 export class CardController {
@@ -44,6 +46,32 @@ export class CardController {
         @Body() input: UpdateCardInput,
     ) {
         return this.cardService.update(userId, cardId, input);
+    }
+
+    @ApiOperation({
+        summary: 'Обновление позиции в старой колонке',
+        description: 'Обновляет позицию карточки в старой колонке.',
+    })
+    @Authorization()
+    @Post('reorder')
+    async reorder(
+        @SessionUser('id') userId: string,
+        @Body() input: ReorderCardInput,
+    ) {
+        return this.cardService.reorder(userId, input);
+    }
+
+    @ApiOperation({
+        summary: 'Обновление позиции в новой колонке',
+        description: 'Обновляет позицию карточки в новой колонке.',
+    })
+    @Authorization()
+    @Post('reorderToNewColumn')
+    async reorderToNewColumn(
+        @SessionUser('id') userId: string,
+        @Body() input: ReorderToNewColumn,
+    ) {
+        return this.cardService.reorderToNewColumn(userId, input);
     }
 
     @ApiOperation({
