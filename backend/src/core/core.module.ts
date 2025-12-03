@@ -7,8 +7,6 @@ import { RedisModule } from './redis/redis.module';
 import { BoardModule } from 'src/modules/board/board.module';
 import { ColumnModule } from 'src/modules/column/column.module';
 import { CardModule } from 'src/modules/card/card.module';
-import { ChatModule } from 'src/modules/chat/chat.module';
-import { MessagesModule } from 'src/modules/messages/messages.module';
 
 @Module({
     imports: [
@@ -22,8 +20,6 @@ import { MessagesModule } from 'src/modules/messages/messages.module';
         BoardModule,
         ColumnModule,
         CardModule,
-        ChatModule,
-        MessagesModule,
     ],
 })
 export class CoreModule {}
