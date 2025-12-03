@@ -1,10 +1,13 @@
 generator client {
-  provider = "prisma-client-js"
+  provider            = "prisma-client"
+  output              = "../generated/prisma"
+  moduleFormat        = "cjs"
+  engineType          = "client"
+  importFileExtension = ""
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
 }
 
 model User {
@@ -16,7 +19,8 @@ model User {
   displayUsername String  @map("display_username")
   avatar          String?
 
-  boards BoardMember[]
+  boards   BoardMember[]
+  messages Message[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -29,7 +33,7 @@ model Board {
 
   title String
 
-  background String? @default("#bd7b00ff")
+  background Json
 
   columns      Column[]
   members      BoardMember[]
@@ -97,6 +101,14 @@ model Card {
 
   title       String
   description String?
+  position    Int
+  priority    Priority
+  deadline    DateTime?
+
+  tags Tag[]
+
+  chatId String? @unique @map("chat_id")
+  chat   Chat?   @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
   columnId String @map("column_id")
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
@@ -107,8 +119,59 @@ model Card {
   @@map("cards")
 }
 
+model Tag {
+  id String @id @default(uuid())
+
+  title      String
+  background String
+
+  cardId String @map("card_id")
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tags")
+}
+
+model Chat {
+  id String @id @default(uuid())
+
+  messages Message[]
+
+  card Card? @relation
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("chat")
+}
+
+model Message {
+  id String @id @default(uuid())
+
+  text String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  chat   Chat?  @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("messages")
+}
+
 enum Role {
   OWNER
   ADMIN
   MEMBER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
 }

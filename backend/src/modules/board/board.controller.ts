@@ -1,13 +1,27 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    Param,
+    Post,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardInput } from './inputs/create-board.input';
 import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('boards')
 export class BoardController {
     constructor(private readonly boardService: BoardService) {}
 
+    @ApiOperation({
+        summary: 'Создание доски',
+        description: 'Создает доску для пользователя.',
+    })
+    @HttpCode(200)
     @Authorization()
     @Post('create')
     async create(
@@ -17,6 +31,21 @@ export class BoardController {
         return this.boardService.create(userId, input);
     }
 
+    @ApiOperation({
+        summary: 'Получение досок пользователя',
+        description:
+            'Отдает все доски пользователя, в том числе, в которые пользователя пригласили.',
+    })
+    @Authorization()
+    @Get('userBoards')
+    async getUserBoards(@SessionUser('id') userId: string) {
+        return this.boardService.getUserBoards(userId);
+    }
+
+    @ApiOperation({
+        summary: 'Получение доски',
+        description: 'Отдает определенную доску по ID.',
+    })
     @Authorization()
     @Get('userBoards')
     async getUserBoards(@SessionUser('id') userId: string) {
@@ -32,12 +61,27 @@ export class BoardController {
         return this.boardService.getBoard(userId, boardId);
     }
 
+<<<<<<< HEAD
+    @ApiOperation({
+        summary: 'Удаление доски',
+        description: 'Удаляет определенную доску по ID.',
+    })
+=======
+>>>>>>> e9ea10581c220012cc13d30ecbef474d38d3d224
     @Authorization()
     @Delete()
     async deleteBoard(@Param('id') boardId: string) {
         return this.boardService.deleteBoard(boardId);
     }
 
+<<<<<<< HEAD
+    @ApiOperation({
+        summary: 'Создание инвайта',
+        description: 'Создает инвайт-ссылку, чтобы присоединиться к доске.',
+    })
+    @HttpCode(200)
+=======
+>>>>>>> e9ea10581c220012cc13d30ecbef474d38d3d224
     @Authorization()
     @Post('invite/:boardId')
     async createInvite(
@@ -47,6 +91,14 @@ export class BoardController {
         return this.boardService.createInvite(userId, boardId);
     }
 
+<<<<<<< HEAD
+    @ApiOperation({
+        summary: 'Принять инвайт',
+        description: 'При вызове метода принимается приглашение в доску.',
+    })
+    @HttpCode(200)
+=======
+>>>>>>> e9ea10581c220012cc13d30ecbef474d38d3d224
     @Authorization()
     @Post('invite/accept/:token')
     async acceptInvite(

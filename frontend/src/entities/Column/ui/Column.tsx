@@ -1,26 +1,65 @@
 'use client'
 
-import { ICard } from "@/entities/Card/model/types/ICard";
-import { CardItem } from "@/entities/Card/ui/CardItem";
-import { GripVertical } from "lucide-react";
+import { useDroppable } from '@dnd-kit/core'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { GripVertical } from 'lucide-react'
+
+import { ICard } from '@/entities/Card/model/types/ICard'
+import { CardList } from '@/entities/Card/ui/CardList'
+
+import { useDndStore } from '@/features/drag-and-drop/model/store/useDndStore'
 
 interface ColumnProps {
-    title: string;
-    cards: ICard[];
+	id: string
+	title: string
+	cards: ICard[]
 }
 
-export const Column = ({ title, cards }: ColumnProps) => {
-    return (
-        <div className="w-76 flex flex-col gap-3">
-            <div className="dark:bg-neutral-900 p-4 rounded-lg shadow flex items-center gap-2 dark:text-white">
-                <GripVertical className="size-5" />
-                <h2 className="text-lg font-semibold">{title}</h2>
-            </div>
-            <div className="flex flex-col gap-4">
-                {cards && (
-                    cards.map((card) => <CardItem key={card.id} title={card.title} />)
-                )}
-            </div>
-        </div>
-    )
+export const Column = ({ id, title, cards }: ColumnProps) => {
+	const { hoveredColumnId } = useDndStore()
+	const {
+		attributes,
+		listeners,
+		setNodeRef: setSortableRef,
+		transform,
+		transition,
+		isDragging
+	} = useSortable({
+		id,
+		data: {
+			type: 'column',
+			column: {
+				id,
+				title,
+				cards
+			}
+		}
+	})
+
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition
+	}
+
+	return (
+		<div
+			ref={setSortableRef}
+			style={style}
+			className={`w-76 flex flex-col gap-3 break-all
+				${isDragging ? 'opacity-70' : ''} 
+				${hoveredColumnId === id ? 'bg-neutral-900/20 dark:bg-neutral-900/20 rounded-lg' : ''}`}
+		>
+			<div className='dark:bg-neutral-900 p-4 rounded-lg shadow flex items-center gap-2 dark:text-white'>
+				<GripVertical
+					{...attributes}
+					{...listeners}
+					className='size-5 outline-none cursor-grab'
+				/>
+				<h2 className='text-lg font-semibold'>{title}</h2>
+				<span className='text-sm text-gray-500'>{cards.length}</span>
+			</div>
+			<CardList cards={cards} columnId={id} />
+		</div>
+	)
 }
