@@ -18,7 +18,7 @@ export class BoardService {
     ) {}
 
     async create(userId: string, input: CreateBoardInput) {
-        const { title } = input;
+        const { title, url, color } = input;
 
         const isExistsBoard = await this.prisma.board.findFirst({
             where: {
@@ -43,6 +43,10 @@ export class BoardService {
         const board = await this.prisma.board.create({
             data: {
                 title,
+                background: {
+                    url,
+                    color,
+                },
                 members: {
                     create: {
                         userId,
