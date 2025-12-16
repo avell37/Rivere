@@ -8,5 +8,6 @@ export const API_URL = {
 	session: (url = '') => API_URL.root(`/session/${url}`),
 	boards: (url = '') => API_URL.root(`/boards/${url}`),
 	columns: (url = '') => API_URL.root(`/columns/${url}`),
-	cards: (url = '') => API_URL.root(`/cards/${url}`)
+	cards: (url = '') => API_URL.root(`/cards/${url}`),
+	chat: (url = '') => API_URL.root(`/chat/${url}`)
 }

@@ -6,6 +6,7 @@ export interface ICard {
 	priority: string
 	deadline: Date
 	columnId: string
+	chatId: string
 	createdAt?: Date
 	updatedAt?: Date
 }

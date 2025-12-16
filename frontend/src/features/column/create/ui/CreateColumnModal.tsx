@@ -13,7 +13,7 @@ export const CreateColumnModal = ({ boardId }: { boardId: string }) => {
 	return (
 		<Modal
 			trigger={
-				<div className='flex flex-col relative rounded-t-md overflow-hidden cursor-pointer transition-all group max-w-[200px] w-full'>
+				<div className='flex flex-col relative rounded-t-md overflow-hidden cursor-pointer transition-all group w-74'>
 					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 dark:bg-neutral-900'>
 						<Plus />
 						<h3 className='font-semibold text-base text-white'>
@@ -24,6 +24,7 @@ export const CreateColumnModal = ({ boardId }: { boardId: string }) => {
 			}
 			title='Добавить колонку'
 			description='Введите названия для вашей новой колонки'
+			contentClassname='sm:max-w-md'
 		>
 			<CreateColumnForm form={form} onSubmit={onSubmit} />
 		</Modal>

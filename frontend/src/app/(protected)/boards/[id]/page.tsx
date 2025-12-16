@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
-import { BoardView } from '@/features/drag-and-drop/ui/BoardView'
+import { BoardView } from '@/widgets/BoardView/ui/BoardView'
 
 export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations('boards')

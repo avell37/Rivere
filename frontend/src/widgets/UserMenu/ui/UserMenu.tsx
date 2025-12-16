@@ -1,5 +1,6 @@
 'use client'
-import { EllipsisVertical, LogOut, Settings, User } from 'lucide-react'
+import { EllipsisVertical } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 import { useGetUser } from '@/features/auth/model/hooks/useGetUser'
 
@@ -12,7 +13,6 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/shared/ui/external/Dropdown/Dropdown'
 import {
@@ -22,8 +22,12 @@ import {
 	SidebarMenuItem
 } from '@/shared/ui/external/Sidebar/ui/Sidebar'
 
+import { userMenuFields } from './UserFields'
+
 export const UserMenu = () => {
 	const { data: user } = useGetUser()
+	const fields = userMenuFields()
+	const router = useRouter()
 
 	return (
 		<SidebarFooter>
@@ -50,19 +54,15 @@ export const UserMenu = () => {
 							</SidebarMenuButton>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent className='w-58'>
-							<DropdownMenuItem>
-								<User />
-								Профиль
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<Settings />
-								Настройки
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem>
-								<LogOut />
-								Выход
-							</DropdownMenuItem>
+							{fields.map(item => (
+								<DropdownMenuItem
+									key={item.id}
+									onClick={() => router.push(item.url)}
+								>
+									<item.icon />
+									{item.title}
+								</DropdownMenuItem>
+							))}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</SidebarMenuItem>

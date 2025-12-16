@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function BoardsPage() {
 	return (
-		<div className='flex justify-center py-8 px-10 pt-20'>
+		<div className='flex justify-center py-8 px-4'>
 			<div className='flex flex-col gap-4 w-full max-w-[900px]'>
 				<div className='flex justify-between items-center'>
 					<h3 className='font-bold text-xl'>Ваши доски:</h3>

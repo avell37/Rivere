@@ -1,10 +1,5 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-
-export enum Priority {
-    LOW = 'LOW',
-    MEDIUM = 'MEDIUM',
-    HIGH = 'HIGH',
-}
+import { Priority } from 'generated/prisma/enums';
 
 export class CreateCardInput {
     @IsString({ message: 'ID колонки должно быть строкой' })
@@ -34,5 +29,5 @@ export class CreateCardInput {
     @MaxLength(128, {
         message: 'Максимальная длина описания карточки - 128 символов',
     })
-    deadline: Date;
+    deadline: string;
 }

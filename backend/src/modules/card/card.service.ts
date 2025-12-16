@@ -50,7 +50,6 @@ export class CardService {
     }
 
     async update(userId: string, cardId: string, input: UpdateCardInput) {
-        const { title, description } = input;
         const card = await this.prisma.card.findUnique({
             where: { id: cardId },
         });
@@ -66,8 +65,7 @@ export class CardService {
         return this.prisma.card.update({
             where: { id: cardId },
             data: {
-                title,
-                description,
+                ...input,
             },
         });
     }
