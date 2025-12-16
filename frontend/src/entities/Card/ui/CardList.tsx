@@ -1,5 +1,7 @@
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
+import { CreateCardModal } from '@/features/card/create/ui/CreateCardModal'
+
 import { ICard } from '../model/types/ICard'
 
 import { Card } from './Card'
@@ -11,6 +13,7 @@ export const CardList = ({
 	cards: ICard[]
 	columnId: string
 }) => {
+	console.log(cards)
 	return (
 		<div className='flex flex-col gap-4'>
 			<SortableContext
@@ -27,9 +30,11 @@ export const CardList = ({
 							priority={card.priority}
 							deadline={card.deadline}
 							columnId={columnId}
+							chatId={card.chatId}
 						/>
 					))}
 			</SortableContext>
+			<CreateCardModal columnId={columnId} />
 			{cards.length === 0 && (
 				<div className='h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-500 text-sm'>
 					Перетащите карточку сюда

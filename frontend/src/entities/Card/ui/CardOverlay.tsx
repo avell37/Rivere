@@ -1,3 +1,5 @@
+import { SquareArrowOutUpRight } from 'lucide-react'
+
 import { formattedDate } from '@/shared/libs/formattedDate'
 import { priorityCircle, priorityColors } from '@/shared/libs/priorityColors'
 
@@ -7,23 +9,30 @@ export const CardOverlay = ({ card }: { card: ICard }) => {
 	const date = formattedDate(card.deadline)
 
 	return (
-		<li
-			className={`relative p-6 dark:bg-neutral-900 rounded-lg shadow  ${priorityColors[card.priority] ?? ''}
-                transition-all duration-200 cursor-grab active:cursor-grabbing list-none`}
+		<div
+			className={`relative p-6 dark:bg-neutral-900 rounded-lg shadow list-none ${priorityColors[card.priority] ?? ''}
+			transition-all duration-200 cursor-grab active:cursor-grabbing w-74`}
 		>
-			<div className='flex flex-col gap-2 dark:text-white wrap-break-word'>
-				<h3 className='text-sm'>{card.title}</h3>
-				<span className='text-xs'>{card.description}</span>
-			</div>
-			<div className='flex flex-col items-end justify-end gap-2 pt-4 pb-2'>
-				<div className='flex gap-1'>
-					<div className={`${priorityCircle[card.priority] ?? ''}`} />
-					<span className='text-xs'>
-						{card.priority.toLowerCase()}
-					</span>
+			<li>
+				<div className='flex flex-col gap-2 dark:text-white wrap-break-word'>
+					<h3 className='text-sm'>{card.title}</h3>
+					<span className='text-xs'>{card.description}</span>
 				</div>
-				<span className='text-xs'>{date}</span>
+				<div className='flex flex-col items-end justify-end gap-2 pt-4 pb-2'>
+					<div className='flex gap-1'>
+						<div
+							className={`${priorityCircle[card.priority] ?? ''}`}
+						/>
+						<span className='text-xs'>
+							{card.priority.toLowerCase()}
+						</span>
+					</div>
+					<span className='text-xs'>{date}</span>
+				</div>
+			</li>
+			<div className='cursor-pointer'>
+				<SquareArrowOutUpRight size={16} />
 			</div>
-		</li>
+		</div>
 	)
 }

@@ -2,9 +2,14 @@
 
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { SquareArrowOutUpRight } from 'lucide-react'
+
+import { EditCardForm } from '@/features/card/edit/ui/EditCardForm'
+import { Chat } from '@/features/chat/ui/Chat'
 
 import { formattedDate } from '@/shared/libs/formattedDate'
 import { priorityCircle, priorityColors } from '@/shared/libs/priorityColors'
+import { Modal } from '@/shared/ui/custom'
 
 interface CardProps {
 	id: string
@@ -13,6 +18,7 @@ interface CardProps {
 	priority: string
 	deadline: Date
 	columnId: string
+	chatId: string
 }
 
 export const Card = ({
@@ -21,7 +27,8 @@ export const Card = ({
 	description,
 	priority,
 	deadline,
-	columnId
+	columnId,
+	chatId
 }: CardProps) => {
 	const {
 		attributes,
@@ -50,27 +57,46 @@ export const Card = ({
 		transform: CSS.Transform.toString(transform),
 		transition
 	}
-
 	return (
-		<li
-			ref={setNodeRef}
-			style={style}
-			{...attributes}
-			{...listeners}
+		<div
 			className={`relative p-6 dark:bg-neutral-900 rounded-lg shadow list-none ${priorityColors[priority] ?? ''}
 			${isDragging ? 'opacity-70' : null} transition-all duration-200 cursor-grab active:cursor-grabbing`}
 		>
-			<div className='flex flex-col gap-2 dark:text-white wrap-break-word'>
-				<h3 className='text-sm'>{title}</h3>
-				<span className='text-xs'>{description}</span>
-			</div>
-			<div className='flex flex-col items-end justify-end gap-2 pt-4 pb-2'>
-				<div className='flex gap-1'>
-					<div className={`${priorityCircle[priority] ?? ''}`} />
-					<span className='text-xs'>{priority.toLowerCase()}</span>
+			<li ref={setNodeRef} style={style} {...attributes} {...listeners}>
+				<div className='flex flex-col gap-2 dark:text-white wrap-break-word'>
+					<h3 className='text-sm'>{title}</h3>
+					<span className='text-xs'>{description}</span>
 				</div>
-				<span className='text-xs'>{date}</span>
-			</div>
-		</li>
+				<div className='flex flex-col items-end justify-end gap-2 pt-4 pb-2'>
+					<div className='flex gap-1'>
+						<div className={`${priorityCircle[priority] ?? ''}`} />
+						<span className='text-xs'>
+							{priority.toLowerCase()}
+						</span>
+					</div>
+					<span className='text-xs'>{date}</span>
+				</div>
+			</li>
+			<Modal
+				trigger={
+					<div className='cursor-pointer'>
+						<SquareArrowOutUpRight size={16} />
+					</div>
+				}
+				contentClassname='sm:max-w-5xl'
+				children={
+					<div className='flex justify-between'>
+						<EditCardForm
+							id={id}
+							title={title}
+							description={description}
+							priority={priority}
+							deadline={deadline}
+						/>
+						<Chat chatId={chatId} />
+					</div>
+				}
+			/>
+		</div>
 	)
 }

@@ -5,8 +5,6 @@ import {
 
 import { CreateColumnModal } from '@/features/column/create/ui/CreateColumnModal'
 
-import { Button } from '@/shared/ui/external'
-
 import { IColumn } from '../model/types/IColumn'
 
 import { Column } from './Column'
@@ -19,7 +17,7 @@ export const ColumnList = ({
 	columns: IColumn[]
 }) => {
 	return (
-		<div className='flex gap-6'>
+		<div className='flex gap-6 overflow-auto'>
 			<SortableContext
 				items={columns.map((column: IColumn) => column.id) ?? []}
 				strategy={horizontalListSortingStrategy}

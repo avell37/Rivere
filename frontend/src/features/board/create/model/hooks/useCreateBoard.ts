@@ -16,7 +16,10 @@ export const useCreateBoard = () => {
 		resolver: zodResolver(CreateBoardSchema),
 		defaultValues: {
 			title: '',
-			background: ''
+			background: {
+				color: null,
+				url: null
+			}
 		}
 	})
 

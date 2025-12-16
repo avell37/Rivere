@@ -6,6 +6,16 @@ import {
     MinLength,
 } from 'class-validator';
 
+export class CreateBoardBackground {
+    @IsOptional()
+    @IsString({ message: 'Изображение доски должно быть строкой' })
+    url?: string | null;
+
+    @IsOptional()
+    @IsString({ message: 'Цвет доски должен быть строкой' })
+    color?: string | null;
+}
+
 export class CreateBoardInput {
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
     @IsString({ message: 'Название доски должно быть строкой' })
@@ -18,13 +28,5 @@ export class CreateBoardInput {
     title: string;
 
     @IsOptional()
-    @IsString({ message: 'Название доски должно быть строкой' })
-    url: string;
-
-    @IsOptional()
-    @IsString({ message: 'Название доски должно быть строкой' })
-    @MinLength(3, {
-        message: 'Минимальная длина цвета доски - 3 символа',
-    })
-    color: string;
+    background: CreateBoardBackground;
 }

@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<SidebarProvider>
 			<Sidebar />
-			<main>
+			<main className={`pt-16 flex-1`}>
 				<Header />
 				{children}
 			</main>

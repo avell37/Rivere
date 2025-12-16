@@ -24,6 +24,7 @@ export const CreateBoardModal = () => {
 			}
 			title='Добавить доску'
 			description='Чтобы начать работу с доской, нужно ее создать, верно?'
+			contentClassname='sm:max-w-lg'
 		>
 			<CreateBoardForm form={form} onSubmit={onSubmit} />
 		</Modal>

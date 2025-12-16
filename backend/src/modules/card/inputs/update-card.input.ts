@@ -1,19 +1,28 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { Priority } from 'generated/prisma/enums';
 
 export class UpdateCardInput {
-    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
-    @IsString({ message: 'Название колонки должно быть строкой' })
+    @IsOptional()
+    @IsString({ message: 'Название карточки должно быть строкой' })
     @MinLength(4, {
         message: 'Минимальная длина названия карточки - 4 символа',
     })
     @MaxLength(32, {
         message: 'Максимальная длина названия карточки - 32 символа',
     })
-    title: string;
+    title?: string;
 
-    @IsString({ message: 'Название колонки должно быть строкой' })
+    @IsOptional()
+    @IsString({ message: 'Описание карточки должно быть строкой' })
     @MaxLength(100, {
         message: 'Максимальная длина описания карточки - 100 символа',
     })
-    description: string;
+    description?: string;
+
+    @IsOptional()
+    @IsString()
+    priority?: Priority;
+
+    @IsOptional()
+    deadline?: string;
 }

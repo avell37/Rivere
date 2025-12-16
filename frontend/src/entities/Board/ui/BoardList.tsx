@@ -23,7 +23,6 @@ export const BoardList = () => {
 							id={board.id}
 							title={board.title}
 							members={board.members.length}
-							background={board.background}
 						/>
 					</div>
 				))}
