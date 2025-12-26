@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    Post,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateUserInput } from './inputs/create-user.input';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
@@ -8,6 +16,8 @@ import type { User } from '@prisma/client';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { ApiOperation } from '@nestjs/swagger';
+import { ChangeDisplayUsernameInput } from './inputs/change-display-username.input';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('account')
 export class AccountController {
@@ -48,6 +58,20 @@ export class AccountController {
     }
 
     @ApiOperation({
+        summary: 'Изменение имени',
+        description: 'Изменяет имя пользователя',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Post('changeDisplayUsername')
+    async changeDisplayUsername(
+        @Body() input: ChangeDisplayUsernameInput,
+        @SessionUser() user: User,
+    ) {
+        return this.accountService.changeDisplayUsername(input, user);
+    }
+
+    @ApiOperation({
         summary: 'Изменение почты',
         description: 'Изменяет почту пользователя',
     })
@@ -73,5 +97,20 @@ export class AccountController {
         @SessionUser() user: User,
     ) {
         return this.accountService.changePassword(input, user);
+    }
+
+    @ApiOperation({
+        summary: 'Изменение пароля',
+        description: 'Изменяет пароль пользователя',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Post('changeAvatar')
+    @UseInterceptors(FileInterceptor('file'))
+    async changeAvatar(
+        @UploadedFile() file: Express.Multer.File,
+        @SessionUser() user: User,
+    ) {
+        return this.accountService.changeAvatar(file, user);
     }
 }

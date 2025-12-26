@@ -1,5 +1,7 @@
 'use client'
 
+import { Send } from 'lucide-react'
+
 import { customAvatar } from '@/shared/libs/customAvatar'
 import { formattedDate } from '@/shared/libs/formattedDate'
 import {
@@ -31,58 +33,85 @@ export const Chat = ({ chatId }: { chatId: string }) => {
 
 	return (
 		<div className='flex flex-col items-center p-4 border-l'>
-			<div className='flex flex-col h-[500px] w-[400px]'>
+			<div className='flex flex-col h-[500px] w-[450px]'>
 				<div className='flex-1 flex flex-col gap-4 rounded-md overflow-y-auto'>
 					{messages.map((message: any) => {
 						const isUser = userId
-						console.log(isUser)
+
 						return (
-							<div
-								key={message.id}
-								className='flex items-end gap-2'
-							>
-								<Avatar className='size-10 rounded-full'>
-									<AvatarImage
-										src={
-											message.user.avatar
-												? message.user.avatar
-												: null
-										}
-										alt={message.user.avatar}
-									/>
-									<AvatarFallback>
-										{customAvatar(
-											message.user.displayUsername
-										)}
-									</AvatarFallback>
-								</Avatar>
-								<div className=''>
-									{message.user.displayUsername}
+							<>
+								{isUser === message.userId ? (
 									<div
-										className={`relative p-2 pr-20 border rounded-md
-										${isUser === message.userId ? 'bg-blue-500' : 'bg-purple-950/30'}`}
+										key={message.id}
+										className='flex justify-end items-end gap-2 ml-10'
 									>
-										{message.text}
-										<span className='text-[8px] absolute bottom-0 right-1'>
-											{formattedDate(message.createdAt)}
-										</span>
+										<div className='w-[350px]'>
+											<div
+												className={`relative p-2 border rounded-md wrap-break-word
+										${isUser === message.userId ? 'bg-blue-500' : 'bg-purple-950/30'}`}
+											>
+												{message.text}
+												<span className='text-[8px] flex justify-end items-end'>
+													{formattedDate(
+														message.createdAt
+													)}
+												</span>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
+								) : (
+									<div
+										key={message.id}
+										className='flex items-end gap-2 mr-10'
+									>
+										<Avatar className='size-10 rounded-full'>
+											<AvatarImage
+												src={
+													message.user.avatar
+														? message.user.avatar
+														: null
+												}
+												alt={message.user.avatar}
+											/>
+											<AvatarFallback>
+												{customAvatar(
+													message.user.displayUsername
+												)}
+											</AvatarFallback>
+										</Avatar>
+										<div className='w-[350px]'>
+											{message.user.displayUsername}
+											<div
+												className={`relative p-2 border rounded-md 
+										${isUser === message.userId ? 'bg-blue-500' : 'bg-purple-950/30'}`}
+											>
+												{message.text}
+												<span className='text-[8px] flex justify-end items-end pl-6'>
+													{formattedDate(
+														message.createdAt
+													)}
+												</span>
+											</div>
+										</div>
+									</div>
+								)}
+							</>
 						)
 					})}
 					<div ref={messagesEndRef} />
 				</div>
-				<div className='relative'>
+				<div className='relative mt-2'>
 					<Input
 						className='relative'
 						onChange={e => setMessage(e.target.value)}
 					/>
 					<Button
-						className='absolute'
+						size='none'
+						variant='none'
+						className='absolute top-2 right-2'
 						onClick={() => handleSubmitMessage()}
 					>
-						Submit
+						<Send />
 					</Button>
 				</div>
 			</div>

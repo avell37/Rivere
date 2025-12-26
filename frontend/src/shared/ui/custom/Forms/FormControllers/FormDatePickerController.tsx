@@ -20,12 +20,14 @@ interface FormDatePickerControllerProps {
 	name: string
 	control: Control<any>
 	label: string
+	onChange?: (value: string) => void
 }
 
 export const FormDatePickerController = ({
 	name,
 	control,
-	label
+	label,
+	onChange
 }: FormDatePickerControllerProps) => {
 	return (
 		<FormField
@@ -57,8 +59,11 @@ export const FormDatePickerController = ({
 									mode='single'
 									selected={date}
 									onSelect={date => {
-										if (date)
-											field.onChange(date.toISOString())
+										if (!date) return
+
+										const iso = date.toISOString()
+										field.onChange(iso)
+										onChange?.(iso)
 									}}
 								/>
 							</PopoverContent>

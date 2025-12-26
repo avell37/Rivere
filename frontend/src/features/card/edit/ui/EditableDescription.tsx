@@ -6,7 +6,7 @@ import { useUpdateCard } from '../model/hooks/useUpdateCard'
 import { EditableProps } from '../model/types/EditableProps'
 
 export const EditableDescription = ({ cardId }: EditableProps) => {
-	const { control, getValues, watch } = useFormContext()
+	const { control, watch } = useFormContext()
 	const descriptionValue = watch('description')
 
 	const { isEditing, setIsEditing, handleBlur, isLoading } = useUpdateCard(
@@ -28,7 +28,7 @@ export const EditableDescription = ({ cardId }: EditableProps) => {
 	return (
 		<FormTextareaController
 			name='description'
-			className='border rounded p-4 break-all resize-none'
+			className='rounded break-all resize-none pr-4'
 			control={control}
 			autoFocus
 			disabled={isLoading}

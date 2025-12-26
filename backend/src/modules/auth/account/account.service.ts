@@ -10,10 +10,15 @@ import { ChangeUsernameInput } from './inputs/change-username.input';
 import { User } from '@prisma/client';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
+import { ChangeDisplayUsernameInput } from './inputs/change-display-username.input';
+import { FilesService } from 'src/modules/files/files.service';
 
 @Injectable()
 export class AccountService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly filesService: FilesService,
+    ) {}
 
     async me(id: string) {
         const user = await this.prisma.user.findUnique({
@@ -78,6 +83,21 @@ export class AccountService {
         return true;
     }
 
+    async changeDisplayUsername(input: ChangeDisplayUsernameInput, user: User) {
+        const { displayUsername } = input;
+
+        await this.prisma.user.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                displayUsername,
+            },
+        });
+
+        return true;
+    }
+
     async changeEmail(input: ChangeEmailInput, user: User) {
         const { email } = input;
 
@@ -112,5 +132,16 @@ export class AccountService {
         });
 
         return true;
+    }
+
+    async changeAvatar(file: Express.Multer.File, user: User) {
+        const uploaded = await this.filesService.saveFile(file, 'avatars');
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: { avatar: uploaded.url },
+        });
+
+        return uploaded;
     }
 }

@@ -1,42 +1,53 @@
 {
-    "home": {
-        "title": "Главная страница"
-    },
-    "auth": {
-        "login": {
-            "heading": "Вход в аккаунт",
-            "loginLabel": "Логин",
-            "loginPlaceholder": "Введите свой e-mail или имя пользователя",
-            "passwordLabel": "Пароль",
-            "passwordPlaceholder": "Введите свой пароль",
-            "label": "Нет аккаунта?",
-            "submitButton": "Войти",
-            "navigationButton": "Создать"
-        },
-        "register": {
-            "heading": "Регистрация",
-            "usernameLabel": "Имя пользователя",
-            "usernamePlaceholder": "Введите ваше имя пользователя",
-            "emailLabel": "Почта",
-            "emailPlaceholder": "Введите свою почту",
-            "passwordLabel": "Пароль",
-            "passwordPlaceholder": "Введите свой пароль",
-            "label": "Уже есть аккаунт?",
-            "submitButton": "Создать",
-            "navigationButton": "Войти"
-        },
-        "google": "Продолжить с Google",
-        "yandex": "Продолжить с Яндекс"
-    },
-    "dashboard": {
-        "heading": "Главная"
-    },
-    "boards": {
-        "heading": "Доски"
-    },
-    "theme": {
-        "selectTheme": "Выберите тему...",
-        "light": "Светлая",
-        "dark": "Темная"
-    }
+	"home": {
+		"title": "Главная страница"
+	},
+	"auth": {
+		"login": {
+			"heading": "Вход в аккаунт",
+			"loginLabel": "Логин",
+			"loginPlaceholder": "Введите свой e-mail или имя пользователя",
+			"passwordLabel": "Пароль",
+			"passwordPlaceholder": "Введите свой пароль",
+			"label": "Нет аккаунта?",
+			"submitButton": "Войти",
+			"navigationButton": "Создать"
+		},
+		"register": {
+			"heading": "Регистрация",
+			"usernameLabel": "Имя пользователя",
+			"usernamePlaceholder": "Введите ваше имя пользователя",
+			"emailLabel": "Почта",
+			"emailPlaceholder": "Введите свою почту",
+			"passwordLabel": "Пароль",
+			"passwordPlaceholder": "Введите свой пароль",
+			"label": "Уже есть аккаунт?",
+			"submitButton": "Создать",
+			"navigationButton": "Войти"
+		},
+		"google": "Продолжить с Google",
+		"yandex": "Продолжить с Яндекс"
+	},
+	"achievements": {
+		"heading": "Достижения"
+	},
+	"dashboard": {
+		"heading": "Главная"
+	},
+	"boards": {
+		"heading": "Доски"
+	},
+	"profile": {
+		"settings": {
+			"heading": "Настройки"
+		}
+	},
+	"invite": {
+		"heading": "Приглашение в доску"
+	},
+	"theme": {
+		"selectTheme": "Выберите тему...",
+		"light": "Светлая",
+		"dark": "Темная"
+	}
 }

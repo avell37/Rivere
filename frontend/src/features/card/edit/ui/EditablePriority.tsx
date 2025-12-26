@@ -1,30 +1,19 @@
-import { useForm } from 'react-hook-form'
-
-import { Priority } from '@/entities/Card/model/types/CardPriority'
+import { useFormContext } from 'react-hook-form'
 
 import { FormSelectController } from '@/shared/ui/custom'
-import { Form } from '@/shared/ui/external'
 
 import { useUpdateCard } from '../model/hooks/useUpdateCard'
 
-interface EditablePriorityProps {
-	cardId: string
-	initialValue: Priority
-}
+export const EditablePriority = ({ cardId }: { cardId: string }) => {
+	const { control } = useFormContext()
+	const { handleBlur } = useUpdateCard(cardId, 'priority')
 
-export const EditablePriority = ({
-	cardId,
-	initialValue
-}: EditablePriorityProps) => {
-	// const { update } = useUpdateCard(cardId)
-	// return (
-	// 	<Form {...form}>
-	// 		<FormSelectController
-	// 			name='priority'
-	// 			label='Приоритет'
-	// 			control={form.control}
-	// 			onChange={value => update({ priority: value })}
-	// 		/>
-	// 	</Form>
-	// )
+	return (
+		<FormSelectController
+			name='priority'
+			label='Приоритет задачи'
+			control={control}
+			onChange={value => handleBlur(value)}
+		/>
+	)
 }

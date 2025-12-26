@@ -5,6 +5,7 @@ export const PUBLIC_URL = {
 
 	home: () => PUBLIC_URL.root('/'),
 	auth: () => PUBLIC_URL.root('/auth'),
+	achievements: () => PUBLIC_URL.root('/achievements'),
 	dashboard: () => PUBLIC_URL.root('/dashboard'),
 	boards: () => PUBLIC_URL.root('/boards'),
 	profile: () => PUBLIC_URL.root('/profile'),
