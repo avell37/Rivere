@@ -9,6 +9,7 @@ import { ColumnModule } from 'src/modules/column/column.module';
 import { CardModule } from 'src/modules/card/card.module';
 import { ChatModule } from 'src/modules/chat/chat.module';
 import { MessagesModule } from 'src/modules/messages/messages.module';
+import { FilesModule } from 'src/modules/files/files.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { MessagesModule } from 'src/modules/messages/messages.module';
         CardModule,
         ChatModule,
         MessagesModule,
+        FilesModule,
     ],
 })
 export class CoreModule {}

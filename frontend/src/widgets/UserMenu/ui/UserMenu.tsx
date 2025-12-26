@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation'
 
 import { useGetUser } from '@/features/auth/model/hooks/useGetUser'
 
+import { SERVER_URL } from '@/shared/libs/constants/api.config'
+import { customAvatar } from '@/shared/libs/customAvatar'
 import {
 	Avatar,
 	AvatarFallback,
@@ -22,12 +24,15 @@ import {
 	SidebarMenuItem
 } from '@/shared/ui/external/Sidebar/ui/Sidebar'
 
+import { useLogout } from '../model/hooks/useLogout'
+
 import { userMenuFields } from './UserFields'
 
 export const UserMenu = () => {
 	const { data: user } = useGetUser()
 	const fields = userMenuFields()
 	const router = useRouter()
+	const { logoutUser, isPending } = useLogout()
 
 	return (
 		<SidebarFooter>
@@ -36,9 +41,16 @@ export const UserMenu = () => {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<SidebarMenuButton size='lg'>
-								<Avatar className='h-8 w-8'>
-									<AvatarImage></AvatarImage>
-									<AvatarFallback>CN</AvatarFallback>
+								<Avatar className='h-8 w-8 rounded-full'>
+									{user?.avatar ? (
+										<AvatarImage
+											src={`${SERVER_URL}${user?.avatar}`}
+										/>
+									) : (
+										<AvatarFallback>
+											{customAvatar(user?.username || '')}
+										</AvatarFallback>
+									)}
 								</Avatar>
 								<div className='flex flex-col leading-tight'>
 									<span className='truncate font-medium'>
@@ -57,7 +69,11 @@ export const UserMenu = () => {
 							{fields.map(item => (
 								<DropdownMenuItem
 									key={item.id}
-									onClick={() => router.push(item.url)}
+									disabled={item.id === 'logout' && isPending}
+									onClick={() => {
+										if (item.id === 'logout') logoutUser()
+										else router.push(item.url)
+									}}
 								>
 									<item.icon />
 									{item.title}

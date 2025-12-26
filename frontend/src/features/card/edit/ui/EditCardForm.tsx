@@ -3,8 +3,12 @@ import { useForm } from 'react-hook-form'
 
 import { Form, Separator } from '@/shared/ui/external'
 
-import { EditCardSchema } from '../model/validation/edit-card.z.validation'
+import {
+	EditCardRequest,
+	EditCardSchema
+} from '../model/validation/edit-card.z.validation'
 
+import { EditableDeadline } from './EditableDeadline'
 import { EditableDescription } from './EditableDescription'
 import { EditablePriority } from './EditablePriority'
 import { EditableTitle } from './EditableTitle'
@@ -13,8 +17,8 @@ interface EditCardProps {
 	id: string
 	title: string
 	description?: string
-	priority: string
-	deadline: Date
+	priority: EditCardRequest['priority']
+	deadline: string
 }
 
 export const EditCardForm = ({
@@ -24,11 +28,13 @@ export const EditCardForm = ({
 	priority,
 	deadline
 }: EditCardProps) => {
-	const form = useForm({
+	const form = useForm<EditCardRequest>({
 		resolver: zodResolver(EditCardSchema),
 		defaultValues: {
 			title,
-			description
+			description,
+			priority,
+			deadline
 		}
 	})
 
@@ -40,7 +46,10 @@ export const EditCardForm = ({
 					<Separator />
 					<EditableDescription cardId={id} />
 				</div>
-				<div>{/* <EditablePriority cardId={id} /> */}</div>
+				<div className='flex gap-4'>
+					<EditablePriority cardId={id} />
+					<EditableDeadline cardId={id} />
+				</div>
 			</div>
 		</Form>
 	)

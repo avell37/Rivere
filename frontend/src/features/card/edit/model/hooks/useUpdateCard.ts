@@ -32,10 +32,13 @@ export const useUpdateCard = (cardId: string, key: EditableKey) => {
 			mutation.mutate({ [key]: value })
 	}
 
+	const handleChange = (value: string) => mutation.mutate({ [key]: value })
+
 	return {
 		isEditing,
+		isLoading: mutation.isPending,
 		setIsEditing,
 		handleBlur,
-		isLoading: mutation.isPending
+		handleChange
 	}
 }

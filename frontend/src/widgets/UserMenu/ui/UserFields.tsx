@@ -1,10 +1,12 @@
 import { LogOut, Settings, User } from 'lucide-react'
 
+import { logout } from '@/entities/User/model/api/userApi'
+
 import { PUBLIC_URL } from '@/shared/libs/constants/url.config'
 
 export const userMenuFields = () => [
 	{
-		id: 1,
+		id: 'profile',
 		title: 'Профиль',
 		url: PUBLIC_URL.dashboard(),
 		icon: User
@@ -20,13 +22,13 @@ export const userMenuFields = () => [
 	//     icon: SquareKanban
 	// },
 	{
-		id: 2,
+		id: 'settings',
 		title: 'Настройки',
 		url: PUBLIC_URL.userSettings(),
 		icon: Settings
 	},
 	{
-		id: 3,
+		id: 'logout',
 		title: 'Выход',
 		url: PUBLIC_URL.boards(),
 		icon: LogOut

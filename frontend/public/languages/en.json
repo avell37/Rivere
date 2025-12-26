@@ -1,42 +1,53 @@
 {
-    "home": {
-        "title": "Home page"
-    },
-    "auth": {
-        "login": {
-            "heading": "Login",
-            "loginLabel": "Login",
-            "loginPlaceholder": "Enter your e-mail or username",
-            "passwordLabel": "Password",
-            "passwordPlaceholder": "Enter your password",
-            "label": "No account?",
-            "submitButton": "Login",
-            "navigationButton": "Create"
-        },
-        "register": {
-            "heading": "Registration",
-            "usernameLabel": "Username",
-            "usernamePlaceholder": "Enter your username",
-            "emailLabel": "E-mail",
-            "emailPlaceholder": "Enter your e-mail",
-            "passwordLabel": "Password",
-            "passwordPlaceholder": "Enter your password",
-            "label": "Already have account?",
-            "submitButton": "Create",
-            "navigationButton": "Login"
-        },
-        "google": "Continue with Google",
-        "yandex": "Continue with Yandex"
-    },
-    "dashboard": {
-        "heading": "Dashboard"
-    },
-    "boards": {
-        "heading": "Boards"
-    },
-    "theme": {
-        "selectTheme": "Select theme...",
-        "light": "Light",
-        "dark": "Dark"
-    }
+	"home": {
+		"title": "Home page"
+	},
+	"auth": {
+		"login": {
+			"heading": "Login",
+			"loginLabel": "Login",
+			"loginPlaceholder": "Enter your e-mail or username",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Enter your password",
+			"label": "No account?",
+			"submitButton": "Login",
+			"navigationButton": "Create"
+		},
+		"register": {
+			"heading": "Registration",
+			"usernameLabel": "Username",
+			"usernamePlaceholder": "Enter your username",
+			"emailLabel": "E-mail",
+			"emailPlaceholder": "Enter your e-mail",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Enter your password",
+			"label": "Already have account?",
+			"submitButton": "Create",
+			"navigationButton": "Login"
+		},
+		"google": "Continue with Google",
+		"yandex": "Continue with Yandex"
+	},
+	"achievements": {
+		"heading": "Achievements"
+	},
+	"dashboard": {
+		"heading": "Dashboard"
+	},
+	"boards": {
+		"heading": "Boards"
+	},
+	"profile": {
+		"settings": {
+			"heading": "Settings"
+		}
+	},
+	"invite": {
+		"heading": "Invite to board"
+	},
+	"theme": {
+		"selectTheme": "Select theme...",
+		"light": "Light",
+		"dark": "Dark"
+	}
 }
