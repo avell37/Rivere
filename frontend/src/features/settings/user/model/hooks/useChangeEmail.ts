@@ -1,0 +1,40 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+
+import { changeEmail } from '@/entities/User/model/api/userApi'
+
+import {
+	ChangeEmailRequest,
+	ChangeEmailSchema
+} from '../validation/change-email.z.validation'
+
+export const useChangeEmail = () => {
+	const form = useForm<ChangeEmailRequest>({
+		resolver: zodResolver(ChangeEmailSchema),
+		defaultValues: {
+			email: ''
+		}
+	})
+
+	const { mutate } = useMutation({
+		mutationKey: ['update user data'],
+		mutationFn: (data: ChangeEmailRequest) => changeEmail(data),
+		onSuccess: () => {
+			form.reset()
+			toast.success('Данные успешно изменены')
+		},
+		onError(err) {
+			if (err.message) toast.error(err.message)
+			else toast.error('Ошибка при изменении данных')
+		}
+	})
+
+	const onSubmit: SubmitHandler<ChangeEmailRequest> = data => mutate(data)
+
+	return {
+		form,
+		onSubmit
+	}
+}

@@ -1,16 +1,18 @@
-import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
-import "./globals.css";
-import { getLocale, getMessages } from "next-intl/server";
-import { SITE_DESCRIPTION, SITE_NAME } from "@/shared/libs/constants/seo.const";
-import { ThemeProvider } from "@/shared/providers/ThemeProvider";
-import { ToastProvider } from "@/shared/providers/ToastProvider";
-import { QueryProvider } from "@/shared/providers/QueryProvider";
+import { getLocale, getMessages } from 'next-intl/server'
+import { Montserrat } from 'next/font/google'
+
+import { SITE_DESCRIPTION, SITE_NAME } from '@/shared/libs/constants/seo.const'
+import { QueryProvider } from '@/shared/providers/QueryProvider'
+import { ThemeProvider } from '@/shared/providers/ThemeProvider'
+import { ToastProvider } from '@/shared/providers/ToastProvider'
+
+import './globals.css'
 
 const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  weight: "500"
+	variable: '--font-montserrat',
+	weight: '500'
 })
 
 export const metadata: Metadata = {
@@ -18,27 +20,25 @@ export const metadata: Metadata = {
 		absolute: SITE_NAME,
 		template: `%s | ${SITE_NAME}`
 	},
-	description: SITE_DESCRIPTION,
+	description: SITE_DESCRIPTION
 }
 
 export default async function RootLayout({
-	children,
+	children
 }: Readonly<{
-	children: React.ReactNode;
+	children: React.ReactNode
 }>) {
-	const locale = await getLocale();
-	const messages = await getMessages();
+	const locale = await getLocale()
+	const messages = await getMessages()
 
 	return (
 		<html lang={locale} suppressHydrationWarning>
-			<body
-				className={`${montserrat.variable} antialiased`}
-			>
+			<body className={`${montserrat.variable} antialiased h-full`}>
 				<NextIntlClientProvider messages={messages}>
 					<QueryProvider>
 						<ThemeProvider
-							attribute="class"
-							defaultTheme="dark"
+							attribute='class'
+							defaultTheme='dark'
 							enableSystem
 							disableTransitionOnChange
 						>
@@ -49,5 +49,5 @@ export default async function RootLayout({
 				</NextIntlClientProvider>
 			</body>
 		</html>
-	);
+	)
 }

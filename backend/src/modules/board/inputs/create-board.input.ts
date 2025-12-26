@@ -1,4 +1,20 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    MaxLength,
+    MinLength,
+} from 'class-validator';
+
+export class CreateBoardBackground {
+    @IsOptional()
+    @IsString({ message: 'Изображение доски должно быть строкой' })
+    url?: string | null;
+
+    @IsOptional()
+    @IsString({ message: 'Цвет доски должен быть строкой' })
+    color?: string | null;
+}
 
 export class CreateBoardInput {
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
@@ -10,4 +26,7 @@ export class CreateBoardInput {
         message: 'Максимальная длина названия доски - 32 символа',
     })
     title: string;
+
+    @IsOptional()
+    background: CreateBoardBackground;
 }

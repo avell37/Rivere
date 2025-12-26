@@ -1,20 +1,21 @@
-import { BoardView } from "@/widgets/BoardView/ui/BoardView";
-import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+
+import { BoardView } from '@/widgets/BoardView/ui/BoardView'
 
 export async function generateMetadata(): Promise<Metadata> {
-    const t = await getTranslations('boards')
+	const t = await getTranslations('boards')
 
-    return {
-        title: t("heading")
-    }
+	return {
+		title: t('heading')
+	}
 }
 
 interface Props {
-    params: { id: string }
+	params: { id: string }
 }
 
-export default async function BoardsPage({ params }: Props) {
-    const { id } = await params;
-    return <BoardView id={id} />
+export default async function BoardPage({ params }: Props) {
+	const { id } = await params
+	return <BoardView id={id} />
 }
