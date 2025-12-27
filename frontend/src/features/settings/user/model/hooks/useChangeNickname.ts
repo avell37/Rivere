@@ -3,28 +3,24 @@ import { useMutation } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import {
-	changeDisplayUsername,
-	changeEmail
-} from '@/entities/User/model/api/userApi'
+import { changeNickname } from '@/entities/User/model/api/userApi'
 
 import {
-	ChangeDisplayUsernameRequest,
-	ChangeDisplayUsernameSchema
-} from '../validation/change-display-username.z.validation'
+	ChangeNicknameRequest,
+	ChangeNicknameSchema
+} from '../validation/change-nickname.z.validation'
 
-export const useChangeDisplayUsername = () => {
-	const form = useForm<ChangeDisplayUsernameRequest>({
-		resolver: zodResolver(ChangeDisplayUsernameSchema),
+export const useChangeNickname = () => {
+	const form = useForm<ChangeNicknameRequest>({
+		resolver: zodResolver(ChangeNicknameSchema),
 		defaultValues: {
-			displayUsername: ''
+			nickname: ''
 		}
 	})
 
 	const { mutate } = useMutation({
 		mutationKey: ['update user data'],
-		mutationFn: (data: ChangeDisplayUsernameRequest) =>
-			changeDisplayUsername(data),
+		mutationFn: (data: ChangeNicknameRequest) => changeNickname(data),
 		onSuccess: () => {
 			form.reset()
 			toast.success('Данные успешно изменены')
@@ -35,8 +31,7 @@ export const useChangeDisplayUsername = () => {
 		}
 	})
 
-	const onSubmit: SubmitHandler<ChangeDisplayUsernameRequest> = data =>
-		mutate(data)
+	const onSubmit: SubmitHandler<ChangeNicknameRequest> = data => mutate(data)
 
 	return {
 		form,

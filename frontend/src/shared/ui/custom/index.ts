@@ -1,3 +1,4 @@
+export * from './Alert/Alert'
 export * from './Forms/FormControllers/FormDatePickerController'
 export * from './Forms/FormControllers/FormInputController'
 export * from './Forms/FormControllers/FormSelectController'

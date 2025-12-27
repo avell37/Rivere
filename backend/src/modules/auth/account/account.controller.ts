@@ -16,7 +16,7 @@ import type { User } from '@prisma/client';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { ApiOperation } from '@nestjs/swagger';
-import { ChangeDisplayUsernameInput } from './inputs/change-display-username.input';
+import { ChangeNicknameInput } from './inputs/change-nickname';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('account')
@@ -63,12 +63,12 @@ export class AccountController {
     })
     @HttpCode(200)
     @Authorization()
-    @Post('changeDisplayUsername')
-    async changeDisplayUsername(
-        @Body() input: ChangeDisplayUsernameInput,
+    @Post('changeNickname')
+    async changeNickname(
+        @Body() input: ChangeNicknameInput,
         @SessionUser() user: User,
     ) {
-        return this.accountService.changeDisplayUsername(input, user);
+        return this.accountService.changeNickname(input, user);
     }
 
     @ApiOperation({

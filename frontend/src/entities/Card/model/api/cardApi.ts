@@ -12,3 +12,8 @@ export const updateCard = async (id: string, data: UpdateCardPayload) => {
 	const response = await baseAxios.patch(`${API_URL.cards()}${id}`, data)
 	return response.data
 }
+
+export const deleteCard = async (id: string) => {
+	const response = await baseAxios.delete(`${API_URL.cards()}${id}`)
+	return response.data
+}

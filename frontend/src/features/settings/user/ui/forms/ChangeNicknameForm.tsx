@@ -1,10 +1,10 @@
 import { FormInputController, FormWrapper } from '@/shared/ui/custom'
 import { Form } from '@/shared/ui/external'
 
-import { useChangeDisplayUsername } from '../../model/hooks/useChangeDisplayUsername'
+import { useChangeNickname } from '../../model/hooks/useChangeNickname'
 
-export const ChangeDisplayUsernameForm = () => {
-	const { form, onSubmit } = useChangeDisplayUsername()
+export const ChangeNicknameForm = () => {
+	const { form, onSubmit } = useChangeNickname()
 
 	return (
 		<Form {...form}>
@@ -15,7 +15,7 @@ export const ChangeDisplayUsernameForm = () => {
 			>
 				<div className='flex flex-col gap-4'>
 					<FormInputController
-						name='displayUsername'
+						name='nickname'
 						label='Ваше отображаемое имя пользователя'
 						placeholder='Введите ваше новое отображаемое имя пользователя'
 						control={form.control}

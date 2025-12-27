@@ -54,7 +54,7 @@ export const UserMenu = () => {
 								</Avatar>
 								<div className='flex flex-col leading-tight'>
 									<span className='truncate font-medium'>
-										{user?.displayUsername || ''}
+										{user?.nickname || ''}
 									</span>
 									<span className='text-xs'>
 										{user?.email || ''}

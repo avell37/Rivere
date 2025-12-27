@@ -3,7 +3,7 @@ export interface IMessage {
 	text: string
 	user: {
 		avatar: string | null
-		displayUsername: string | null
+		nickname: string | null
 	}
 	userId: string
 	chatId: string
