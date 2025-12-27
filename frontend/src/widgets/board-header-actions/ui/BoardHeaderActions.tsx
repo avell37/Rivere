@@ -1,6 +1,7 @@
 import { Link, Settings, Users } from 'lucide-react'
 
 import { IBoard } from '@/entities/Board/model/types/IBoard'
+import { BoardMembersList } from '@/entities/Board/ui/BoardMembersList'
 
 import { CreateInviteModal } from '@/features/board-invite/ui/CreateInviteModal'
 
@@ -49,25 +50,7 @@ export const BoardHeaderActions = ({ board }: BoardHeaderActionsProps) => {
 				contentClassname='max-w-lg'
 				children={
 					<div className='flex flex-col gap-4'>
-						{board.members.map(member => (
-							<div className='flex gap-4'>
-								<Avatar className='rounded-full'>
-									<AvatarImage src={member.user.avatar} />
-									<AvatarFallback>
-										{customAvatar(
-											member.user.displayUsername
-										)}
-									</AvatarFallback>
-								</Avatar>
-								<div>
-									<div>{member.user.displayUsername}</div>
-									<div>
-										Присоединился:{' '}
-										{formattedDate(member.createdAt)}
-									</div>
-								</div>
-							</div>
-						))}
+						<BoardMembersList members={board.members} />
 					</div>
 				}
 			/>

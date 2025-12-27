@@ -13,17 +13,18 @@ datasource db {
 model User {
   id String @id @default(uuid())
 
-  username        String  @unique
-  email           String  @unique
-  password        String
-  displayUsername String  @map("display_username")
-  avatar          String?
+  username String  @unique
+  email    String  @unique
+  password String
+  nickname String
+  avatar   String?
 
   boards   BoardMember[]
   messages Message[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  boardInvites BoardInvite[]
 
   @@map("users")
 }
@@ -70,7 +71,9 @@ model BoardInvite {
   boardId String @map("board_id")
   board   Board  @relation(fields: [boardId], references: [id])
 
-  createdBy String   @map("created_by")
+  createdBy String @map("created_by")
+  creator   User   @relation(fields: [createdBy], references: [id])
+
   expiresAt DateTime @map("expires_at")
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -107,8 +110,7 @@ model Card {
 
   tags Tag[]
 
-  chatId String? @unique @map("chat_id")
-  chat   Chat?
+  chat Chat?
 
   columnId String @map("column_id")
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
@@ -140,7 +142,7 @@ model Chat {
   messages Message[]
 
   cardId String @unique
-  card   Card?  @relation(fields: [cardId], references: [id])
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

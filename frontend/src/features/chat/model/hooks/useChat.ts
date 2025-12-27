@@ -8,34 +8,40 @@ import { fetchChat } from '../api/chatApi'
 import { useChatStore } from '../store/useChatStore'
 import { IMessage } from '../types/IMessage'
 
-export const useChat = ({ chatId }: { chatId: string }) => {
+export const useChat = ({ cardId }: { cardId: string }) => {
 	const { data: user } = useGetUser()
 	const [message, setMessage] = useState<string>()
+	const [chatId, setChatId] = useState<string | null>(null)
 	const socketRef = useRef<Socket | null>(null)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const { messages, setMessages, addMessage } = useChatStore()
 
-	if (!socketRef.current) {
+	useEffect(() => {
 		socketRef.current = io('http://localhost:5000/chat', {
 			transports: ['websocket']
 		})
-	}
 
-	const socket = socketRef.current
+		return () => {
+			socketRef.current?.disconnect()
+		}
+	}, [])
 
 	const { data: chat, isPending } = useQuery({
-		queryKey: ['messages'],
-		queryFn: async () => fetchChat(chatId)
+		queryKey: ['messages', cardId],
+		queryFn: async () => fetchChat(cardId)
 	})
 
 	useEffect(() => {
-		if (chat?.messages) {
+		if (chat) {
 			setMessages(chat.messages)
+			setChatId(chat.id)
 		}
-	}, [chat])
+	}, [chat, setMessages])
 
 	useEffect(() => {
-		if (!socket) return
+		if (!socketRef.current || !chatId) return
+		const socket = socketRef.current
+
 		socket.emit('join', { chatId })
 
 		const handleMessage = (msg: IMessage) => addMessage(msg)
@@ -46,24 +52,21 @@ export const useChat = ({ chatId }: { chatId: string }) => {
 			socket.emit('leave', { chatId })
 			socket.off('message:new', handleMessage)
 		}
-	}, [socket, chatId])
+	}, [chatId])
 
 	const handleSubmitMessage = () => {
-		const dto = {
+		if (!socketRef.current || !user || !chatId) return
+
+		socketRef.current.emit('message', {
 			chatId,
 			userId: user.id,
 			text: message
-		}
-		socket.emit('message', dto)
+		})
 		setMessage('')
 	}
 
-	const scrollToBottom = () => {
-		messagesEndRef.current?.scrollIntoView()
-	}
-
 	useEffect(() => {
-		scrollToBottom()
+		messagesEndRef.current?.scrollIntoView()
 	}, [messages])
 
 	return {

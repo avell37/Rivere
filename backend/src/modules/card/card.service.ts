@@ -41,12 +41,7 @@ export class CardService {
 
         const chat = await this.chat.createChat({ cardId: card.id });
 
-        const updatedCard = await this.prisma.card.update({
-            where: { id: card.id },
-            data: { chatId: chat.id },
-        });
-
-        return updatedCard;
+        return card;
     }
 
     async update(userId: string, cardId: string, input: UpdateCardInput) {
@@ -178,6 +173,24 @@ export class CardService {
 
         return this.prisma.card.delete({
             where: { id: cardId },
+        });
+    }
+
+    async getChatByCard(cardId: string) {
+        return this.prisma.chat.findUnique({
+            where: { cardId },
+            include: {
+                messages: {
+                    include: {
+                        user: {
+                            select: {
+                                nickname: true,
+                                avatar: true,
+                            },
+                        },
+                    },
+                },
+            },
         });
     }
 }

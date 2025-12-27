@@ -10,8 +10,8 @@ import { ChangeUsernameInput } from './inputs/change-username.input';
 import { User } from '@prisma/client';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
-import { ChangeDisplayUsernameInput } from './inputs/change-display-username.input';
 import { FilesService } from 'src/modules/files/files.service';
+import { ChangeNicknameInput } from './inputs/change-nickname';
 
 @Injectable()
 export class AccountService {
@@ -27,7 +27,7 @@ export class AccountService {
                 id: true,
                 username: true,
                 email: true,
-                displayUsername: true,
+                nickname: true,
                 avatar: true,
                 boards: true,
                 createdAt: true,
@@ -61,7 +61,7 @@ export class AccountService {
                 username,
                 email,
                 password: await hash(password),
-                displayUsername: username,
+                nickname: username,
             },
         });
 
@@ -83,15 +83,15 @@ export class AccountService {
         return true;
     }
 
-    async changeDisplayUsername(input: ChangeDisplayUsernameInput, user: User) {
-        const { displayUsername } = input;
+    async changeNickname(input: ChangeNicknameInput, user: User) {
+        const { nickname } = input;
 
         await this.prisma.user.update({
             where: {
                 id: user.id,
             },
             data: {
-                displayUsername,
+                nickname,
             },
         });
 

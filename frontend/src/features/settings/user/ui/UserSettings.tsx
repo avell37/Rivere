@@ -19,8 +19,8 @@ import {
 import { useUploadAvatar } from '../model/hooks/useUploadAvatar'
 
 import { Session } from './Session'
-import { ChangeDisplayUsernameForm } from './forms/ChangeDisplayUsernameForm'
 import { ChangeEmailForm } from './forms/ChangeEmailForm'
+import { ChangeNicknameForm } from './forms/ChangeNicknameForm'
 import { ChangeUsernameForm } from './forms/ChangeUsernameForm'
 
 export const UserSettings = () => {
@@ -69,7 +69,7 @@ export const UserSettings = () => {
 							<Input
 								className='w-full'
 								disabled
-								value={user?.username || 'avell371'}
+								value={user?.username || ''}
 							/>
 						</div>
 						<Modal
@@ -81,18 +81,18 @@ export const UserSettings = () => {
 					</div>
 					<div className='flex items-end gap-2 w-full'>
 						<div className='flex flex-col gap-2 w-full'>
-							<Label>Отображаемое имя пользователя</Label>
+							<Label>Никнейм</Label>
 							<Input
 								className='w-full'
 								disabled
-								value={user?.displayUsername || 'Avell37'}
+								value={user?.nickname || ''}
 							/>
 						</div>
 						<Modal
 							trigger={<Button>Изменить</Button>}
 							contentClassname='max-w-md'
 						>
-							<ChangeDisplayUsernameForm />
+							<ChangeNicknameForm />
 						</Modal>
 					</div>
 					<div className='flex items-end gap-2 w-full'>
@@ -101,7 +101,7 @@ export const UserSettings = () => {
 							<Input
 								className='w-full'
 								disabled
-								value={user?.email || 'shrokov.37@gmail.com'}
+								value={user?.email || ''}
 							/>
 						</div>
 						<Modal

@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    Get,
 } from '@nestjs/common';
 import { CardService } from './card.service';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
@@ -85,5 +86,15 @@ export class CardController {
         @Param('id') cardId: string,
     ) {
         return this.cardService.delete(userId, cardId);
+    }
+
+    @ApiOperation({
+        summary: 'Получение чата',
+        description: 'Получает чат со всеми сообщениями',
+    })
+    @Authorization()
+    @Get(':cardId/chat')
+    async getChatByCard(@Param('cardId') cardId: string) {
+        return this.cardService.getChatByCard(cardId);
     }
 }

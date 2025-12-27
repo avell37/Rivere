@@ -67,7 +67,7 @@ export class BoardController {
     })
     @HttpCode(200)
     @Authorization()
-    @Post('invite/:boardId')
+    @Post(':boardId/invites')
     async createInvite(
         @SessionUser('id') userId: string,
         @Param('boardId') boardId: string,
@@ -76,12 +76,24 @@ export class BoardController {
     }
 
     @ApiOperation({
+        summary: 'Получить данные приглашения',
+        description:
+            'При вызове метода отдаются данные о доске, создателе приглашения и дате истечения приглашения.',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Get('invites/:token')
+    async getInvite(@Param('token') token: string) {
+        return this.boardService.getInvite(token);
+    }
+
+    @ApiOperation({
         summary: 'Принять инвайт',
         description: 'При вызове метода принимается приглашение в доску.',
     })
     @HttpCode(200)
     @Authorization()
-    @Post('invite/accept/:token')
+    @Post('invites/:token')
     async acceptInvite(
         @SessionUser('id') userId: string,
         @Param('token') token: string,

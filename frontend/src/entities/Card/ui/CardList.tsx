@@ -36,7 +36,7 @@ export const CardList = ({
 			</SortableContext>
 			<CreateCardModal columnId={columnId} />
 			{cards.length === 0 && (
-				<div className='h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-500 text-sm'>
+				<div className='h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center font-bold text-sm'>
 					Перетащите карточку сюда
 				</div>
 			)}

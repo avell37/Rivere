@@ -27,7 +27,7 @@ export class SessionAuthGuard implements CanActivate {
                 id: true,
                 username: true,
                 email: true,
-                displayUsername: true,
+                nickname: true,
                 avatar: true,
             },
         });
