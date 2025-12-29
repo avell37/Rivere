@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    Param,
+    Post,
+    Req,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { SessionService } from './session.service';
 import { LoginInput } from './inputs/login.input';
 import type { Request } from 'express';
@@ -17,6 +26,48 @@ export class SessionController {
     @Get()
     async findCurrentSession(@Req() req: Request) {
         return this.sessionService.findCurrentSession(req);
+    }
+
+    @Authorization()
+    @Get('userSessions')
+    async findAllUserSessions(@Req() req: Request) {
+        if (!req.session.userId) {
+            throw new UnauthorizedException();
+        }
+        return this.sessionService.findAllUserSessions(
+            req.session.userId,
+            req.session.id,
+        );
+    }
+
+    @Authorization()
+    @Post('terminate/:sessionId')
+    async terminateSession(
+        @Req() req: Request,
+        @Param('sessionId') sessionId: string,
+    ) {
+        if (!req.session.userId) {
+            throw new UnauthorizedException('Отказано в доступе');
+        }
+
+        return this.sessionService.terminateSession(
+            sessionId,
+            req.session.userId,
+            req.session.id,
+        );
+    }
+
+    @Authorization()
+    @Post('terminateAll')
+    async terminateAll(@Req() req: Request) {
+        if (!req.session.userId) {
+            throw new UnauthorizedException('Отказано в доступе');
+        }
+
+        return this.sessionService.terminateAllExceptCurrent(
+            req.session.userId,
+            req.session.id,
+        );
     }
 
     @ApiOperation({

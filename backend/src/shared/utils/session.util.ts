@@ -5,19 +5,19 @@ import type { Request } from 'express';
 
 export function saveSession(req: Request, user: User) {
     return new Promise((resolve, reject) => {
-        req.session.createdAt = new Date();
-        req.session.userId = user.id;
+        req.session.regenerate((err) => {
+            if (err) return reject(err);
 
-        req.session.save((err) => {
-            if (err) {
-                return reject(
-                    new InternalServerErrorException(
-                        'Не удалось сохранить сессию',
-                    ),
-                );
-            }
+            req.session.userId = user.id;
+            req.session.createdAt = new Date().toISOString();
+            req.session.userAgent = req.headers['user-agent'];
+            req.session.lastActiveAt = new Date().toISOString();
+
+            req.session.save((err) => {
+                if (err) return reject(err);
+                resolve({ message: 'Успешный вход' });
+            });
         });
-        resolve({ user });
     });
 }
 

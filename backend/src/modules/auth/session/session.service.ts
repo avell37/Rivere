@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
@@ -11,6 +12,7 @@ import type { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { destroySession, saveSession } from 'src/shared/utils/session.util';
 import { RedisService } from 'src/core/redis/redis.service';
+import { parseUserAgent } from 'src/shared/utils/user-agent.util';
 
 @Injectable()
 export class SessionService {
@@ -33,9 +35,95 @@ export class SessionService {
 
         const session = JSON.parse(sessionData);
 
+        const parsed = parseUserAgent(session.userAgent);
+
         return {
-            ...session,
             id: sessionId,
+            ...parsed,
+            createdAt: session.createdAt,
+            lastActiveAt: session.lastActiveAt,
+            isCurrent: true,
+        };
+    }
+
+    async findAllUserSessions(userId: string, currentSessionId: string) {
+        const prefix = this.config.getOrThrow<string>('SESSION_FOLDER');
+        const keys = await this.redis.keys(`${prefix}*`);
+
+        const sessions: any[] = [];
+
+        for (const key of keys) {
+            const raw = await this.redis.get(key);
+            if (!raw) continue;
+
+            const session = JSON.parse(raw);
+
+            if (session.userId === userId) {
+                const id = key.replace(prefix, '');
+
+                const parsed = parseUserAgent(session.userAgent);
+
+                sessions.push({
+                    id,
+                    ...parsed,
+                    userAgent: session.userAgent,
+                    createdAt: session.createdAt,
+                    lastActiveAt: session.lastActiveAt,
+                    isCurrent: id === currentSessionId,
+                });
+            }
+        }
+
+        return sessions;
+    }
+
+    async terminateSession(
+        sessionId: string,
+        userId: string,
+        currentSessionId: string,
+    ) {
+        if (sessionId === currentSessionId) {
+            throw new BadRequestException('Нельзя завершить текущую сессию');
+        }
+
+        const key = `${this.config.getOrThrow<string>('SESSION_FOLDER')}${sessionId}`;
+        const raw = await this.redis.get(key);
+
+        if (!raw) {
+            throw new NotFoundException('Сессия не найдена');
+        }
+
+        const session = JSON.parse(raw);
+
+        if (session.userId !== userId) {
+            throw new UnauthorizedException('Отказано в доступе');
+        }
+
+        await this.redis.del(key);
+
+        return {
+            message: 'Сессия завершена',
+        };
+    }
+
+    async terminateAllExceptCurrent(userId: string, currentSessionId: string) {
+        const prefix = this.config.getOrThrow<string>('SESSION_FOLDER');
+        const keys = await this.redis.keys(`${prefix}*`);
+
+        for (const key of keys) {
+            const raw = await this.redis.get(key);
+            if (!raw) continue;
+
+            const session = JSON.parse(raw);
+            const id = key.replace(prefix, '');
+
+            if (session.userId === userId && id !== currentSessionId) {
+                await this.redis.del(key);
+            }
+        }
+
+        return {
+            message: 'Все сессии завершены',
         };
     }
 

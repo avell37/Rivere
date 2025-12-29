@@ -1,29 +1,37 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { acceptInvite, createInvite } from '../api/inviteApi'
+import { handleApiError } from '@/shared/utils/handleApiError'
 
-export const useInvite = () => {
+import { acceptInvite, createInvite, getInviteData } from '../api/inviteApi'
+
+export const useInvite = (token?: string) => {
 	const {
 		data: createInviteData,
 		mutate: createInviteToBoard,
 		isPending: createPending
 	} = useMutation({
 		mutationKey: ['create invite'],
-		mutationFn: (boardId: string) => createInvite(boardId)
+		mutationFn: (boardId: string) => createInvite(boardId),
+		onError: handleApiError
 	})
 
-	const {
-		data: acceptInviteData,
-		mutate: acceptInviteToBoard,
-		isPending: acceptPending
-	} = useMutation({
-		mutationKey: ['accept invite'],
-		mutationFn: (token: string) => acceptInvite(token)
+	const { data, isPending } = useQuery({
+		queryKey: ['get invite data'],
+		queryFn: () => getInviteData(token!),
+		enabled: !!token
 	})
+
+	const { mutate: acceptInviteToBoard, isPending: acceptPending } =
+		useMutation({
+			mutationKey: ['accept invite'],
+			mutationFn: (token: string) => acceptInvite(token),
+			onError: handleApiError
+		})
 
 	return {
 		createInviteData,
-		acceptInviteData,
+		data,
+		isPending,
 		createPending,
 		acceptPending,
 		createInviteToBoard,

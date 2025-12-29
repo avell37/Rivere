@@ -1,6 +1,8 @@
 import {
+    BadRequestException,
     ConflictException,
     Injectable,
+    NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserInput } from './inputs/create-user.input';
@@ -10,8 +12,8 @@ import { ChangeUsernameInput } from './inputs/change-username.input';
 import { User } from '@prisma/client';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
-import { ChangeDisplayUsernameInput } from './inputs/change-display-username.input';
 import { FilesService } from 'src/modules/files/files.service';
+import { ChangeNicknameInput } from './inputs/change-nickname';
 
 @Injectable()
 export class AccountService {
@@ -27,7 +29,7 @@ export class AccountService {
                 id: true,
                 username: true,
                 email: true,
-                displayUsername: true,
+                nickname: true,
                 avatar: true,
                 boards: true,
                 createdAt: true,
@@ -61,7 +63,7 @@ export class AccountService {
                 username,
                 email,
                 password: await hash(password),
-                displayUsername: username,
+                nickname: username,
             },
         });
 
@@ -70,6 +72,16 @@ export class AccountService {
 
     async changeUsername(input: ChangeUsernameInput, user: User) {
         const { username } = input;
+
+        const isUsernameExists = await this.prisma.user.findUnique({
+            where: { username },
+        });
+
+        if (isUsernameExists) {
+            throw new BadRequestException(
+                'Данное имя пользователя уже занято.',
+            );
+        }
 
         await this.prisma.user.update({
             where: {
@@ -83,15 +95,15 @@ export class AccountService {
         return true;
     }
 
-    async changeDisplayUsername(input: ChangeDisplayUsernameInput, user: User) {
-        const { displayUsername } = input;
+    async changeNickname(input: ChangeNicknameInput, user: User) {
+        const { nickname } = input;
 
         await this.prisma.user.update({
             where: {
                 id: user.id,
             },
             data: {
-                displayUsername,
+                nickname,
             },
         });
 
@@ -100,6 +112,14 @@ export class AccountService {
 
     async changeEmail(input: ChangeEmailInput, user: User) {
         const { email } = input;
+
+        const isEmailExists = await this.prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (isEmailExists) {
+            throw new BadRequestException('Данная почта уже занята.');
+        }
 
         await this.prisma.user.update({
             where: {
@@ -113,18 +133,29 @@ export class AccountService {
         return true;
     }
 
-    async changePassword(input: ChangePasswordInput, user: User) {
-        const { oldPassword, newPassword } = input;
+    async changePassword(input: ChangePasswordInput, userId: User) {
+        const { currentPassword, newPassword } = input;
 
-        const isValidPassword = await verify(user.password, oldPassword);
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                password: true,
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException('Пользователь не найден');
+        }
+
+        const isValidPassword = await verify(user.password, currentPassword);
 
         if (!isValidPassword) {
-            throw new UnauthorizedException('Неверный старый пароль');
+            throw new BadRequestException('Неверный старый пароль');
         }
 
         await this.prisma.user.update({
             where: {
-                id: user.id,
+                id: userId,
             },
             data: {
                 password: await hash(newPassword),

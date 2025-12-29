@@ -6,6 +6,8 @@ import { toast } from 'sonner'
 import { updateCard } from '@/entities/Card/model/api/cardApi'
 import { UpdateCardPayload } from '@/entities/Card/model/types/CardPayloads'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 type EditableKey = 'title' | 'description' | 'priority' | 'deadline'
 
 export const useUpdateCard = (cardId: string, key: EditableKey) => {
@@ -19,7 +21,8 @@ export const useUpdateCard = (cardId: string, key: EditableKey) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['card'] })
 			toast.success('Успешно')
-		}
+		},
+		onError: handleApiError
 	})
 
 	useEffect(() => {

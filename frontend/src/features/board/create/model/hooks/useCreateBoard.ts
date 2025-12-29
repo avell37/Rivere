@@ -1,10 +1,13 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { createBoard } from '@/entities/Board/model/api/boardApi'
+
+import { handleApiError } from '@/shared/utils/handleApiError'
 
 import {
 	CreateBoardRequest,
@@ -30,13 +33,7 @@ export const useCreateBoard = () => {
 			form.reset()
 			toast.success('Доска успешно создана.')
 		},
-		onError(err) {
-			if (err.message) {
-				toast.error(err.message)
-			} else {
-				toast.error('Ошибка при создании доски.')
-			}
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit: SubmitHandler<CreateBoardRequest> = data => mutate(data)

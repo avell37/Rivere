@@ -41,7 +41,7 @@ export const FormDatePickerController = ({
 						{label && <FormLabel>{label}</FormLabel>}
 
 						<Popover>
-							<PopoverTrigger>
+							<PopoverTrigger asChild>
 								<Button
 									type='button'
 									variant='outline'

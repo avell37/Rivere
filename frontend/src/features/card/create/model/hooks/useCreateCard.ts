@@ -6,6 +6,8 @@ import { toast } from 'sonner'
 
 import { createCard } from '@/entities/Card/model/api/cardApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 import {
 	CreateCardRequest,
 	CreateCardSchema
@@ -27,13 +29,7 @@ export const useCreateCard = (columnId: string) => {
 			form.reset()
 			toast.success('Карточка успешно создана.')
 		},
-		onError(err) {
-			if (err.message) {
-				toast.error(err.message)
-			} else {
-				toast.error('Ошибка при создании карточки.')
-			}
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit: SubmitHandler<CreateCardRequest> = data => mutate(data)

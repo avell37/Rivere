@@ -4,6 +4,8 @@ import { toast } from 'sonner'
 
 import { uploadAvatar } from '@/entities/User/model/api/userApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 export const useUploadAvatar = () => {
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -13,9 +15,7 @@ export const useUploadAvatar = () => {
 		onSuccess: () => {
 			toast.success('Аватар обновлен')
 		},
-		onError: () => {
-			toast.error('Ошибка загрузки аватара')
-		}
+		onError: handleApiError
 	})
 
 	const handleChangeAvatarClick = () => {

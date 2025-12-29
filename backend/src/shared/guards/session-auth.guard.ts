@@ -13,21 +13,22 @@ export class SessionAuthGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest<Request>();
-        const session = request.cookies?.session;
 
-        if (!session && typeof request.session.userId === 'undefined') {
+        const userId = request.session?.userId;
+
+        if (!userId) {
             throw new UnauthorizedException('Необходима авторизация');
         }
 
         const user = await this.prisma.user.findUnique({
             where: {
-                id: request.session.userId,
+                id: userId,
             },
             select: {
                 id: true,
                 username: true,
                 email: true,
-                displayUsername: true,
+                nickname: true,
                 avatar: true,
             },
         });

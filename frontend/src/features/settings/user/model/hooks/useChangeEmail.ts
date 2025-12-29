@@ -5,6 +5,8 @@ import { toast } from 'sonner'
 
 import { changeEmail } from '@/entities/User/model/api/userApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 import {
 	ChangeEmailRequest,
 	ChangeEmailSchema
@@ -25,10 +27,7 @@ export const useChangeEmail = () => {
 			form.reset()
 			toast.success('Данные успешно изменены')
 		},
-		onError(err) {
-			if (err.message) toast.error(err.message)
-			else toast.error('Ошибка при изменении данных')
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit: SubmitHandler<ChangeEmailRequest> = data => mutate(data)

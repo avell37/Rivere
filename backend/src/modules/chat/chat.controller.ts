@@ -10,9 +10,4 @@ export class ChatController {
     createChat(@Body() dto: CreateChatDto) {
         return this.chatService.createChat(dto);
     }
-
-    @Get(':id')
-    getChat(@Param('id') chatId: string) {
-        return this.chatService.getChat(chatId);
-    }
 }

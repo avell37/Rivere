@@ -3,6 +3,8 @@ import 'express-session';
 declare module 'express-session' {
     interface SessionData {
         userId?: string;
-        createdAt?: Date | string;
+        createdAt?: string;
+        userAgent?: string;
+        lastActiveAt?: string;
     }
 }

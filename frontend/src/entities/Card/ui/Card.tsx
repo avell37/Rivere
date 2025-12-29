@@ -2,14 +2,15 @@
 
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { SquareArrowOutUpRight } from 'lucide-react'
+import { SquareArrowOutUpRight, Trash, Trash2, X } from 'lucide-react'
 
+import { DeleteCardModal } from '@/features/card/delete/ui/DeleteCardModal'
 import { EditCardForm } from '@/features/card/edit/ui/EditCardForm'
 import { Chat } from '@/features/chat/ui/Chat'
 
 import { formattedDate } from '@/shared/libs/formattedDate'
 import { priorityCircle, priorityColors } from '@/shared/libs/priorityColors'
-import { Modal } from '@/shared/ui/custom'
+import { Alert, Modal } from '@/shared/ui/custom'
 
 interface CardProps {
 	id: string
@@ -93,10 +94,11 @@ export const Card = ({
 							priority={priority}
 							deadline={deadline}
 						/>
-						<Chat chatId={chatId} />
+						<Chat cardId={id} />
 					</div>
 				}
 			/>
+			<DeleteCardModal cardId={id} />
 		</div>
 	)
 }

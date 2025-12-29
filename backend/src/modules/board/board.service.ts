@@ -62,7 +62,7 @@ export class BoardService {
                                 id: true,
                                 username: true,
                                 email: true,
-                                displayUsername: true,
+                                nickname: true,
                                 avatar: true,
                             },
                         },
@@ -86,7 +86,7 @@ export class BoardService {
                             select: {
                                 username: true,
                                 email: true,
-                                displayUsername: true,
+                                nickname: true,
                                 avatar: true,
                             },
                         },
@@ -121,7 +121,7 @@ export class BoardService {
                             select: {
                                 username: true,
                                 email: true,
-                                displayUsername: true,
+                                nickname: true,
                                 avatar: true,
                             },
                         },
@@ -174,10 +174,52 @@ export class BoardService {
         };
     }
 
+    async getInvite(token: string) {
+        const invite = await this.prisma.boardInvite.findUnique({
+            where: { token },
+            include: {
+                board: {
+                    select: {
+                        id: true,
+                        title: true,
+                        members: true,
+                    },
+                },
+                creator: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        avatar: true,
+                    },
+                },
+            },
+        });
+
+        if (!invite) {
+            throw new NotFoundException('Приглашение не найдено');
+        }
+
+        if (invite.expiresAt < new Date()) {
+            await this.prisma.boardInvite.deleteMany({
+                where: { token },
+            });
+            throw new ForbiddenException('Приглашение истекло');
+        }
+
+        return {
+            board: {
+                id: invite.board.id,
+                title: invite.board.title,
+                membersCount: invite.board.members.length,
+            },
+            invitedBy: invite.creator,
+            expiresAt: invite.expiresAt,
+        };
+    }
+
     async acceptInvite(userId: string, token: string) {
         const invite = await this.prisma.boardInvite.findUnique({
             where: { token },
-            include: { board: true },
         });
 
         if (!invite) {
@@ -198,13 +240,18 @@ export class BoardService {
             throw new ConflictException('Вы уже участник этой доски');
         }
 
-        await this.prisma.boardMember.create({
-            data: {
-                userId,
-                boardId: invite.boardId,
-                role: 'MEMBER',
-            },
-        });
+        await this.prisma.$transaction([
+            this.prisma.boardMember.create({
+                data: {
+                    userId,
+                    boardId: invite.boardId,
+                    role: 'MEMBER',
+                },
+            }),
+            this.prisma.boardInvite.deleteMany({
+                where: { id: invite.id },
+            }),
+        ]);
 
         return true;
     }

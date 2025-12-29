@@ -70,7 +70,7 @@ export const FormInputController = ({
 						</FormControl>
 
 						{element && (
-							<span className='absolute right-1 top-2'>
+							<span className='absolute right-2 top-2.5'>
 								{element}
 							</span>
 						)}

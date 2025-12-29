@@ -5,6 +5,8 @@ import { toast } from 'sonner'
 
 import { changeUsername } from '@/entities/User/model/api/userApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 import {
 	ChangeUsernameRequest,
 	ChangeUsernameSchema
@@ -25,10 +27,7 @@ export const useChangeUsername = () => {
 			form.reset()
 			toast.success('Данные успешно изменены')
 		},
-		onError(err) {
-			if (err.message) toast.error(err.message)
-			else toast.error('Ошибка при изменении данных')
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit: SubmitHandler<ChangeUsernameRequest> = data => mutate(data)

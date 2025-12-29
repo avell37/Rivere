@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { TextAlignJustify } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { Form, Separator } from '@/shared/ui/external'
@@ -40,15 +41,21 @@ export const EditCardForm = ({
 
 	return (
 		<Form {...form}>
-			<div className='flex flex-col gap-4 w-full'>
+			<div className='flex flex-col gap-6 w-full'>
 				<div className='flex flex-col gap-6'>
 					<EditableTitle cardId={id} />
 					<Separator />
-					<EditableDescription cardId={id} />
 				</div>
 				<div className='flex gap-4'>
 					<EditablePriority cardId={id} />
 					<EditableDeadline cardId={id} />
+				</div>
+				<div className='flex flex-col gap-4'>
+					<div className='flex items-center gap-2'>
+						<TextAlignJustify size='16' />
+						<span className='text-xs font-bold'>Описание</span>
+					</div>
+					<EditableDescription cardId={id} />
 				</div>
 			</div>
 		</Form>

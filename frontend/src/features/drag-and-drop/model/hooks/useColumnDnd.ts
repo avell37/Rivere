@@ -3,6 +3,8 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 import { fetchReorderColumns } from '../api/reorderApi'
 import { useDndStore } from '../store/useDndStore'
 
@@ -28,9 +30,7 @@ export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
 			boardId: string
 			columns: string[]
 		}) => fetchReorderColumns({ boardId, columns }),
-		onError: err => {
-			toast.error('Ошибка при перемещении колонки')
-		}
+		onError: handleApiError
 	})
 
 	const onColumnDragStart = ({ active }: DragStartEvent) => {
