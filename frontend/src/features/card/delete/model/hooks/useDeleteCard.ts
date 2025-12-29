@@ -3,6 +3,8 @@ import { toast } from 'sonner'
 
 import { deleteCard } from '@/entities/Card/model/api/cardApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 export const useDeleteCard = (cardId: string) => {
 	const { mutate } = useMutation({
 		mutationKey: ['delete card'],
@@ -10,10 +12,7 @@ export const useDeleteCard = (cardId: string) => {
 		onSuccess: () => {
 			toast.success('Карточка успешно удалена.')
 		},
-		onError(err) {
-			if (err.message) toast.error(err.message)
-			else toast.error('Ошибка при удалении карточки.')
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit = () => mutate()

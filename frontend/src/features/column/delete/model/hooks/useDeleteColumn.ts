@@ -3,6 +3,8 @@ import { toast } from 'sonner'
 
 import { deleteColumn } from '@/entities/Column/model/api/columnApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 export const useDeleteColumn = (columnId: string) => {
 	const { mutate } = useMutation({
 		mutationKey: ['delete column'],
@@ -10,10 +12,7 @@ export const useDeleteColumn = (columnId: string) => {
 		onSuccess: () => {
 			toast.success('Колонка успешно удалена.')
 		},
-		onError(err) {
-			if (err.message) toast.error(err.message)
-			else toast.error('Ошибка при удалении колонки.')
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit = () => mutate()

@@ -1,6 +1,8 @@
 import {
+    BadRequestException,
     ConflictException,
     Injectable,
+    NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserInput } from './inputs/create-user.input';
@@ -71,6 +73,16 @@ export class AccountService {
     async changeUsername(input: ChangeUsernameInput, user: User) {
         const { username } = input;
 
+        const isUsernameExists = await this.prisma.user.findUnique({
+            where: { username },
+        });
+
+        if (isUsernameExists) {
+            throw new BadRequestException(
+                'Данное имя пользователя уже занято.',
+            );
+        }
+
         await this.prisma.user.update({
             where: {
                 id: user.id,
@@ -101,6 +113,14 @@ export class AccountService {
     async changeEmail(input: ChangeEmailInput, user: User) {
         const { email } = input;
 
+        const isEmailExists = await this.prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (isEmailExists) {
+            throw new BadRequestException('Данная почта уже занята.');
+        }
+
         await this.prisma.user.update({
             where: {
                 id: user.id,
@@ -113,18 +133,29 @@ export class AccountService {
         return true;
     }
 
-    async changePassword(input: ChangePasswordInput, user: User) {
-        const { oldPassword, newPassword } = input;
+    async changePassword(input: ChangePasswordInput, userId: User) {
+        const { currentPassword, newPassword } = input;
 
-        const isValidPassword = await verify(user.password, oldPassword);
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                password: true,
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException('Пользователь не найден');
+        }
+
+        const isValidPassword = await verify(user.password, currentPassword);
 
         if (!isValidPassword) {
-            throw new UnauthorizedException('Неверный старый пароль');
+            throw new BadRequestException('Неверный старый пароль');
         }
 
         await this.prisma.user.update({
             where: {
-                id: user.id,
+                id: userId,
             },
             data: {
                 password: await hash(newPassword),

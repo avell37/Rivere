@@ -1,5 +1,6 @@
 import { ChangeEmailRequest } from '@/features/settings/user/model/validation/change-email.z.validation'
 import { ChangeNicknameRequest } from '@/features/settings/user/model/validation/change-nickname.z.validation'
+import { ChangePasswordRequest } from '@/features/settings/user/model/validation/change-password.z.validation'
 import { ChangeUsernameRequest } from '@/features/settings/user/model/validation/change-username.z.validation'
 
 import { baseAxios } from '@/shared/api/interceptors'
@@ -16,6 +17,14 @@ export const changeUsername = async (data: ChangeUsernameRequest) => {
 export const changeEmail = async (data: ChangeEmailRequest) => {
 	const response = await baseAxios.post(
 		`${API_URL.account()}changeEmail`,
+		data
+	)
+	return response.data
+}
+
+export const changePassword = async (data: ChangePasswordRequest) => {
+	const response = await baseAxios.post(
+		`${API_URL.account()}changePassword`,
 		data
 	)
 	return response.data
@@ -44,5 +53,10 @@ export const uploadAvatar = async (file: File) => {
 
 export const logout = async () => {
 	const response = await baseAxios.post(`${API_URL.session()}`)
+	return response.data
+}
+
+export const findCurrentSession = async () => {
+	const response = await baseAxios.get(`${API_URL.session()}`)
 	return response.data
 }

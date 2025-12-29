@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SessionModule } from '../modules/auth/session/session.module';
 import { AccountModule } from '../modules/auth/account/account.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -10,6 +10,7 @@ import { CardModule } from 'src/modules/card/card.module';
 import { ChatModule } from 'src/modules/chat/chat.module';
 import { MessagesModule } from 'src/modules/messages/messages.module';
 import { FilesModule } from 'src/modules/files/files.module';
+import { SessionActivityMiddleware } from './middlewares/session-activity.middleware';
 
 @Module({
     imports: [
@@ -28,4 +29,18 @@ import { FilesModule } from 'src/modules/files/files.module';
         FilesModule,
     ],
 })
-export class CoreModule {}
+export class CoreModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(SessionActivityMiddleware)
+            .forRoutes(
+                'session',
+                'account',
+                'board',
+                'column',
+                'card',
+                'chat',
+                'messages',
+            );
+    }
+}

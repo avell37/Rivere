@@ -6,6 +6,8 @@ import { toast } from 'sonner'
 
 import { updateColumn } from '@/entities/Column/model/api/columnApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 import {
 	EditColumnRequest,
 	EditColumnSchema
@@ -27,13 +29,7 @@ export const useEditColumn = (columnId: string) => {
 			form.reset()
 			toast.success('Колонка успешно отредактирована.')
 		},
-		onError(err) {
-			if (err.message) {
-				toast.error(err.message)
-			} else {
-				toast.error('Ошибка при редактировании колонки.')
-			}
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit: SubmitHandler<EditColumnRequest> = data => mutate(data)

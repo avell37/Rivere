@@ -6,6 +6,8 @@ import { toast } from 'sonner'
 
 import { createColumn } from '@/entities/Column/model/api/columnApi'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 import {
 	CreateColumnRequest,
 	CreateColumnSchema
@@ -27,13 +29,7 @@ export const useCreateColumn = (boardId: string) => {
 			form.reset()
 			toast.success('Колонка успешно создана.')
 		},
-		onError(err) {
-			if (err.message) {
-				toast.error(err.message)
-			} else {
-				toast.error('Ошибка при создании колонки.')
-			}
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit: SubmitHandler<CreateColumnRequest> = data => mutate(data)

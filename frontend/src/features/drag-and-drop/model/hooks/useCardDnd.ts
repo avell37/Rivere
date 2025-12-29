@@ -3,6 +3,8 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { handleApiError } from '@/shared/utils/handleApiError'
+
 import { fetchMoveCardToColumn, fetchReorderCards } from '../api/reorderApi'
 import { useDndStore } from '../store/useDndStore'
 
@@ -24,14 +26,12 @@ export const useCardDnd = () => {
 			columnId: string
 			cards: string[]
 		}) => fetchReorderCards({ columnId, cards }),
-		onError: () => {
-			toast.error('Ошибка при перемещении карточки')
-		}
+		onError: handleApiError
 	})
 
 	const moveMutation = useMutation({
 		mutationFn: fetchMoveCardToColumn,
-		onError: () => toast.error('Ошибка при перемещении карточки')
+		onError: handleApiError
 	})
 
 	const findColumnByCardId = (cardId: string) => {

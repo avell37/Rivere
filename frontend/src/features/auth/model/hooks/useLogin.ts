@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { PUBLIC_URL } from '@/shared/libs/constants/url.config'
+import { handleApiError } from '@/shared/utils/handleApiError'
 
 import { login } from '../api/authApi'
 import { SignInRequest, loginSchema } from '../validation/login.z.validation'
@@ -28,13 +29,7 @@ export const useLogin = () => {
 			toast.success('Успешно')
 			router.replace(PUBLIC_URL.home())
 		},
-		onError(err) {
-			if (err.message) {
-				toast.error(err.message)
-			} else {
-				toast.error('Ошибка при авторизации')
-			}
-		}
+		onError: handleApiError
 	})
 
 	const onSubmit: SubmitHandler<SignInRequest> = data => {

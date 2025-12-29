@@ -94,9 +94,9 @@ export class AccountController {
     @Post('changePassword')
     async changePassword(
         @Body() input: ChangePasswordInput,
-        @SessionUser() user: User,
+        @SessionUser('id') userId: User,
     ) {
-        return this.accountService.changePassword(input, user);
+        return this.accountService.changePassword(input, userId);
     }
 
     @ApiOperation({

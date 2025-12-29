@@ -1,7 +1,8 @@
 'use client'
-import { Monitor, Smartphone } from 'lucide-react'
 
 import { useGetUser } from '@/features/auth/model/hooks/useGetUser'
+import { SessionList } from '@/features/sessions/ui/SessionList'
+import { Sessions } from '@/features/sessions/ui/Sessions'
 
 import { SERVER_URL } from '@/shared/libs/constants/api.config'
 import { customAvatar } from '@/shared/libs/customAvatar'
@@ -18,9 +19,9 @@ import {
 
 import { useUploadAvatar } from '../model/hooks/useUploadAvatar'
 
-import { Session } from './Session'
 import { ChangeEmailForm } from './forms/ChangeEmailForm'
 import { ChangeNicknameForm } from './forms/ChangeNicknameForm'
+import { ChangePasswordForm } from './forms/ChangePasswordForm'
 import { ChangeUsernameForm } from './forms/ChangeUsernameForm'
 
 export const UserSettings = () => {
@@ -95,6 +96,12 @@ export const UserSettings = () => {
 							<ChangeNicknameForm />
 						</Modal>
 					</div>
+				</div>
+			</div>
+			<div className='flex flex-col gap-6 w-full'>
+				<h3 className='text-2xl font-bold'>Безопасность</h3>
+				<Separator />
+				<div className='flex gap-6'>
 					<div className='flex items-end gap-2 w-full'>
 						<div className='flex flex-col gap-2 w-full'>
 							<Label>Почта</Label>
@@ -111,34 +118,24 @@ export const UserSettings = () => {
 							<ChangeEmailForm />
 						</Modal>
 					</div>
+					<div className='flex items-end gap-2 w-full'>
+						<div className='flex flex-col gap-2 w-full'>
+							<Label>Пароль</Label>
+							<p className='text-sm text-muted-foreground'>
+								Пароль скрыт из соображений безопасности
+							</p>
+						</div>
+
+						<Modal
+							trigger={<Button>Изменить пароль</Button>}
+							contentClassname='max-w-md'
+						>
+							<ChangePasswordForm />
+						</Modal>
+					</div>
 				</div>
 			</div>
-			<div className='flex flex-col gap-6 w-full'>
-				<h3 className='text-2xl font-bold'>Сессии</h3>
-				<Separator />
-				<div className='border rounded-md p-4 flex flex-col gap-8'>
-					<Session
-						icon={<Smartphone />}
-						title='IPhone 14 PRO'
-						date='Последнее время входа: 27.01.2025, 12:45'
-					/>
-					<Session
-						icon={<Smartphone />}
-						title='Samsung DOUBLE RR'
-						date='Последнее время входа: 13.06.2024, 16:43'
-					/>
-					<Session
-						icon={<Smartphone />}
-						title='Xiaomi Pro Poco Max 3Nuggets Audi'
-						date='Последнее время входа: 01.05.2025, 06:44'
-					/>
-					<Session
-						icon={<Monitor />}
-						title='Macbook M2 PRO'
-						date='Последнее время входа: 13.04.2025, 15:22'
-					/>
-				</div>
-			</div>
+			<Sessions />
 		</div>
 	)
 }
