@@ -19,12 +19,13 @@ model User {
   nickname String
   avatar   String?
 
-  boards   BoardMember[]
-  messages Message[]
+  boards        BoardMember[]
+  messages      Message[]
+  boardInvites  BoardInvite[]
+  notifications Notification[]
 
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  boardInvites BoardInvite[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -165,6 +166,22 @@ model Message {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("messages")
+}
+
+model Notification {
+  id String @id @default(uuid())
+
+  userId   String
+  type     String
+  message  String
+  entityId String?
+  read     Boolean @default(false)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
 }
 
 enum Role {

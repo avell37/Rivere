@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRef } from 'react'
 import { toast } from 'sonner'
 
@@ -7,6 +7,7 @@ import { uploadAvatar } from '@/entities/User/model/api/userApi'
 import { handleApiError } from '@/shared/utils/handleApiError'
 
 export const useUploadAvatar = () => {
+	const queryClient = useQueryClient()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const { mutate, isPending } = useMutation({
@@ -14,6 +15,7 @@ export const useUploadAvatar = () => {
 		mutationFn: uploadAvatar,
 		onSuccess: () => {
 			toast.success('Аватар обновлен')
+			queryClient.invalidateQueries({ queryKey: ['get user data'] })
 		},
 		onError: handleApiError
 	})

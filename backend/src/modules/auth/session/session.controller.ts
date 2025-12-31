@@ -41,6 +41,7 @@ export class SessionController {
     }
 
     @Authorization()
+    @HttpCode(200)
     @Post('terminate/:sessionId')
     async terminateSession(
         @Req() req: Request,

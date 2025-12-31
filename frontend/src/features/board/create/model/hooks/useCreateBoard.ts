@@ -1,7 +1,6 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -15,6 +14,8 @@ import {
 } from '../validation/create-board.z.validation'
 
 export const useCreateBoard = () => {
+	const queryClient = useQueryClient()
+
 	const form = useForm<CreateBoardRequest>({
 		resolver: zodResolver(CreateBoardSchema),
 		defaultValues: {
@@ -32,6 +33,7 @@ export const useCreateBoard = () => {
 		onSuccess: () => {
 			form.reset()
 			toast.success('Доска успешно создана.')
+			queryClient.invalidateQueries({ queryKey: ['get boards'] })
 		},
 		onError: handleApiError
 	})

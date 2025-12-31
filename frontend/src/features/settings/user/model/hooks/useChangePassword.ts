@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -15,6 +15,7 @@ import {
 } from '../validation/change-password.z.validation'
 
 export const useChangePassword = () => {
+	const queryClient = useQueryClient()
 	const [showPasswords, setShowPasswords] = useState(false)
 	const form = useForm<ChangePasswordRequest>({
 		resolver: zodResolver(ChangePasswordSchema),
@@ -32,6 +33,7 @@ export const useChangePassword = () => {
 		onSuccess: () => {
 			form.reset()
 			toast.success('Пароль успешно изменен')
+			queryClient.invalidateQueries({ queryKey: ['get user data'] })
 		},
 		onError: handleApiError
 	})

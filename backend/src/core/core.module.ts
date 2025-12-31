@@ -11,6 +11,7 @@ import { ChatModule } from 'src/modules/chat/chat.module';
 import { MessagesModule } from 'src/modules/messages/messages.module';
 import { FilesModule } from 'src/modules/files/files.module';
 import { SessionActivityMiddleware } from './middlewares/session-activity.middleware';
+import { NotificationsModule } from 'src/modules/notifications/notifications.module';
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { SessionActivityMiddleware } from './middlewares/session-activity.middle
         ChatModule,
         MessagesModule,
         FilesModule,
+        NotificationsModule,
     ],
 })
 export class CoreModule implements NestModule {

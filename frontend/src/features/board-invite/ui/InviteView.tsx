@@ -19,7 +19,7 @@ export const InviteView = () => {
 	const router = useRouter()
 	const { token } = useParams<{ token: string }>()
 	const { data, acceptInviteToBoard, acceptPending } = useInvite(token)
-	console.log(data)
+
 	const handleAccept = async () => {
 		await acceptInviteToBoard(token)
 		router.push(PUBLIC_URL.boards())

@@ -1,18 +1,14 @@
 'use client'
-import { useQuery } from '@tanstack/react-query'
 
 import { CreateBoardModal } from '@/features/board/create/ui/CreateBoardModal'
 
-import { fetchUserBoards } from '../model/api/boardApi'
+import { useGetBoards } from '../model/hooks/useGetBoards'
 import { IBoard } from '../model/types/IBoard'
 
 import { BoardItem } from './BoardItem'
 
 export const BoardList = () => {
-	const { data: boards, isPending } = useQuery({
-		queryKey: ['boards'],
-		queryFn: fetchUserBoards
-	})
+	const { boards, isPending } = useGetBoards()
 
 	return (
 		<div className='flex flex-wrap gap-4'>

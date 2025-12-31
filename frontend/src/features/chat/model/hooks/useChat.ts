@@ -2,40 +2,43 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import { Socket, io } from 'socket.io-client'
 
-import { useGetUser } from '@/features/auth/model/hooks/useGetUser'
+import { useUserStore } from '@/entities/User/model/store/useUserStore'
 
 import { fetchChat } from '../api/chatApi'
 import { useChatStore } from '../store/useChatStore'
 import { IMessage } from '../types/IMessage'
+import { getChatSocket } from '../utils/chat.socket'
 
 export const useChat = ({ cardId }: { cardId: string }) => {
-	const { data: user } = useGetUser()
+	const user = useUserStore(state => state.user)
+
 	const [message, setMessage] = useState<string>()
 	const [chatId, setChatId] = useState<string | null>(null)
+
 	const socketRef = useRef<Socket | null>(null)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
+
 	const { messages, setMessages, addMessage } = useChatStore()
 
 	useEffect(() => {
-		socketRef.current = io('http://localhost:5000/chat', {
-			transports: ['websocket']
-		})
+		const socket = getChatSocket()
+		socketRef.current = socket
 
 		return () => {
-			socketRef.current?.disconnect()
+			socketRef.current = null
 		}
 	}, [])
 
 	const { data: chat, isPending } = useQuery({
 		queryKey: ['messages', cardId],
-		queryFn: async () => fetchChat(cardId)
+		queryFn: () => fetchChat(cardId)
 	})
 
 	useEffect(() => {
-		if (chat) {
-			setMessages(chat.messages)
-			setChatId(chat.id)
-		}
+		if (!chat) return
+
+		setMessages(chat.messages)
+		setChatId(chat.id)
 	}, [chat, setMessages])
 
 	useEffect(() => {
@@ -55,7 +58,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 	}, [chatId])
 
 	const handleSubmitMessage = () => {
-		if (!socketRef.current || !user || !chatId) return
+		if (!socketRef.current || !user || !chatId || !message?.trim()) return
 
 		socketRef.current.emit('message', {
 			chatId,
@@ -70,7 +73,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 	}, [messages])
 
 	return {
-		userId: user.id,
+		userId: user?.id ?? null,
 		message,
 		messagesEndRef,
 		isPending,

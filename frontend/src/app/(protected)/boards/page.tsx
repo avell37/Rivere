@@ -1,25 +1,19 @@
-'use client'
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import { useEffect } from 'react'
 
 import { BoardList } from '@/entities/Board/ui/BoardList'
-import { findCurrentSession } from '@/entities/User/model/api/userApi'
 
-// export async function generateMetadata(): Promise<Metadata> {
-// 	const t = await getTranslations('boards')
+import { NotificationItem } from '@/features/notifications/ui/NotificationItem'
 
-// 	return {
-// 		title: t('heading')
-// 	}
-// }
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getTranslations('boards')
+
+	return {
+		title: t('heading')
+	}
+}
 
 export default function BoardsPage() {
-	useEffect(() => {
-		const data = findCurrentSession()
-		console.log(data)
-	}, [])
-
 	return (
 		<div className='flex justify-center py-8 px-4'>
 			<div className='flex flex-col gap-4 w-full max-w-[900px]'>
@@ -27,6 +21,7 @@ export default function BoardsPage() {
 					<h3 className='font-bold text-xl'>Ваши доски:</h3>
 				</div>
 				<BoardList />
+				<NotificationItem />
 			</div>
 		</div>
 	)

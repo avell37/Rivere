@@ -19,8 +19,8 @@ export const useUpdateCard = (cardId: string, key: EditableKey) => {
 	const mutation = useMutation({
 		mutationFn: (data: UpdateCardPayload) => updateCard(cardId, data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['card'] })
 			toast.success('Успешно')
+			queryClient.invalidateQueries({ queryKey: ['card'] })
 		},
 		onError: handleApiError
 	})

@@ -1,18 +1,13 @@
 import { Monitor, Smartphone } from 'lucide-react'
 
-import { terminateSession } from '../model/api/sessionApi'
 import { useSession } from '../model/hooks/useSession'
 import { ISession } from '../model/types/ISession'
 
 import { SessionItem } from './SessionItem'
 
 export const SessionList = () => {
-	const {
-		userSessions,
-		sessionsIsPending,
-		terminateSelectedSession,
-		terminateAllSessions
-	} = useSession()
+	const { userSessions, sessionsIsPending, terminateSelectedSession } =
+		useSession()
 
 	if (sessionsIsPending) {
 		return <p>Загрузка...</p>
@@ -33,7 +28,7 @@ export const SessionList = () => {
 					title={`${session.browser} | ${session.device}`}
 					date={`Последняя активность: ${new Date(session.lastActiveAt).toLocaleString()}`}
 					isCurrent={session.isCurrent}
-					onTerminate={() => terminateSession(session.id)}
+					onTerminate={() => terminateSelectedSession(session.id)}
 				/>
 			))}
 		</div>

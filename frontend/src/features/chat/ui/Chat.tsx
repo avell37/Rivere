@@ -41,17 +41,16 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 		return <div>Loading...</div>
 	}
 
+	if (!userId) return null
+
 	return (
 		<div className='flex flex-col items-center p-4 border-l'>
 			<div className='flex flex-col h-[500px] w-[450px]'>
 				<div className='flex-1 flex flex-col gap-4 rounded-md overflow-y-auto'>
 					{messages.map((message: any) => (
-						<>
+						<div key={message.id}>
 							{userId === message.userId ? (
-								<div
-									key={message.id}
-									className='flex justify-end items-end gap-2 ml-10'
-								>
+								<div className='flex justify-end items-end gap-2 ml-10'>
 									<div className='w-[350px]'>
 										<div
 											className={`relative p-2 border rounded-md wrap-break-word
@@ -67,10 +66,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 									</div>
 								</div>
 							) : (
-								<div
-									key={message.id}
-									className='flex items-end gap-2 mr-10'
-								>
+								<div className='flex items-end gap-2 mr-10'>
 									<Avatar className='size-10 rounded-full'>
 										<AvatarImage
 											src={
@@ -102,7 +98,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 									</div>
 								</div>
 							)}
-						</>
+						</div>
 					))}
 					<div ref={messagesEndRef} />
 				</div>
@@ -110,7 +106,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 					<Input
 						className='relative'
 						placeholder='Введите сообщение...'
-						value={message}
+						value={message || ''}
 						onChange={e => setMessage(e.target.value)}
 						onKeyDown={handleKeySubmitMessage}
 					/>

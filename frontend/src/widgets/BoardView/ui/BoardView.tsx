@@ -16,10 +16,11 @@ import { useBoard } from '../model/hooks/useBoard'
 
 import { BoardDragOverlay } from './BoardDragOverlay'
 
-export const BoardView = ({ id }: { id: string }) => {
-	const { columns, board, isLoading, backgroundStyle, sensors } = useBoard(id)
+export const BoardView = ({ boardId }: { boardId: string }) => {
+	const { columns, board, isLoading, backgroundStyle, sensors } =
+		useBoard(boardId)
 	const { onColumnDragStart, onColumnDragEnd, onColumnDragOver } =
-		useColumnDnd({ boardId: id })
+		useColumnDnd({ boardId })
 	const { onCardDragStart, onCardDragEnd } = useCardDnd()
 	const { activeCard, activeColumn } = useDndStore()
 
@@ -57,7 +58,7 @@ export const BoardView = ({ id }: { id: string }) => {
 				onDragOver={onColumnDragOver}
 			>
 				<div className='flex flex-col gap-6 p-4 h-full pt-20'>
-					<ColumnList boardId={id} columns={columns} />
+					<ColumnList boardId={boardId} columns={columns} />
 				</div>
 				<BoardDragOverlay
 					activeCard={activeCard}

@@ -3,8 +3,10 @@ import { ChatService } from './chat.service';
 import { ChatGateway } from './chat.gateway';
 import { ChatController } from './chat.controller';
 import { MessagesService } from '../messages/messages.service';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
+    imports: [NotificationsModule],
     controllers: [ChatController],
     providers: [ChatGateway, ChatService, MessagesService],
     exports: [ChatService],

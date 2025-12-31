@@ -1,7 +1,7 @@
 'use client'
 
-import { useGetUser } from '@/features/auth/model/hooks/useGetUser'
-import { SessionList } from '@/features/sessions/ui/SessionList'
+import { useUserStore } from '@/entities/User/model/store/useUserStore'
+
 import { Sessions } from '@/features/sessions/ui/Sessions'
 
 import { SERVER_URL } from '@/shared/libs/constants/api.config'
@@ -31,7 +31,7 @@ export const UserSettings = () => {
 		handleChangeAvatarClick,
 		handleFileChange
 	} = useUploadAvatar()
-	const { data: user } = useGetUser()
+	const user = useUserStore(state => state.user)
 
 	return (
 		<div className='flex flex-col items-center justify-center px-6 py-4 gap-8'>

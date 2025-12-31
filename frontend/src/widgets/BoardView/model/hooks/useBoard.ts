@@ -13,13 +13,13 @@ import { IColumn } from '@/entities/Column/model/types/IColumn'
 
 import { useDndStore } from '@/features/drag-and-drop'
 
-export const useBoard = (id: string) => {
+export const useBoard = (boardId: string) => {
 	const { columns, setColumns } = useDndStore()
 
 	const { data: board, isLoading } = useQuery({
-		queryKey: ['board', id],
-		queryFn: () => fetchBoardById(id),
-		enabled: !!id
+		queryKey: ['get board', boardId],
+		queryFn: () => fetchBoardById(boardId),
+		enabled: !!boardId
 	})
 
 	useEffect(() => {

@@ -12,7 +12,7 @@ export const DeleteCardModal = ({ cardId }: { cardId: string }) => {
 		<Alert
 			trigger={
 				<Button
-					className='absolute top-4 right-4'
+					className='absolute top-4 right-4 cursor-pointer'
 					type='button'
 					size='none'
 					variant='none'

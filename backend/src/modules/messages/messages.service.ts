@@ -19,7 +19,26 @@ export class MessagesService {
                 userId,
                 text,
             },
-            include: { user: true },
+            include: {
+                user: true,
+                chat: {
+                    include: {
+                        card: {
+                            include: {
+                                column: {
+                                    include: {
+                                        board: {
+                                            include: {
+                                                members: true,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
         });
     }
 }

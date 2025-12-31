@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -13,6 +13,7 @@ import {
 } from '../validation/change-username.z.validation'
 
 export const useChangeUsername = () => {
+	const queryClient = useQueryClient()
 	const form = useForm<ChangeUsernameRequest>({
 		resolver: zodResolver(ChangeUsernameSchema),
 		defaultValues: {
@@ -26,6 +27,7 @@ export const useChangeUsername = () => {
 		onSuccess: () => {
 			form.reset()
 			toast.success('Данные успешно изменены')
+			queryClient.invalidateQueries({ queryKey: ['get user data'] })
 		},
 		onError: handleApiError
 	})

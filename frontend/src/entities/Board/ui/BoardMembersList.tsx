@@ -7,7 +7,6 @@ interface BoardMembersListProps {
 }
 
 export const BoardMembersList = ({ members }: BoardMembersListProps) => {
-	console.log(members)
 	return (
 		<div className='flex flex-col gap-4'>
 			<h1>Список участников доски:</h1>

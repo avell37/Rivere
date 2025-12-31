@@ -17,5 +17,5 @@ interface Props {
 
 export default async function BoardPage({ params }: Props) {
 	const { id } = await params
-	return <BoardView id={id} />
+	return <BoardView boardId={id} />
 }

@@ -1,4 +1,6 @@
 'use client'
+import { NotificationsDropdown } from '@/features/notifications/ui/NotificationsDropdown'
+
 import { ThemeSwitcher } from '@/shared/ui/custom/ThemeSwitcher/ThemeSwitcher'
 import { SidebarTrigger, useSidebar } from '@/shared/ui/external'
 
@@ -14,6 +16,7 @@ export const Header = () => {
 		>
 			<SidebarTrigger className='cursor-pointer' />
 			<div className='flex items-center gap-2'>
+				<NotificationsDropdown />
 				<ThemeSwitcher />
 				<UserMenu />
 			</div>

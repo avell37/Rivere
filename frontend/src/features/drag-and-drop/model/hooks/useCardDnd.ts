@@ -52,78 +52,95 @@ export const useCardDnd = () => {
 
 	const onCardDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event
+		setActiveCard(null)
+		setHoveredColumnId(null)
 
-		if (!over) {
-			setActiveCard(null)
+		if (!over) return
+
+		const activeId = active.id as string
+		const activeData = active.data.current
+		const overData = over.data.current
+
+		if (activeData?.type !== 'card') return
+
+		const fromColumnId = activeData.card.columnId
+		let toColumnId: string
+		let newPosition: number
+
+		if (overData?.type === 'card') {
+			toColumnId = overData.card.columnId
+			const targetColumn = findColumnById(toColumnId)
+			if (!targetColumn) return
+
+			newPosition = targetColumn.cards.findIndex(
+				card => card.id === over.id
+			)
+		} else if (overData?.type === 'column-end') {
+			toColumnId = overData.columnId
+			const targetColumn = findColumnById(toColumnId)
+			if (!targetColumn) return
+
+			newPosition = targetColumn.cards.length
+		} else {
 			return
 		}
 
-		const activeId = active.id as string
-		const overId = over.id as string
+		const fromColumn = findColumnById(fromColumnId)
+		const toColumn = findColumnById(toColumnId)
 
-		const activeColumn = findColumnByCardId(activeId)
-		const overColumn = findColumnByCardId(overId) || findColumnById(overId)
+		if (!fromColumn || !toColumn) return
 
-		if (!activeColumn || !overColumn) return
-
-		if (activeColumn.id === overColumn.id) {
-			const oldIndex = activeColumn.cards.findIndex(
+		if (fromColumnId === toColumnId) {
+			const oldIndex = fromColumn.cards.findIndex(
 				card => card.id === activeId
 			)
-			const newIndex = overColumn.cards.findIndex(
-				card => card.id === overId
+
+			const newCards = arrayMove(fromColumn.cards, oldIndex, newPosition)
+
+			setColumns(
+				columns.map(col =>
+					col.id === fromColumnId ? { ...col, cards: newCards } : col
+				)
 			)
-
-			const newCards = arrayMove(activeColumn.cards, oldIndex, newIndex)
-
-			const newColumns = columns.map(col =>
-				col.id === activeColumn.id ? { ...col, cards: newCards } : col
-			)
-
-			setColumns(newColumns)
-			setHoveredColumnId(null)
 
 			reorderMutation.mutate({
-				columnId: activeColumn.id,
+				columnId: fromColumnId,
 				cards: newCards.map(card => card.id)
 			})
-		} else {
-			const movedCard = activeColumn.cards.find(
-				card => card.id === activeId
-			)
-			if (!movedCard) return
 
-			const newPosition = overColumn.cards.findIndex(
-				card => card.id === overId
-			)
+			return
+		}
 
-			const newColumns = columns.map(col => {
-				if (col.id === activeColumn.id) {
+		const movedCard = fromColumn.cards.find(card => card.id === activeId)
+		if (!movedCard) return
+
+		setColumns(
+			columns.map(col => {
+				if (col.id === fromColumnId) {
 					return {
 						...col,
 						cards: col.cards.filter(c => c.id !== activeId)
 					}
 				}
-				if (col.id === overColumn.id) {
+
+				if (col.id === toColumnId) {
 					const newCards = [...col.cards]
 					newCards.splice(newPosition, 0, {
 						...movedCard,
-						columnId: overColumn.id
+						columnId: toColumnId
 					})
 					return { ...col, cards: newCards }
 				}
+
 				return col
 			})
+		)
 
-			setColumns(newColumns)
-			setHoveredColumnId(null)
-
-			moveMutation.mutate({
-				cardId: activeId,
-				newColumnId: overColumn.id,
-				position: newPosition + 1
-			})
-		}
+		moveMutation.mutate({
+			cardId: activeId,
+			newColumnId: toColumnId,
+			position: newPosition + 1
+		})
 	}
 
 	return {

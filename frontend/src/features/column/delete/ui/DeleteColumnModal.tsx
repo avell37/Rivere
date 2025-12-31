@@ -11,7 +11,12 @@ export const DeleteColumnModal = ({ columnId }: { columnId: string }) => {
 	return (
 		<Alert
 			trigger={
-				<Button type='button' size='none' variant='none'>
+				<Button
+					type='button'
+					size='none'
+					variant='none'
+					className='cursor-pointer'
+				>
 					<X />
 				</Button>
 			}

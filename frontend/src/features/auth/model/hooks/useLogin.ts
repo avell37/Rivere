@@ -27,7 +27,7 @@ export const useLogin = () => {
 		onSuccess: () => {
 			form.reset()
 			toast.success('Успешно')
-			router.replace(PUBLIC_URL.home())
+			router.replace(PUBLIC_URL.boards())
 		},
 		onError: handleApiError
 	})

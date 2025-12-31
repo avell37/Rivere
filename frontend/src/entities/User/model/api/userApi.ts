@@ -6,6 +6,11 @@ import { ChangeUsernameRequest } from '@/features/settings/user/model/validation
 import { baseAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs/constants/api.config'
 
+export const getUser = async () => {
+	const response = await baseAxios.get(`${API_URL.account()}`)
+	return response.data
+}
+
 export const changeUsername = async (data: ChangeUsernameRequest) => {
 	const response = await baseAxios.post(
 		`${API_URL.account()}changeUsername`,

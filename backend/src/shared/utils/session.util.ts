@@ -22,21 +22,19 @@ export function saveSession(req: Request, user: User) {
 }
 
 export function destroySession(req: Request, configService: ConfigService) {
-    return new Promise((resolve, reject) => {
+    try {
         req.session.destroy((err) => {
             if (err) {
-                return reject(
-                    new InternalServerErrorException(
-                        'Не удалось удалить сессию',
-                    ),
+                return new InternalServerErrorException(
+                    'Не удалось удалить сессию',
                 );
             }
-
-            req.res?.clearCookie(
-                configService.getOrThrow<string>('SESSION_NAME'),
-            );
-
-            resolve(true);
         });
-    });
+
+        req.res?.clearCookie(configService.getOrThrow<string>('SESSION_NAME'), {
+            path: '/',
+        });
+    } catch (err) {
+        console.error('Ошибка удаления сессии:', err);
+    }
 }

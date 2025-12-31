@@ -13,10 +13,6 @@ export class FilesService {
 
         await writeFile(`${uploadedFolder}/${fileName}`, file.buffer);
 
-        console.log({
-            url: `/uploads/${folder}/${fileName}`,
-            name: fileName,
-        });
         return {
             url: `/uploads/${folder}/${fileName}`,
             name: fileName,

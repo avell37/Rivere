@@ -2,7 +2,7 @@
 import { EllipsisVertical } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-import { useGetUser } from '@/features/auth/model/hooks/useGetUser'
+import { useUserStore } from '@/entities/User/model/store/useUserStore'
 
 import { SERVER_URL } from '@/shared/libs/constants/api.config'
 import { customAvatar } from '@/shared/libs/customAvatar'
@@ -29,7 +29,7 @@ import { useLogout } from '../model/hooks/useLogout'
 import { userMenuFields } from './UserFields'
 
 export const UserMenu = () => {
-	const { data: user } = useGetUser()
+	const user = useUserStore(state => state.user)
 	const fields = userMenuFields()
 	const router = useRouter()
 	const { logoutUser, isPending } = useLogout()

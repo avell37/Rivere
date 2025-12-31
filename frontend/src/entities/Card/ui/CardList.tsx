@@ -1,3 +1,4 @@
+import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 import { CreateCardModal } from '@/features/card/create/ui/CreateCardModal'
@@ -13,26 +14,21 @@ export const CardList = ({
 	cards: ICard[]
 	columnId: string
 }) => {
-	console.log(cards)
+	const { setNodeRef } = useDroppable({
+		id: `column-end-${columnId}`,
+		data: {
+			type: 'column-end',
+			columnId
+		}
+	})
+
 	return (
 		<div className='flex flex-col gap-4'>
 			<SortableContext
 				items={cards.map(card => card.id) ?? []}
 				strategy={verticalListSortingStrategy}
 			>
-				{cards &&
-					cards.map(card => (
-						<Card
-							key={card.id}
-							id={card.id}
-							title={card.title}
-							description={card.description}
-							priority={card.priority}
-							deadline={card.deadline}
-							columnId={columnId}
-							chatId={card.chatId}
-						/>
-					))}
+				{cards && cards.map(card => <Card key={card.id} {...card} />)}
 			</SortableContext>
 			<CreateCardModal columnId={columnId} />
 			{cards.length === 0 && (
@@ -40,6 +36,7 @@ export const CardList = ({
 					Перетащите карточку сюда
 				</div>
 			)}
+			<div ref={setNodeRef} className='h-10 rounded-md' />
 		</div>
 	)
 }

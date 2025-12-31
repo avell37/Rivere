@@ -14,7 +14,7 @@ export const EditColumnModal = ({ columnId }: { columnId: string }) => {
 	return (
 		<Modal
 			trigger={
-				<Button size='none' variant='none'>
+				<Button size='none' variant='none' className='cursor-pointer'>
 					<Edit />
 				</Button>
 			}
