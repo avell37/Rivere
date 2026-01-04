@@ -3,7 +3,6 @@ import {
     ConflictException,
     Injectable,
     NotFoundException,
-    UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserInput } from './inputs/create-user.input';
 import { PrismaService } from 'src/core/prisma/prisma.service';
@@ -14,6 +13,8 @@ import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { FilesService } from 'src/modules/files/files.service';
 import { ChangeNicknameInput } from './inputs/change-nickname';
+import { saveSession } from 'src/shared/utils/session.util';
+import { Request } from 'express';
 
 @Injectable()
 export class AccountService {
@@ -30,6 +31,7 @@ export class AccountService {
                 username: true,
                 email: true,
                 nickname: true,
+                role: true,
                 avatar: true,
                 boards: true,
                 createdAt: true,
@@ -39,7 +41,7 @@ export class AccountService {
         return user;
     }
 
-    async create(input: CreateUserInput) {
+    async create(req: Request, input: CreateUserInput) {
         const { username, email, password } = input;
 
         const isUsernameExists = await this.prisma.user.findUnique({
@@ -47,7 +49,10 @@ export class AccountService {
         });
 
         if (isUsernameExists) {
-            throw new ConflictException('Это имя пользователя уже занято');
+            throw new ConflictException({
+                code: 'errors.account.usernameExists',
+                message: 'Имя пользователя уже занято',
+            });
         }
 
         const isEmailExists = await this.prisma.user.findUnique({
@@ -55,7 +60,10 @@ export class AccountService {
         });
 
         if (isEmailExists) {
-            throw new ConflictException('Эта почта уже занята');
+            throw new ConflictException({
+                code: 'errors.account.emailExists',
+                message: 'Электронная почта уже занята',
+            });
         }
 
         const user = await this.prisma.user.create({
@@ -67,7 +75,7 @@ export class AccountService {
             },
         });
 
-        return true;
+        return saveSession(req, user);
     }
 
     async changeUsername(input: ChangeUsernameInput, user: User) {
@@ -78,9 +86,10 @@ export class AccountService {
         });
 
         if (isUsernameExists) {
-            throw new BadRequestException(
-                'Данное имя пользователя уже занято.',
-            );
+            throw new BadRequestException({
+                code: 'errors.account.usernameExists',
+                message: 'Имя пользователя уже занято',
+            });
         }
 
         await this.prisma.user.update({
@@ -118,7 +127,10 @@ export class AccountService {
         });
 
         if (isEmailExists) {
-            throw new BadRequestException('Данная почта уже занята.');
+            throw new BadRequestException({
+                code: 'errors.account.emailExists',
+                message: 'Электронная почта уже занята',
+            });
         }
 
         await this.prisma.user.update({
@@ -144,13 +156,19 @@ export class AccountService {
         });
 
         if (!user) {
-            throw new NotFoundException('Пользователь не найден');
+            throw new NotFoundException({
+                code: 'errors.account.userNotFound',
+                message: 'Пользователь не найден',
+            });
         }
 
         const isValidPassword = await verify(user.password, currentPassword);
 
         if (!isValidPassword) {
-            throw new BadRequestException('Неверный старый пароль');
+            throw new BadRequestException({
+                code: 'errors.account.invalidCurrentPassword',
+                message: 'Неверный текущий пароль',
+            });
         }
 
         await this.prisma.user.update({

@@ -11,3 +11,9 @@ export const PUBLIC_URL = {
 	profile: () => PUBLIC_URL.root('/profile'),
 	userSettings: () => PUBLIC_URL.root('/profile/settings')
 }
+
+export const PRIVATE_URL = {
+	root: (url = '') => `${url ? url : ''}`,
+	createAchievement: () => PRIVATE_URL.root('/creator/create-achievement'),
+	createNotification: () => PRIVATE_URL.root('/creator/create-notification')
+}

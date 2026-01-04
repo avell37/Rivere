@@ -1,6 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -15,6 +16,7 @@ import { SignInRequest, loginSchema } from '../validation/login.z.validation'
 export const useLogin = () => {
 	const [showPassword, setShowPassword] = useState(false)
 	const router = useRouter()
+	const t = useTranslations('error')
 
 	const form = useForm<SignInRequest>({
 		resolver: zodResolver(loginSchema),

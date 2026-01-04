@@ -4,6 +4,7 @@ import {
     Get,
     HttpCode,
     Post,
+    Req,
     UploadedFile,
     UseInterceptors,
 } from '@nestjs/common';
@@ -18,6 +19,7 @@ import { ChangePasswordInput } from './inputs/change-password.input';
 import { ApiOperation } from '@nestjs/swagger';
 import { ChangeNicknameInput } from './inputs/change-nickname';
 import { FileInterceptor } from '@nestjs/platform-express';
+import type { Request } from 'express';
 
 @Controller('account')
 export class AccountController {
@@ -39,8 +41,8 @@ export class AccountController {
     })
     @HttpCode(200)
     @Post('create')
-    async create(@Body() input: CreateUserInput) {
-        return this.accountService.create(input);
+    async create(@Req() req: Request, @Body() input: CreateUserInput) {
+        return this.accountService.create(req, input);
     }
 
     @ApiOperation({

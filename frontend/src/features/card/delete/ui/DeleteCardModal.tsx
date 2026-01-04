@@ -1,4 +1,5 @@
 import { X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { Alert } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
@@ -7,6 +8,7 @@ import { useDeleteCard } from '../model/hooks/useDeleteCard'
 
 export const DeleteCardModal = ({ cardId }: { cardId: string }) => {
 	const { onSubmit } = useDeleteCard(cardId)
+	const t = useTranslations('card.delete')
 
 	return (
 		<Alert
@@ -20,10 +22,10 @@ export const DeleteCardModal = ({ cardId }: { cardId: string }) => {
 					<X />
 				</Button>
 			}
-			title='Удалить карточку?'
-			description='Это действие нельзя отменить, ваша карточка будет стерта навсегда.'
-			actionText='Удалить'
-			cancelText='Отменить'
+			title={t('deleteTitle')}
+			description={t('deleteDescription')}
+			actionText={t('deleteActionText')}
+			cancelText={t('deleteCancelText')}
 			onSubmit={onSubmit}
 		/>
 	)

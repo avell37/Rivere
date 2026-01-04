@@ -35,9 +35,10 @@ export class BoardService {
         });
 
         if (isExistsBoard) {
-            throw new ConflictException(
-                'У вас уже есть доска с таким названием',
-            );
+            throw new ConflictException({
+                code: 'errors.board.exists',
+                message: 'У вас уже есть доска с таким названием',
+            });
         }
 
         const board = await this.prisma.board.create({
@@ -101,7 +102,10 @@ export class BoardService {
         });
 
         if (!board) {
-            throw new NotFoundException('Доска не найдена');
+            throw new NotFoundException({
+                code: 'errors.board.notFound',
+                message: 'Доска не найдена',
+            });
         }
 
         return board;
@@ -153,9 +157,10 @@ export class BoardService {
         });
 
         if (!boardMember) {
-            throw new ForbiddenException(
-                'Вы не являетесь участником этой доски',
-            );
+            throw new ForbiddenException({
+                code: 'errors.board.invite.notMember',
+                message: 'Вы не являетесь участником этой доски',
+            });
         }
 
         const token = randomBytes(16).toString('hex');
@@ -196,14 +201,20 @@ export class BoardService {
         });
 
         if (!invite) {
-            throw new NotFoundException('Приглашение не найдено');
+            throw new NotFoundException({
+                code: 'errors.board.invite.notFound',
+                message: 'Приглашение не найдено',
+            });
         }
 
         if (invite.expiresAt < new Date()) {
             await this.prisma.boardInvite.deleteMany({
                 where: { token },
             });
-            throw new ForbiddenException('Приглашение истекло');
+            throw new ForbiddenException({
+                code: 'errors.board.invite.notValid',
+                message: 'Приглашение истекло',
+            });
         }
 
         return {
@@ -223,10 +234,16 @@ export class BoardService {
         });
 
         if (!invite) {
-            throw new NotFoundException('Приглашение не найдено');
+            throw new NotFoundException({
+                code: 'errors.board.invite.notFound',
+                message: 'Приглашение не найдено',
+            });
         }
         if (invite.expiresAt < new Date()) {
-            throw new ForbiddenException('Приглашение истекло');
+            throw new ForbiddenException({
+                code: 'errors.board.invite.notValid',
+                message: 'Приглашение истекло',
+            });
         }
 
         const isAlreadyMember = await this.prisma.boardMember.findFirst({
@@ -237,7 +254,10 @@ export class BoardService {
         });
 
         if (isAlreadyMember) {
-            throw new ConflictException('Вы уже участник этой доски');
+            throw new ConflictException({
+                code: 'errors.board.invite.alreadyMember',
+                message: 'Вы уже являетесь участником этой доски',
+            });
         }
 
         await this.prisma.$transaction([

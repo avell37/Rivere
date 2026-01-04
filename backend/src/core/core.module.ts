@@ -12,6 +12,7 @@ import { MessagesModule } from 'src/modules/messages/messages.module';
 import { FilesModule } from 'src/modules/files/files.module';
 import { SessionActivityMiddleware } from './middlewares/session-activity.middleware';
 import { NotificationsModule } from 'src/modules/notifications/notifications.module';
+import { AchievementsModule } from 'src/modules/achievements/achievements.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { NotificationsModule } from 'src/modules/notifications/notifications.mod
         MessagesModule,
         FilesModule,
         NotificationsModule,
+        AchievementsModule,
     ],
 })
 export class CoreModule implements NestModule {

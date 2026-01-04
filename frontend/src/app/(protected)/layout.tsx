@@ -7,7 +7,7 @@ import { useNotifications } from '@/features/notifications/model/hooks/useNotifi
 import { SidebarProvider } from '@/shared/ui/external/Sidebar/ui/Sidebar'
 
 import { Header } from '@/widgets/Header/Header'
-import { Sidebar } from '@/widgets/Sidebar/ui/Sidebar'
+import { MainSidebar } from '@/widgets/Sidebars/main/MainSidebar'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { data } = useGetUser()
@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 	return (
 		<SidebarProvider>
-			<Sidebar />
+			<MainSidebar />
 			<main className={`pt-16 flex-1`}>
 				<Header />
 				{children}

@@ -1,6 +1,7 @@
 'use client'
 
 import { Send } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 
 import { customAvatar } from '@/shared/libs/customAvatar'
 import { formattedDate } from '@/shared/libs/formattedDate'
@@ -27,6 +28,8 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 		cardId
 	})
 	const { messages } = useChatStore()
+	const t = useTranslations('card.chat')
+	const locale = useLocale()
 
 	const handleKeySubmitMessage = (
 		e: React.KeyboardEvent<HTMLInputElement>
@@ -59,7 +62,8 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 											{message.text}
 											<span className='text-[8px] flex justify-end items-end'>
 												{formattedDate(
-													message.createdAt
+													message.createdAt,
+													locale
 												)}
 											</span>
 										</div>
@@ -91,7 +95,8 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 											{message.text}
 											<span className='text-[8px] flex justify-end items-end pl-6'>
 												{formattedDate(
-													message.createdAt
+													message.createdAt,
+													locale
 												)}
 											</span>
 										</div>
@@ -105,7 +110,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 				<div className='relative mt-2'>
 					<Input
 						className='relative'
-						placeholder='Введите сообщение...'
+						placeholder={t('inputPlaceholder')}
 						value={message || ''}
 						onChange={e => setMessage(e.target.value)}
 						onKeyDown={handleKeySubmitMessage}

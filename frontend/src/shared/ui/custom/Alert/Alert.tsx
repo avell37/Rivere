@@ -42,10 +42,10 @@ export const Alert = ({
 					)}
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>{cancelText}</AlertDialogCancel>
 					<AlertDialogAction onClick={onSubmit}>
 						{actionText}
 					</AlertDialogAction>
+					<AlertDialogCancel>{cancelText}</AlertDialogCancel>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

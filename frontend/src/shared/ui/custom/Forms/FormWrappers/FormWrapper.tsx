@@ -4,15 +4,17 @@ interface FormWrapperProps {
 	handleSubmit: () => void
 	children: React.ReactNode
 	className?: string
-	buttonText?: string
+	submitText?: string
 	withClose?: boolean
+	closeText?: string
 }
 
 export const FormWrapper = ({
 	handleSubmit,
 	children,
-	buttonText,
-	withClose
+	submitText,
+	withClose,
+	closeText
 }: FormWrapperProps) => {
 	return (
 		<form
@@ -26,7 +28,7 @@ export const FormWrapper = ({
 					className='flex justify-center items-center rounded-md 
                     border border-primary-900/30 hover:border-primary-900'
 				>
-					{buttonText}
+					{submitText}
 				</Button>
 				{withClose && (
 					<DialogClose asChild>
@@ -34,7 +36,7 @@ export const FormWrapper = ({
 							type='button'
 							className='flex justify-center items-center cancel-button'
 						>
-							Закрыть
+							{closeText}
 						</Button>
 					</DialogClose>
 				)}

@@ -3,21 +3,24 @@ import { Form } from '@/shared/ui/external'
 
 import { useChangeNickname } from '../../model/hooks/useChangeNickname'
 
-export const ChangeNicknameForm = () => {
+export const ChangeNicknameForm = ({ t }: { t: (key: string) => string }) => {
 	const { form, onSubmit } = useChangeNickname()
 
 	return (
 		<Form {...form}>
 			<FormWrapper
-				buttonText='Изменить'
+				submitText={t('personalInformation.nicknameModalSubmit')}
+				closeText={t('personalInformation.nicknameModalClose')}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
 			>
 				<div className='flex flex-col gap-4'>
 					<FormInputController
 						name='nickname'
-						label='Ваше отображаемое имя пользователя'
-						placeholder='Введите ваше новое отображаемое имя пользователя'
+						label={t('personalInformation.nicknameModalLabel')}
+						placeholder={t(
+							'personalInformation.nicknameModalPlaceholder'
+						)}
 						control={form.control}
 					/>
 				</div>

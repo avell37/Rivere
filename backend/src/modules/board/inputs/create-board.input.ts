@@ -8,23 +8,19 @@ import {
 
 export class CreateBoardBackground {
     @IsOptional()
-    @IsString({ message: 'Изображение доски должно быть строкой' })
+    @IsString({ message: 'errors.board.background.url.isString' })
     url?: string | null;
 
     @IsOptional()
-    @IsString({ message: 'Цвет доски должен быть строкой' })
+    @IsString({ message: 'errors.board.background.color.isString' })
     color?: string | null;
 }
 
 export class CreateBoardInput {
-    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
-    @IsString({ message: 'Название доски должно быть строкой' })
-    @MinLength(4, {
-        message: 'Минимальная длина названия доски - 4 символа',
-    })
-    @MaxLength(32, {
-        message: 'Максимальная длина названия доски - 32 символа',
-    })
+    @IsNotEmpty({ message: 'errors.board.create.title.required' })
+    @IsString({ message: 'errors.board.create.title.isString' })
+    @MinLength(4, { message: 'errors.board.create.title.min' })
+    @MaxLength(64, { message: 'errors.board.create.title.max' })
     title: string;
 
     @IsOptional()

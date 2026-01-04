@@ -3,9 +3,8 @@ import { useFormContext } from 'react-hook-form'
 import { FormInputController } from '@/shared/ui/custom'
 
 import { useUpdateCard } from '../model/hooks/useUpdateCard'
-import { EditableProps } from '../model/types/EditableProps'
 
-export const EditableTitle = ({ cardId }: EditableProps) => {
+export const EditableTitle = ({ cardId }: { cardId: string }) => {
 	const { control, watch } = useFormContext()
 	const titleValue = watch('title')
 

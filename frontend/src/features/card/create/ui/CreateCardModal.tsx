@@ -1,5 +1,6 @@
 'use client'
 import { Plus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { Modal } from '@/shared/ui/custom/Modal/Modal'
 
@@ -9,6 +10,7 @@ import { CreateCardForm } from './CreateCardForm'
 
 export const CreateCardModal = ({ columnId }: { columnId: string }) => {
 	const { form, onSubmit } = useCreateCard(columnId)
+	const t = useTranslations('card.create')
 
 	return (
 		<Modal
@@ -17,15 +19,15 @@ export const CreateCardModal = ({ columnId }: { columnId: string }) => {
 					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 dark:bg-neutral-900'>
 						<Plus />
 						<h3 className='font-semibold text-base text-white'>
-							Создать
+							{t('heading')}
 						</h3>
 					</div>
 				</div>
 			}
-			title='Добавить новую карточку'
+			title={t('createTitle')}
 			contentClassname='sm:max-w-md'
 		>
-			<CreateCardForm form={form} onSubmit={onSubmit} />
+			<CreateCardForm form={form} onSubmit={onSubmit} t={t} />
 		</Modal>
 	)
 }

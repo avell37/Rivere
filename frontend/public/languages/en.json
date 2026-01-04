@@ -35,19 +35,272 @@
 		"heading": "Dashboard"
 	},
 	"boards": {
-		"heading": "Boards"
+		"heading": "Boards",
+		"title": "Your boards:",
+		"create": "Create a new board"
+	},
+	"board": {
+		"heading": "{name}",
+		"members": "{count, plural, one {# member} other {# members}}"
+	},
+	"column": {
+		"create": {
+			"heading": "Create column",
+			"createTitle": "Add a new column",
+			"createDescription": "Enter a title for the new column",
+			"createModalLabel": "Title",
+			"createModalPlaceholder": "Column title",
+			"createModalSubmit": "Add",
+			"createModalClose": "Close"
+		},
+		"edit": {
+			"editTitle": "Change column title",
+			"editDescription": "Enter a new title for your column",
+			"editModalLabel": "Title",
+			"editModalPlaceholder": "Column title",
+			"editModalSubmit": "Save",
+			"editModalClose": "Close"
+		},
+		"delete": {
+			"deleteTitle": "Delete column?",
+			"deleteDescription": "The column and all its tasks will be permanently deleted.",
+			"deleteActionText": "Delete",
+			"deleteCancelText": "Cancel"
+		}
+	},
+	"card": {
+		"create": {
+			"heading": "Create card",
+			"createTitle": "Add a new card",
+			"createDescription": "Enter a title for the new card",
+			"createTitleModalLabel": "Title",
+			"createTitleModalPlaceholder": "Card title",
+			"createDescriptionModalPlaceholder": "Describe your card",
+			"createPriorityModalLabel": "Priority",
+			"createPriorityModalPlaceholder": "Select priority",
+			"createDeadlineModalLabel": "Deadline",
+			"createDeadlineModalPlaceholder": "Select date",
+			"createModalSubmit": "Add",
+			"createModalClose": "Close"
+		},
+		"edit": {
+			"description": "Description",
+			"editDescription": "Empty...",
+			"editPriorityLabel": "Priority",
+			"editPriorityPlaceholder": "Select priority",
+			"editDeadlineLabel": "Deadline",
+			"editDeadlinePlaceholder": "Select date"
+		},
+		"delete": {
+			"deleteTitle": "Delete card?",
+			"deleteDescription": "This action cannot be undone, your card will be permanently deleted.",
+			"deleteActionText": "Delete",
+			"deleteCancelText": "Cancel"
+		},
+		"chat": {
+			"inputPlaceholder": "Write a message..."
+		}
+	},
+	"notifications": {
+		"heading": "Notifications",
+		"clearAllNotifications": "Clear all"
+	},
+
+	"priority": {
+		"low": "Low",
+		"medium": "Medium",
+		"high": "High"
 	},
 	"profile": {
 		"settings": {
-			"heading": "Settings"
+			"heading": "Settings",
+			"title": "Your settings:",
+			"avatar": {
+				"avatarChangeButton": "Change"
+			},
+			"personalInformation": {
+				"heading": "Personal information",
+				"usernameLabel": "Username",
+				"usernameButton": "Change",
+				"usernameModalLabel": "Your username",
+				"usernameModalPlaceholder": "Enter your new username",
+				"usernameModalSubmit": "Change",
+				"usernameModalClose": "Close",
+				"nicknameLabel": "Nickname",
+				"nicknameButton": "Change",
+				"nicknameModalLabel": "Your nickname",
+				"nicknameModalPlaceholder": "Enter your new nickname",
+				"nicknameModalSubmit": "Change",
+				"nicknameModalClose": "Close"
+			},
+			"security": {
+				"heading": "Security",
+				"emailLabel": "Email",
+				"emailButton": "Change",
+				"emailModalLabel": "Your new e-mail",
+				"emailModalPlaceholder": "Enter your new e-mail",
+				"emailModalSubmit": "Change",
+				"emailModalClose": "Close",
+				"passwordLabel": "Password",
+				"passwordDescription": "The password is hidden for security reasons",
+				"passwordButton": "Change",
+				"passwordModalTitle": "Change password:",
+				"currentPasswordPlaceholder": "Enter your current password",
+				"newPasswordPlaceholder": "Enter a new password",
+				"confirmPasswordPlaceholder": "Confirm your new password",
+				"passwordModalSubmit": "Change",
+				"passwordModalClose": "Close"
+			},
+			"session": {
+				"heading": "Active sessions",
+				"clearSessionsButton": "End all except current",
+				"clearSessionsTitle": "Are you sure?",
+				"clearSessionsDescription": "All sessions except the current one will be permanently ended.",
+				"clearSessionsActionText": "End",
+				"clearSessionsCancelText": "Cancel",
+				"lastActive": "Last active: {date}"
+			}
 		}
 	},
+	"session": {
+		"ended": "The session has ended.",
+		"allEnded": "All other sessions have been ended."
+	},
+	"dropdownUserMenu": {
+		"profile": "Profile",
+		"settings": "Settings",
+		"logout": "Logout"
+	},
 	"invite": {
-		"heading": "Invite to board"
+		"heading": "Invite to board",
+		"createLink": "Create link",
+		"copyLink": "Link copied to clipboard",
+		"acceptedInvite": "You have successfully joined the board!",
+		"page": {
+			"title": "invites you to the board: {boardName}",
+			"members": "{count, plural, one {# member} few {# members} many {# members} other {# members}}",
+			"validUntil": "Valid until: {date}",
+			"acceptButton": "Accept",
+			"declineButton": "Decline"
+		}
+	},
+	"creator": {
+		"heading": "Creator panel",
+		"create": {
+			"achievements": {
+				"heading": "Create achievement"
+			},
+			"notifications": {
+				"heading": "Create notification"
+			}
+		}
 	},
 	"theme": {
 		"selectTheme": "Select theme...",
 		"light": "Light",
 		"dark": "Dark"
+	},
+	"language": {
+		"selectLanguage": "Select language",
+		"en": "English",
+		"ru": "Russian"
+	},
+	"validation": {
+		"username": {
+			"min": "Minimum username length is 4 characters",
+			"max": "Maximum username length is 32 characters"
+		},
+		"nickname": {
+			"min": "Minimum nickname length is 4 characters",
+			"max": "Maximum nickname length is 32 characters"
+		},
+		"password": {
+			"min": "Minimum password length is 6 characters",
+			"max": "Maximum password length is 64 characters"
+		}
+	},
+	"errors": {
+		"unexpected": "An unexpected error occurred. Please try again later.",
+		"auth": {
+			"login": {
+				"required": "Field is required",
+				"isString": "Login must be a string"
+			},
+			"password": {
+				"required": "Field is required",
+				"isString": "Password must be a string",
+				"min": "Minimum password length is 6 characters",
+				"max": "Maximum password length is 64 characters"
+			}
+		},
+		"account": {
+			"usernameExists": "Username is already taken",
+			"emailExists": "Email is already taken",
+			"userNotFound": "User not found",
+			"notValidCurrentPassword": "Invalid current password",
+			"username": {
+				"required": "Field is required",
+				"isString": "Username must be a string",
+				"min": "Minimum username length is 4 characters",
+				"max": "Maximum username length is 32 characters"
+			},
+			"nickname": {
+				"required": "Field is required",
+				"isString": "Nickname must be a string",
+				"min": "Minimum nickname length is 4 characters",
+				"max": "Maximum nickname length is 32 characters"
+			},
+			"email": {
+				"required": "Field is required",
+				"isString": "Email must be a string"
+			},
+			"password": {
+				"required": "Field is required",
+				"isString": "Password must be a string",
+				"min": "Minimum password length is 6 characters",
+				"max": "Maximum password length is 64 characters"
+			}
+		},
+		"board": {
+			"exists": "You already have a board with this name",
+			"notFound": "Board not found",
+			"create": {
+				"title": {
+					"required": "Board title is required",
+					"isString": "Board title must be a string",
+					"min": "Board title must be at least 4 characters long",
+					"max": "Board title must be no more than 32 characters long"
+				},
+				"url": {
+					"isString": "Board image must be a string"
+				},
+				"color": {
+					"isString": "Board color must be a string"
+				}
+			},
+			"update": {
+				"title": {
+					"required": "Board title is required",
+					"isString": "Board title must be a string",
+					"min": "Board title must be at least 4 characters long",
+					"max": "Board title must be no more than 32 characters long"
+				}
+			},
+			"invite": {
+				"notMember": "You are not a member of this board",
+				"notFound": "Invite not found",
+				"notValid": "Invite expired",
+				"alreadyMember": "You are already a member of this board"
+			}
+		},
+		"card": {
+			"notFound": "Card not found",
+			"notFoundMultiple": "One or more cards not found"
+		},
+		"session": {
+			"notFound": "Session not found",
+			"terminateCurrent": "Cannot terminate current session",
+			"accessDenied": "Access denied"
+		}
 	}
 }

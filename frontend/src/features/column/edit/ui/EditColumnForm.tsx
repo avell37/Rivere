@@ -1,6 +1,7 @@
 'use client'
 import { UseFormReturn } from 'react-hook-form'
 
+import { FormInputController } from '@/shared/ui/custom'
 import { Button, DialogClose, DialogFooter, Input } from '@/shared/ui/external'
 import {
 	Form,
@@ -14,39 +15,33 @@ import {
 interface CreateColumnFormProps {
 	form: UseFormReturn<any>
 	onSubmit: (data: any) => void
+	t: (key: string) => string
 }
 
-export const EditColumnForm = ({ form, onSubmit }: CreateColumnFormProps) => {
+export const EditColumnForm = ({
+	form,
+	onSubmit,
+	t
+}: CreateColumnFormProps) => {
 	return (
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
 				className='flex flex-col gap-4'
 			>
-				<FormField
-					control={form.control}
+				<FormInputController
 					name='title'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Название</FormLabel>
-							<FormControl>
-								<Input
-									placeholder='Название колонки'
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
+					label={t('editModalLabel')}
+					placeholder={t('editModalPlaceholder')}
+					control={form.control}
 				/>
 				<DialogFooter>
-					<DialogClose asChild>
-						<Button variant='outline'>Закрыть</Button>
-					</DialogClose>
-
 					<Button type='submit' variant='outline'>
-						Сохранить
+						{t('editModalSubmit')}
 					</Button>
+					<DialogClose asChild>
+						<Button variant='outline'>{t('editModalClose')}</Button>
+					</DialogClose>
 				</DialogFooter>
 			</form>
 		</Form>

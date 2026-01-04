@@ -30,7 +30,10 @@ export class SessionService {
         );
 
         if (!sessionData) {
-            throw new NotFoundException('Сессия не найдена');
+            throw new NotFoundException({
+                code: 'errors.session.notFound',
+                message: 'Сессия не найдена',
+            });
         }
 
         const session = JSON.parse(sessionData);
@@ -83,25 +86,35 @@ export class SessionService {
         currentSessionId: string,
     ) {
         if (sessionId === currentSessionId) {
-            throw new BadRequestException('Нельзя завершить текущую сессию');
+            throw new BadRequestException({
+                code: 'errors.session.cannotTerminateCurrent',
+                message: 'Невозможно завершить текущую сессию',
+            });
         }
 
         const key = `${this.config.getOrThrow<string>('SESSION_FOLDER')}${sessionId}`;
         const raw = await this.redis.get(key);
 
         if (!raw) {
-            throw new NotFoundException('Сессия не найдена');
+            throw new NotFoundException({
+                code: 'errors.session.notFound',
+                message: 'Сессия не найдена',
+            });
         }
 
         const session = JSON.parse(raw);
 
         if (session.userId !== userId) {
-            throw new UnauthorizedException('Отказано в доступе');
+            throw new UnauthorizedException({
+                code: 'errors.session.accessDenied',
+                message: 'Отказано в доступе',
+            });
         }
 
         await this.redis.del(key);
 
         return {
+            code: 'session.ended',
             message: 'Сессия завершена',
         };
     }
@@ -123,6 +136,7 @@ export class SessionService {
         }
 
         return {
+            code: 'sessions.allEnded',
             message: 'Все сессии завершены',
         };
     }
@@ -140,13 +154,19 @@ export class SessionService {
         });
 
         if (!user) {
-            throw new NotFoundException('Пользователь не найден');
+            throw new NotFoundException({
+                code: 'errors.account.userNotFound',
+                message: 'Пользователь не найден',
+            });
         }
 
         const isValidPassword = await verify(user.password, password);
 
         if (!isValidPassword) {
-            throw new UnauthorizedException('Неверный пароль');
+            throw new UnauthorizedException({
+                code: 'errors.account.notValidCurrentPassword',
+                message: 'Неверный текущий пароль',
+            });
         }
 
         return saveSession(req, user);

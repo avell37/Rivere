@@ -1,52 +1,42 @@
 'use client'
 import { UseFormReturn } from 'react-hook-form'
 
-import { Button, DialogClose, DialogFooter, Input } from '@/shared/ui/external'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage
-} from '@/shared/ui/external/Form/Form'
+import { FormInputController } from '@/shared/ui/custom'
+import { Button, DialogClose, DialogFooter } from '@/shared/ui/external'
+import { Form } from '@/shared/ui/external/Form/Form'
 
 interface CreateColumnFormProps {
 	form: UseFormReturn<any>
 	onSubmit: (data: any) => void
+	t: (key: string) => string
 }
 
-export const CreateColumnForm = ({ form, onSubmit }: CreateColumnFormProps) => {
+export const CreateColumnForm = ({
+	form,
+	onSubmit,
+	t
+}: CreateColumnFormProps) => {
 	return (
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
 				className='flex flex-col gap-4'
 			>
-				<FormField
-					control={form.control}
+				<FormInputController
 					name='title'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Название</FormLabel>
-							<FormControl>
-								<Input
-									placeholder='Название колонки'
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
+					label={t('createModalLabel')}
+					placeholder={t('createModalPlaceholder')}
+					control={form.control}
 				/>
 				<DialogFooter>
-					<DialogClose asChild>
-						<Button variant='outline'>Закрыть</Button>
-					</DialogClose>
-
 					<Button type='submit' variant='outline'>
-						Сохранить
+						{t('createModalSubmit')}
 					</Button>
+					<DialogClose asChild>
+						<Button variant='outline'>
+							{t('createModalClose')}
+						</Button>
+					</DialogClose>
 				</DialogFooter>
 			</form>
 		</Form>

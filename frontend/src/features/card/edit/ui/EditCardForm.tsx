@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextAlignJustify } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 
 import { Form, Separator } from '@/shared/ui/external'
@@ -29,6 +30,7 @@ export const EditCardForm = ({
 	priority,
 	deadline
 }: EditCardProps) => {
+	const t = useTranslations('card.edit')
 	const form = useForm<EditCardRequest>({
 		resolver: zodResolver(EditCardSchema),
 		defaultValues: {
@@ -47,15 +49,17 @@ export const EditCardForm = ({
 					<Separator />
 				</div>
 				<div className='flex gap-4'>
-					<EditablePriority cardId={id} />
-					<EditableDeadline cardId={id} />
+					<EditablePriority cardId={id} t={t} />
+					<EditableDeadline cardId={id} t={t} />
 				</div>
 				<div className='flex flex-col gap-4'>
 					<div className='flex items-center gap-2'>
 						<TextAlignJustify size='16' />
-						<span className='text-xs font-bold'>Описание</span>
+						<span className='text-xs font-bold'>
+							{t('description')}
+						</span>
 					</div>
-					<EditableDescription cardId={id} />
+					<EditableDescription cardId={id} t={t} />
 				</div>
 			</div>
 		</Form>

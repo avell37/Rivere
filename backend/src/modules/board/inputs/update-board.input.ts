@@ -1,13 +1,13 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class UpdateBoardInput {
-    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
-    @IsString({ message: 'Название доски должно быть строкой' })
+    @IsNotEmpty({ message: 'errors.board.update.title.required' })
+    @IsString({ message: 'errors.board.update.title.isString' })
     @MinLength(4, {
-        message: 'Минимальная длина названия доски - 4 символа',
+        message: 'errors.board.update.title.min',
     })
     @MaxLength(32, {
-        message: 'Максимальная длина названия доски - 32 символа',
+        message: 'errors.board.update.title.max',
     })
     title: string;
 }

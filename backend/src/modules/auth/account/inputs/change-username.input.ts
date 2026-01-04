@@ -1,13 +1,13 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class ChangeUsernameInput {
-    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
-    @IsString({ message: 'Имя пользователя должно быть строкой' })
+    @IsNotEmpty({ message: 'errors.account.username.required' })
+    @IsString({ message: 'errors.account.username.isString' })
     @MinLength(4, {
-        message: 'Минимальная длина имени пользователя - 4 символа',
+        message: 'errors.account.username.min',
     })
     @MaxLength(32, {
-        message: 'Максимальная длина имени пользователя - 32 символа',
+        message: 'errors.account.username.max',
     })
     username: string;
 }

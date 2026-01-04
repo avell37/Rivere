@@ -3,6 +3,7 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { SquareArrowOutUpRight } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 
 import { DeleteCardModal } from '@/features/card/delete/ui/DeleteCardModal'
 import { EditCardForm } from '@/features/card/edit/ui/EditCardForm'
@@ -10,6 +11,7 @@ import { Chat } from '@/features/chat/ui/Chat'
 
 import { formattedDate } from '@/shared/libs/formattedDate'
 import { priorityCircle, priorityColors } from '@/shared/libs/priorityColors'
+import { priorityOptions } from '@/shared/libs/priorityConfig'
 import { Modal } from '@/shared/ui/custom'
 
 import { Priority } from '../model/types/CardPriority'
@@ -31,6 +33,9 @@ export const Card = ({
 	deadline,
 	columnId
 }: CardProps) => {
+	const tPriority = useTranslations('priority')
+	const locale = useLocale()
+	const priorityConfig = priorityOptions[priority]
 	const {
 		attributes,
 		listeners,
@@ -52,12 +57,11 @@ export const Card = ({
 			}
 		}
 	})
-	const date = formattedDate(deadline)
-
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition
 	}
+
 	return (
 		<div
 			className={`relative p-6 dark:bg-neutral-900 rounded-lg shadow list-none ${priorityColors[priority] ?? ''}
@@ -72,10 +76,12 @@ export const Card = ({
 					<div className='flex gap-1'>
 						<div className={`${priorityCircle[priority] ?? ''}`} />
 						<span className='text-xs'>
-							{priority.toLowerCase()}
+							{tPriority(priorityConfig.i18nKey)}
 						</span>
 					</div>
-					<span className='text-xs'>{date}</span>
+					<span className='text-xs'>
+						{formattedDate(deadline, locale)}
+					</span>
 				</div>
 			</li>
 			<Modal

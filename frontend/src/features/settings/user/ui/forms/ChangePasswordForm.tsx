@@ -5,23 +5,26 @@ import { Form } from '@/shared/ui/external'
 
 import { useChangePassword } from '../../model/hooks/useChangePassword'
 
-export const ChangePasswordForm = () => {
+export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 	const { form, passwordType, onSubmit, togglePasswords } =
 		useChangePassword()
 
 	return (
 		<Form {...form}>
 			<FormWrapper
-				buttonText='Изменить'
+				submitText={t('security.passwordModalSubmit')}
+				closeText={t('security.passwordModalClose')}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
 			>
 				<div className='flex flex-col gap-4'>
-					<h1 className='font-bold'>Изменение пароля:</h1>
+					<h1 className='font-bold'>
+						{t('security.passwordModalTitle')}
+					</h1>
 					<FormInputController
 						name='currentPassword'
 						type={passwordType}
-						placeholder='Введите текущий пароль'
+						placeholder={t('security.currentPasswordPlaceholder')}
 						element={
 							<>
 								{passwordType === 'password' ? (
@@ -44,7 +47,7 @@ export const ChangePasswordForm = () => {
 					<FormInputController
 						name='newPassword'
 						type={passwordType}
-						placeholder='Введите новый пароль'
+						placeholder={t('security.newPasswordPlaceholder')}
 						element={
 							<>
 								{passwordType === 'password' ? (
@@ -67,7 +70,7 @@ export const ChangePasswordForm = () => {
 					<FormInputController
 						name='confirmPassword'
 						type={passwordType}
-						placeholder='Подтвердите новый пароль'
+						placeholder={t('security.confirmPasswordPlaceholder')}
 						element={
 							<>
 								{passwordType === 'password' ? (

@@ -1,4 +1,5 @@
 import { X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { Alert } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
@@ -7,6 +8,7 @@ import { useDeleteColumn } from '../model/hooks/useDeleteColumn'
 
 export const DeleteColumnModal = ({ columnId }: { columnId: string }) => {
 	const { onSubmit } = useDeleteColumn(columnId)
+	const t = useTranslations('column.delete')
 
 	return (
 		<Alert
@@ -20,10 +22,10 @@ export const DeleteColumnModal = ({ columnId }: { columnId: string }) => {
 					<X />
 				</Button>
 			}
-			title='Удалить колонку?'
-			description='Это действие нельзя отменить, ваша колонка будет стерта навсегда.'
-			actionText='Удалить'
-			cancelText='Отменить'
+			title={t('deleteTitle')}
+			description={t('deleteDescription')}
+			actionText={t('deleteActionText')}
+			cancelText={t('deleteCancelText')}
 			onSubmit={onSubmit}
 		/>
 	)

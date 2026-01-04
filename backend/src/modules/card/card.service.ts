@@ -1,8 +1,4 @@
-import {
-    ForbiddenException,
-    Injectable,
-    NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateCardInput } from './inputs/create-card.input';
 import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
@@ -49,7 +45,11 @@ export class CardService {
             where: { id: cardId },
         });
 
-        if (!card) throw new NotFoundException('Карточка не найдена');
+        if (!card)
+            throw new NotFoundException({
+                code: 'card.notFound',
+                message: 'Карточка не найдена',
+            });
 
         await checkBoardAccess({
             prisma: this.prisma,
@@ -87,7 +87,10 @@ export class CardService {
         });
 
         if (existingCards.length !== cards.length) {
-            throw new NotFoundException('Некоторые карточки не найдены');
+            throw new NotFoundException({
+                code: 'card.notFoundMultiple',
+                message: 'Одна или несколько карточек не найдены',
+            });
         }
 
         const operations = cards.map((id, index) => {
@@ -114,7 +117,10 @@ export class CardService {
         });
 
         if (!card) {
-            throw new NotFoundException('Карточка не найдена');
+            throw new NotFoundException({
+                code: 'card.notFound',
+                message: 'Карточка не найдена',
+            });
         }
 
         await checkBoardAccess({
@@ -163,7 +169,11 @@ export class CardService {
             where: { id: cardId },
         });
 
-        if (!card) throw new NotFoundException('Карточка не найдена');
+        if (!card)
+            throw new NotFoundException({
+                code: 'card.notFound',
+                message: 'Карточка не найдена',
+            });
 
         await checkBoardAccess({
             prisma: this.prisma,

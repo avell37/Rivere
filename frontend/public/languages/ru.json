@@ -35,19 +35,245 @@
 		"heading": "Главная"
 	},
 	"boards": {
-		"heading": "Доски"
+		"heading": "Доски",
+		"title": "Ваши доски:",
+		"create": "Создать новую доску"
+	},
+	"board": {
+		"heading": "{name}",
+		"members": "{count, plural, one {# участник} few {# участника} many {# участников} other {# участников}}"
+	},
+	"column": {
+		"create": {
+			"heading": "Создать колонку",
+			"createTitle": "Добавить колонку",
+			"createDescription": "Введите названия для вашей новой колонки",
+			"createModalLabel": "Название",
+			"createModalPlaceholder": "Название колонки",
+			"createModalSubmit": "Добавить",
+			"createModalClose": "Закрыть"
+		},
+		"edit": {
+			"heading": "Редактировать колонку",
+			"editTitle": "Изменить название колонки",
+			"editDescription": "Введите новое название для вашей колонки",
+			"editModalLabel": "Название",
+			"editModalPlaceholder": "Новое название колонки",
+			"editModalSubmit": "Сохранить",
+			"editModalClose": "Закрыть"
+		},
+		"delete": {
+			"deleteTitle": "Удалить колонку?",
+			"deleteDescription": "Эта колонка и все её задачи будут окончательно удалены.",
+			"deleteActionText": "Удалить",
+			"deleteCancelText": "Отмена"
+		}
+	},
+	"card": {
+		"create": {
+			"heading": "Создать карточку",
+			"createTitle": "Добавить новую карточку",
+			"createDescription": "Введите название для новой карточки",
+			"createTitleModalLabel": "Название",
+			"createTitleModalPlaceholder": "Название карточки",
+			"createDescriptionModalPlaceholder": "Опишите вашу карточку",
+			"createPriorityModalLabel": "Приоритет",
+			"createPriorityModalPlaceholder": "Выберите приоритет",
+			"createDeadlineModalLabel": "Дедлайн",
+			"createDeadlineModalPlaceholder": "Выберите дедлайн",
+			"createModalSubmit": "Добавить",
+			"createModalClose": "Закрыть"
+		},
+		"edit": {
+			"description": "Описание",
+			"editDescription": "Пусто...",
+			"editPriorityLabel": "Приоритет",
+			"editPriorityPlaceholder": "Выберите приоритет задачи",
+			"editDeadlineLabel": "Дедлайн",
+			"editDeadlinePlaceholder": "Выберите новый дедлайн"
+		},
+		"delete": {
+			"deleteTitle": "Удалить карточку?",
+			"deleteDescription": "Это действие нельзя отменить, ваша карточка будет окончательно удалена.",
+			"deleteActionText": "Удалить",
+			"deleteCancelText": "Отмена"
+		},
+		"chat": {
+			"inputPlaceholder": "Написать сообщение..."
+		}
+	},
+	"notifications": {
+		"heading": "Уведомления",
+		"clearAllNotifications": "Очистить все"
+	},
+	"priority": {
+		"low": "Низкая",
+		"medium": "Средняя",
+		"high": "Высокая"
 	},
 	"profile": {
 		"settings": {
-			"heading": "Настройки"
+			"heading": "Настройки",
+			"title": "Ваши настройки:",
+			"avatar": {
+				"avatarChangeButton": "Изменить"
+			},
+			"personalInformation": {
+				"heading": "Личная информация",
+				"usernameLabel": "Имя пользователя",
+				"usernameButton": "Изменить",
+				"usernameModalLabel": "Ваше имя пользователя",
+				"usernameModalPlaceholder": "Введите ваше новое имя пользователя",
+				"usernameModalSubmit": "Изменить",
+				"usernameModalClose": "Закрыть",
+				"nicknameLabel": "Никнейм",
+				"nicknameButton": "Изменить",
+				"nicknameModalLabel": "Ваш никнейм",
+				"nicknameModalPlaceholder": "Введите ваш новый никнейм",
+				"nicknameModalSubmit": "Изменить",
+				"nicknameModalClose": "Закрыть"
+			},
+			"security": {
+				"heading": "Безопасность",
+				"emailLabel": "Почта",
+				"emailButton": "Изменить",
+				"emailModalLabel": "Ваша новая почта",
+				"emailModalPlaceholder": "Введите вашу новую электронную почту",
+				"emailModalSubmit": "Изменить",
+				"emailModalClose": "Закрыть",
+				"passwordLabel": "Пароль",
+				"passwordDescription": "Пароль скрыт в целях безопасности.",
+				"passwordButton": "Изменить",
+				"passwordModalTitle": "Изменить пароль:",
+				"currentPasswordPlaceholder": "Введите ваш старый пароль",
+				"newPasswordPlaceholder": "Введите ваш новый пароль",
+				"confirmPasswordPlaceholder": "Подтвердите новый пароль",
+				"passwordModalSubmit": "Изменить",
+				"passwordModalClose": "Закрыть"
+			},
+			"session": {
+				"heading": "Активные сессии",
+				"clearSessionsButton": "Завершить все, кроме текущей",
+				"clearSessionsTitle": "Вы уверены?",
+				"clearSessionsDescription": "Все сессии, кроме текущей, будут окончательно завершены.",
+				"clearSessionsActionText": "Завершить",
+				"clearSessionsCancelText": "Отмена",
+				"lastActive": "Последняя активность: {date}"
+			}
 		}
 	},
+	"dropdownUserMenu": {
+		"profile": "Профиль",
+		"settings": "Настройки",
+		"logout": "Выход с аккаунта"
+	},
 	"invite": {
-		"heading": "Приглашение в доску"
+		"heading": "Приглашение в доску",
+		"createLink": "Создать ссылку",
+		"copyLink": "Ссылка скопирована",
+		"acceptedInvite": "Вы успешно присоединились к доске!",
+		"page": {
+			"title": "приглашает вас в доску: {boardName}",
+			"members": "{count, plural, one {# участник} few {# участника} many {# участников} other {# участников}}",
+			"validUntil": "Действительно до: {date}",
+			"acceptButton": "Принять",
+			"declineButton": "Отклонить"
+		}
+	},
+	"creator": {
+		"heading": "Панель создателя",
+		"create": {
+			"achievements": {
+				"heading": "Создать достижение"
+			},
+			"notifications": {
+				"heading": "Создать уведомление"
+			}
+		}
 	},
 	"theme": {
 		"selectTheme": "Выберите тему...",
 		"light": "Светлая",
 		"dark": "Темная"
+	},
+	"language": {
+		"selectLanguage": "Выберите язык",
+		"en": "Английский",
+		"ru": "Русский"
+	},
+	"validation": {
+		"username": {
+			"min": "Минимальная длина имени пользователя - 4 символа",
+			"max": "Максимальная длина имени пользователя - 32 символа"
+		},
+		"nickname": {
+			"min": "Минимальная длина никнейма - 4 символа",
+			"max": "Максимальная длина никнейма - 32 символа"
+		}
+	},
+	"errors": {
+		"unexpected": "Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.",
+		"account": {
+			"usernameExists": "Имя пользователя уже занято",
+			"emailExists": "Электронная почта уже занята",
+			"userNotFound": "Пользователь не найден",
+			"notValidCurrentPassword": "Неверный текущий пароль",
+			"username": {
+				"required": "Поле обязательно к заполнению",
+				"isString": "Имя пользователя должно быть строкой",
+				"min": "Минимальная длина имени пользователя 4 символа",
+				"max": "Максимальная длина имени пользователя 32 символа"
+			},
+			"nickname": {
+				"required": "Поле обязательно к заполнению",
+				"isString": "Имя пользователя должно быть строкой",
+				"min": "Минимальная длина имени пользователя 4 символа",
+				"max": "Максимальная длина имени пользователя 32 символа"
+			},
+			"email": {
+				"required": "Поле обязательно к заполнению",
+				"isString": "Электронная почта должна быть строкой"
+			},
+			"password": {
+				"required": "Поле обязательно к заполнению",
+				"isString": "Пароль должен быть строкой",
+				"min": "Минимальная длина пароля 6 символов",
+				"max": "Максимальная длина пароля 64 символа"
+			}
+		},
+		"board": {
+			"exists": "У вас уже есть доска с таким названием",
+			"notFound": "Доска не найдена",
+			"create": {
+				"title": {
+					"required": "Поле обязательно к заполнению",
+					"isString": "Название доски должно быть строкой",
+					"min": "Минимальная длина названия доски 4 символа",
+					"max": "Максимальная длина названия доски 64 символа"
+				},
+				"background": {
+					"url": {
+						"isString": "Изображение доски должно быть строкой"
+					},
+					"color": {
+						"isString": "Цвет доски должен быть строкой"
+					}
+				}
+			},
+			"update": {
+				"title": {
+					"required": "Поле обязательно к заполнению",
+					"isString": "Название доски должно быть строкой",
+					"min": "Минимальная длина названия доски 4 символа",
+					"max": "Максимальная длина названия доски 64 символа"
+				}
+			},
+			"invite": {
+				"notMember": "Вы не являетесь участником этой доски",
+				"notFound": "Приглашение не найдено",
+				"notValid": "Приглашение истекло",
+				"alreadyMember": "Вы уже являетесь участником этой доски"
+			}
+		}
 	}
 }

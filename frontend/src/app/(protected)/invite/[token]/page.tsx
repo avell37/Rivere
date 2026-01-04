@@ -3,8 +3,6 @@ import { getTranslations } from 'next-intl/server'
 
 import { InviteView } from '@/features/board-invite/ui/InviteView'
 
-import { Dashboard } from '@/widgets/Dashboard/ui/Dashboard'
-
 export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations('invite')
 

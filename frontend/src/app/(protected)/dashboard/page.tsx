@@ -11,6 +11,6 @@ export async function generateMetadata(): Promise<Metadata> {
 	}
 }
 
-export default function LoginPage() {
+export default function DashboardPage() {
 	return <Dashboard />
 }

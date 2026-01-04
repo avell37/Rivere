@@ -1,4 +1,5 @@
 'use client'
+import { useLocale, useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -19,11 +20,13 @@ export const InviteView = () => {
 	const router = useRouter()
 	const { token } = useParams<{ token: string }>()
 	const { data, acceptInviteToBoard, acceptPending } = useInvite(token)
+	const t = useTranslations('invite')
+	const locale = useLocale()
 
 	const handleAccept = async () => {
 		await acceptInviteToBoard(token)
 		router.push(PUBLIC_URL.boards())
-		toast.success('Приглашение в доску принято')
+		toast.success(t('acceptedInvite'))
 	}
 
 	if (!data) return <div>Loading...</div>
@@ -43,14 +46,17 @@ export const InviteView = () => {
 							{data?.invitedBy?.nickname}
 						</span>
 					</div>
-					<h1 className='wrap-break-word'>приглашает вас в доску:</h1>
+					<h1 className='wrap-break-word'>
+						{t('page.title', { boardName: data?.board?.title })}
+					</h1>
 				</div>
-				<div className='flex flex-col'>
-					<span className='font-bold'>{data?.board?.title}</span>
-					<span>Участники: {data?.board?.membersCount}</span>
-				</div>
+				<span>
+					{t('page.members', { count: data?.board?.membersCount })}
+				</span>
 				<span className='absolute top-4 right-2 text-xs text-gray-400'>
-					действительно до: {formattedDate(data.expiresAt)}
+					{t('page.validUntil', {
+						date: formattedDate(data?.expiresAt, locale)
+					})}
 				</span>
 				<div className='flex justify-between gap-2'>
 					<Button
@@ -58,9 +64,11 @@ export const InviteView = () => {
 						disabled={acceptPending}
 						className='flex-1'
 					>
-						Принять
+						{t('page.acceptButton')}
 					</Button>
-					<Button className='flex-1 bg-red-400/70'>Отклонить</Button>
+					<Button className='flex-1 bg-red-400/70'>
+						{t('page.declineButton')}
+					</Button>
 				</div>
 			</div>
 		</div>

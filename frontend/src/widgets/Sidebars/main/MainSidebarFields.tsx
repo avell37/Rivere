@@ -2,7 +2,7 @@ import { Award, LayoutDashboard, SquareKanban } from 'lucide-react'
 
 import { PUBLIC_URL } from '@/shared/libs/constants/url.config'
 
-export const sidebarFields = (t: (key: string) => string) => [
+export const MainSidebarFields = (t: (key: string) => string) => [
 	{
 		title: t('dashboard.heading'),
 		url: PUBLIC_URL.dashboard(),

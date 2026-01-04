@@ -1,13 +1,11 @@
 import { LogOut, Settings, User } from 'lucide-react'
 
-import { logout } from '@/entities/User/model/api/userApi'
-
 import { PUBLIC_URL } from '@/shared/libs/constants/url.config'
 
-export const userMenuFields = () => [
+export const userMenuFields = (t: (key: string) => string) => [
 	{
 		id: 'profile',
-		title: 'Профиль',
+		title: t('dropdownUserMenu.profile'),
 		url: PUBLIC_URL.dashboard(),
 		icon: User
 	},
@@ -23,13 +21,13 @@ export const userMenuFields = () => [
 	// },
 	{
 		id: 'settings',
-		title: 'Настройки',
+		title: t('dropdownUserMenu.settings'),
 		url: PUBLIC_URL.userSettings(),
 		icon: Settings
 	},
 	{
 		id: 'logout',
-		title: 'Выход',
+		title: t('dropdownUserMenu.logout'),
 		url: PUBLIC_URL.boards(),
 		icon: LogOut
 	}

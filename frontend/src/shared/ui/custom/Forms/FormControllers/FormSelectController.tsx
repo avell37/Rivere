@@ -1,6 +1,5 @@
 import { Control } from 'react-hook-form'
 
-import { priorityCircle } from '@/shared/libs/priorityColors'
 import {
 	FormField,
 	FormItem,
@@ -17,14 +16,22 @@ interface FormSelectControllerProps {
 	name: string
 	control: Control<any>
 	label: string
+	placeholder: string
 	onChange?: (value: any) => void
+	options: {
+		value: string
+		label: string
+		icon?: React.ReactNode
+	}[]
 }
 
 export const FormSelectController = ({
 	name,
 	control,
 	label,
-	onChange
+	placeholder,
+	onChange,
+	options
 }: FormSelectControllerProps) => {
 	return (
 		<FormField
@@ -42,27 +49,17 @@ export const FormSelectController = ({
 						}}
 					>
 						<SelectTrigger className='w-48'>
-							<SelectValue placeholder='Приоритет задачи' />
+							<SelectValue placeholder={placeholder} />
 						</SelectTrigger>
 						<SelectContent className='w-full'>
-							<SelectItem value='LOW'>
-								<div className='flex items-center gap-2'>
-									<div className={priorityCircle.LOW} />
-									Низкая
-								</div>
-							</SelectItem>
-							<SelectItem value='MEDIUM'>
-								<div className='flex items-center gap-2'>
-									<div className={priorityCircle.MEDIUM} />
-									Средняя
-								</div>
-							</SelectItem>
-							<SelectItem value='HIGH'>
-								<div className='flex items-center gap-2'>
-									<div className={priorityCircle.HIGH} />
-									Высокая
-								</div>
-							</SelectItem>
+							{options.map(opt => (
+								<SelectItem key={opt.value} value={opt.value}>
+									<div className='flex items-center gap-2'>
+										{opt.icon}
+										{opt.label}
+									</div>
+								</SelectItem>
+							))}
 						</SelectContent>
 					</Select>
 

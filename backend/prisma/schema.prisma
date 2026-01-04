@@ -19,6 +19,8 @@ model User {
   nickname String
   avatar   String?
 
+  role UserRole @default(USER)
+
   boards        BoardMember[]
   messages      Message[]
   boardInvites  BoardInvite[]
@@ -28,6 +30,18 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model UserAchievement {
+  id String @id @default(uuid())
+
+  userId        String   @map("user_id")
+  achievementId String   @map("achievement_id")
+  achievedAt    DateTime @default(now()) @map("achieved_at")
+
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([userId, achievementId])
 }
 
 model Board {
@@ -182,6 +196,46 @@ model Notification {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
+}
+
+model Achievement {
+  id String @id @default(uuid())
+
+  code        String @unique
+  title       String
+  description String
+  icon        String
+  goal        Int
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userAchievements UserAchievement[]
+  progresses       AchievementProgress[]
+
+  @@map("achievements")
+}
+
+model AchievementProgress {
+  id String @id @default(uuid())
+
+  userId        String @map("user_id")
+  achievementId String @map("achievement_id")
+  progress      Int
+
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, achievementId])
+  @@map("achievement_progress")
+}
+
+enum UserRole {
+  USER
+  CREATOR
+  ADMIN
 }
 
 enum Role {

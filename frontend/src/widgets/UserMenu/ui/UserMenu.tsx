@@ -1,5 +1,6 @@
 'use client'
 import { EllipsisVertical } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
 import { useUserStore } from '@/entities/User/model/store/useUserStore'
@@ -30,7 +31,8 @@ import { userMenuFields } from './UserFields'
 
 export const UserMenu = () => {
 	const user = useUserStore(state => state.user)
-	const fields = userMenuFields()
+	const t = useTranslations()
+	const fields = userMenuFields(t)
 	const router = useRouter()
 	const { logoutUser, isPending } = useLogout()
 

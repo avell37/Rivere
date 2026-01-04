@@ -45,6 +45,7 @@ export class SessionAuthGuard implements CanActivate {
             },
             select: {
                 id: true,
+                role: true,
                 username: true,
                 email: true,
                 nickname: true,

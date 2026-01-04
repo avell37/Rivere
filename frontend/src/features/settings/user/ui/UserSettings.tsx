@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { useUserStore } from '@/entities/User/model/store/useUserStore'
 
 import { Sessions } from '@/features/sessions/ui/Sessions'
@@ -32,10 +34,11 @@ export const UserSettings = () => {
 		handleFileChange
 	} = useUploadAvatar()
 	const user = useUserStore(state => state.user)
+	const t = useTranslations('profile.settings')
 
 	return (
 		<div className='flex flex-col items-center justify-center px-6 py-4 gap-8'>
-			<h1 className='font-bold text-2xl'>Ваши настройки:</h1>
+			<h1 className='font-bold text-2xl'>{t('title')}</h1>
 			<div className='flex flex-col gap-6 w-full'>
 				<div className='flex flex-col justify-center items-center gap-4'>
 					<Avatar className='w-64 h-64 rounded-full -z-1'>
@@ -58,15 +61,19 @@ export const UserSettings = () => {
 						onClick={handleChangeAvatarClick}
 						disabled={isPending}
 					>
-						Изменить
+						{t('avatar.avatarChangeButton')}
 					</Button>
 				</div>
-				<h3 className='text-2xl font-bold'>Личная информация</h3>
+				<h3 className='text-2xl font-bold'>
+					{t('personalInformation.heading')}
+				</h3>
 				<Separator />
 				<div className='grid grid-cols-2 gap-6'>
 					<div className='flex items-end gap-2 w-full'>
 						<div className='flex flex-col gap-2 w-full'>
-							<Label>Имя пользователя</Label>
+							<Label>
+								{t('personalInformation.usernameLabel')}
+							</Label>
 							<Input
 								className='w-full'
 								disabled
@@ -74,15 +81,21 @@ export const UserSettings = () => {
 							/>
 						</div>
 						<Modal
-							trigger={<Button>Изменить</Button>}
+							trigger={
+								<Button>
+									{t('personalInformation.usernameButton')}
+								</Button>
+							}
 							contentClassname='max-w-md'
 						>
-							<ChangeUsernameForm />
+							<ChangeUsernameForm t={t} />
 						</Modal>
 					</div>
 					<div className='flex items-end gap-2 w-full'>
 						<div className='flex flex-col gap-2 w-full'>
-							<Label>Никнейм</Label>
+							<Label>
+								{t('personalInformation.nicknameLabel')}
+							</Label>
 							<Input
 								className='w-full'
 								disabled
@@ -90,21 +103,25 @@ export const UserSettings = () => {
 							/>
 						</div>
 						<Modal
-							trigger={<Button>Изменить</Button>}
+							trigger={
+								<Button>
+									{t('personalInformation.nicknameButton')}
+								</Button>
+							}
 							contentClassname='max-w-md'
 						>
-							<ChangeNicknameForm />
+							<ChangeNicknameForm t={t} />
 						</Modal>
 					</div>
 				</div>
 			</div>
 			<div className='flex flex-col gap-6 w-full'>
-				<h3 className='text-2xl font-bold'>Безопасность</h3>
+				<h3 className='text-2xl font-bold'>{t('security.heading')}</h3>
 				<Separator />
 				<div className='flex gap-6'>
 					<div className='flex items-end gap-2 w-full'>
 						<div className='flex flex-col gap-2 w-full'>
-							<Label>Почта</Label>
+							<Label>{t('security.emailLabel')}</Label>
 							<Input
 								className='w-full'
 								disabled
@@ -112,25 +129,29 @@ export const UserSettings = () => {
 							/>
 						</div>
 						<Modal
-							trigger={<Button>Изменить</Button>}
+							trigger={
+								<Button>{t('security.emailButton')}</Button>
+							}
 							contentClassname='max-w-md'
 						>
-							<ChangeEmailForm />
+							<ChangeEmailForm t={t} />
 						</Modal>
 					</div>
 					<div className='flex items-end gap-2 w-full'>
 						<div className='flex flex-col gap-2 w-full'>
-							<Label>Пароль</Label>
+							<Label>{t('security.passwordLabel')}</Label>
 							<p className='text-sm text-muted-foreground'>
-								Пароль скрыт из соображений безопасности
+								{t('security.passwordDescription')}
 							</p>
 						</div>
 
 						<Modal
-							trigger={<Button>Изменить пароль</Button>}
+							trigger={
+								<Button>{t('security.passwordButton')}</Button>
+							}
 							contentClassname='max-w-md'
 						>
-							<ChangePasswordForm />
+							<ChangePasswordForm t={t} />
 						</Modal>
 					</div>
 				</div>

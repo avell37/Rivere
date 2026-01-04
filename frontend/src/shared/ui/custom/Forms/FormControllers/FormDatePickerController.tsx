@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
+import { useLocale } from 'next-intl'
 import { Control } from 'react-hook-form'
 
 import {
@@ -20,6 +21,7 @@ interface FormDatePickerControllerProps {
 	name: string
 	control: Control<any>
 	label: string
+	placeholder: string
 	onChange?: (value: string) => void
 }
 
@@ -27,8 +29,11 @@ export const FormDatePickerController = ({
 	name,
 	control,
 	label,
+	placeholder,
 	onChange
 }: FormDatePickerControllerProps) => {
+	const locale = useLocale()
+
 	return (
 		<FormField
 			control={control}
@@ -49,8 +54,10 @@ export const FormDatePickerController = ({
 								>
 									<CalendarIcon />
 									{date
-										? format(date, 'PPP')
-										: 'Выберите дату'}
+										? new Intl.DateTimeFormat(locale, {
+												dateStyle: 'medium'
+											}).format(date)
+										: placeholder}
 								</Button>
 							</PopoverTrigger>
 
