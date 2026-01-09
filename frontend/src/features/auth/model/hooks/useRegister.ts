@@ -1,6 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -18,6 +19,7 @@ import {
 export const useRegister = () => {
 	const [showPassword, setShowPassword] = useState(false)
 	const router = useRouter()
+	const t = useTranslations()
 
 	const form = useForm<SignUpRequest>({
 		resolver: zodResolver(registerSchema),
@@ -32,7 +34,7 @@ export const useRegister = () => {
 			toast.success('Успешно')
 			router.replace(PUBLIC_URL.home())
 		},
-		onError: handleApiError
+		onError: err => handleApiError(err, t)
 	})
 
 	const onSubmit: SubmitHandler<SignUpRequest> = data => {

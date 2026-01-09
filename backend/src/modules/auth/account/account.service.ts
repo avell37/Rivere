@@ -15,12 +15,14 @@ import { FilesService } from 'src/modules/files/files.service';
 import { ChangeNicknameInput } from './inputs/change-nickname';
 import { saveSession } from 'src/shared/utils/session.util';
 import { Request } from 'express';
+import { StatisticsService } from 'src/modules/statistics/statistics.service';
 
 @Injectable()
 export class AccountService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly filesService: FilesService,
+        private readonly statistics: StatisticsService,
     ) {}
 
     async me(id: string) {
@@ -74,6 +76,8 @@ export class AccountService {
                 nickname: username,
             },
         });
+
+        await this.statistics.getOrCreate(user.id);
 
         return saveSession(req, user);
     }

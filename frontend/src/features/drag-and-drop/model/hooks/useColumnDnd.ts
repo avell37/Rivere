@@ -1,7 +1,7 @@
-import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core'
+import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { useMutation } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 
 import { handleApiError } from '@/shared/utils/handleApiError'
 
@@ -13,13 +13,10 @@ interface ColumnDndProps {
 }
 
 export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
-	const {
-		columns,
-		setColumns,
-		setActiveColumn,
-		setHoveredColumnId,
-		setActiveCard
-	} = useDndStore()
+	const t = useTranslations()
+	const queryClient = useQueryClient()
+	const { columns, setColumns, setActiveColumn, setActiveCard } =
+		useDndStore()
 
 	const reorderColumns = useMutation({
 		mutationKey: ['reorder columns', boardId],
@@ -30,8 +27,27 @@ export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
 			boardId: string
 			columns: string[]
 		}) => fetchReorderColumns({ boardId, columns }),
-		onError: handleApiError
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+		},
+		onError: err => handleApiError(err, t)
 	})
+
+	const getOverColumnId = (over: DragEndEvent['over']) => {
+		if (!over?.data.current) return null
+
+		const { type } = over.data.current
+
+		if (type === 'column') {
+			return over.data.current.column.id
+		} else if (type === 'card') {
+			return over.data.current.card.columnId
+		} else if (type === 'column-end') {
+			return over.data.current.columnId
+		}
+
+		return null
+	}
 
 	const onColumnDragStart = ({ active }: DragStartEvent) => {
 		setActiveCard(null)
@@ -42,20 +58,14 @@ export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
 	const onColumnDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event
 
-		setHoveredColumnId(null)
+		setActiveColumn(null)
 
-		if (!over) {
-			setActiveColumn(null)
-			return
-		}
+		if (!over) return
 
 		const activeId = active.data.current?.column.id
-		const overId = over.data.current?.column.id
+		const overId = getOverColumnId(over)
 
-		if (activeId === overId) {
-			setActiveColumn(null)
-			return
-		}
+		if (!activeId || !overId || activeId === overId) return
 
 		const oldIndex = columns.findIndex(col => col.id === activeId)
 		const newIndex = columns.findIndex(col => col.id === overId)
@@ -77,35 +87,8 @@ export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
 		})
 	}
 
-	const onColumnDragOver = (event: DragOverEvent) => {
-		const { over } = event
-
-		if (!over) {
-			setHoveredColumnId(null)
-			return
-		}
-
-		const data = over.data.current
-
-		if (!data) {
-			setHoveredColumnId(null)
-			return
-		}
-
-		const overType = over.data.current?.type
-
-		if (overType === 'column') {
-			setHoveredColumnId(data.column.id)
-		}
-
-		if (overType === 'card') {
-			setHoveredColumnId(data.card.columnId)
-		}
-	}
-
 	return {
 		onColumnDragStart,
-		onColumnDragEnd,
-		onColumnDragOver
+		onColumnDragEnd
 	}
 }

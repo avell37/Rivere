@@ -6,8 +6,16 @@ import { ChangeUsernameRequest } from '@/features/settings/user/model/validation
 import { baseAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs/constants/api.config'
 
-export const getUser = async () => {
+import { IUser } from '../types/IUser'
+import { IUserStatistics } from '../types/IUserStatistics'
+
+export const getUser = async (): Promise<IUser> => {
 	const response = await baseAxios.get(`${API_URL.account()}`)
+	return response.data
+}
+
+export const getStatistics = async (): Promise<IUserStatistics> => {
+	const response = await baseAxios.get(`${API_URL.statistics()}`)
 	return response.data
 }
 

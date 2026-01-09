@@ -1,15 +1,15 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class ChangePasswordInput {
-    @IsNotEmpty({ message: 'errors.account.password.required' })
-    @IsString({ message: 'errors.account.password.isString' })
-    @MinLength(6, { message: 'errors.account.password.min' })
-    @MaxLength(64, { message: 'errors.account.password.max' })
+    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
+    @IsString({ message: 'Пароль должен быть строкой' })
+    @MinLength(6, { message: 'Минимальная длина пароля 6 символов' })
+    @MaxLength(64, { message: 'Максимальная длина пароля 64 символа' })
     currentPassword: string;
 
-    @IsNotEmpty({ message: 'errors.account.password.required' })
-    @IsString({ message: 'errors.account.password.isString' })
-    @MinLength(6, { message: 'errors.account.password.min' })
-    @MaxLength(64, { message: 'errors.account.password.max' })
+    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
+    @IsString({ message: 'Пароль должен быть строкой' })
+    @MinLength(6, { message: 'Минимальная длина пароля 6 символов' })
+    @MaxLength(64, { message: 'Максимальная длина пароля 64 символа' })
     newPassword: string;
 }

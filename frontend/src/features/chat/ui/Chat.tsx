@@ -3,110 +3,62 @@
 import { Send } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 
-import { customAvatar } from '@/shared/libs/customAvatar'
-import { formattedDate } from '@/shared/libs/formattedDate'
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	Button,
-	Input
-} from '@/shared/ui/external'
+import { formatDate } from '@/shared/libs/formattedDate'
+import { Button, Input, ScrollArea } from '@/shared/ui/external'
+import { Spinner } from '@/shared/ui/external/Spinner/Spinner'
 
 import { useChat } from '../model/hooks/useChat'
 import { useChatStore } from '../model/store/useChatStore'
 
+import { ChatUserMessage } from './ChatUserMessage'
+
 export const Chat = ({ cardId }: { cardId: string }) => {
 	const {
+		t,
+		locale,
 		userId,
 		message,
 		messagesEndRef,
 		isPending,
+		handleKeySubmitMessage,
 		handleSubmitMessage,
 		setMessage
 	} = useChat({
 		cardId
 	})
 	const { messages } = useChatStore()
-	const t = useTranslations('card.chat')
-	const locale = useLocale()
-
-	const handleKeySubmitMessage = (
-		e: React.KeyboardEvent<HTMLInputElement>
-	) => {
-		if (e.key === 'Enter') {
-			e.preventDefault()
-			handleSubmitMessage()
-		}
-	}
 
 	if (isPending) {
-		return <div>Loading...</div>
+		return (
+			<div className='border-l bg-zinc-900 p-4'>
+				<div className='flex justify-center items-center h-[450px] w-[450px]'>
+					<Spinner className='size-8' />
+				</div>
+			</div>
+		)
 	}
 
 	if (!userId) return null
 
 	return (
-		<div className='flex flex-col items-center p-4 border-l'>
-			<div className='flex flex-col h-[500px] w-[450px]'>
-				<div className='flex-1 flex flex-col gap-4 rounded-md overflow-y-auto'>
-					{messages.map((message: any) => (
-						<div key={message.id}>
-							{userId === message.userId ? (
-								<div className='flex justify-end items-end gap-2 ml-10'>
-									<div className='w-[350px]'>
-										<div
-											className={`relative p-2 border rounded-md wrap-break-word
-										${userId === message.userId ? 'bg-blue-500' : 'bg-purple-950/30'}`}
-										>
-											{message.text}
-											<span className='text-[8px] flex justify-end items-end'>
-												{formattedDate(
-													message.createdAt,
-													locale
-												)}
-											</span>
-										</div>
-									</div>
-								</div>
-							) : (
-								<div className='flex items-end gap-2 mr-10'>
-									<Avatar className='size-10 rounded-full'>
-										<AvatarImage
-											src={
-												message.user.avatar
-													? message.user.avatar
-													: null
-											}
-											alt={message.user.avatar}
-										/>
-										<AvatarFallback>
-											{customAvatar(
-												message.user.nickname
-											)}
-										</AvatarFallback>
-									</Avatar>
-									<div className='w-[350px]'>
-										{message.user.nickname}
-										<div
-											className={`relative p-2 border rounded-md 
-										${userId === message.userId ? 'bg-blue-500' : 'bg-purple-950/30'}`}
-										>
-											{message.text}
-											<span className='text-[8px] flex justify-end items-end pl-6'>
-												{formattedDate(
-													message.createdAt,
-													locale
-												)}
-											</span>
-										</div>
-									</div>
-								</div>
-							)}
-						</div>
-					))}
-					<div ref={messagesEndRef} />
-				</div>
+		<div className='flex flex-col items-center p-4 border-l bg-zinc-900'>
+			<div className='flex flex-col h-[450px] w-[450px]'>
+				<ScrollArea className='h-[400px] w-[450px] rounded-md p-2'>
+					<div className='flex-1 flex flex-col gap-4 rounded-md overflow-y-auto p-2'>
+						{messages.map((message: any, i) => (
+							<ChatUserMessage
+								key={message.id}
+								currentUserId={userId}
+								message={message}
+								previousMessage={
+									i > 0 ? messages[i - 1] : undefined
+								}
+								locale={locale}
+							/>
+						))}
+						<div ref={messagesEndRef} />
+					</div>
+				</ScrollArea>
 				<div className='relative mt-2'>
 					<Input
 						className='relative'

@@ -1,5 +1,5 @@
 import { customAvatar } from '@/shared/libs/customAvatar'
-import { formattedDate } from '@/shared/libs/formattedDate'
+import { formatDate, formatTime } from '@/shared/libs/formattedDate'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/external'
 
 import { IBoardMember } from '../model/types/IBoardMember'
@@ -15,7 +15,10 @@ export const BoardMemberItem = ({ member }: { member: IBoardMember }) => {
 			</Avatar>
 			<div>
 				<div>{member?.user?.nickname}</div>
-				<div>Присоединился: {formattedDate(member?.createdAt)}</div>
+				<div>
+					Присоединился: {formatDate(member?.createdAt)} в{' '}
+					{formatTime(member?.createdAt)}
+				</div>
 			</div>
 		</div>
 	)

@@ -1,3 +1,5 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+
 import {
 	Dialog,
 	DialogContent,
@@ -27,9 +29,19 @@ export const Modal = ({
 			<DialogTrigger asChild>{trigger}</DialogTrigger>
 			<DialogContent className={contentClassname}>
 				<DialogHeader>
-					<DialogTitle>{title}</DialogTitle>
-					{description && (
+					{title ? (
+						<DialogTitle>{title}</DialogTitle>
+					) : (
+						<VisuallyHidden>
+							<DialogTitle>{title}</DialogTitle>
+						</VisuallyHidden>
+					)}
+					{description ? (
 						<DialogDescription>{description}</DialogDescription>
+					) : (
+						<VisuallyHidden>
+							<DialogDescription>{description}</DialogDescription>
+						</VisuallyHidden>
 					)}
 				</DialogHeader>
 				{children}

@@ -1,12 +1,14 @@
 import { SquareArrowOutUpRight } from 'lucide-react'
+import { useLocale } from 'next-intl'
 
-import { formattedDate } from '@/shared/libs/formattedDate'
+import { formatDate } from '@/shared/libs/formattedDate'
 import { priorityCircle, priorityColors } from '@/shared/libs/priorityColors'
 
 import { ICard } from '../model/types/ICard'
 
 export const CardOverlay = ({ card }: { card: ICard }) => {
-	const date = formattedDate(card.deadline)
+	const locale = useLocale()
+	const date = formatDate(card.deadline, locale)
 
 	return (
 		<div

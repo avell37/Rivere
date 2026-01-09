@@ -31,8 +31,8 @@
 	"achievements": {
 		"heading": "Achievements"
 	},
-	"dashboard": {
-		"heading": "Dashboard"
+	"statistics": {
+		"heading": "Statistics"
 	},
 	"boards": {
 		"heading": "Boards",
@@ -158,7 +158,7 @@
 				"clearSessionsDescription": "All sessions except the current one will be permanently ended.",
 				"clearSessionsActionText": "End",
 				"clearSessionsCancelText": "Cancel",
-				"lastActive": "Last active: {date}"
+				"lastActive": "Last active: {date} in {time}"
 			}
 		}
 	},
@@ -186,13 +186,11 @@
 	},
 	"creator": {
 		"heading": "Creator panel",
-		"create": {
-			"achievements": {
-				"heading": "Create achievement"
-			},
-			"notifications": {
-				"heading": "Create notification"
-			}
+		"achievements": {
+			"heading": "Achievements"
+		},
+		"notifications": {
+			"heading": "Notifications"
 		}
 	},
 	"theme": {
@@ -221,71 +219,15 @@
 	},
 	"errors": {
 		"unexpected": "An unexpected error occurred. Please try again later.",
-		"auth": {
-			"login": {
-				"required": "Field is required",
-				"isString": "Login must be a string"
-			},
-			"password": {
-				"required": "Field is required",
-				"isString": "Password must be a string",
-				"min": "Minimum password length is 6 characters",
-				"max": "Maximum password length is 64 characters"
-			}
-		},
 		"account": {
 			"usernameExists": "Username is already taken",
 			"emailExists": "Email is already taken",
 			"userNotFound": "User not found",
-			"notValidCurrentPassword": "Invalid current password",
-			"username": {
-				"required": "Field is required",
-				"isString": "Username must be a string",
-				"min": "Minimum username length is 4 characters",
-				"max": "Maximum username length is 32 characters"
-			},
-			"nickname": {
-				"required": "Field is required",
-				"isString": "Nickname must be a string",
-				"min": "Minimum nickname length is 4 characters",
-				"max": "Maximum nickname length is 32 characters"
-			},
-			"email": {
-				"required": "Field is required",
-				"isString": "Email must be a string"
-			},
-			"password": {
-				"required": "Field is required",
-				"isString": "Password must be a string",
-				"min": "Minimum password length is 6 characters",
-				"max": "Maximum password length is 64 characters"
-			}
+			"notValidCurrentPassword": "Invalid current password"
 		},
 		"board": {
 			"exists": "You already have a board with this name",
 			"notFound": "Board not found",
-			"create": {
-				"title": {
-					"required": "Board title is required",
-					"isString": "Board title must be a string",
-					"min": "Board title must be at least 4 characters long",
-					"max": "Board title must be no more than 32 characters long"
-				},
-				"url": {
-					"isString": "Board image must be a string"
-				},
-				"color": {
-					"isString": "Board color must be a string"
-				}
-			},
-			"update": {
-				"title": {
-					"required": "Board title is required",
-					"isString": "Board title must be a string",
-					"min": "Board title must be at least 4 characters long",
-					"max": "Board title must be no more than 32 characters long"
-				}
-			},
 			"invite": {
 				"notMember": "You are not a member of this board",
 				"notFound": "Invite not found",
@@ -297,10 +239,25 @@
 			"notFound": "Card not found",
 			"notFoundMultiple": "One or more cards not found"
 		},
+		"column": {
+			"notFound": "Column not found",
+			"notFoundMultiple": "One or more columns not found"
+		},
+		"messages": {
+			"missingFields": "Not all data was provided."
+		},
+		"notifications": {
+			"unauthorized": "You are not authorized"
+		},
 		"session": {
 			"notFound": "Session not found",
 			"terminateCurrent": "Cannot terminate current session",
 			"accessDenied": "Access denied"
+		},
+		"creator": {
+			"achievements": {
+				"notFound": "Achievement not found"
+			}
 		}
 	}
 }

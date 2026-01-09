@@ -6,15 +6,16 @@ import { SquareArrowOutUpRight } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 
 import { DeleteCardModal } from '@/features/card/delete/ui/DeleteCardModal'
-import { EditCardForm } from '@/features/card/edit/ui/EditCardForm'
-import { Chat } from '@/features/chat/ui/Chat'
 
-import { formattedDate } from '@/shared/libs/formattedDate'
+import { formatDate } from '@/shared/libs/formattedDate'
 import { priorityCircle, priorityColors } from '@/shared/libs/priorityColors'
 import { priorityOptions } from '@/shared/libs/priorityConfig'
 import { Modal } from '@/shared/ui/custom'
 
 import { Priority } from '../model/types/CardPriority'
+
+import { CardDoneButton } from './CardDoneButton'
+import { CardModal } from './CardModal'
 
 interface CardProps {
 	id: string
@@ -22,7 +23,9 @@ interface CardProps {
 	description?: string
 	priority: Priority
 	deadline: string
+	done: boolean
 	columnId: string
+	boardId: string
 }
 
 export const Card = ({
@@ -31,7 +34,9 @@ export const Card = ({
 	description,
 	priority,
 	deadline,
-	columnId
+	done,
+	columnId,
+	boardId
 }: CardProps) => {
 	const tPriority = useTranslations('priority')
 	const locale = useLocale()
@@ -53,6 +58,7 @@ export const Card = ({
 				description,
 				priority,
 				deadline,
+				done,
 				columnId
 			}
 		}
@@ -65,12 +71,22 @@ export const Card = ({
 	return (
 		<div
 			className={`relative p-6 dark:bg-neutral-900 rounded-lg shadow list-none ${priorityColors[priority] ?? ''}
-			${isDragging ? 'opacity-70' : null} transition-all duration-200 cursor-grab active:cursor-grabbing`}
+			${isDragging ? 'opacity-70' : null} transition-all duration-200 cursor-grab active:cursor-grabbing
+			${done && 'opacity-80'}`}
 		>
 			<li ref={setNodeRef} style={style} {...attributes} {...listeners}>
 				<div className='flex flex-col gap-2 dark:text-white wrap-break-word'>
-					<h3 className='text-sm'>{title}</h3>
-					<span className='text-xs'>{description}</span>
+					<div className='flex items-center gap-2'>
+						<CardDoneButton
+							cardId={id}
+							done={done}
+							boardId={boardId}
+						/>
+						<h3 className='text-sm'>{title}</h3>
+					</div>
+					{description && (
+						<span className='text-xs'>{description}</span>
+					)}
 				</div>
 				<div className='flex flex-col items-end justify-end gap-2 pt-4 pb-2'>
 					<div className='flex gap-1'>
@@ -80,30 +96,31 @@ export const Card = ({
 						</span>
 					</div>
 					<span className='text-xs'>
-						{formattedDate(deadline, locale)}
+						до: {formatDate(deadline, locale)}
 					</span>
 				</div>
 			</li>
-			<Modal
-				trigger={
-					<div className='cursor-pointer'>
-						<SquareArrowOutUpRight size={16} />
-					</div>
-				}
-				contentClassname='sm:max-w-5xl'
-				children={
-					<div className='flex justify-between'>
-						<EditCardForm
+			<div className='flex items-center gap-2'>
+				<Modal
+					trigger={
+						<div className='cursor-pointer w-fit'>
+							<SquareArrowOutUpRight size={16} />
+						</div>
+					}
+					contentClassname='sm:max-w-5xl p-0'
+					children={
+						<CardModal
 							id={id}
 							title={title}
 							description={description}
 							priority={priority}
 							deadline={deadline}
+							done={done}
+							boardId={boardId}
 						/>
-						<Chat cardId={id} />
-					</div>
-				}
-			/>
+					}
+				/>
+			</div>
 			<DeleteCardModal cardId={id} />
 		</div>
 	)

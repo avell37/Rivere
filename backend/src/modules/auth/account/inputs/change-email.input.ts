@@ -1,8 +1,8 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class ChangeEmailInput {
-    @IsNotEmpty({ message: 'errors.account.email.required' })
-    @IsString({ message: 'errors.account.email.isString' })
+    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
+    @IsString({ message: 'Электронная почта должна быть строкой' })
     @IsEmail()
     email: string;
 }

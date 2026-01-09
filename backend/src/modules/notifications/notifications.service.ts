@@ -15,7 +15,10 @@ export class NotificationsService {
 
     async getUserNotifications(userId: string) {
         if (!userId) {
-            throw new UnauthorizedException('Вы не авторизованы');
+            throw new UnauthorizedException({
+                code: 'errors.notifications.unauthorized',
+                message: 'Вы не авторизованы',
+            });
         }
 
         return this.prisma.notification.findMany({

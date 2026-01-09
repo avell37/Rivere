@@ -1,6 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -14,6 +15,7 @@ import {
 } from '../validation/create-card.z.validation'
 
 export const useCreateCard = (columnId: string) => {
+	const t = useTranslations()
 	const form = useForm<CreateCardRequest>({
 		resolver: zodResolver(CreateCardSchema),
 		defaultValues: {
@@ -29,7 +31,7 @@ export const useCreateCard = (columnId: string) => {
 			form.reset()
 			toast.success('Карточка успешно создана.')
 		},
-		onError: handleApiError
+		onError: err => handleApiError(err, t)
 	})
 
 	const onSubmit: SubmitHandler<CreateCardRequest> = data => mutate(data)

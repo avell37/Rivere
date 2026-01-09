@@ -2,7 +2,9 @@ import { cookies } from 'next/headers'
 
 import { SERVER_URL } from '@/shared/libs/constants/api.config'
 
-export const fetchBoardByIdServer = async (id: string) => {
+import { IBoard } from '../types/IBoard'
+
+export const fetchBoardByIdServer = async (id: string): Promise<IBoard> => {
 	const cookieStore = cookies()
 
 	const response = await fetch(`${SERVER_URL}/boards/${id}`, {

@@ -8,11 +8,13 @@ import { ColumnOverlay } from '@/entities/Column/ui/ColumnOverlay'
 interface BoardDragOverlayProps {
 	activeColumn: IColumn | null
 	activeCard: ICard | null
+	boardId: string
 }
 
 export const BoardDragOverlay = ({
 	activeCard,
-	activeColumn
+	activeColumn,
+	boardId
 }: BoardDragOverlayProps) => {
 	return (
 		<DragOverlay adjustScale={false}>
@@ -23,7 +25,7 @@ export const BoardDragOverlay = ({
 			) : null}
 			{activeColumn ? (
 				<div className='w-80'>
-					<ColumnOverlay column={activeColumn} />
+					<ColumnOverlay column={activeColumn} boardId={boardId} />
 				</div>
 			) : null}
 		</DragOverlay>

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import { Socket, io } from 'socket.io-client'
 
@@ -19,6 +20,18 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 
 	const { messages, setMessages, addMessage } = useChatStore()
+
+	const t = useTranslations('card.chat')
+	const locale = useLocale()
+
+	const handleKeySubmitMessage = (
+		e: React.KeyboardEvent<HTMLInputElement>
+	) => {
+		if (e.key === 'Enter') {
+			e.preventDefault()
+			handleSubmitMessage()
+		}
+	}
 
 	useEffect(() => {
 		const socket = getChatSocket()
@@ -73,10 +86,13 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 	}, [messages])
 
 	return {
+		t,
+		locale,
 		userId: user?.id ?? null,
 		message,
 		messagesEndRef,
 		isPending,
+		handleKeySubmitMessage,
 		handleSubmitMessage,
 		setMessage
 	}

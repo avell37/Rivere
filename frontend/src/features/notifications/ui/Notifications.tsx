@@ -9,8 +9,7 @@ import { NotificationsList } from './NotificationsList'
 
 export const Notifications = () => {
 	const notifications = useNotificationsStore(state => state.notifications)
-	const { handleMarkAllRead, handleClearAll, isClearing, isPending } =
-		useNotificationsActions()
+	const { handleClearAll, isClearing } = useNotificationsActions()
 	const t = useTranslations('notifications')
 
 	if (!notifications.length)

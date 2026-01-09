@@ -3,6 +3,7 @@ export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL as string
 export const API_URL = {
 	root: (url = '') => `${url ? url : ''}`,
 
+	achievements: (url = '') => API_URL.root(`/achievements/${url}`),
 	auth: (url = '') => API_URL.root(`/account/${url}`),
 	account: (url = '') => API_URL.root(`/account/${url}`),
 	session: (url = '') => API_URL.root(`/session/${url}`),
@@ -10,5 +11,6 @@ export const API_URL = {
 	columns: (url = '') => API_URL.root(`/columns/${url}`),
 	cards: (url = '') => API_URL.root(`/cards/${url}`),
 	files: (url = '') => API_URL.root(`/files/${url}`),
-	notifications: (url = '') => API_URL.root(`/notifications/${url}`)
+	notifications: (url = '') => API_URL.root(`/notifications/${url}`),
+	statistics: (url = '') => API_URL.root(`/statistics/${url}`)
 }

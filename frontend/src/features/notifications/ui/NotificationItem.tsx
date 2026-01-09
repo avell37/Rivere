@@ -1,7 +1,7 @@
 import { Bell } from 'lucide-react'
 import { useLocale } from 'next-intl'
 
-import { formattedDate } from '@/shared/libs/formattedDate'
+import { formatDate } from '@/shared/libs/formattedDate'
 
 interface NotificationItemProps {
 	message: string
@@ -26,7 +26,7 @@ export const NotificationItem = ({
 			<div>
 				<p>{message}</p>
 				<span className='absolute bottom-2 right-2 text-xs'>
-					{formattedDate(new Date(createdAt), locale)}
+					{formatDate(new Date(createdAt), locale)}
 				</span>
 			</div>
 		</div>

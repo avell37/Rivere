@@ -1,17 +1,14 @@
 import { IsInt, IsString, Min } from 'class-validator';
 
 export class CreateAchievementInput {
-    @IsString()
+    @IsString({ message: 'Код должен быть строкой' })
     code: string;
 
-    @IsString()
+    @IsString({ message: 'Название достижения должно быть строкой' })
     title: string;
 
-    @IsString()
+    @IsString({ message: 'Описание достижения должно быть строкой' })
     description: string;
-
-    @IsString()
-    icon: string;
 
     @IsInt()
     @Min(1)

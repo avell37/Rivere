@@ -3,11 +3,12 @@ import { useEffect } from 'react'
 
 import { getUser } from '../api/userApi'
 import { useUserStore } from '../store/useUserStore'
+import { IUser } from '../types/IUser'
 
 export const useGetUser = () => {
 	const setUser = useUserStore(state => state.setUser)
 
-	const { data, status, error } = useQuery({
+	const { data, status, error } = useQuery<IUser>({
 		queryKey: ['get user data'],
 		queryFn: getUser,
 		retry: false

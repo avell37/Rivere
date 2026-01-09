@@ -16,7 +16,7 @@ import { SignInRequest, loginSchema } from '../validation/login.z.validation'
 export const useLogin = () => {
 	const [showPassword, setShowPassword] = useState(false)
 	const router = useRouter()
-	const t = useTranslations('error')
+	const t = useTranslations()
 
 	const form = useForm<SignInRequest>({
 		resolver: zodResolver(loginSchema),
@@ -31,7 +31,7 @@ export const useLogin = () => {
 			toast.success('Успешно')
 			router.replace(PUBLIC_URL.boards())
 		},
-		onError: handleApiError
+		onError: err => handleApiError(err, t)
 	})
 
 	const onSubmit: SubmitHandler<SignInRequest> = data => {

@@ -4,7 +4,12 @@ import { CardList } from '@/entities/Card/ui/CardList'
 
 import { IColumn } from '../model/types/IColumn'
 
-export const ColumnOverlay = ({ column }: { column: IColumn }) => {
+interface ColumnOverlayProps {
+	column: IColumn
+	boardId: string
+}
+
+export const ColumnOverlay = ({ column, boardId }: ColumnOverlayProps) => {
 	return (
 		<ul className='w-74 flex flex-col gap-3 break-all'>
 			<div className='dark:bg-neutral-900 p-4 rounded-lg shadow flex items-center gap-2 dark:text-white'>
@@ -14,7 +19,11 @@ export const ColumnOverlay = ({ column }: { column: IColumn }) => {
 					{column.cards.length}
 				</span>
 			</div>
-			<CardList cards={column.cards} columnId={column.id} />
+			<CardList
+				cards={column.cards}
+				columnId={column.id}
+				boardId={boardId}
+			/>
 		</ul>
 	)
 }

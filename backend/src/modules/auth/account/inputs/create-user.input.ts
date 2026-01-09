@@ -1,23 +1,30 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+    IsEmail,
+    IsNotEmpty,
+    IsString,
+    MaxLength,
+    MinLength,
+} from 'class-validator';
 
 export class CreateUserInput {
-    @IsNotEmpty({ message: 'errors.account.username.required' })
-    @IsString({ message: 'errors.account.username.isString' })
+    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
+    @IsString({ message: 'Имя пользователя должно быть строкой' })
     @MinLength(4, {
-        message: 'errors.account.username.min',
+        message: 'Минимальная длина имени пользователя 4 символа',
     })
     @MaxLength(32, {
-        message: 'errors.account.username.max',
+        message: 'Максимальная длина имени пользователя 32 символа',
     })
     username: string;
 
-    @IsNotEmpty({ message: 'errors.account.email.required' })
-    @IsString({ message: 'errors.account.email.isString' })
+    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
+    @IsString({ message: 'Электронная почта должна быть строкой' })
+    @IsEmail()
     email: string;
 
-    @IsNotEmpty({ message: 'errors.account.password.required' })
-    @IsString({ message: 'errors.account.password.isString' })
-    @MinLength(6, { message: 'errors.account.password.min' })
-    @MaxLength(64, { message: 'errors.account.password.max' })
+    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
+    @IsString({ message: 'Пароль должен быть строкой' })
+    @MinLength(6, { message: 'Минимальная длина пароля 6 символов' })
+    @MaxLength(64, { message: 'Максимальная длина пароля 64 символа' })
     password: string;
 }

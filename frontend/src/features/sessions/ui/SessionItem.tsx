@@ -1,18 +1,18 @@
 import { X } from 'lucide-react'
 
 interface SessionProps {
-	icon: React.ReactNode
 	title: string
 	date: string
 	isCurrent?: boolean
+	icon: React.ReactNode
 	onTerminate?: () => void
 }
 
 export const SessionItem = ({
-	icon,
 	title,
 	date,
 	isCurrent,
+	icon,
 	onTerminate
 }: SessionProps) => {
 	return (

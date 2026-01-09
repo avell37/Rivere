@@ -28,6 +28,7 @@ export const ColumnList = ({
 						id={column.id}
 						title={column.title}
 						cards={column.cards}
+						boardId={column.boardId}
 					/>
 				))}
 			</SortableContext>

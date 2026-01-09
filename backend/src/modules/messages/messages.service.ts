@@ -10,7 +10,10 @@ export class MessagesService {
         const { chatId, userId, text } = dto;
 
         if (!chatId || !userId || !text) {
-            throw new BadRequestException('Переданы не все данные.');
+            throw new BadRequestException({
+                code: 'errors.messages.missingFields',
+                message: 'Переданы не все данные.',
+            });
         }
 
         return this.prisma.message.create({

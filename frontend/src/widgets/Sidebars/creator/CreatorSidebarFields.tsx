@@ -4,13 +4,13 @@ import { PRIVATE_URL } from '@/shared/libs/constants/url.config'
 
 export const CreatorSidebarFields = (t: (key: string) => string) => [
 	{
-		title: t('creator.create.achievements.heading'),
-		url: PRIVATE_URL.createAchievement(),
+		title: t('creator.achievements.heading'),
+		url: PRIVATE_URL.achievements(),
 		icon: CircleStar
 	},
 	{
-		title: t('creator.create.notifications.heading'),
-		url: PRIVATE_URL.createNotification(),
+		title: t('creator.notifications.heading'),
+		url: PRIVATE_URL.notifications(),
 		icon: BellPlus
 	}
 ]

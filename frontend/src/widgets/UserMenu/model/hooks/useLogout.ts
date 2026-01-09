@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
@@ -9,6 +10,7 @@ import { handleApiError } from '@/shared/utils/handleApiError'
 
 export const useLogout = () => {
 	const router = useRouter()
+	const t = useTranslations()
 
 	const { mutate: logoutUser, isPending } = useMutation({
 		mutationKey: ['logout user'],
@@ -17,7 +19,7 @@ export const useLogout = () => {
 			toast.success('Вы успешно вышли из аккаунта')
 			router.push(`${PUBLIC_URL.auth()}/login`)
 		},
-		onError: handleApiError
+		onError: err => handleApiError(err, t)
 	})
 
 	return {

@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -11,6 +12,7 @@ import { handleApiError } from '@/shared/utils/handleApiError'
 type EditableKey = 'title' | 'description' | 'priority' | 'deadline'
 
 export const useUpdateCard = (cardId: string, key: EditableKey) => {
+	const t = useTranslations()
 	const queryClient = useQueryClient()
 	const [isEditing, setIsEditing] = useState(false)
 	const { getValues } = useFormContext()
@@ -22,7 +24,7 @@ export const useUpdateCard = (cardId: string, key: EditableKey) => {
 			toast.success('Успешно')
 			queryClient.invalidateQueries({ queryKey: ['card'] })
 		},
-		onError: handleApiError
+		onError: err => handleApiError(err, t)
 	})
 
 	useEffect(() => {

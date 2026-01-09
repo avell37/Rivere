@@ -1,19 +1,21 @@
-import { Trophy } from 'lucide-react'
+import { IAchievement } from '../model/types/IAchievement'
 
 import { AchievementItem } from './AchievementItem'
 
-export const AchievementList = ({ ach }) => {
+export const AchievementList = ({
+	achievements
+}: {
+	achievements: IAchievement[]
+}) => {
 	return (
-		<>
-			{ach.map(item => (
+		<div>
+			{achievements?.map(item => (
 				<AchievementItem
 					key={item.id}
-					icon={item.icon}
 					title={item.title}
 					description={item.description}
-					date={item.date}
 				/>
 			))}
-		</>
+		</div>
 	)
 }

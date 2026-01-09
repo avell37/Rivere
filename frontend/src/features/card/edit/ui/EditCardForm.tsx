@@ -1,9 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TextAlignJustify } from 'lucide-react'
+import { Check, TextAlignJustify } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 
-import { Form, Separator } from '@/shared/ui/external'
+import { CardDoneButton } from '@/entities/Card/ui/CardDoneButton'
+
+import { Button, Form } from '@/shared/ui/external'
 
 import {
 	EditCardRequest,
@@ -21,6 +23,8 @@ interface EditCardProps {
 	description?: string
 	priority: EditCardRequest['priority']
 	deadline: string
+	done: boolean
+	boardId: string
 }
 
 export const EditCardForm = ({
@@ -28,7 +32,9 @@ export const EditCardForm = ({
 	title,
 	description,
 	priority,
-	deadline
+	deadline,
+	done,
+	boardId
 }: EditCardProps) => {
 	const t = useTranslations('card.edit')
 	const form = useForm<EditCardRequest>({
@@ -43,10 +49,10 @@ export const EditCardForm = ({
 
 	return (
 		<Form {...form}>
-			<div className='flex flex-col gap-6 w-full'>
-				<div className='flex flex-col gap-6'>
+			<div className='flex flex-col gap-6 w-full pt-4'>
+				<div className='flex items-center gap-2'>
+					<CardDoneButton cardId={id} done={done} boardId={boardId} />
 					<EditableTitle cardId={id} />
-					<Separator />
 				</div>
 				<div className='flex gap-4'>
 					<EditablePriority cardId={id} t={t} />

@@ -6,12 +6,14 @@ import { UpdateCardInput } from './inputs/update-card.input';
 import { ChatService } from '../chat/chat.service';
 import { ReorderCardInput } from './inputs/reorder-card.input';
 import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
+import { StatisticsService } from '../statistics/statistics.service';
 
 @Injectable()
 export class CardService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly chat: ChatService,
+        private readonly statistics: StatisticsService,
     ) {}
 
     async create(userId: string, input: CreateCardInput) {
@@ -32,6 +34,10 @@ export class CardService {
                 priority,
                 deadline,
                 position: lastCard ? lastCard.position + 1 : 0,
+                done: false,
+            },
+            include: {
+                column: true,
             },
         });
 
@@ -57,12 +63,16 @@ export class CardService {
             columnId: card.columnId,
         });
 
-        return this.prisma.card.update({
+        const updatedCard = await this.prisma.card.update({
             where: { id: cardId },
-            data: {
-                ...input,
-            },
+            data: input,
         });
+
+        if (!card.done && updatedCard.done) {
+            await this.statistics.onCardCompleted(userId);
+        }
+
+        return updatedCard;
     }
 
     async reorder(userId: string, input: ReorderCardInput) {

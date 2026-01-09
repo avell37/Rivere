@@ -1,7 +1,7 @@
 import { Monitor, Smartphone } from 'lucide-react'
 import { useLocale } from 'next-intl'
 
-import { formattedDate } from '@/shared/libs/formattedDate'
+import { formatDate, formatTime } from '@/shared/libs/formattedDate'
 
 import { useSession } from '../model/hooks/useSession'
 import { ISession } from '../model/types/ISession'
@@ -35,7 +35,8 @@ export const SessionList = ({
 					}
 					title={`${session.browser} | ${session.device}`}
 					date={t('lastActive', {
-						date: formattedDate(session.lastActiveAt, locale)
+						date: formatDate(session.lastActiveAt, locale),
+						time: formatTime(session.lastActiveAt, locale)
 					})}
 					isCurrent={session.isCurrent}
 					onTerminate={() => terminateSelectedSession(session.id)}

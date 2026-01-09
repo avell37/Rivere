@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
 
 	if (authRoutes.includes(pathname)) {
 		if (session) {
-			return NextResponse.redirect(new URL('/dashboard', req.url))
+			return NextResponse.redirect(new URL('/boards', req.url))
 		}
 		return NextResponse.next()
 	}
@@ -30,14 +30,14 @@ export async function middleware(req: NextRequest) {
 			)
 
 			if (!res.ok) {
-				return NextResponse.redirect(new URL('/dashboard', req.url))
+				return NextResponse.redirect(new URL('/boards', req.url))
 			}
 
 			const user = await res.json()
 			const allowedRoles = ['CREATOR', 'ADMIN']
 
 			if (!allowedRoles.includes(user.role)) {
-				return NextResponse.redirect(new URL('/dashboard', req.url))
+				return NextResponse.redirect(new URL('/boards', req.url))
 			}
 		} catch (err) {
 			return NextResponse.redirect(new URL('/', req.url))
@@ -50,7 +50,7 @@ export async function middleware(req: NextRequest) {
 export const config = {
 	matcher: [
 		'/auth/:path*',
-		'/dashboard/:path*',
+		'/statistics/:path*',
 		'/boards/:path*',
 		'/creator/:path*'
 	]

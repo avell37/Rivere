@@ -21,6 +21,7 @@ model User {
 
   role UserRole @default(USER)
 
+  userStats     UserStats?
   boards        BoardMember[]
   messages      Message[]
   boardInvites  BoardInvite[]
@@ -32,16 +33,41 @@ model User {
   @@map("users")
 }
 
-model UserAchievement {
+model UserStats {
+  id String @id @default(uuid())
+
+  totalCompletedCards Int @default(0)
+
+  usersInvited Int @default(0)
+
+  dailyCompletedCards Json      @default("{}")
+  currentStreakDays   Int       @default(0)
+  longestStreakDays   Int       @default(0)
+  lastActiveDate      DateTime?
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_stats")
+}
+
+model UserAchievements {
   id String @id @default(uuid())
 
   userId        String   @map("user_id")
   achievementId String   @map("achievement_id")
   achievedAt    DateTime @default(now()) @map("achieved_at")
 
-  achievement Achievement @relation(fields: [achievementId], references: [id])
+  achievements Achievement @relation(fields: [achievementId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@unique([userId, achievementId])
+  @@map("user_achievements")
 }
 
 model Board {
@@ -122,6 +148,7 @@ model Card {
   position    Int
   priority    Priority
   deadline    DateTime?
+  done        Boolean
 
   tags Tag[]
 
@@ -204,14 +231,13 @@ model Achievement {
   code        String @unique
   title       String
   description String
-  icon        String
   goal        Int
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  userAchievements UserAchievement[]
-  progresses       AchievementProgress[]
+  users      UserAchievements[]
+  progresses AchievementProgress[]
 
   @@map("achievements")
 }

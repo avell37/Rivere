@@ -6,19 +6,9 @@ export const userMenuFields = (t: (key: string) => string) => [
 	{
 		id: 'profile',
 		title: t('dropdownUserMenu.profile'),
-		url: PUBLIC_URL.dashboard(),
+		url: PUBLIC_URL.statistics(),
 		icon: User
 	},
-	// {
-	//     title: "Действия",
-	//     url: PUBLIC_URL.boards(),
-	//     icon: SquareKanban
-	// },
-	// {
-	//     title: "Карточки",
-	//     url: PUBLIC_URL.boards(),
-	//     icon: SquareKanban
-	// },
 	{
 		id: 'settings',
 		title: t('dropdownUserMenu.settings'),

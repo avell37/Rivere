@@ -1,7 +1,9 @@
 import { baseAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs/constants/api.config'
 
-export const getUserNotifications = async () => {
+import { INotification } from '../types/INotification'
+
+export const getUserNotifications = async (): Promise<INotification[]> => {
 	const response = await baseAxios.get(`${API_URL.notifications()}`)
 	return response.data
 }

@@ -3,12 +3,14 @@ import {
 	DndContext,
 	DragEndEvent,
 	DragStartEvent,
-	closestCorners
+	rectIntersection
 } from '@dnd-kit/core'
 
 import { ColumnList } from '@/entities/Column/ui/ColumnList'
 
 import { useCardDnd, useColumnDnd, useDndStore } from '@/features/drag-and-drop'
+
+import { useSidebar } from '@/shared/ui/external'
 
 import { BoardHeaderActions } from '@/widgets/board-header-actions/ui/BoardHeaderActions'
 
@@ -19,10 +21,10 @@ import { BoardDragOverlay } from './BoardDragOverlay'
 export const BoardView = ({ boardId }: { boardId: string }) => {
 	const { columns, board, isLoading, backgroundStyle, sensors } =
 		useBoard(boardId)
-	const { onColumnDragStart, onColumnDragEnd, onColumnDragOver } =
-		useColumnDnd({ boardId })
-	const { onCardDragStart, onCardDragEnd } = useCardDnd()
+	const { onColumnDragStart, onColumnDragEnd } = useColumnDnd({ boardId })
+	const { onCardDragStart, onCardDragEnd } = useCardDnd({ boardId })
 	const { activeCard, activeColumn } = useDndStore()
+	const { state } = useSidebar()
 
 	if (isLoading || !board) return <div>Loading...</div>
 
@@ -45,17 +47,19 @@ export const BoardView = ({ boardId }: { boardId: string }) => {
 				style={backgroundStyle}
 			/>
 			<div className='fixed items-center px-4 py-3 w-full bg-zinc-700/30 backdrop-blur-md'>
-				<div className='inline-flex items-center justify-between mx-auto w-full max-w-[1450px]'>
+				<div
+					className={`inline-flex items-center justify-between mx-auto w-full transition-all
+					${state === 'collapsed' ? 'max-w-[1900px]' : 'max-w-[1620px]'}`}
+				>
 					<h1 className='font-bold'>{board?.title}</h1>
 					<BoardHeaderActions board={board} />
 				</div>
 			</div>
 			<DndContext
 				sensors={sensors}
-				collisionDetection={closestCorners}
+				collisionDetection={rectIntersection}
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
-				onDragOver={onColumnDragOver}
 			>
 				<div className='flex flex-col gap-6 p-4 h-full pt-20'>
 					<ColumnList boardId={boardId} columns={columns} />
@@ -63,6 +67,7 @@ export const BoardView = ({ boardId }: { boardId: string }) => {
 				<BoardDragOverlay
 					activeCard={activeCard}
 					activeColumn={activeColumn}
+					boardId={boardId}
 				/>
 			</DndContext>
 		</div>

@@ -20,7 +20,7 @@ export const LanguageSwitcher = () => {
 		const savedLang = Cookies.get('language')
 		if (savedLang) {
 			setLanguage(savedLang)
-		}
+		} else setLanguage('ru')
 	}, [])
 
 	const handleSwitchLanguage = (value: string) => {

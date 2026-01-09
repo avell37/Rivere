@@ -1,6 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -14,6 +15,7 @@ import {
 } from '../validation/edit-column.z.validation'
 
 export const useEditColumn = (columnId: string) => {
+	const t = useTranslations()
 	const form = useForm<EditColumnRequest>({
 		resolver: zodResolver(EditColumnSchema),
 		defaultValues: {
@@ -29,7 +31,7 @@ export const useEditColumn = (columnId: string) => {
 			form.reset()
 			toast.success('Колонка успешно отредактирована.')
 		},
-		onError: handleApiError
+		onError: err => handleApiError(err, t)
 	})
 
 	const onSubmit: SubmitHandler<EditColumnRequest> = data => mutate(data)

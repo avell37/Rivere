@@ -2,26 +2,22 @@
 
 import { CreateBoardModal } from '@/features/board/create/ui/CreateBoardModal'
 
-import { useGetBoards } from '../model/hooks/useGetBoards'
 import { IBoard } from '../model/types/IBoard'
 
 import { BoardItem } from './BoardItem'
 
-export const BoardList = () => {
-	const { boards, isPending } = useGetBoards()
-
+export const BoardList = ({ boards }: { boards: IBoard[] }) => {
 	return (
 		<div className='flex flex-wrap gap-4'>
-			{!isPending &&
-				boards.map((board: IBoard) => (
-					<div key={board.id}>
-						<BoardItem
-							id={board.id}
-							title={board.title}
-							members={board.members.length}
-						/>
-					</div>
-				))}
+			{boards?.map((board: IBoard) => (
+				<div key={board.id}>
+					<BoardItem
+						id={board.id}
+						title={board.title}
+						members={board.members.length}
+					/>
+				</div>
+			))}
 			<CreateBoardModal />
 		</div>
 	)

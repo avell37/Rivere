@@ -3,10 +3,9 @@ export interface IMessage {
 	text: string
 	user: {
 		avatar: string | null
-		nickname: string | null
+		nickname: string
 	}
 	userId: string
-	chatId: string
-	createdAt: Date
-	updatedAt: Date
+	createdAt: string
+	updatedAt: string
 }

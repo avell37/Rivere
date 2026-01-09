@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
 import { useUserStore } from '@/entities/User/model/store/useUserStore'
+import { UserAvatar } from '@/entities/User/ui/UserAvatar'
 
 import { SERVER_URL } from '@/shared/libs/constants/api.config'
 import { customAvatar } from '@/shared/libs/customAvatar'
@@ -28,6 +29,7 @@ import {
 import { useLogout } from '../model/hooks/useLogout'
 
 import { userMenuFields } from './UserFields'
+import { UserMenuSkeleton } from './UserMenuSkeleton'
 
 export const UserMenu = () => {
 	const user = useUserStore(state => state.user)
@@ -36,6 +38,18 @@ export const UserMenu = () => {
 	const router = useRouter()
 	const { logoutUser, isPending } = useLogout()
 
+	const handleMenuClick = (item: any) => {
+		if (item.id === 'logout') {
+			logoutUser()
+			return
+		}
+		router.push(item.url)
+	}
+
+	if (!user) {
+		return <UserMenuSkeleton />
+	}
+
 	return (
 		<SidebarFooter>
 			<SidebarMenu>
@@ -43,23 +57,16 @@ export const UserMenu = () => {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<SidebarMenuButton size='lg'>
-								<Avatar className='h-8 w-8 rounded-full'>
-									{user?.avatar ? (
-										<AvatarImage
-											src={`${SERVER_URL}${user?.avatar}`}
-										/>
-									) : (
-										<AvatarFallback>
-											{customAvatar(user?.username || '')}
-										</AvatarFallback>
-									)}
-								</Avatar>
+								<UserAvatar
+									avatar={user?.avatar}
+									username={user?.username}
+								/>
 								<div className='flex flex-col leading-tight'>
 									<span className='truncate font-medium'>
-										{user?.nickname || ''}
+										{user?.nickname}
 									</span>
 									<span className='text-xs'>
-										{user?.email || ''}
+										{user?.email}
 									</span>
 								</div>
 								<div className='ml-auto'>
@@ -72,10 +79,7 @@ export const UserMenu = () => {
 								<DropdownMenuItem
 									key={item.id}
 									disabled={item.id === 'logout' && isPending}
-									onClick={() => {
-										if (item.id === 'logout') logoutUser()
-										else router.push(item.url)
-									}}
+									onClick={() => handleMenuClick(item)}
 								>
 									<item.icon />
 									{item.title}

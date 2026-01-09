@@ -18,7 +18,7 @@ export const CreatorSidebar = () => {
 		<Sidebar
 			headerContent={
 				<Link
-					href={PUBLIC_URL.dashboard()}
+					href={PUBLIC_URL.statistics()}
 					className='text-3xl pl-2 font-bold max-w-[100px]'
 				>
 					Rivere

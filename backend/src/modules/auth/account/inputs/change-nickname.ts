@@ -1,13 +1,13 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class ChangeNicknameInput {
-    @IsNotEmpty({ message: 'errors.account.nickname.required' })
-    @IsString({ message: 'errors.account.nickname.isString' })
+    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
+    @IsString({ message: 'Имя пользователя должно быть строкой' })
     @MinLength(4, {
-        message: 'errors.account.nickname.min',
+        message: 'Минимальная длина имени пользователя 4 символа',
     })
     @MaxLength(32, {
-        message: 'errors.account.nickname.max',
+        message: 'Максимальная длина имени пользователя 32 символа',
     })
     nickname: string;
 }

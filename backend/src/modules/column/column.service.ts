@@ -33,7 +33,11 @@ export class ColumnService {
             where: { id: columnId },
         });
 
-        if (!column) throw new NotFoundException('Колонка не найдена');
+        if (!column)
+            throw new NotFoundException({
+                code: 'errors.column.notFound',
+                message: 'Колонка не найдена',
+            });
 
         await checkBoardAccess({
             prisma: this.prisma,
@@ -71,7 +75,10 @@ export class ColumnService {
         });
 
         if (existingColumns.length !== columns.length) {
-            throw new NotFoundException('Некоторые колонки не найдены');
+            throw new NotFoundException({
+                code: 'errors.column.notFoundMultiple',
+                message: 'Одна или несколько колонок не найдены',
+            });
         }
 
         const operations = columns.map((id, index) => {
@@ -94,7 +101,11 @@ export class ColumnService {
             where: { id: columnId },
         });
 
-        if (!column) throw new NotFoundException('Колонка не найдена');
+        if (!column)
+            throw new NotFoundException({
+                code: 'errors.column.notFound',
+                message: 'Колонка не найдена',
+            });
 
         await checkBoardAccess({
             prisma: this.prisma,

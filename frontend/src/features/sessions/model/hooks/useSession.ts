@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { handleApiError } from '@/shared/utils/handleApiError'
@@ -8,10 +9,15 @@ import {
 	terminateAllExceptCurrent,
 	terminateSession
 } from '../api/sessionApi'
+import { ISession } from '../types/ISession'
 
 export const useSession = () => {
+	const t = useTranslations()
 	const queryClient = useQueryClient()
-	const { data: userSessions, isPending: sessionsIsPending } = useQuery({
+
+	const { data: userSessions, isPending: sessionsIsPending } = useQuery<
+		ISession[]
+	>({
 		queryKey: ['get user sessions'],
 		queryFn: () => getUserSessions()
 	})
@@ -26,7 +32,7 @@ export const useSession = () => {
 					queryKey: ['get user sessions']
 				})
 			},
-			onError: handleApiError
+			onError: err => handleApiError(err, t)
 		})
 
 	const { mutate: terminateAllSessions, isPending: terminateAllIsPending } =
@@ -39,7 +45,7 @@ export const useSession = () => {
 					queryKey: ['get user sessions']
 				})
 			},
-			onError: handleApiError
+			onError: err => handleApiError(err, t)
 		})
 
 	return {

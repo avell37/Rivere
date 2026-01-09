@@ -5,15 +5,8 @@ import { BoardMembersList } from '@/entities/Board/ui/BoardMembersList'
 
 import { CreateInviteModal } from '@/features/board-invite/ui/CreateInviteModal'
 
-import { customAvatar } from '@/shared/libs/customAvatar'
-import { formattedDate } from '@/shared/libs/formattedDate'
 import { Modal } from '@/shared/ui/custom'
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	Button
-} from '@/shared/ui/external'
+import { Button } from '@/shared/ui/external'
 
 interface BoardHeaderActionsProps {
 	board: IBoard
@@ -21,7 +14,7 @@ interface BoardHeaderActionsProps {
 
 export const BoardHeaderActions = ({ board }: BoardHeaderActionsProps) => {
 	return (
-		<div className='flex items-center gap-2 '>
+		<div className='flex items-center gap-2'>
 			<Modal
 				trigger={
 					<Button

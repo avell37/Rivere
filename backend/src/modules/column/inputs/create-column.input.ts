@@ -1,16 +1,17 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateColumnInput {
-    @IsString({ message: 'ID доски должно быть строкой' })
+    @IsNotEmpty({ message: 'ID доски обязателен' })
+    @IsString({ message: 'ID доски должен быть строкой' })
     boardId: string;
 
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
     @IsString({ message: 'Название колонки должно быть строкой' })
     @MinLength(4, {
-        message: 'Минимальная длина названия колонки - 4 символа',
+        message: 'Название колонки должно быть не менее 4 символов',
     })
     @MaxLength(32, {
-        message: 'Максимальная длина названия колонки - 32 символа',
+        message: 'Название колонки должно быть не более 32 символов',
     })
     title: string;
 }

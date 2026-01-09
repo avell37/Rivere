@@ -1,21 +1,18 @@
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { useMutation } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 
 import { handleApiError } from '@/shared/utils/handleApiError'
 
 import { fetchMoveCardToColumn, fetchReorderCards } from '../api/reorderApi'
 import { useDndStore } from '../store/useDndStore'
 
-export const useCardDnd = () => {
-	const {
-		columns,
-		setColumns,
-		setActiveCard,
-		setActiveColumn,
-		setHoveredColumnId
-	} = useDndStore()
+export const useCardDnd = ({ boardId }: { boardId: string }) => {
+	const t = useTranslations()
+	const queryClient = useQueryClient()
+	const { columns, setColumns, setActiveCard, setActiveColumn } =
+		useDndStore()
 
 	const reorderMutation = useMutation({
 		mutationKey: ['reorder cards'],
@@ -26,19 +23,19 @@ export const useCardDnd = () => {
 			columnId: string
 			cards: string[]
 		}) => fetchReorderCards({ columnId, cards }),
-		onError: handleApiError
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+		},
+		onError: err => handleApiError(err, t)
 	})
 
 	const moveMutation = useMutation({
 		mutationFn: fetchMoveCardToColumn,
-		onError: handleApiError
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+		},
+		onError: err => handleApiError(err, t)
 	})
-
-	const findColumnByCardId = (cardId: string) => {
-		return columns.find(column =>
-			column.cards.some(card => card.id === cardId)
-		)
-	}
 
 	const findColumnById = (columnId: string) => {
 		return columns.find(column => column.id === columnId)
@@ -53,7 +50,6 @@ export const useCardDnd = () => {
 	const onCardDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event
 		setActiveCard(null)
-		setHoveredColumnId(null)
 
 		if (!over) return
 

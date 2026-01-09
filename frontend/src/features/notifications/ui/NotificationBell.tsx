@@ -1,7 +1,5 @@
 import { Bell } from 'lucide-react'
 
-import { Button } from '@/shared/ui/external'
-
 import { useNotificationsStore } from '../model/store/useNotificationsStore'
 
 export const NotificationBell = () => {

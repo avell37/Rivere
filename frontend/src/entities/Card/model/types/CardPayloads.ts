@@ -13,4 +13,5 @@ export interface UpdateCardPayload {
 	description?: string
 	priority?: Priority
 	deadline?: string
+	done?: boolean
 }

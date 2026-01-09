@@ -1,11 +1,11 @@
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class ReorderColumnInput {
-    @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
-    @IsString({ message: 'ID доски должно быть строкой' })
+    @IsNotEmpty({ message: 'ID доски обязателен' })
+    @IsString({ message: 'ID доски должен быть строкой' })
     boardId: string;
 
-    @IsArray()
-    @IsString({ each: true })
+    @IsArray({ message: 'Список колонок должен быть массивом' })
+    @IsString({ each: true, message: 'Каждый ID колонки должен быть строкой' })
     columns: string[];
 }

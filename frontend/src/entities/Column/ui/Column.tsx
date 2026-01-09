@@ -1,5 +1,6 @@
 'use client'
 
+import { useDroppable } from '@dnd-kit/core'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { GripVertical } from 'lucide-react'
@@ -9,16 +10,15 @@ import { CardList } from '@/entities/Card/ui/CardList'
 
 import { DeleteColumnModal } from '@/features/column/delete/ui/DeleteColumnModal'
 import { EditColumnModal } from '@/features/column/edit/ui/EditColumnModal'
-import { useDndStore } from '@/features/drag-and-drop/model/store/useDndStore'
 
 interface ColumnProps {
 	id: string
 	title: string
 	cards: ICard[]
+	boardId: string
 }
 
-export const Column = ({ id, title, cards }: ColumnProps) => {
-	const { hoveredColumnId } = useDndStore()
+export const Column = ({ id, title, cards, boardId }: ColumnProps) => {
 	const {
 		attributes,
 		listeners,
@@ -37,6 +37,13 @@ export const Column = ({ id, title, cards }: ColumnProps) => {
 			}
 		}
 	})
+	const { isOver } = useDroppable({
+		id: `column-${id}`,
+		data: {
+			type: 'column',
+			columnId: id
+		}
+	})
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
@@ -49,7 +56,7 @@ export const Column = ({ id, title, cards }: ColumnProps) => {
 			style={style}
 			className={`w-76 flex flex-col gap-3 break-all
 				${isDragging ? 'opacity-70' : ''} 
-				${hoveredColumnId === id ? 'bg-neutral-900/20 dark:bg-neutral-900/20 rounded-lg' : ''}`}
+				${isOver && 'bg-neutral-900/20 dark:bg-neutral-900/20 rounded-lg'}`}
 		>
 			<div className='dark:bg-neutral-900 p-4 rounded-lg shadow flex justify-between gap-2 dark:text-white'>
 				<div className='flex items-center gap-2'>
@@ -68,7 +75,7 @@ export const Column = ({ id, title, cards }: ColumnProps) => {
 					<DeleteColumnModal columnId={id} />
 				</div>
 			</div>
-			<CardList cards={cards} columnId={id} />
+			<CardList cards={cards} columnId={id} boardId={boardId} />
 		</div>
 	)
 }

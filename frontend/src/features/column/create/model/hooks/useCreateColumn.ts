@@ -1,6 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -14,6 +15,7 @@ import {
 } from '../validation/create-column.z.validation'
 
 export const useCreateColumn = (boardId: string) => {
+	const t = useTranslations()
 	const form = useForm<CreateColumnRequest>({
 		resolver: zodResolver(CreateColumnSchema),
 		defaultValues: {
@@ -29,7 +31,7 @@ export const useCreateColumn = (boardId: string) => {
 			form.reset()
 			toast.success('Колонка успешно создана.')
 		},
-		onError: handleApiError
+		onError: err => handleApiError(err, t)
 	})
 
 	const onSubmit: SubmitHandler<CreateColumnRequest> = data => mutate(data)
