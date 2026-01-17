@@ -9,8 +9,33 @@ export class NotificationsService {
         private readonly prisma: PrismaService,
     ) {}
 
-    async send(userId: string, notification: any) {
+    async createNotification(
+        userId: string,
+        payload: {
+            type: string;
+            message: string;
+            entityId?: string;
+        },
+    ) {
+        if (!userId) {
+            throw new UnauthorizedException({
+                code: 'errors.unauthorized',
+                message: 'Вы не авторизованы',
+            });
+        }
+
+        const notification = await this.prisma.notification.create({
+            data: {
+                userId,
+                type: payload.type,
+                message: payload.message,
+                entityId: payload.entityId || null,
+            },
+        });
+
         this.gateway.sendNotification(userId, notification);
+
+        return notification;
     }
 
     async getUserNotifications(userId: string) {
@@ -32,6 +57,7 @@ export class NotificationsService {
             where: { userId },
             data: { read: true },
         });
+        return { success: true };
     }
 
     async clearNotifications(userId: string) {

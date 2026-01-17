@@ -1,6 +1,6 @@
 import { format, parseISO } from 'date-fns'
 
-import { getActivityColor } from '@/shared/libs/getActivityColor'
+import { getActivityColor } from '@/shared/config'
 import {
 	Tooltip,
 	TooltipContent,
@@ -8,12 +8,9 @@ import {
 	TooltipTrigger
 } from '@/shared/ui/external'
 
-interface ActivityCellProps {
-	date: string
-	value: number
-}
+import { ActivityCellProps } from '../../model/types/StatisticsProps'
 
-export const ActivityCell = ({ date, value }: ActivityCellProps) => {
+export const ActivityCell = ({ date, value, t }: ActivityCellProps) => {
 	return (
 		<TooltipProvider delayDuration={100}>
 			<Tooltip>
@@ -27,7 +24,9 @@ export const ActivityCell = ({ date, value }: ActivityCellProps) => {
 					className='flex flex-col gap-1 text-xs'
 				>
 					<span>{format(parseISO(date), 'dd.MM.yyyy')}</span>
-					<span>Закрыто карточек: {value}</span>
+					<span>
+						{t('closedCards')} {value}
+					</span>
 				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>

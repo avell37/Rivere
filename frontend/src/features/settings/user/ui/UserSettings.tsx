@@ -2,25 +2,16 @@
 
 import { useTranslations } from 'next-intl'
 
-import { useUserStore } from '@/entities/User/model/store/useUserStore'
+import { UserAvatar, useUserStore } from '@/entities/User'
 
-import { Sessions } from '@/features/sessions/ui/Sessions'
+import { Sessions } from '@/features/sessions'
 
-import { SERVER_URL } from '@/shared/libs/constants/api.config'
-import { customAvatar } from '@/shared/libs/customAvatar'
 import { Modal } from '@/shared/ui/custom'
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	Button,
-	Input,
-	Label,
-	Separator
-} from '@/shared/ui/external'
+import { Button, Input, Label, Separator } from '@/shared/ui/external'
 
 import { useUploadAvatar } from '../model/hooks/useUploadAvatar'
 
+import { UserSettingsSkeleton } from './UserSettingsSkeleton'
 import { ChangeEmailForm } from './forms/ChangeEmailForm'
 import { ChangeNicknameForm } from './forms/ChangeNicknameForm'
 import { ChangePasswordForm } from './forms/ChangePasswordForm'
@@ -36,20 +27,18 @@ export const UserSettings = () => {
 	const user = useUserStore(state => state.user)
 	const t = useTranslations('profile.settings')
 
+	if (!user) return <UserSettingsSkeleton />
+
 	return (
 		<div className='flex flex-col items-center justify-center px-6 py-4 gap-8'>
 			<h1 className='font-bold text-2xl'>{t('title')}</h1>
 			<div className='flex flex-col gap-6 w-full'>
 				<div className='flex flex-col justify-center items-center gap-4'>
-					<Avatar className='w-64 h-64 rounded-full -z-1'>
-						{user?.avatar ? (
-							<AvatarImage src={`${SERVER_URL}${user?.avatar}`} />
-						) : (
-							<AvatarFallback>
-								{customAvatar(user?.username || 'User')}
-							</AvatarFallback>
-						)}
-					</Avatar>
+					<UserAvatar
+						avatar={user.avatar}
+						username={user.username}
+						avatarClassname='w-64 h-64 rounded-full -z-1'
+					/>
 					<Input
 						type='file'
 						accept='image/*'

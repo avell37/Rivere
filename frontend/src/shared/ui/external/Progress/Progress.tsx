@@ -3,7 +3,7 @@
 import * as ProgressPrimitive from '@radix-ui/react-progress'
 import * as React from 'react'
 
-import { cn } from '@/shared/libs/twMerge'
+import { cn } from '@/shared/utils/twMerge'
 
 function Progress({
 	className,

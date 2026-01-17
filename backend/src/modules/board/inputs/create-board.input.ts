@@ -6,7 +6,7 @@ import {
     MinLength,
 } from 'class-validator';
 
-export class CreateBoardBackground {
+export class BoardBackground {
     @IsOptional()
     @IsString({ message: 'Изображение доски должно быть строкой' })
     url?: string | null;
@@ -24,5 +24,5 @@ export class CreateBoardInput {
     title: string;
 
     @IsOptional()
-    background: CreateBoardBackground;
+    background: BoardBackground;
 }

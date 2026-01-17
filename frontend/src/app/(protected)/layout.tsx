@@ -1,13 +1,12 @@
 'use client'
 
-import { useGetUser } from '@/entities/User/model/hooks/useGetUser'
+import { useGetUser } from '@/entities/User'
 
-import { useNotifications } from '@/features/notifications/model/hooks/useNotifications'
+import { useNotifications } from '@/features/notifications'
 
-import { SidebarProvider } from '@/shared/ui/external/Sidebar/ui/Sidebar'
+import { SidebarProvider } from '@/shared/ui/external'
 
-import { Header } from '@/widgets/Header/Header'
-import { MainSidebar } from '@/widgets/Sidebars/main/MainSidebar'
+import { Header, MainSidebar } from '@/widgets'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { data } = useGetUser()

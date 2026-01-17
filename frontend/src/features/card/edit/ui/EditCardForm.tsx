@@ -1,12 +1,14 @@
+'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Check, TextAlignJustify } from 'lucide-react'
+import { TextAlignJustify } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 
-import { CardDoneButton } from '@/entities/Card/ui/CardDoneButton'
+import { CardDoneButton } from '@/entities/Card'
 
-import { Button, Form } from '@/shared/ui/external'
+import { Form } from '@/shared/ui/external'
 
+import { EditCardProps } from '../model/types/EditCardProps'
 import {
 	EditCardRequest,
 	EditCardSchema
@@ -16,16 +18,6 @@ import { EditableDeadline } from './EditableDeadline'
 import { EditableDescription } from './EditableDescription'
 import { EditablePriority } from './EditablePriority'
 import { EditableTitle } from './EditableTitle'
-
-interface EditCardProps {
-	id: string
-	title: string
-	description?: string
-	priority: EditCardRequest['priority']
-	deadline: string
-	done: boolean
-	boardId: string
-}
 
 export const EditCardForm = ({
 	id,
@@ -51,7 +43,12 @@ export const EditCardForm = ({
 		<Form {...form}>
 			<div className='flex flex-col gap-6 w-full pt-4'>
 				<div className='flex items-center gap-2'>
-					<CardDoneButton cardId={id} done={done} boardId={boardId} />
+					<CardDoneButton
+						cardId={id}
+						done={done}
+						boardId={boardId}
+						className='mt-2'
+					/>
 					<EditableTitle cardId={id} />
 				</div>
 				<div className='flex gap-4'>

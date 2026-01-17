@@ -1,21 +1,18 @@
-import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { useLocale } from 'next-intl'
 import { Control } from 'react-hook-form'
 
 import {
 	Button,
+	Calendar,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormMessage
-} from '@/shared/ui/external'
-import { Calendar } from '@/shared/ui/external/Calendar/Calendar'
-import {
+	FormMessage,
 	Popover,
 	PopoverContent,
 	PopoverTrigger
-} from '@/shared/ui/external/Popover/Popover'
+} from '@/shared/ui/external'
 
 interface FormDatePickerControllerProps {
 	name: string

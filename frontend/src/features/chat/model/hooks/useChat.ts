@@ -1,19 +1,21 @@
+'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useLocale, useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
-import { Socket, io } from 'socket.io-client'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Socket } from 'socket.io-client'
 
-import { useUserStore } from '@/entities/User/model/store/useUserStore'
+import { useUserStore } from '@/entities/User'
 
 import { fetchChat } from '../api/chatApi'
 import { useChatStore } from '../store/useChatStore'
+import { IChat } from '../types/IChat'
 import { IMessage } from '../types/IMessage'
 import { getChatSocket } from '../utils/chat.socket'
 
 export const useChat = ({ cardId }: { cardId: string }) => {
 	const user = useUserStore(state => state.user)
 
-	const [message, setMessage] = useState<string>()
+	const [message, setMessage] = useState<string>('')
 	const [chatId, setChatId] = useState<string | null>(null)
 
 	const socketRef = useRef<Socket | null>(null)
@@ -42,9 +44,10 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		}
 	}, [])
 
-	const { data: chat, isPending } = useQuery({
+	const { data: chat, isPending } = useQuery<IChat>({
 		queryKey: ['messages', cardId],
-		queryFn: () => fetchChat(cardId)
+		queryFn: () => fetchChat(cardId),
+		enabled: Boolean(cardId)
 	})
 
 	useEffect(() => {
@@ -68,9 +71,9 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 			socket.emit('leave', { chatId })
 			socket.off('message:new', handleMessage)
 		}
-	}, [chatId])
+	}, [chatId, addMessage])
 
-	const handleSubmitMessage = () => {
+	const handleSubmitMessage = useCallback(() => {
 		if (!socketRef.current || !user || !chatId || !message?.trim()) return
 
 		socketRef.current.emit('message', {
@@ -79,7 +82,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 			text: message
 		})
 		setMessage('')
-	}
+	}, [user, chatId, message])
 
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView()

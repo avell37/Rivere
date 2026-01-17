@@ -4,7 +4,7 @@ import { fetchUserBoards } from '../api/boardApi'
 import { IBoard } from '../types/IBoard'
 
 export const useGetBoards = () => {
-	const { data: boards, isPending } = useQuery<IBoard[]>({
+	const { data: boards, isPending } = useQuery<IBoard[], unknown>({
 		queryKey: ['get boards'],
 		queryFn: fetchUserBoards
 	})

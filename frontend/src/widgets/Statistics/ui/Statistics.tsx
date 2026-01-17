@@ -1,37 +1,27 @@
 'use client'
-import { useGetStatistics } from '@/entities/User/model/hooks/useGetStatistics'
-import { ActivityCard } from '@/entities/User/ui/statistics/ActivityCard'
-import { ActivitySkeleton } from '@/entities/User/ui/statistics/ActivitySkeleton'
-import { StatisticsCard } from '@/entities/User/ui/statistics/StatisticsCard'
 
-import { Spinner } from '@/shared/ui/external/Spinner/Spinner'
+import { ActivityCard, StatisticsCard, useGetStatistics } from '@/entities/User'
+
+import { StatisticsFields } from './StatisticsFields'
+import { StatisticsSkeleton } from './StatisticsSkeleton'
 
 export const Statistics = () => {
 	const { data, isLoading, days } = useGetStatistics()
 
-	if (isLoading || !data) {
-		return (
-			<div className='flex justify-center items-center h-full'>
-				<Spinner className='size-16' />
-			</div>
-		)
-	}
+	if (isLoading || !data) return <StatisticsSkeleton />
+
+	const fields = StatisticsFields(data)
 
 	return (
 		<div className='flex flex-col gap-6 p-4 w-full'>
-			<div className='w-full flex gap-5'>
-				<StatisticsCard
-					content={`Количество выполненных карточек: ${data.totalCompletedCards}`}
-				/>
-				<StatisticsCard
-					content={`Текущий стрик: ${data.currentStreakDays} дней`}
-				/>
-				<StatisticsCard
-					content={`Рекордный стрик: ${data.currentStreakDays} дней`}
-				/>
-				<StatisticsCard
-					content={`Пользователей приглашено в доску: ${data.usersInvited}`}
-				/>
+			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
+				{fields.map(field => (
+					<StatisticsCard
+						key={field.label}
+						label={field.label}
+						value={field.value}
+					/>
+				))}
 			</div>
 			<div className='w-full'>
 				<ActivityCard days={days} />

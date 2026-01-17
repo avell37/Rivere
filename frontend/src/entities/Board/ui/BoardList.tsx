@@ -1,6 +1,6 @@
 'use client'
 
-import { CreateBoardModal } from '@/features/board/create/ui/CreateBoardModal'
+import { CreateBoardModal } from '@/features/board'
 
 import { IBoard } from '../model/types/IBoard'
 

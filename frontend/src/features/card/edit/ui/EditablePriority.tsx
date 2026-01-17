@@ -1,7 +1,8 @@
+'use client'
 import { useTranslations } from 'next-intl'
 import { useFormContext } from 'react-hook-form'
 
-import { getPrioritySelectOptions } from '@/shared/libs/priorityConfig'
+import { getPrioritySelectOptions } from '@/shared/config'
 import { FormSelectController } from '@/shared/ui/custom'
 
 import { useUpdateCard } from '../model/hooks/useUpdateCard'

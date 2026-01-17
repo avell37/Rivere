@@ -59,23 +59,6 @@ export class ChatGateway {
             return;
         }
 
-        const members = message.chat.card.column.board.members;
-
-        for (const member of members) {
-            if (member.userId === dto.userId) continue;
-
-            const notification = await this.prisma.notification.create({
-                data: {
-                    userId: member.userId,
-                    type: 'NEW_MESSAGE',
-                    message: 'Пришло новое сообщение в чате',
-                    entityId: message.chat.id,
-                },
-            });
-
-            this.notification.send(member.userId, notification);
-        }
-
         this.server.to(`chat_${dto.chatId}`).emit('message:new', message);
     }
 }

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
-import { ICard } from '@/entities/Card/model/types/ICard'
-import { IColumn } from '@/entities/Column/model/types/IColumn'
+import { ICard } from '@/entities/Card'
+import { IColumn } from '@/entities/Column'
 
 interface DndStore {
 	cards: ICard[]

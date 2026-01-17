@@ -26,7 +26,10 @@ export class SessionAuthGuard implements CanActivate {
 
         if (!session || !userId) {
             destroySession(request, this.configService);
-            throw new UnauthorizedException('Необходима авторизация');
+            throw new UnauthorizedException({
+                code: 'errors.user.unauthorized',
+                message: 'Необходима авторизация',
+            });
         }
 
         const sessionKey = `${this.configService.getOrThrow<string>('SESSION_FOLDER')}${session.id}`;
@@ -34,9 +37,10 @@ export class SessionAuthGuard implements CanActivate {
 
         if (!sessionExists) {
             destroySession(request, this.configService);
-            throw new UnauthorizedException(
-                'Сессия истекла, пожалуйста, войдите снова',
-            );
+            throw new UnauthorizedException({
+                code: 'errors.user.unauthorized',
+                message: 'Необходима авторизация',
+            });
         }
 
         const user = await this.prisma.user.findUnique({
@@ -55,7 +59,10 @@ export class SessionAuthGuard implements CanActivate {
 
         if (!user) {
             destroySession(request, this.configService);
-            throw new UnauthorizedException('Пользователь не найден');
+            throw new UnauthorizedException({
+                code: 'errors.user.notFound',
+                message: 'Пользователь не найден',
+            });
         }
 
         request.user = user;

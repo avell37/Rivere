@@ -13,7 +13,10 @@ export const SessionUser = createParamDecorator(
         const user = request.user as User;
 
         if (!user) {
-            throw new UnauthorizedException('Вы не авторизованы');
+            throw new UnauthorizedException({
+                code: 'errors.user.notFound',
+                message: 'Пользователь не найден',
+            });
         }
 
         return data ? user[data] : user;

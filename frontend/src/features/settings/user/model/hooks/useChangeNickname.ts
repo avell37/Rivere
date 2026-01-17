@@ -1,12 +1,13 @@
+'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { changeNickname } from '@/entities/User/model/api/userApi'
+import { changeNickname } from '@/entities/User'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { handleApiError } from '@/shared/utils'
 
 import {
 	ChangeNicknameRequest,
@@ -28,8 +29,8 @@ export const useChangeNickname = () => {
 		mutationFn: (data: ChangeNicknameRequest) => changeNickname(data),
 		onSuccess: () => {
 			form.reset()
-			toast.success('Данные успешно изменены')
 			queryClient.invalidateQueries({ queryKey: ['get user data'] })
+			toast.success('Данные успешно изменены')
 		},
 		onError: err => handleApiError(err, t)
 	})

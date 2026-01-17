@@ -1,3 +1,4 @@
+import { Bell } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import { Button } from '@/shared/ui/external'
@@ -12,31 +13,32 @@ export const Notifications = () => {
 	const { handleClearAll, isClearing } = useNotificationsActions()
 	const t = useTranslations('notifications')
 
-	if (!notifications.length)
-		return (
-			<div className='p-4'>
-				<div className='flex justify-between'>
-					<h2 className='text-gray-400 text-sm'>{t('heading')}</h2>
-				</div>
-				<p className='text-center pt-6'>Нет новых уведомлений</p>
-			</div>
-		)
-
 	return (
 		<div className='p-4'>
-			<div className='flex justify-between'>
-				<h2 className='text-gray-400 text-sm'>{t('heading')}</h2>
-				<Button
-					variant='none'
-					size='none'
-					className='cursor-pointer'
-					disabled={isClearing}
-					onClick={() => handleClearAll()}
-				>
-					{t('clearAllNotifications')}
-				</Button>
+			<div className='flex justify-between items-center mb-3'>
+				<h2 className='font-medium text-sm text-muted-foreground'>
+					{t('heading')}
+				</h2>
+				{notifications.length > 0 && (
+					<Button
+						variant='none'
+						size='none'
+						className='cursor-pointer'
+						disabled={isClearing}
+						onClick={() => handleClearAll()}
+					>
+						{t('clearAllNotifications')}
+					</Button>
+				)}
 			</div>
-			<NotificationsList notifications={notifications} />
+			{!notifications.length ? (
+				<div className='flex flex-col items-center gap-2 py-8 text-muted-foreground'>
+					<Bell className='h-6 w-6 opacity-40' />
+					<p className='text-sm'>{t('noNotifications')}</p>
+				</div>
+			) : (
+				<NotificationsList notifications={notifications} />
+			)}
 		</div>
 	)
 }

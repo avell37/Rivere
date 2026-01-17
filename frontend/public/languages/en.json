@@ -1,6 +1,37 @@
 {
 	"home": {
-		"title": "Home page"
+		"heading": "Rivere",
+		"header": {
+			"login": "Login",
+			"register": "Register"
+		},
+		"startSection": {
+			"title": "Manage your tasks easily with",
+			"name": "Rivere",
+			"description": "Rivere is a tool for organizing projects, tasks, and teamwork. Everything in one place, without unnecessary complexity.",
+			"login": "Login",
+			"register": "Register"
+		},
+		"secondSection": {
+			"title": "Why Rivere?",
+			"firstCard": {
+				"title": "Simplicity",
+				"description": "Minimal interface without overload. You can get started in a couple of minutes."
+			},
+			"secondCard": {
+				"title": "Flexibility",
+				"description": "Customize boards and columns to suit any workflow."
+			},
+			"thirdCard": {
+				"title": "Control",
+				"description": "See the progress of tasks and projects in one place."
+			}
+		},
+		"thirdSection": {
+			"title": "Ready to get started?",
+			"description": "Create account and start managing tasks today.",
+			"register": "Create account"
+		}
 	},
 	"auth": {
 		"login": {
@@ -28,20 +59,80 @@
 		"google": "Continue with Google",
 		"yandex": "Continue with Yandex"
 	},
+	"account": {
+		"auth": "Successfully",
+		"logout": "You have successfully logged out of your account."
+	},
 	"achievements": {
-		"heading": "Achievements"
+		"heading": "Achievements",
+		"title": "Your achievements ({current}/{total}):",
+		"loading": "Your achievements:",
+		"issuedAt": "issued on {date} at {time}",
+		"firstBoard": {
+			"title": "School again??",
+			"description": "Create your first board"
+		},
+		"tenTasksCompleted": {
+			"title": "I'm not rookie anymore",
+			"description": "Complete the first 10 tasks"
+		}
 	},
 	"statistics": {
-		"heading": "Statistics"
+		"heading": "Statistics",
+		"activity": {
+			"heading": "Your activity over last 90 days:",
+			"closedCards": "Closed cards:"
+		}
 	},
 	"boards": {
 		"heading": "Boards",
 		"title": "Your boards:",
-		"create": "Create a new board"
+		"members": {
+			"title": "List of board members:",
+			"joinedAt": "joined: {date} at {time}"
+		}
 	},
 	"board": {
 		"heading": "{name}",
-		"members": "{count, plural, one {# member} other {# members}}"
+		"members": "{count, plural, one {# member} other {# members}}",
+		"create": {
+			"heading": "Create board",
+			"title": "Add board",
+			"description": "To start working with board, you need to create it, right?",
+			"createModalLabel": "Title",
+			"createModalPlaceholder": "Board name",
+			"createModalSubmit": "Add",
+			"createModalClose": "Close",
+			"createSuccess": "Board has been successfully created."
+		},
+		"edit": {
+			"editTitle": "Change board title",
+			"editDescription": "Enter a new title for your board",
+			"editModalLabel": "Title",
+			"editModalPlaceholder": "Board title",
+			"editModalSubmit": "Save",
+			"editModalClose": "Close",
+			"editSuccess": "Changes applied successfully"
+		},
+		"delete": {
+			"deleteTitle": "Delete board?",
+			"deleteDescription": "This action cannot be undone, your board will be permanently deleted.",
+			"deleteActionText": "Delete",
+			"deleteCancelText": "Cancel",
+			"deleteSuccess": "Board has been successfully deleted."
+		},
+		"colors": {
+			"heading": "Gradients"
+		},
+		"preview": {
+			"firstColumnHeading": "TODO",
+			"secondColumnHeading": "In process",
+			"thirdColumnHeading": "Done"
+		},
+		"actions": {
+			"edit": "Edit",
+			"delete": "Delete"
+		}
 	},
 	"column": {
 		"create": {
@@ -51,7 +142,8 @@
 			"createModalLabel": "Title",
 			"createModalPlaceholder": "Column title",
 			"createModalSubmit": "Add",
-			"createModalClose": "Close"
+			"createModalClose": "Close",
+			"createSuccess": "Column has been successfully created."
 		},
 		"edit": {
 			"editTitle": "Change column title",
@@ -59,13 +151,19 @@
 			"editModalLabel": "Title",
 			"editModalPlaceholder": "Column title",
 			"editModalSubmit": "Save",
-			"editModalClose": "Close"
+			"editModalClose": "Close",
+			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
 			"deleteTitle": "Delete column?",
 			"deleteDescription": "The column and all its tasks will be permanently deleted.",
 			"deleteActionText": "Delete",
-			"deleteCancelText": "Cancel"
+			"deleteCancelText": "Cancel",
+			"deleteSuccess": "Column has been successfully deleted."
+		},
+		"actions": {
+			"edit": "Edit",
+			"delete": "Delete"
 		}
 	},
 	"card": {
@@ -81,7 +179,8 @@
 			"createDeadlineModalLabel": "Deadline",
 			"createDeadlineModalPlaceholder": "Select date",
 			"createModalSubmit": "Add",
-			"createModalClose": "Close"
+			"createModalClose": "Close",
+			"createSuccess": "Card has been successfully created."
 		},
 		"edit": {
 			"description": "Description",
@@ -89,23 +188,33 @@
 			"editPriorityLabel": "Priority",
 			"editPriorityPlaceholder": "Select priority",
 			"editDeadlineLabel": "Deadline",
-			"editDeadlinePlaceholder": "Select date"
+			"editDeadlinePlaceholder": "Select date",
+			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
 			"deleteTitle": "Delete card?",
 			"deleteDescription": "This action cannot be undone, your card will be permanently deleted.",
 			"deleteActionText": "Delete",
-			"deleteCancelText": "Cancel"
+			"deleteCancelText": "Cancel",
+			"deleteSuccess": "Card has been successfully deleted."
 		},
 		"chat": {
 			"inputPlaceholder": "Write a message..."
-		}
+		},
+		"doneSuccess": "Successfully",
+		"expiresAt": "expires: {date}",
+		"dragCard": "Drag the card here"
 	},
 	"notifications": {
 		"heading": "Notifications",
-		"clearAllNotifications": "Clear all"
+		"noNotifications": "No new notifications",
+		"clearAllNotifications": "Clear all",
+		"successReaded": "All notifications have been marked as read.",
+		"successCleared": "Notifications cleared",
+		"achievements": {
+			"earned": "You earned the achievement: {title}"
+		}
 	},
-
 	"priority": {
 		"low": "Low",
 		"medium": "Medium",
@@ -208,17 +317,42 @@
 			"min": "Minimum username length is 4 characters",
 			"max": "Maximum username length is 32 characters"
 		},
+		"email": "Enter a valid email address",
 		"nickname": {
 			"min": "Minimum nickname length is 4 characters",
 			"max": "Maximum nickname length is 32 characters"
 		},
 		"password": {
 			"min": "Minimum password length is 6 characters",
-			"max": "Maximum password length is 64 characters"
+			"max": "Maximum password length is 64 characters",
+			"noMatches": "Passwords do not match"
+		},
+		"board": {
+			"min": "Minimum board title length is 4 characters",
+			"max": "Maximum board title length is 32 characters"
+		},
+		"column": {
+			"min": "Minimum column title length is 4 characters",
+			"max": "Maximum column title length is 32 characters"
+		},
+		"card": {
+			"min": "Minimum card title length is 4 characters",
+			"max": "Maximum card title length is 32 characters",
+			"descriptionMax": "Maximum card description length is 100 characters",
+			"priority": "Select task priority"
 		}
 	},
 	"errors": {
 		"unexpected": "An unexpected error occurred. Please try again later.",
+		"unauthorized": "You are not authorized",
+		"achievements": {
+			"exists": "An achievement with this code already exists",
+			"notFound": "Achievement not found"
+		},
+		"user": {
+			"unauthorized": "You are not authorized",
+			"userNotFound": "User not found"
+		},
 		"account": {
 			"usernameExists": "Username is already taken",
 			"emailExists": "Email is already taken",
@@ -233,6 +367,9 @@
 				"notFound": "Invite not found",
 				"notValid": "Invite expired",
 				"alreadyMember": "You are already a member of this board"
+			},
+			"members": {
+				"forbidden": "You cannot access this board."
 			}
 		},
 		"card": {
@@ -241,7 +378,8 @@
 		},
 		"column": {
 			"notFound": "Column not found",
-			"notFoundMultiple": "One or more columns not found"
+			"notFoundMultiple": "One or more columns not found",
+			"noID": "No board or column ID specified"
 		},
 		"messages": {
 			"missingFields": "Not all data was provided."

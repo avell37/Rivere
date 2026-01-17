@@ -7,10 +7,11 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { PUBLIC_URL } from '@/shared/libs/constants/url.config'
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { PUBLIC_URL } from '@/shared/libs'
+import { handleApiError } from '@/shared/utils'
 
 import { register } from '../api/authApi'
+import { AuthResponse } from '../types/AuthResponse'
 import {
 	SignUpRequest,
 	registerSchema
@@ -26,12 +27,16 @@ export const useRegister = () => {
 		defaultValues: { username: '', email: '', password: '' }
 	})
 
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending } = useMutation<
+		AuthResponse,
+		unknown,
+		SignUpRequest
+	>({
 		mutationKey: ['register user'],
 		mutationFn: (data: SignUpRequest) => register(data),
 		onSuccess: () => {
 			form.reset()
-			toast.success('Успешно')
+			toast.success(t('account.auth'))
 			router.replace(PUBLIC_URL.home())
 		},
 		onError: err => handleApiError(err, t)

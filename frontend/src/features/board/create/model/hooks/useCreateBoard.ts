@@ -5,9 +5,9 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { createBoard } from '@/entities/Board/model/api/boardApi'
+import { IBoard, createBoard } from '@/entities/Board'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { handleApiError } from '@/shared/utils'
 
 import {
 	CreateBoardRequest,
@@ -29,13 +29,13 @@ export const useCreateBoard = () => {
 		}
 	})
 
-	const { mutate } = useMutation({
+	const { mutate } = useMutation<IBoard, unknown, CreateBoardRequest>({
 		mutationKey: ['create board'],
 		mutationFn: (data: CreateBoardRequest) => createBoard(data),
 		onSuccess: () => {
 			form.reset()
-			toast.success('Доска успешно создана.')
 			queryClient.invalidateQueries({ queryKey: ['get boards'] })
+			toast.success(t('board.create.createSuccess'))
 		},
 		onError: err => handleApiError(err, t)
 	})

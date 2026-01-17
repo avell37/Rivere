@@ -37,6 +37,7 @@ export class ColumnController {
         summary: 'Обновление колонки',
         description: 'Обновляет колонку для пользователя.',
     })
+    @HttpCode(200)
     @Authorization()
     @Patch(':id')
     async update(
@@ -51,6 +52,7 @@ export class ColumnController {
         summary: 'Обновление позиции',
         description: 'Обновляет позицию колонки в доске.',
     })
+    @HttpCode(200)
     @Authorization()
     @Post('reorder')
     async reorder(
@@ -64,6 +66,7 @@ export class ColumnController {
         summary: 'Удаление колонки',
         description: 'Удаляет колонку для пользователя.',
     })
+    @HttpCode(200)
     @Authorization()
     @Delete(':id')
     async delete(

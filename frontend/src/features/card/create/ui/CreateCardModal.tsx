@@ -2,23 +2,27 @@
 import { Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { Modal } from '@/shared/ui/custom/Modal/Modal'
+import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
+import { Modal } from '@/shared/ui/custom'
 
 import { useCreateCard } from '../model/hooks/useCreateCard'
 
 import { CreateCardForm } from './CreateCardForm'
 
-export const CreateCardModal = ({ columnId }: { columnId: string }) => {
-	const { form, onSubmit } = useCreateCard(columnId)
+export const CreateCardModal = ({
+	columnId,
+	boardId
+}: IBoardColumnIdentifiers) => {
+	const { form, onSubmit } = useCreateCard({ columnId, boardId })
 	const t = useTranslations('card.create')
 
 	return (
 		<Modal
 			trigger={
 				<div className='flex flex-col relative rounded-t-md overflow-hidden cursor-pointer transition-all group w-76'>
-					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 dark:bg-neutral-900'>
+					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 bg-white dark:bg-neutral-900'>
 						<Plus />
-						<h3 className='font-semibold text-base text-white'>
+						<h3 className='font-semibold text-base dark:text-white'>
 							{t('heading')}
 						</h3>
 					</div>

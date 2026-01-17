@@ -3,28 +3,18 @@ import { EllipsisVertical } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
-import { useUserStore } from '@/entities/User/model/store/useUserStore'
-import { UserAvatar } from '@/entities/User/ui/UserAvatar'
+import { UserAvatar, useUserStore } from '@/entities/User'
 
-import { SERVER_URL } from '@/shared/libs/constants/api.config'
-import { customAvatar } from '@/shared/libs/customAvatar'
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage
-} from '@/shared/ui/external/Avatar/Avatar'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuTrigger
-} from '@/shared/ui/external/Dropdown/Dropdown'
-import {
+	DropdownMenuTrigger,
 	SidebarFooter,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem
-} from '@/shared/ui/external/Sidebar/ui/Sidebar'
+} from '@/shared/ui/external'
 
 import { useLogout } from '../model/hooks/useLogout'
 
@@ -46,9 +36,7 @@ export const UserMenu = () => {
 		router.push(item.url)
 	}
 
-	if (!user) {
-		return <UserMenuSkeleton />
-	}
+	if (!user) return <UserMenuSkeleton />
 
 	return (
 		<SidebarFooter>

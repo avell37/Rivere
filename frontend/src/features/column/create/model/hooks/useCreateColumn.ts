@@ -1,13 +1,13 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { createColumn } from '@/entities/Column/model/api/columnApi'
+import { IColumn, createColumn } from '@/entities/Column'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { handleApiError } from '@/shared/utils'
 
 import {
 	CreateColumnRequest,
@@ -15,6 +15,7 @@ import {
 } from '../validation/create-column.z.validation'
 
 export const useCreateColumn = (boardId: string) => {
+	const queryClient = useQueryClient()
 	const t = useTranslations()
 	const form = useForm<CreateColumnRequest>({
 		resolver: zodResolver(CreateColumnSchema),
@@ -23,13 +24,14 @@ export const useCreateColumn = (boardId: string) => {
 		}
 	})
 
-	const { mutate } = useMutation({
+	const { mutate } = useMutation<IColumn, unknown, CreateColumnRequest>({
 		mutationKey: ['create column'],
 		mutationFn: (data: CreateColumnRequest) =>
 			createColumn({ boardId, ...data }),
 		onSuccess: () => {
 			form.reset()
-			toast.success('Колонка успешно создана.')
+			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			toast.success(t('column.create.createSuccess'))
 		},
 		onError: err => handleApiError(err, t)
 	})

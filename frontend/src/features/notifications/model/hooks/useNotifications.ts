@@ -11,9 +11,7 @@ export const useNotifications = (userId?: string | null) => {
 
 		const socket = getNotificationsSocket(userId)
 
-		socket.on('notification', notification => {
-			add(notification)
-		})
+		socket.on('notification', notification => add(notification))
 
 		return () => {
 			socket.off('notification')

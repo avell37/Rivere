@@ -1,76 +1,42 @@
 'use client'
 
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { SquareArrowOutUpRight } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 
-import { DeleteCardModal } from '@/features/card/delete/ui/DeleteCardModal'
+import { DeleteCardModal } from '@/features/card'
 
-import { formatDate } from '@/shared/libs/formattedDate'
-import { priorityCircle, priorityColors } from '@/shared/libs/priorityColors'
-import { priorityOptions } from '@/shared/libs/priorityConfig'
+import { priorityCircle, priorityColors } from '@/shared/config'
 import { Modal } from '@/shared/ui/custom'
+import { formatDate } from '@/shared/utils'
 
-import { Priority } from '../model/types/CardPriority'
+import { useCard } from '../model/hooks/useCard'
+import { CardProps } from '../model/types/CardProps'
 
 import { CardDoneButton } from './CardDoneButton'
 import { CardModal } from './CardModal'
 
-interface CardProps {
-	id: string
-	title: string
-	description?: string
-	priority: Priority
-	deadline: string
-	done: boolean
-	columnId: string
+interface CardPropsWithBoardId extends CardProps {
 	boardId: string
 }
 
-export const Card = ({
-	id,
-	title,
-	description,
-	priority,
-	deadline,
-	done,
-	columnId,
-	boardId
-}: CardProps) => {
+export const Card = (props: CardPropsWithBoardId) => {
+	const { id, title, description, priority, deadline, done, boardId } = props
+	const t = useTranslations('card')
 	const tPriority = useTranslations('priority')
 	const locale = useLocale()
-	const priorityConfig = priorityOptions[priority]
+
 	const {
+		setNodeRef,
 		attributes,
 		listeners,
-		setNodeRef,
-		transform,
-		transition,
-		isDragging
-	} = useSortable({
-		id,
-		data: {
-			type: 'card',
-			card: {
-				id,
-				title,
-				description,
-				priority,
-				deadline,
-				done,
-				columnId
-			}
-		}
-	})
-	const style = {
-		transform: CSS.Transform.toString(transform),
-		transition
-	}
+		style,
+		isDragging,
+		priorityConfig
+	} = useCard(props)
 
 	return (
 		<div
-			className={`relative p-6 dark:bg-neutral-900 rounded-lg shadow list-none ${priorityColors[priority] ?? ''}
+			className={`relative p-6 bg-white dark:bg-neutral-900 rounded-lg shadow list-none ${priorityColors[priority] ?? ''}
 			${isDragging ? 'opacity-70' : null} transition-all duration-200 cursor-grab active:cursor-grabbing
 			${done && 'opacity-80'}`}
 		>
@@ -96,7 +62,9 @@ export const Card = ({
 						</span>
 					</div>
 					<span className='text-xs'>
-						до: {formatDate(deadline, locale)}
+						{t('expiresAt', {
+							date: formatDate(deadline, locale)
+						})}
 					</span>
 				</div>
 			</li>
@@ -108,20 +76,11 @@ export const Card = ({
 						</div>
 					}
 					contentClassname='sm:max-w-5xl p-0'
-					children={
-						<CardModal
-							id={id}
-							title={title}
-							description={description}
-							priority={priority}
-							deadline={deadline}
-							done={done}
-							boardId={boardId}
-						/>
-					}
-				/>
+				>
+					<CardModal {...props} />
+				</Modal>
 			</div>
-			<DeleteCardModal cardId={id} />
+			<DeleteCardModal cardId={id} boardId={boardId} />
 		</div>
 	)
 }

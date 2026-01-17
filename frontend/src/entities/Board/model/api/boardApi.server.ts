@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-import { SERVER_URL } from '@/shared/libs/constants/api.config'
+import { SERVER_URL } from '@/shared/libs'
 
 import { IBoard } from '../types/IBoard'
 

@@ -1,20 +1,25 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { createCard } from '@/entities/Card/model/api/cardApi'
+import { ICard, createCard } from '@/entities/Card'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
+import { handleApiError } from '@/shared/utils'
 
 import {
 	CreateCardRequest,
 	CreateCardSchema
 } from '../validation/create-card.z.validation'
 
-export const useCreateCard = (columnId: string) => {
+export const useCreateCard = ({
+	columnId,
+	boardId
+}: IBoardColumnIdentifiers) => {
+	const queryClient = useQueryClient()
 	const t = useTranslations()
 	const form = useForm<CreateCardRequest>({
 		resolver: zodResolver(CreateCardSchema),
@@ -23,13 +28,14 @@ export const useCreateCard = (columnId: string) => {
 		}
 	})
 
-	const { mutate } = useMutation({
+	const { mutate } = useMutation<ICard, unknown, CreateCardRequest>({
 		mutationKey: ['create card'],
 		mutationFn: (data: CreateCardRequest) =>
 			createCard({ columnId, ...data }),
 		onSuccess: () => {
 			form.reset()
-			toast.success('Карточка успешно создана.')
+			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			toast.success(t('card.create.createSuccess'))
 		},
 		onError: err => handleApiError(err, t)
 	})

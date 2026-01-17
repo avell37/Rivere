@@ -1,15 +1,10 @@
+'use client'
 import { DragOverlay } from '@dnd-kit/core'
 
-import { ICard } from '@/entities/Card/model/types/ICard'
-import { CardOverlay } from '@/entities/Card/ui/CardOverlay'
-import { IColumn } from '@/entities/Column/model/types/IColumn'
-import { ColumnOverlay } from '@/entities/Column/ui/ColumnOverlay'
+import { CardOverlay } from '@/entities/Card'
+import { ColumnOverlay } from '@/entities/Column'
 
-interface BoardDragOverlayProps {
-	activeColumn: IColumn | null
-	activeCard: ICard | null
-	boardId: string
-}
+import { BoardDragOverlayProps } from '../model/types/BoardProps'
 
 export const BoardDragOverlay = ({
 	activeCard,

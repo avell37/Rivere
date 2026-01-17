@@ -25,16 +25,16 @@ export const FormWrapper = ({
 			<div className='flex justify-end gap-2.5'>
 				<Button
 					type='submit'
-					className='flex justify-center items-center rounded-md 
-                    border border-primary-900/30 hover:border-primary-900'
+					className='flex justify-center items-center rounded-md'
 				>
 					{submitText}
 				</Button>
 				{withClose && (
 					<DialogClose asChild>
 						<Button
+							variant='outline'
 							type='button'
-							className='flex justify-center items-center cancel-button'
+							className='flex justify-center items-center'
 						>
 							{closeText}
 						</Button>

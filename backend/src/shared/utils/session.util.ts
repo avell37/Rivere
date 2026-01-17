@@ -25,9 +25,10 @@ export function destroySession(req: Request, configService: ConfigService) {
     try {
         req.session.destroy((err) => {
             if (err) {
-                return new InternalServerErrorException(
-                    'Не удалось удалить сессию',
-                );
+                return new InternalServerErrorException({
+                    code: 'errors.unexpected',
+                    message: 'Не удалось удалить сессию',
+                });
             }
         });
 

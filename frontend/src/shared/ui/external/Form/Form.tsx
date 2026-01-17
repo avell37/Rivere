@@ -14,7 +14,7 @@ import {
 	useFormState
 } from 'react-hook-form'
 
-import { cn } from '@/shared/libs/twMerge'
+import { cn } from '@/shared/utils/twMerge'
 
 import { Label } from '../Label/Label'
 

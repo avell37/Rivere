@@ -1,26 +1,18 @@
 import { Monitor, Smartphone } from 'lucide-react'
-import { useLocale } from 'next-intl'
 
-import { formatDate, formatTime } from '@/shared/libs/formattedDate'
+import { formatDate, formatTime } from '@/shared/utils'
 
-import { useSession } from '../model/hooks/useSession'
 import { ISession } from '../model/types/ISession'
+import { SessionListProps } from '../model/types/SessionProps'
 
 import { SessionItem } from './SessionItem'
 
 export const SessionList = ({
-	t
-}: {
-	t: (key: string, values?: Record<string, any>) => string
-}) => {
-	const { userSessions, sessionsIsPending, terminateSelectedSession } =
-		useSession()
-	const locale = useLocale()
-
-	if (sessionsIsPending) {
-		return <p>Загрузка...</p>
-	}
-
+	userSessions,
+	locale,
+	t,
+	terminateSelectedSession
+}: SessionListProps) => {
 	return (
 		<div className='flex flex-col gap-4'>
 			{userSessions?.map((session: ISession) => (

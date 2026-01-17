@@ -14,8 +14,10 @@ export const CreateInviteModal = ({ boardId }: { boardId: string }) => {
 	}
 
 	const handleCopy = () => {
-		navigator.clipboard.writeText(createInviteData.link)
-		toast.success(t('copyLink'))
+		if (createInviteData) {
+			navigator.clipboard.writeText(createInviteData.link)
+			toast.success(t('copyLink'))
+		}
 	}
 
 	return (

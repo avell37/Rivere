@@ -20,13 +20,20 @@ export async function checkBoardAccess({
             select: { boardId: true },
         });
 
-        if (!column) throw new ForbiddenException('Колонка не найдена');
+        if (!column)
+            throw new ForbiddenException({
+                code: 'errors.column.notFound',
+                message: 'Колонка не найдена',
+            });
 
         resolvedBoardId = column.boardId;
     }
 
     if (!resolvedBoardId) {
-        throw new ForbiddenException('Не указан ID доски или колонки');
+        throw new ForbiddenException({
+            code: 'errors.column.noID',
+            message: 'Не указан ID доски или колонки',
+        });
     }
 
     const member = await prisma.boardMember.findFirst({
@@ -37,6 +44,9 @@ export async function checkBoardAccess({
     });
 
     if (!member) {
-        throw new ForbiddenException('Нет доступа к данной доске.');
+        throw new ForbiddenException({
+            code: 'errors.board.members.forbidden',
+            message: 'Нет доступа к данной доске.',
+        });
     }
 }

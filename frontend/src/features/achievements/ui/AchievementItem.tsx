@@ -1,35 +1,84 @@
 import { Trophy } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 
 import { Modal } from '@/shared/ui/custom'
-import { Progress } from '@/shared/ui/external/Progress/Progress'
+import { Progress } from '@/shared/ui/external'
+import { cn, formatDate, formatTime } from '@/shared/utils'
 
-interface AchievementItemProps {
-	title: string
-	description: string
-}
+import { AchievementItemProps } from '../model/types/AchievementProps'
 
 export const AchievementItem = ({
-	title,
-	description
+	code,
+	goal,
+	progress,
+	achievedAt
 }: AchievementItemProps) => {
+	const locale = useLocale()
+	const t = useTranslations('achievements')
+
+	const percent =
+		goal > 0 ? Math.min(100, Math.round((progress / goal) * 100)) : 0
+	const isEarned = achievedAt !== null
+
 	return (
 		<Modal
 			trigger={
-				<div className='flex flex-col items-center justify-center cursor-pointer gap-2'>
-					<Trophy className='size-14' />
-					<p className='font-bold'>{title}</p>
+				<div
+					className={cn(
+						'relative w-50 rounded-xl border p-4 flex flex-col items-center gap-2 transition-all',
+						'hover:scale-[1.05] hover:shadow-md cursor-pointer',
+						isEarned
+							? 'border-yellow-500/40'
+							: 'opacity-80 hover:opacity-100'
+					)}
+				>
+					<Trophy
+						className={cn(
+							'size-14',
+							isEarned
+								? 'stroke-yellow-500'
+								: 'dark:stroke-gray-400 opacity-40'
+						)}
+					/>
+					<p className={`${!isEarned && 'opacity-40'}`}>
+						{t(`${code}.title`)}
+					</p>
+					<div className='w-full'>
+						<Progress value={percent} className='h-1' />
+					</div>
+					{isEarned && (
+						<span className='absolute top-1 right-2'>✓</span>
+					)}
 				</div>
 			}
 			contentClassname='max-w-md'
 		>
-			<div className='flex flex-col items-center justify-center gap-3'>
-				<Trophy className='size-20' />
-				<p>{title}</p>
-				<span className='text-gray-400 text-xs'>{description}</span>
-				{/* <span className='text-gray-400 text-xs'>{date}</span> */}
+			<div className='flex flex-col items-center justify-center gap-4'>
+				<Trophy
+					className={cn(
+						'size-20',
+						isEarned
+							? 'stroke-yellow-500'
+							: 'stroke-gray-400 opacity-40'
+					)}
+				/>
+				<p className='text-lg font-bold'>{t(`${code}.title`)}</p>
+				<span className='text-gray-400 text-sm'>
+					{t(`${code}.description`)}
+				</span>
+				{achievedAt && (
+					<span className='text-gray-400 text-xs'>
+						{t('issuedAt', {
+							date: formatDate(achievedAt, locale),
+							time: formatTime(achievedAt, locale)
+						})}
+					</span>
+				)}
 				<div className='max-w-sm w-full text-center flex flex-col gap-4'>
-					<Progress value={50} />
-					<span>3/10</span>
+					<Progress value={percent} />
+					<span className=''>
+						{progress}/{goal} ({percent}%)
+					</span>
 				</div>
 			</div>
 		</Modal>

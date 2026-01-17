@@ -5,6 +5,7 @@ import {
     Get,
     HttpCode,
     Param,
+    Patch,
     Post,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
@@ -12,6 +13,7 @@ import { CreateBoardInput } from './inputs/create-board.input';
 import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { ApiOperation } from '@nestjs/swagger';
+import { UpdateBoardInput } from './inputs/update-board.input';
 
 @Controller('boards')
 export class BoardController {
@@ -42,10 +44,14 @@ export class BoardController {
         return this.boardService.getUserBoards(userId);
     }
 
+    @ApiOperation({
+        summary: 'Получение доски',
+        description: 'Отдает запрашиваемую доску по ID',
+    })
     @Authorization()
     @Get(':id')
     async getBoard(
-        @SessionUser() userId: string,
+        @SessionUser('id') userId: string,
         @Param('id') boardId: string,
     ) {
         return this.boardService.getBoard(userId, boardId);
@@ -55,9 +61,25 @@ export class BoardController {
         summary: 'Удаление доски',
         description: 'Удаляет определенную доску по ID.',
     })
+    @HttpCode(200)
     @Authorization()
-    @Delete()
-    async deleteBoard(@Param('id') boardId: string) {
+    @Patch(':boardId')
+    async updateBoard(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+        @Body() input: UpdateBoardInput,
+    ) {
+        return this.boardService.updateBoard(userId, boardId, input);
+    }
+
+    @ApiOperation({
+        summary: 'Удаление доски',
+        description: 'Удаляет определенную доску по ID.',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Delete(':boardId')
+    async deleteBoard(@Param('boardId') boardId: string) {
         return this.boardService.deleteBoard(boardId);
     }
 

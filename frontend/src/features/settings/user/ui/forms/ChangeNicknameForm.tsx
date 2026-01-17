@@ -14,16 +14,14 @@ export const ChangeNicknameForm = ({ t }: { t: (key: string) => string }) => {
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
 			>
-				<div className='flex flex-col gap-4'>
-					<FormInputController
-						name='nickname'
-						label={t('personalInformation.nicknameModalLabel')}
-						placeholder={t(
-							'personalInformation.nicknameModalPlaceholder'
-						)}
-						control={form.control}
-					/>
-				</div>
+				<FormInputController
+					name='nickname'
+					label={t('personalInformation.nicknameModalLabel')}
+					placeholder={t(
+						'personalInformation.nicknameModalPlaceholder'
+					)}
+					control={form.control}
+				/>
 			</FormWrapper>
 		</Form>
 	)

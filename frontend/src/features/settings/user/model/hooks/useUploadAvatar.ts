@@ -1,11 +1,12 @@
+'use client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
 import { toast } from 'sonner'
 
-import { uploadAvatar } from '@/entities/User/model/api/userApi'
+import { uploadAvatar } from '@/entities/User'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { handleApiError } from '@/shared/utils'
 
 export const useUploadAvatar = () => {
 	const t = useTranslations()
@@ -16,8 +17,8 @@ export const useUploadAvatar = () => {
 		mutationKey: ['upload avatar'],
 		mutationFn: uploadAvatar,
 		onSuccess: () => {
-			toast.success('Аватар обновлен')
 			queryClient.invalidateQueries({ queryKey: ['get user data'] })
+			toast.success('Аватар обновлен')
 		},
 		onError: err => handleApiError(err, t)
 	})

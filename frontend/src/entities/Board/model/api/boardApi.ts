@@ -1,7 +1,7 @@
-import { CreateBoardRequest } from '@/features/board/create/model/validation/create-board.z.validation'
+import { CreateBoardRequest, EditBoardRequest } from '@/features/board'
 
 import { baseAxios } from '@/shared/api/interceptors'
-import { API_URL } from '@/shared/libs/constants/api.config'
+import { API_URL } from '@/shared/libs'
 
 import { IBoard } from '../types/IBoard'
 
@@ -10,12 +10,33 @@ export const fetchUserBoards = async (): Promise<IBoard[]> => {
 	return response.data
 }
 
-export const createBoard = async (data: CreateBoardRequest) => {
+export const createBoard = async (
+	data: CreateBoardRequest
+): Promise<IBoard> => {
 	const response = await baseAxios.post(`${API_URL.boards()}create`, data)
 	return response.data
 }
 
 export const fetchBoardById = async (id: string): Promise<IBoard> => {
 	const response = await baseAxios.get(`${API_URL.boards()}${id}`)
+	return response.data
+}
+
+export const updateBoard = async ({
+	boardId,
+	data
+}: {
+	boardId: string
+	data: EditBoardRequest
+}): Promise<IBoard> => {
+	const response = await baseAxios.patch(
+		`${API_URL.boards()}${boardId}`,
+		data
+	)
+	return response.data
+}
+
+export const deleteBoard = async (id: string): Promise<boolean> => {
+	const response = await baseAxios.delete(`${API_URL.boards()}${id}`)
 	return response.data
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateAchievementInput {
     @IsNotEmpty({ message: 'ID достижения обязателен' })
@@ -12,8 +12,4 @@ export class UpdateAchievementInput {
     @IsOptional()
     @IsString({ message: 'Описание достижения должно быть строкой' })
     description?: string;
-
-    @IsOptional()
-    @IsNumber()
-    goal?: number;
 }

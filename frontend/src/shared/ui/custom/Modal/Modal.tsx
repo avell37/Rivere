@@ -10,11 +10,13 @@ import {
 } from '../../external/Dialog/Dialog'
 
 interface ModalProps {
-	trigger: React.ReactNode
+	trigger?: React.ReactNode
 	title?: string
 	description?: string
 	contentClassname?: string
 	children: React.ReactNode
+	open?: boolean
+	onOpenChange?: (open: boolean) => void
 }
 
 export const Modal = ({
@@ -22,11 +24,13 @@ export const Modal = ({
 	title,
 	description,
 	contentClassname,
-	children
+	children,
+	open,
+	onOpenChange
 }: ModalProps) => {
 	return (
-		<Dialog>
-			<DialogTrigger asChild>{trigger}</DialogTrigger>
+		<Dialog open={open} onOpenChange={onOpenChange}>
+			{trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
 			<DialogContent className={contentClassname}>
 				<DialogHeader>
 					{title ? (

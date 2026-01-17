@@ -5,9 +5,10 @@ import { Alert } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 
 import { useDeleteCard } from '../model/hooks/useDeleteCard'
+import { DeleteCardProps } from '../model/types/DeleteCardProps'
 
-export const DeleteCardModal = ({ cardId }: { cardId: string }) => {
-	const { onSubmit } = useDeleteCard(cardId)
+export const DeleteCardModal = ({ cardId, boardId }: DeleteCardProps) => {
+	const { onSubmit } = useDeleteCard({ cardId, boardId })
 	const t = useTranslations('card.delete')
 
 	return (

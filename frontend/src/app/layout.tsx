@@ -4,9 +4,7 @@ import { getLocale, getMessages } from 'next-intl/server'
 import { Montserrat } from 'next/font/google'
 
 import { SITE_DESCRIPTION, SITE_NAME } from '@/shared/libs/constants/seo.const'
-import { QueryProvider } from '@/shared/providers/QueryProvider'
-import { ThemeProvider } from '@/shared/providers/ThemeProvider'
-import { ToastProvider } from '@/shared/providers/ToastProvider'
+import { QueryProvider, ThemeProvider, ToastProvider } from '@/shared/providers'
 
 import './globals.css'
 

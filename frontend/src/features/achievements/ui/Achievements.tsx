@@ -1,16 +1,19 @@
 'use client'
+import { useTranslations } from 'next-intl'
+
 import { useGetAchievements } from '../model/hooks/useGetAchievements'
 
-import { AchievementListSkeleton } from './AchievementListSkeleton'
 import { AchievementList } from './AchievementsList'
+import { AchievementListSkeleton } from './AchievementsListSkeleton'
 
 export const Achievements = () => {
-	const { data, isLoading } = useGetAchievements()
+	const { achievements, earnedCount, isLoading } = useGetAchievements()
+	const t = useTranslations('achievements')
 
-	if (!data || isLoading) {
+	if (!achievements || isLoading) {
 		return (
 			<div className='flex flex-col gap-4 p-4'>
-				<h1 className='text-2xl font-bold'>Ваши достижения</h1>
+				<h1 className='text-2xl font-bold'>{t('loading')}</h1>
 				<div className='flex flex-wrap gap-4 p-4'>
 					<AchievementListSkeleton />
 				</div>
@@ -21,10 +24,13 @@ export const Achievements = () => {
 	return (
 		<div className='flex flex-col gap-5 p-4'>
 			<h1 className='text-2xl font-bold'>
-				Ваши достижения {data.length}/34:
+				{t('title', {
+					current: earnedCount,
+					total: achievements.length
+				})}
 			</h1>
 			<div className='flex flex-wrap gap-4 p-4'>
-				<AchievementList achievements={data} />
+				<AchievementList achievements={achievements} />
 			</div>
 		</div>
 	)

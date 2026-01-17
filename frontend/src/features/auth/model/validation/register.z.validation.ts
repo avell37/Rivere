@@ -3,12 +3,13 @@ import * as z from 'zod'
 export const registerSchema = z.object({
 	username: z
 		.string()
-		.max(32, 'Имя пользователя должно содержать максимум 32 символа'),
-	email: z.string().email('Введите корректный email адрес'),
+		.min(4, { message: 'validation.username.min' })
+		.max(32, { message: 'validation.username.max' }),
+	email: z.string().email('validation.email'),
 	password: z
 		.string()
-		.min(6, 'Пароль должен содержать минимум 6 символов')
-		.max(64, 'Пароль должен содержать минимум 6 символов')
+		.min(6, { message: 'validation.password.min' })
+		.max(64, { message: 'validation.password.max' })
 })
 
 export type SignUpRequest = z.infer<typeof registerSchema>

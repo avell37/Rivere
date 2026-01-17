@@ -1,16 +1,9 @@
-import { customAvatar } from '@/shared/libs/customAvatar'
-import { formatTime } from '@/shared/libs/formattedDate'
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/external'
+import { UserAvatar } from '@/entities/User'
+
+import { formatTime } from '@/shared/utils'
 
 import { useChatMessage } from '../model/hooks/useChatMessage'
-import { IMessage } from '../model/types/IMessage'
-
-interface ChatUserMessageProps {
-	currentUserId: string
-	message: IMessage
-	previousMessage?: IMessage
-	locale: string
-}
+import { ChatUserMessageProps } from '../model/types/IChat'
 
 export const ChatUserMessage = ({
 	currentUserId,
@@ -25,7 +18,7 @@ export const ChatUserMessage = ({
 		<div className='mb-1'>
 			{showDateDivider && (
 				<div className='flex justify-center mb-4'>
-					<span className='text-xs text-gray-400 px-2 py-1 rounded-2xl bg-gray-600/50'>
+					<span className='text-xs dark:text-gray-400 px-2 py-1 rounded-2xl bg-gray-300/60 dark:bg-gray-600/50'>
 						{messageDate}
 					</span>
 				</div>
@@ -37,15 +30,11 @@ export const ChatUserMessage = ({
 				}`}
 			>
 				{!isMyMessage && showAvatarAndNickname && (
-					<Avatar className='size-10 rounded-full'>
-						<AvatarImage
-							src={message.user.avatar ?? undefined}
-							alt={message.user.nickname}
-						/>
-						<AvatarFallback>
-							{customAvatar(message.user.nickname)}
-						</AvatarFallback>
-					</Avatar>
+					<UserAvatar
+						avatar={message.user.avatar ?? undefined}
+						username={message.user.nickname}
+						avatarClassname='size-10 rounded-full'
+					/>
 				)}
 
 				<div

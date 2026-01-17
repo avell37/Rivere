@@ -16,7 +16,7 @@ export const ChangePasswordSchema = z
 			.max(64, { message: 'validation.password.max' })
 	})
 	.refine(data => data.newPassword === data.confirmPassword, {
-		message: 'Пароли не совпадают',
+		message: 'validation.password.noMatches',
 		path: ['confirmPassword']
 	})
 

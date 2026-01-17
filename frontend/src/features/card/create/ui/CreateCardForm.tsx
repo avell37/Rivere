@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl'
 import { UseFormReturn } from 'react-hook-form'
 
-import { getPrioritySelectOptions } from '@/shared/libs/priorityConfig'
+import { getPrioritySelectOptions } from '@/shared/config'
 import {
 	FormDatePickerController,
 	FormInputController,

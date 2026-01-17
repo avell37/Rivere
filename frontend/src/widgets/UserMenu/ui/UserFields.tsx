@@ -1,14 +1,8 @@
-import { LogOut, Settings, User } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
 
-import { PUBLIC_URL } from '@/shared/libs/constants/url.config'
+import { PUBLIC_URL } from '@/shared/libs'
 
 export const userMenuFields = (t: (key: string) => string) => [
-	{
-		id: 'profile',
-		title: t('dropdownUserMenu.profile'),
-		url: PUBLIC_URL.statistics(),
-		icon: User
-	},
 	{
 		id: 'settings',
 		title: t('dropdownUserMenu.settings'),

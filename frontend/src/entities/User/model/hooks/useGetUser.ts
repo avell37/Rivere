@@ -1,3 +1,4 @@
+'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
@@ -15,9 +16,7 @@ export const useGetUser = () => {
 	})
 
 	useEffect(() => {
-		if (data) {
-			setUser(data)
-		}
+		if (data) setUser(data)
 	}, [data, setUser])
 
 	return {

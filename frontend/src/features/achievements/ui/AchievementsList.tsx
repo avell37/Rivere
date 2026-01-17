@@ -1,20 +1,12 @@
-import { IAchievement } from '../model/types/IAchievement'
+import { AchievementsListProps } from '../model/types/AchievementProps'
 
 import { AchievementItem } from './AchievementItem'
 
-export const AchievementList = ({
-	achievements
-}: {
-	achievements: IAchievement[]
-}) => {
+export const AchievementList = ({ achievements }: AchievementsListProps) => {
 	return (
-		<div>
+		<div className='flex gap-4'>
 			{achievements?.map(item => (
-				<AchievementItem
-					key={item.id}
-					title={item.title}
-					description={item.description}
-				/>
+				<AchievementItem key={item.id} {...item} />
 			))}
 		</div>
 	)

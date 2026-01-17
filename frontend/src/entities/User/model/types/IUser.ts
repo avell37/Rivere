@@ -5,8 +5,18 @@ export interface IUser {
 	username: string
 	email: string
 	nickname: string
+	role: string
 	avatar: string
 	boards: IBoard[]
 	createdAt: Date
 	updatedAt?: Date
 }
+
+export interface IUploadedAvatar {
+	url: string
+	name: string
+	size: number
+	type: string
+}
+
+export type IUserUpdateResponse = true

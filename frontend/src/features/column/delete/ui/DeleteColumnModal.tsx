@@ -1,27 +1,28 @@
-import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
 import { Alert } from '@/shared/ui/custom'
-import { Button } from '@/shared/ui/external'
 
 import { useDeleteColumn } from '../model/hooks/useDeleteColumn'
 
-export const DeleteColumnModal = ({ columnId }: { columnId: string }) => {
-	const { onSubmit } = useDeleteColumn(columnId)
+interface DeleteColumnModalProps extends IBoardColumnIdentifiers {
+	open: boolean
+	onOpenChange: (open: boolean) => void
+}
+
+export const DeleteColumnModal = ({
+	columnId,
+	boardId,
+	open,
+	onOpenChange
+}: DeleteColumnModalProps) => {
+	const { onSubmit } = useDeleteColumn({ columnId, boardId })
 	const t = useTranslations('column.delete')
 
 	return (
 		<Alert
-			trigger={
-				<Button
-					type='button'
-					size='none'
-					variant='none'
-					className='cursor-pointer'
-				>
-					<X />
-				</Button>
-			}
+			open={open}
+			onOpenChange={onOpenChange}
 			title={t('deleteTitle')}
 			description={t('deleteDescription')}
 			actionText={t('deleteActionText')}

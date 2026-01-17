@@ -1,3 +1,4 @@
+'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
@@ -5,9 +6,9 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { changePassword } from '@/entities/User/model/api/userApi'
+import { changePassword } from '@/entities/User'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { handleApiError } from '@/shared/utils'
 
 import {
 	ChangePasswordRequest,
@@ -33,8 +34,8 @@ export const useChangePassword = () => {
 		mutationFn: (data: ChangePasswordRequest) => changePassword(data),
 		onSuccess: () => {
 			form.reset()
-			toast.success('Пароль успешно изменен')
 			queryClient.invalidateQueries({ queryKey: ['get user data'] })
+			toast.success('Пароль успешно изменен')
 		},
 		onError: err => handleApiError(err, t)
 	})

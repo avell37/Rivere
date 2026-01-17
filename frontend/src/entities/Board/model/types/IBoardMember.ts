@@ -1,4 +1,4 @@
-import { IUser } from '@/entities/User/model/types/IUser'
+import { IUser } from '@/entities/User'
 
 export interface IBoardMember {
 	id: string

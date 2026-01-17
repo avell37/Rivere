@@ -45,7 +45,7 @@ export const FormTextareaController = <T extends FieldValues>({
 					<FormControl>
 						<Textarea
 							{...field}
-							className={`border text-start rounded-lg text-white outline-none break-all transition-all resize-none
+							className={`border text-start rounded-lg dark:text-white outline-none break-all transition-all resize-none
                                 ${
 									fieldState.error
 										? 'border-red-600 hover:border-red-800'

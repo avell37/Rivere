@@ -12,6 +12,8 @@ import {
 	SelectValue
 } from '../../external/Select/Select'
 
+import { ThemeSwitcherSkeleton } from './ThemeSwitcherSkeleton'
+
 export const ThemeSwitcher = () => {
 	const t = useTranslations('theme')
 	const { setTheme, theme } = useTheme()
@@ -21,13 +23,7 @@ export const ThemeSwitcher = () => {
 		setMounted(true)
 	}, [])
 
-	if (!mounted) {
-		return (
-			<div className='w-[180px] h-9 px-2 py-1 rounded border border-input bg-transparent flex items-center justify-between'>
-				<span className='opacity-50'>{t('selectTheme')}</span>
-			</div>
-		)
-	}
+	if (!mounted) return <ThemeSwitcherSkeleton />
 
 	return (
 		<Select value={theme} onValueChange={setTheme}>

@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { fetchBoardByIdServer } from '@/entities/Board/model/api/boardApi.server'
 
-import { BoardView } from '@/widgets/BoardView/ui/BoardView'
+import { BoardView } from '@/widgets/BoardView'
 
 interface Props {
 	params: { id: string }

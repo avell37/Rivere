@@ -1,19 +1,25 @@
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 import { Alert } from '@/shared/ui/custom'
 import { Button, Separator } from '@/shared/ui/external'
 
 import { useSession } from '../model/hooks/useSession'
-import { ISession } from '../model/types/ISession'
 
 import { SessionList } from './SessionList'
+import { SessionsSkeleton } from './SessionsSkeleton'
 
 export const Sessions = () => {
-	const { userSessions, terminateAllSessions } = useSession()
+	const {
+		userSessions,
+		hasOtherSessions,
+		sessionsIsPending,
+		terminateAllSessions,
+		terminateSelectedSession
+	} = useSession()
 	const t = useTranslations('profile.settings.session')
-	const hasOtherSessions = userSessions?.some(
-		(session: ISession) => !session.isCurrent
-	)
+	const locale = useLocale()
+
+	if (sessionsIsPending) return <SessionsSkeleton />
 
 	return (
 		<div className='flex flex-col gap-6 w-full'>
@@ -33,7 +39,12 @@ export const Sessions = () => {
 			</div>
 			<Separator />
 			<div className='border rounded-md p-4 flex flex-col gap-8'>
-				<SessionList t={t} />
+				<SessionList
+					t={t}
+					locale={locale}
+					userSessions={userSessions}
+					terminateSelectedSession={terminateSelectedSession}
+				/>
 			</div>
 		</div>
 	)

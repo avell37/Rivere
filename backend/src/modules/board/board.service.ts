@@ -9,12 +9,16 @@ import { CreateBoardInput } from './inputs/create-board.input';
 import { randomBytes } from 'crypto';
 import { addDays } from 'date-fns';
 import { ConfigService } from '@nestjs/config';
+import { AchievementsService } from '../achievements/achievements.service';
+import { UpdateBoardInput } from './inputs/update-board.input';
+import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
 
 @Injectable()
 export class BoardService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly config: ConfigService,
+        private readonly achievementsService: AchievementsService,
     ) {}
 
     async create(userId: string, input: CreateBoardInput) {
@@ -71,6 +75,12 @@ export class BoardService {
                 },
             },
         });
+
+        await this.achievementsService.updateAchievementProgress(
+            userId,
+            'firstBoard',
+            1,
+        );
 
         return board;
     }
@@ -141,7 +151,41 @@ export class BoardService {
         return boards;
     }
 
-    async updateBoard(boardId: string) {}
+    async updateBoard(
+        userId: string,
+        boardId: string,
+        input: UpdateBoardInput,
+    ) {
+        const { title, background } = input;
+
+        const board = await this.prisma.board.findUnique({
+            where: { id: boardId },
+        });
+
+        if (!board) {
+            throw new NotFoundException({
+                code: 'errors.board.notFound',
+                message: 'Доска не найдена',
+            });
+        }
+
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
+        return this.prisma.board.update({
+            where: { id: boardId },
+            data: {
+                title,
+                background: {
+                    url: background?.url || null,
+                    color: background?.color || null,
+                },
+            },
+        });
+    }
 
     async deleteBoard(boardId: string) {
         await this.prisma.board.delete({

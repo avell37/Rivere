@@ -1,3 +1,4 @@
+'use client'
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -7,6 +8,7 @@ import { handleApiError } from '@/shared/utils/handleApiError'
 
 import { fetchReorderColumns } from '../api/reorderApi'
 import { useDndStore } from '../store/useDndStore'
+import { ReorderColumns } from '../types/ReorderPayload'
 
 interface ColumnDndProps {
 	boardId: string
@@ -20,13 +22,8 @@ export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
 
 	const reorderColumns = useMutation({
 		mutationKey: ['reorder columns', boardId],
-		mutationFn: ({
-			boardId,
-			columns
-		}: {
-			boardId: string
-			columns: string[]
-		}) => fetchReorderColumns({ boardId, columns }),
+		mutationFn: ({ boardId, columns }: ReorderColumns) =>
+			fetchReorderColumns({ boardId, columns }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
 		},

@@ -1,19 +1,20 @@
-import { AuthWrapper, RegisterForm } from "@/features/auth";
-import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+
+import { AuthWrapper, RegisterForm } from '@/features/auth'
 
 export async function generateMetadata(): Promise<Metadata> {
-    const t = await getTranslations('auth.register')
+	const t = await getTranslations('auth.register')
 
-    return {
-        title: t("heading")
-    }
+	return {
+		title: t('heading')
+	}
 }
 
 export default function RegisterPage() {
-    return (
-        <AuthWrapper>
-            <RegisterForm />
-        </AuthWrapper>
-    )
+	return (
+		<AuthWrapper>
+			<RegisterForm />
+		</AuthWrapper>
+	)
 }

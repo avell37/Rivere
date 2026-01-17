@@ -1,12 +1,15 @@
-import { ChangeEmailRequest } from '@/features/settings/user/model/validation/change-email.z.validation'
-import { ChangeNicknameRequest } from '@/features/settings/user/model/validation/change-nickname.z.validation'
-import { ChangePasswordRequest } from '@/features/settings/user/model/validation/change-password.z.validation'
-import { ChangeUsernameRequest } from '@/features/settings/user/model/validation/change-username.z.validation'
+import { ISession, ISessionActionsResponse } from '@/features/sessions'
+import {
+	ChangeEmailRequest,
+	ChangeNicknameRequest,
+	ChangePasswordRequest,
+	ChangeUsernameRequest
+} from '@/features/settings'
 
 import { baseAxios } from '@/shared/api/interceptors'
-import { API_URL } from '@/shared/libs/constants/api.config'
+import { API_URL } from '@/shared/libs'
 
-import { IUser } from '../types/IUser'
+import { IUploadedAvatar, IUser, IUserUpdateResponse } from '../types/IUser'
 import { IUserStatistics } from '../types/IUserStatistics'
 
 export const getUser = async (): Promise<IUser> => {
@@ -19,7 +22,9 @@ export const getStatistics = async (): Promise<IUserStatistics> => {
 	return response.data
 }
 
-export const changeUsername = async (data: ChangeUsernameRequest) => {
+export const changeUsername = async (
+	data: ChangeUsernameRequest
+): Promise<IUserUpdateResponse> => {
 	const response = await baseAxios.post(
 		`${API_URL.account()}changeUsername`,
 		data
@@ -27,7 +32,9 @@ export const changeUsername = async (data: ChangeUsernameRequest) => {
 	return response.data
 }
 
-export const changeEmail = async (data: ChangeEmailRequest) => {
+export const changeEmail = async (
+	data: ChangeEmailRequest
+): Promise<IUserUpdateResponse> => {
 	const response = await baseAxios.post(
 		`${API_URL.account()}changeEmail`,
 		data
@@ -35,7 +42,9 @@ export const changeEmail = async (data: ChangeEmailRequest) => {
 	return response.data
 }
 
-export const changePassword = async (data: ChangePasswordRequest) => {
+export const changePassword = async (
+	data: ChangePasswordRequest
+): Promise<IUserUpdateResponse> => {
 	const response = await baseAxios.post(
 		`${API_URL.account()}changePassword`,
 		data
@@ -43,7 +52,9 @@ export const changePassword = async (data: ChangePasswordRequest) => {
 	return response.data
 }
 
-export const changeNickname = async (data: ChangeNicknameRequest) => {
+export const changeNickname = async (
+	data: ChangeNicknameRequest
+): Promise<IUserUpdateResponse> => {
 	const response = await baseAxios.post(
 		`${API_URL.account()}changeNickname`,
 		data
@@ -51,7 +62,7 @@ export const changeNickname = async (data: ChangeNicknameRequest) => {
 	return response.data
 }
 
-export const uploadAvatar = async (file: File) => {
+export const uploadAvatar = async (file: File): Promise<IUploadedAvatar> => {
 	const formData = new FormData()
 	formData.append('file', file)
 
@@ -64,12 +75,12 @@ export const uploadAvatar = async (file: File) => {
 	return response.data
 }
 
-export const logout = async () => {
+export const logout = async (): Promise<ISessionActionsResponse> => {
 	const response = await baseAxios.post(`${API_URL.session()}`)
 	return response.data
 }
 
-export const findCurrentSession = async () => {
+export const findCurrentSession = async (): Promise<ISession[]> => {
 	const response = await baseAxios.get(`${API_URL.session()}`)
 	return response.data
 }

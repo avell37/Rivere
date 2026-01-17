@@ -1,17 +1,18 @@
 import z from 'zod'
 
-import { Priority } from '@/entities/Card/model/types/CardPriority'
+import { Priority } from '@/entities/Card'
 
 export const CreateCardSchema = z.object({
 	title: z
 		.string()
-		.max(32, 'Максимальная длина названия карточки - 32 символа'),
+		.min(4, { message: 'validation.card.min' })
+		.max(32, { message: 'validation.card.max' }),
 	description: z
 		.string()
-		.max(100, 'Максимальная длина описания карточки - 100 символов')
+		.max(100, { message: 'validation.card.descriptionMax' })
 		.optional(),
 	priority: z.enum([Priority.LOW, Priority.MEDIUM, Priority.HIGH], {
-		message: 'Выберите приоритетность задачи'
+		message: 'validation.card.priority'
 	}),
 	deadline: z.string().min(1)
 })

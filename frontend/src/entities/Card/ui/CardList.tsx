@@ -1,7 +1,9 @@
+'use client'
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useTranslations } from 'next-intl'
 
-import { CreateCardModal } from '@/features/card/create/ui/CreateCardModal'
+import { CreateCardModal } from '@/features/card'
 
 import { ICard } from '../model/types/ICard'
 
@@ -16,6 +18,7 @@ export const CardList = ({
 	columnId: string
 	boardId: string
 }) => {
+	const t = useTranslations('card')
 	const { setNodeRef } = useDroppable({
 		id: `column-end-${columnId}`,
 		data: {
@@ -37,13 +40,16 @@ export const CardList = ({
 						))}
 				</SortableContext>
 				{cards.length === 0 && (
-					<div className='h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center font-bold text-sm'>
-						Перетащите карточку сюда
+					<div
+						className='h-20 border-2 border-dashed text-white border-gray-300 
+					rounded-lg flex items-center justify-center font-bold text-sm'
+					>
+						{t('dragCard')}
 					</div>
 				)}
 				<div className='rounded-md' />
 			</div>
-			<CreateCardModal columnId={columnId} />
+			<CreateCardModal columnId={columnId} boardId={boardId} />
 		</div>
 	)
 }

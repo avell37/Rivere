@@ -39,6 +39,7 @@ export class CardController {
         summary: 'Обновление карточки',
         description: 'Обновляет карточку новыми данными от пользователя.',
     })
+    @HttpCode(200)
     @Authorization()
     @Patch(':id')
     async update(
@@ -53,6 +54,7 @@ export class CardController {
         summary: 'Обновление позиции в старой колонке',
         description: 'Обновляет позицию карточки в старой колонке.',
     })
+    @HttpCode(200)
     @Authorization()
     @Post('reorder')
     async reorder(
@@ -66,6 +68,7 @@ export class CardController {
         summary: 'Обновление позиции в новой колонке',
         description: 'Обновляет позицию карточки в новой колонке.',
     })
+    @HttpCode(200)
     @Authorization()
     @Post('reorderToNewColumn')
     async reorderToNewColumn(
@@ -79,6 +82,7 @@ export class CardController {
         summary: 'Удаление карточки',
         description: 'Удаляет определенную карточку.',
     })
+    @HttpCode(200)
     @Authorization()
     @Delete(':id')
     async delete(

@@ -30,13 +30,13 @@ export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 								{passwordType === 'password' ? (
 									<Eye
 										size='16'
-										className='cursor-pointer'
+										className='cursor-pointer mt-1'
 										onClick={togglePasswords}
 									/>
 								) : (
 									<EyeClosed
 										size='16'
-										className='cursor-pointer'
+										className='cursor-pointer mt-1'
 										onClick={togglePasswords}
 									/>
 								)}
@@ -53,13 +53,13 @@ export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 								{passwordType === 'password' ? (
 									<Eye
 										size='16'
-										className='cursor-pointer'
+										className='cursor-pointer mt-1'
 										onClick={togglePasswords}
 									/>
 								) : (
 									<EyeClosed
 										size='16'
-										className='cursor-pointer'
+										className='cursor-pointer mt-1'
 										onClick={togglePasswords}
 									/>
 								)}
@@ -76,13 +76,13 @@ export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 								{passwordType === 'password' ? (
 									<Eye
 										size='16'
-										className='cursor-pointer'
+										className='cursor-pointer mt-1'
 										onClick={togglePasswords}
 									/>
 								) : (
 									<EyeClosed
 										size='16'
-										className='cursor-pointer'
+										className='cursor-pointer mt-1'
 										onClick={togglePasswords}
 									/>
 								)}

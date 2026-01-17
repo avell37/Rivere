@@ -5,14 +5,19 @@ import { getAchievements } from '../api/achievementsApi'
 import { IAchievement } from '../types/IAchievement'
 
 export const useGetAchievements = () => {
-	const { data, isLoading } = useQuery<IAchievement[]>({
-		queryKey: ['get achievements'],
-		queryFn: getAchievements,
-		retry: false
-	})
+	const { data: achievements, isLoading } = useQuery<IAchievement[], unknown>(
+		{
+			queryKey: ['get achievements'],
+			queryFn: getAchievements,
+			retry: false
+		}
+	)
+
+	const earnedCount = achievements?.filter(ach => ach.achievedAt).length ?? 0
 
 	return {
-		data,
+		achievements,
+		earnedCount,
 		isLoading
 	}
 }

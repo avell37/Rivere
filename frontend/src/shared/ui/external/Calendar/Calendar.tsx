@@ -8,7 +8,7 @@ import {
 import * as React from 'react'
 import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker'
 
-import { cn } from '@/shared/libs/twMerge'
+import { cn } from '@/shared/utils/twMerge'
 
 import { Button, buttonVariants } from '../Button/Button'
 

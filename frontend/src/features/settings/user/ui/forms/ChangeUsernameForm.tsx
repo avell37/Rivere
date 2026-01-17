@@ -14,16 +14,14 @@ export const ChangeUsernameForm = ({ t }: { t: (key: string) => string }) => {
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
 			>
-				<div className='flex flex-col gap-4'>
-					<FormInputController
-						name='username'
-						label={t('personalInformation.usernameModalLabel')}
-						placeholder={t(
-							'personalInformation.usernameModalPlaceholder'
-						)}
-						control={form.control}
-					/>
-				</div>
+				<FormInputController
+					name='username'
+					label={t('personalInformation.usernameModalLabel')}
+					placeholder={t(
+						'personalInformation.usernameModalPlaceholder'
+					)}
+					control={form.control}
+				/>
 			</FormWrapper>
 		</Form>
 	)

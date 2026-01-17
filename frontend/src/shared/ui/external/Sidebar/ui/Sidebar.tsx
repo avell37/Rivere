@@ -6,7 +6,7 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
 import * as React from 'react'
 
-import { cn } from '@/shared/libs/twMerge'
+import { cn } from '@/shared/utils/twMerge'
 
 import { Button } from '../../Button/Button'
 import { Input } from '../../Input/Input'

@@ -1,43 +1,48 @@
+'use client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { updateCard } from '@/entities/Card/model/api/cardApi'
-import { UpdateCardPayload } from '@/entities/Card/model/types/CardPayloads'
+import { ICard, UpdateCardPayload, updateCard } from '@/entities/Card'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { handleApiError } from '@/shared/utils'
 
-type EditableKey = 'title' | 'description' | 'priority' | 'deadline'
+import { EditableKey, EditableValue } from '../types/EditableProps'
 
 export const useUpdateCard = (cardId: string, key: EditableKey) => {
 	const t = useTranslations()
 	const queryClient = useQueryClient()
 	const [isEditing, setIsEditing] = useState(false)
 	const { getValues } = useFormContext()
-	const previousValueRef = useRef<string | null>(null)
+	const previousValueRef = useRef<EditableValue | null>(null)
 
-	const mutation = useMutation({
+	const mutation = useMutation<ICard, unknown, UpdateCardPayload>({
 		mutationFn: (data: UpdateCardPayload) => updateCard(cardId, data),
 		onSuccess: () => {
-			toast.success('Успешно')
 			queryClient.invalidateQueries({ queryKey: ['card'] })
+			toast.success(t('card.edit.editSuccess'))
 		},
 		onError: err => handleApiError(err, t)
 	})
 
 	useEffect(() => {
-		if (isEditing) previousValueRef.current = getValues(key)
+		if (isEditing) {
+			previousValueRef.current = getValues(key) as EditableValue
+		}
 	}, [isEditing, getValues])
 
-	const handleBlur = (value: any) => {
+	const handleBlur = (value: EditableValue) => {
 		setIsEditing(false)
-		if (value !== previousValueRef.current)
-			mutation.mutate({ [key]: value })
+		if (value !== previousValueRef.current) {
+			mutation.mutate({ [key]: value } as UpdateCardPayload)
+		}
 	}
 
-	const handleChange = (value: string) => mutation.mutate({ [key]: value })
+	const handleChange = (value: EditableValue) => {
+		mutation.mutate({ [key]: value } as UpdateCardPayload)
+	}
 
 	return {
 		isEditing,

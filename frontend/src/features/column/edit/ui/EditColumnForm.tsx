@@ -1,28 +1,10 @@
 'use client'
-import { UseFormReturn } from 'react-hook-form'
-
 import { FormInputController } from '@/shared/ui/custom'
-import { Button, DialogClose, DialogFooter, Input } from '@/shared/ui/external'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage
-} from '@/shared/ui/external/Form/Form'
+import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
 
-interface CreateColumnFormProps {
-	form: UseFormReturn<any>
-	onSubmit: (data: any) => void
-	t: (key: string) => string
-}
+import { EditColumnFormProps } from '../model/types/EditColumnProps'
 
-export const EditColumnForm = ({
-	form,
-	onSubmit,
-	t
-}: CreateColumnFormProps) => {
+export const EditColumnForm = ({ form, onSubmit, t }: EditColumnFormProps) => {
 	return (
 		<Form {...form}>
 			<form
@@ -36,9 +18,7 @@ export const EditColumnForm = ({
 					control={form.control}
 				/>
 				<DialogFooter>
-					<Button type='submit' variant='outline'>
-						{t('editModalSubmit')}
-					</Button>
+					<Button type='submit'>{t('editModalSubmit')}</Button>
 					<DialogClose asChild>
 						<Button variant='outline'>{t('editModalClose')}</Button>
 					</DialogClose>

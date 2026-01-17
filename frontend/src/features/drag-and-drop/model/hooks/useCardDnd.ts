@@ -1,12 +1,14 @@
+'use client'
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { handleApiError } from '@/shared/utils'
 
 import { fetchMoveCardToColumn, fetchReorderCards } from '../api/reorderApi'
 import { useDndStore } from '../store/useDndStore'
+import { ReorderCards } from '../types/ReorderPayload'
 
 export const useCardDnd = ({ boardId }: { boardId: string }) => {
 	const t = useTranslations()
@@ -16,13 +18,8 @@ export const useCardDnd = ({ boardId }: { boardId: string }) => {
 
 	const reorderMutation = useMutation({
 		mutationKey: ['reorder cards'],
-		mutationFn: ({
-			columnId,
-			cards
-		}: {
-			columnId: string
-			cards: string[]
-		}) => fetchReorderCards({ columnId, cards }),
+		mutationFn: ({ columnId, cards }: ReorderCards) =>
+			fetchReorderCards({ columnId, cards }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
 		},

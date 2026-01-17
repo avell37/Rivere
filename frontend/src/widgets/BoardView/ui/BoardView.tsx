@@ -1,44 +1,28 @@
 'use client'
-import {
-	DndContext,
-	DragEndEvent,
-	DragStartEvent,
-	rectIntersection
-} from '@dnd-kit/core'
+import { DndContext, rectIntersection } from '@dnd-kit/core'
 
-import { ColumnList } from '@/entities/Column/ui/ColumnList'
+import { ColumnList } from '@/entities/Column'
 
-import { useCardDnd, useColumnDnd, useDndStore } from '@/features/drag-and-drop'
+import { useDndStore } from '@/features/drag-and-drop'
 
 import { useSidebar } from '@/shared/ui/external'
 
-import { BoardHeaderActions } from '@/widgets/board-header-actions/ui/BoardHeaderActions'
-
 import { useBoard } from '../model/hooks/useBoard'
+import { useBoardDndHandlers } from '../model/hooks/useBoardDndHandlers'
 
 import { BoardDragOverlay } from './BoardDragOverlay'
+import { BoardHeaderActions } from './BoardHeaderActions'
+import { BoardViewSkeleton } from './BoardViewSkeleton'
 
 export const BoardView = ({ boardId }: { boardId: string }) => {
 	const { columns, board, isLoading, backgroundStyle, sensors } =
 		useBoard(boardId)
-	const { onColumnDragStart, onColumnDragEnd } = useColumnDnd({ boardId })
-	const { onCardDragStart, onCardDragEnd } = useCardDnd({ boardId })
+	const { handleDragStart, handleDragEnd } = useBoardDndHandlers({ boardId })
+
 	const { activeCard, activeColumn } = useDndStore()
 	const { state } = useSidebar()
 
-	if (isLoading || !board) return <div>Loading...</div>
-
-	const handleDragStart = (event: DragStartEvent) => {
-		const type = event.active.data.current?.type
-		if (type === 'column') onColumnDragStart(event)
-		else onCardDragStart(event)
-	}
-
-	const handleDragEnd = (event: DragEndEvent) => {
-		const type = event.active.data.current?.type
-		if (type === 'column') onColumnDragEnd(event)
-		else onCardDragEnd(event)
-	}
+	if (isLoading || !board) return <BoardViewSkeleton />
 
 	return (
 		<div className={`relative h-full w-full`}>
@@ -46,7 +30,7 @@ export const BoardView = ({ boardId }: { boardId: string }) => {
 				className='fixed top-0 left-0 w-full h-screen -z-10'
 				style={backgroundStyle}
 			/>
-			<div className='fixed items-center px-4 py-3 w-full bg-zinc-700/30 backdrop-blur-md'>
+			<div className='fixed items-center px-4 py-3 w-full bg-background/80 dark:bg-zinc-600/30 backdrop-blur-md'>
 				<div
 					className={`inline-flex items-center justify-between mx-auto w-full transition-all
 					${state === 'collapsed' ? 'max-w-[1900px]' : 'max-w-[1620px]'}`}
@@ -65,9 +49,9 @@ export const BoardView = ({ boardId }: { boardId: string }) => {
 					<ColumnList boardId={boardId} columns={columns} />
 				</div>
 				<BoardDragOverlay
+					boardId={boardId}
 					activeCard={activeCard}
 					activeColumn={activeColumn}
-					boardId={boardId}
 				/>
 			</DndContext>
 		</div>

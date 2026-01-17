@@ -1,6 +1,37 @@
 {
 	"home": {
-		"title": "Главная страница"
+		"heading": "Rivere",
+		"header": {
+			"login": "Войти",
+			"register": "Регистрация"
+		},
+		"startSection": {
+			"title": "Управляй задачами просто с",
+			"name": "Rivere",
+			"description": "Rivere - это инструмент для организации проектов, задач и командной работы. Всё в одном месте, без лишней сложности.",
+			"login": "Войти",
+			"register": "Регистрация"
+		},
+		"secondSection": {
+			"title": "Почему Rivere?",
+			"firstCard": {
+				"title": "Простота",
+				"description": "Минимальный интерфейс без перегрузки. Начать можно за пару минут."
+			},
+			"secondCard": {
+				"title": "Гибкость",
+				"description": "Настраивай доски и колонки под любой рабочий процесс."
+			},
+			"thirdCard": {
+				"title": "Контроль",
+				"description": "Видишь прогресс по задачам и проектам в одном месте."
+			}
+		},
+		"thirdSection": {
+			"title": "Готов начать?",
+			"description": "Создай аккаунт и начни управлять задачи уже сегодня.",
+			"register": "Создать аккаунт"
+		}
 	},
 	"auth": {
 		"login": {
@@ -28,20 +59,81 @@
 		"google": "Продолжить с Google",
 		"yandex": "Продолжить с Яндекс"
 	},
+	"account": {
+		"auth": "Успешно",
+		"logout": "Вы успешно вышли из аккаунта."
+	},
 	"achievements": {
-		"heading": "Достижения"
+		"heading": "Достижения",
+		"title": "Ваши достижения ({current}/{total}):",
+		"loading": "Ваши достижения:",
+		"issuedAt": "выдано {date} в {time}",
+		"firstBoard": {
+			"title": "Опять школа??",
+			"description": "Создайте свою первую доску"
+		},
+		"tenTasksCompleted": {
+			"title": "Я уже смешарик",
+			"description": "Выполните первые 10 задач"
+		}
 	},
 	"statistics": {
-		"heading": "Статистика"
+		"heading": "Статистика",
+		"activity": {
+			"heading": "Ваша активность за последние 90 дней:",
+			"closedCards": "Закрыто карточек:"
+		}
 	},
 	"boards": {
 		"heading": "Доски",
 		"title": "Ваши доски:",
-		"create": "Создать новую доску"
+		"members": {
+			"title": "Список участников доски:",
+			"joinedAt": "присоединился: {date} в {time}"
+		}
 	},
 	"board": {
 		"heading": "{name}",
-		"members": "{count, plural, one {# участник} few {# участника} many {# участников} other {# участников}}"
+		"members": "{count, plural, one {# участник} few {# участника} many {# участников} other {# участников}}",
+		"create": {
+			"heading": "Создать доску",
+			"title": "Добавить доску",
+			"description": "Чтобы начать работу с доской, нужно ее создать, верно?",
+			"createModalLabel": "Название",
+			"createModalPlaceholder": "Название доски",
+			"createModalSubmit": "Сохранить",
+			"createModalClose": "Закрыть",
+			"createSuccess": "Доска успешно создана"
+		},
+		"edit": {
+			"heading": "Редактировать доску",
+			"editTitle": "Изменить название доски",
+			"editDescription": "Введите новое название для вашей доски",
+			"editModalLabel": "Название",
+			"editModalPlaceholder": "Новое название доски",
+			"editModalSubmit": "Сохранить",
+			"editModalClose": "Закрыть",
+			"editSuccess": "Изменения успешно применены"
+		},
+		"delete": {
+			"deleteTitle": "Удалить доску?",
+			"deleteDescription": "Это действие нельзя отменить, ваша доска будет окончательно удалена.",
+			"deleteActionText": "Удалить",
+			"deleteCancelText": "Отмена",
+			"deleteSuccess": "Доска успешно удалена"
+		},
+		"colors": {
+			"heading": "Градиенты"
+		},
+		"preview": {
+			"firstColumnHeading": "TODO",
+			"secondColumnHeading": "В процессе",
+			"thirdColumnHeading": "Выполнено"
+		},
+		"actions": {
+			"edit": "Редактировать",
+			"delete": "Удалить"
+		}
 	},
 	"column": {
 		"create": {
@@ -51,7 +143,8 @@
 			"createModalLabel": "Название",
 			"createModalPlaceholder": "Название колонки",
 			"createModalSubmit": "Добавить",
-			"createModalClose": "Закрыть"
+			"createModalClose": "Закрыть",
+			"createSuccess": "Колонка успешно создана"
 		},
 		"edit": {
 			"heading": "Редактировать колонку",
@@ -60,13 +153,19 @@
 			"editModalLabel": "Название",
 			"editModalPlaceholder": "Новое название колонки",
 			"editModalSubmit": "Сохранить",
-			"editModalClose": "Закрыть"
+			"editModalClose": "Закрыть",
+			"editSuccess": "Изменения успешно применены"
 		},
 		"delete": {
 			"deleteTitle": "Удалить колонку?",
 			"deleteDescription": "Эта колонка и все её задачи будут окончательно удалены.",
 			"deleteActionText": "Удалить",
-			"deleteCancelText": "Отмена"
+			"deleteCancelText": "Отмена",
+			"deleteSuccess": "Колонка успешно удалена"
+		},
+		"actions": {
+			"edit": "Редактировать",
+			"delete": "Удалить"
 		}
 	},
 	"card": {
@@ -82,7 +181,8 @@
 			"createDeadlineModalLabel": "Дедлайн",
 			"createDeadlineModalPlaceholder": "Выберите дедлайн",
 			"createModalSubmit": "Добавить",
-			"createModalClose": "Закрыть"
+			"createModalClose": "Закрыть",
+			"createSuccess": "Карточка успешно создана"
 		},
 		"edit": {
 			"description": "Описание",
@@ -90,21 +190,32 @@
 			"editPriorityLabel": "Приоритет",
 			"editPriorityPlaceholder": "Выберите приоритет задачи",
 			"editDeadlineLabel": "Дедлайн",
-			"editDeadlinePlaceholder": "Выберите новый дедлайн"
+			"editDeadlinePlaceholder": "Выберите новый дедлайн",
+			"editSuccess": "Изменения успешно применены"
 		},
 		"delete": {
 			"deleteTitle": "Удалить карточку?",
 			"deleteDescription": "Это действие нельзя отменить, ваша карточка будет окончательно удалена.",
 			"deleteActionText": "Удалить",
-			"deleteCancelText": "Отмена"
+			"deleteCancelText": "Отмена",
+			"deleteSuccess": "Карточка успешно удалена"
 		},
 		"chat": {
 			"inputPlaceholder": "Написать сообщение..."
-		}
+		},
+		"doneSuccess": "Успешно",
+		"expiresAt": "истекает: {date}",
+		"dragCard": "Перетащите карточку сюда"
 	},
 	"notifications": {
 		"heading": "Уведомления",
-		"clearAllNotifications": "Очистить все"
+		"noNotifications": "Нет новых уведомлений",
+		"clearAllNotifications": "Очистить все",
+		"successReaded": "Все уведомления отмечены как прочитанные.",
+		"successCleared": "Уведомления очищены",
+		"achievements": {
+			"earned": "Вы получили достижение: {title}"
+		}
 	},
 	"priority": {
 		"low": "Низкая",
@@ -208,17 +319,42 @@
 			"min": "Минимальная длина имени пользователя 4 символа",
 			"max": "Максимальная длина имени пользователя 32 символа"
 		},
+		"email": "Введите корректный e-mail адрес",
 		"nickname": {
 			"min": "Минимальная длина никнейма 4 символа",
 			"max": "Максимальная длина никнейма 32 символа"
 		},
 		"password": {
 			"min": "Минимальная длина пароля 6 символов",
-			"max": "Максимальная длина пароля 64 символа"
+			"max": "Максимальная длина пароля 64 символа",
+			"noMatches": "Пароли не совпадают"
+		},
+		"board": {
+			"min": "Минимальная длина названия доски 4 символа",
+			"max": "Максимальная длина названия колонки 32 символа"
+		},
+		"column": {
+			"min": "Минимальная длина названия колонки 4 символа",
+			"max": "Максимальная длина названия колонки 32 символа"
+		},
+		"card": {
+			"min": "Минимальная длина названия карточки 4 символа",
+			"max": "Максимальная длина названия карточки 32 символа",
+			"descriptionMax": "Максимальная длина описания карточки 100 символов",
+			"priority": "Выберите приоритетность задачи"
 		}
 	},
 	"errors": {
 		"unexpected": "Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.",
+		"unauthorized": "Необходима авторизация",
+		"achievements": {
+			"exists": "Достижение с таким кодом уже существует",
+			"notFound": "Достижение не найдено"
+		},
+		"user": {
+			"unauthorized": "Необходима авторизация",
+			"notFound": "Пользователь не найден"
+		},
 		"account": {
 			"usernameExists": "Имя пользователя уже занято",
 			"emailExists": "Электронная почта уже занята",
@@ -233,6 +369,9 @@
 				"notFound": "Приглашение не найдено",
 				"notValid": "Приглашение истекло",
 				"alreadyMember": "Вы уже являетесь участником этой доски"
+			},
+			"members": {
+				"forbidden": "Нет доступа к данной доске."
 			}
 		},
 		"card": {
@@ -241,7 +380,8 @@
 		},
 		"column": {
 			"notFound": "Колонка не найдена",
-			"notFoundMultiple": "Одна или несколько колонок не найдены"
+			"notFoundMultiple": "Одна или несколько колонок не найдены",
+			"noID": "Не указан ID доски или колонки"
 		},
 		"messages": {
 			"missingFields": "Не все данные были предоставлены."

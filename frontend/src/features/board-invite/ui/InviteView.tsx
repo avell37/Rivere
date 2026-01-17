@@ -4,17 +4,16 @@ import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import { PUBLIC_URL } from '@/shared/libs/constants/url.config'
-import { customAvatar } from '@/shared/libs/customAvatar'
-import { formattedDate } from '@/shared/libs/formattedDate'
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	Button
-} from '@/shared/ui/external'
+import { UserAvatar } from '@/entities/User'
+
+import { customAvatar } from '@/shared/config'
+import { PUBLIC_URL } from '@/shared/libs'
+import { Button } from '@/shared/ui/external'
+import { formatDate } from '@/shared/utils'
 
 import { useInvite } from '../model/hooks/useInvite'
+
+import { InviteSkeleton } from './InviteSkeleton'
 
 export const InviteView = () => {
 	const router = useRouter()
@@ -29,19 +28,18 @@ export const InviteView = () => {
 		toast.success(t('acceptedInvite'))
 	}
 
-	if (!data) return <div>Loading...</div>
+	if (!data) return <InviteSkeleton />
 
 	return (
 		<div className='h-screen flex items-center justify-center'>
 			<div className='relative flex flex-col gap-4 bg-zinc-800 p-6 rounded-md max-w-lg w-full'>
 				<div className='flex flex-col gap-1'>
 					<div className='flex items-center gap-2'>
-						<Avatar className='w-8 h-8 rounded-full bg-red-500'>
-							<AvatarImage src={data?.invitedBy?.avatar} />
-							<AvatarFallback>
-								{customAvatar(data?.invitedBy?.nickname)}
-							</AvatarFallback>
-						</Avatar>
+						<UserAvatar
+							avatar={data?.invitedBy?.avatar}
+							username={customAvatar(data?.invitedBy?.nickname)}
+							avatarClassname='w-8 h-8 rounded-full bg-red-500'
+						/>
 						<span className='wrap-break-word'>
 							{data?.invitedBy?.nickname}
 						</span>
@@ -55,7 +53,7 @@ export const InviteView = () => {
 				</span>
 				<span className='absolute top-4 right-2 text-xs text-gray-400'>
 					{t('page.validUntil', {
-						date: formattedDate(data?.expiresAt, locale)
+						date: formatDate(data?.expiresAt, locale)
 					})}
 				</span>
 				<div className='flex justify-between gap-2'>

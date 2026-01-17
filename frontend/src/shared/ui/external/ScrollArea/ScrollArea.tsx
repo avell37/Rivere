@@ -3,7 +3,7 @@
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
 import * as React from 'react'
 
-import { cn } from '@/shared/libs/twMerge'
+import { cn } from '@/shared/utils/twMerge'
 
 function ScrollArea({
 	className,

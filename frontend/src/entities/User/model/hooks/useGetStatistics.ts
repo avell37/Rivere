@@ -6,7 +6,7 @@ import { IUserStatistics } from '../types/IUserStatistics'
 import { generateLastDays } from '../utils/generateLastDays'
 
 export const useGetStatistics = () => {
-	const { data, isLoading, error } = useQuery<IUserStatistics>({
+	const { data, isLoading, error } = useQuery<IUserStatistics, unknown>({
 		queryKey: ['get statistics'],
 		queryFn: getStatistics,
 		retry: false

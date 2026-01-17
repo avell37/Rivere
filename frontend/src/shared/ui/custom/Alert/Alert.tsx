@@ -11,12 +11,14 @@ import {
 } from '../../external/AlertDialog/AlertDialog'
 
 interface AlertProps {
-	trigger: React.ReactNode
+	trigger?: React.ReactNode
 	title: string
 	description?: string
 	actionText: string
 	cancelText: string
+	open?: boolean
 	onSubmit?: () => void
+	onOpenChange?: (open: boolean) => void
 }
 
 export const Alert = ({
@@ -25,12 +27,16 @@ export const Alert = ({
 	description,
 	actionText,
 	cancelText,
+	open,
+	onOpenChange,
 	onSubmit
 }: AlertProps) => {
 	return (
-		<AlertDialog>
-			<AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
-			<AlertDialogContent className=''>
+		<AlertDialog open={open} onOpenChange={onOpenChange}>
+			{trigger && (
+				<AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
+			)}
+			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle className='text-white'>
 						{title}

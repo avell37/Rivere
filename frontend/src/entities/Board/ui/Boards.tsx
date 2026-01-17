@@ -13,22 +13,6 @@ export const Boards = () => {
 	const { state } = useSidebar()
 	const { boards, isPending } = useGetBoards()
 
-	if (isPending || !boards) {
-		return (
-			<div className='flex justify-center py-8 px-4'>
-				<div
-					className={`flex flex-col gap-4 w-full transition-all
-                ${state === 'collapsed' ? 'max-w-[1100px]' : 'max-w-[900px]'}`}
-				>
-					<div className='flex justify-between items-center'>
-						<h3 className='font-bold text-xl'>{t('title')}</h3>
-					</div>
-					<BoardListSkeleton />
-				</div>
-			</div>
-		)
-	}
-
 	return (
 		<div className='flex justify-center py-8 px-4'>
 			<div
@@ -38,7 +22,11 @@ export const Boards = () => {
 				<div className='flex justify-between items-center'>
 					<h3 className='font-bold text-xl'>{t('title')}</h3>
 				</div>
-				<BoardList boards={boards} />
+				{isPending || !boards ? (
+					<BoardListSkeleton />
+				) : (
+					<BoardList boards={boards} />
+				)}
 			</div>
 		</div>
 	)

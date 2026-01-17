@@ -1,12 +1,8 @@
-import { SERVER_URL } from '@/shared/libs/constants/api.config'
-import { customAvatar } from '@/shared/libs/customAvatar'
+import { customAvatar } from '@/shared/config'
+import { SERVER_URL } from '@/shared/libs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/external'
 
-interface UserAvatarProps {
-	avatarClassname?: string
-	avatar?: string
-	username?: string
-}
+import { UserAvatarProps } from '../model/types/UserProps'
 
 export const UserAvatar = ({
 	avatarClassname,

@@ -3,11 +3,11 @@ import z from 'zod'
 export const EditCardSchema = z.object({
 	title: z
 		.string()
-		.min(4, 'Минимальная длина названия карточки - 32 символа'),
+		.min(4, { message: 'validation.card.min' })
+		.max(32, { message: 'validation.card.max' }),
 	description: z
 		.string()
-		.min(6, 'Минимальная длина описания карточки - 6 символов')
-		.max(128, 'Максимальная длина описания карточки - 128 символов')
+		.max(100, { message: 'validation.card.descriptionMax' })
 		.optional(),
 	priority: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
 	deadline: z.string().optional()

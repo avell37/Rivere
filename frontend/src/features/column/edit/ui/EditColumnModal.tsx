@@ -1,25 +1,26 @@
 'use client'
-import { Edit } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { Modal } from '@/shared/ui/custom/Modal/Modal'
-import { Button } from '@/shared/ui/external'
+import { Modal } from '@/shared/ui/custom'
 
 import { useEditColumn } from '../model/hooks/useEditColumn'
+import { EditColumnModalProps } from '../model/types/EditColumnProps'
 
 import { EditColumnForm } from './EditColumnForm'
 
-export const EditColumnModal = ({ columnId }: { columnId: string }) => {
-	const { form, onSubmit } = useEditColumn(columnId)
+export const EditColumnModal = ({
+	open,
+	onOpenChange,
+	columnId,
+	boardId
+}: EditColumnModalProps) => {
+	const { form, onSubmit } = useEditColumn({ columnId, boardId })
 	const t = useTranslations('column.edit')
 
 	return (
 		<Modal
-			trigger={
-				<Button size='none' variant='none' className='cursor-pointer'>
-					<Edit />
-				</Button>
-			}
+			open={open}
+			onOpenChange={onOpenChange}
 			title={t('editTitle')}
 			description={t('editDescription')}
 			contentClassname='sm:max-w-md'

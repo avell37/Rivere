@@ -28,6 +28,10 @@ export class SessionController {
         return this.sessionService.findCurrentSession(req);
     }
 
+    @ApiOperation({
+        summary: 'Найти все сессии',
+        description: 'Отдает все активные сессии пользователя',
+    })
     @Authorization()
     @Get('userSessions')
     async findAllUserSessions(@Req() req: Request) {
@@ -40,6 +44,10 @@ export class SessionController {
         );
     }
 
+    @ApiOperation({
+        summary: 'Удаление сессии',
+        description: 'Удаляет определенную сессию по ID',
+    })
     @Authorization()
     @HttpCode(200)
     @Post('terminate/:sessionId')
@@ -58,6 +66,11 @@ export class SessionController {
         );
     }
 
+    @ApiOperation({
+        summary: 'Удаление сессий',
+        description: 'Удаляет все сессии, кроме текущей',
+    })
+    @HttpCode(200)
     @Authorization()
     @Post('terminateAll')
     async terminateAll(@Req() req: Request) {

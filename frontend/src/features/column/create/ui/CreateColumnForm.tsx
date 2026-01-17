@@ -2,8 +2,7 @@
 import { UseFormReturn } from 'react-hook-form'
 
 import { FormInputController } from '@/shared/ui/custom'
-import { Button, DialogClose, DialogFooter } from '@/shared/ui/external'
-import { Form } from '@/shared/ui/external/Form/Form'
+import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
 
 interface CreateColumnFormProps {
 	form: UseFormReturn<any>
@@ -29,9 +28,7 @@ export const CreateColumnForm = ({
 					control={form.control}
 				/>
 				<DialogFooter>
-					<Button type='submit' variant='outline'>
-						{t('createModalSubmit')}
-					</Button>
+					<Button type='submit'>{t('createModalSubmit')}</Button>
 					<DialogClose asChild>
 						<Button variant='outline'>
 							{t('createModalClose')}

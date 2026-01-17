@@ -2,7 +2,7 @@
 import { Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { Modal } from '@/shared/ui/custom/Modal/Modal'
+import { Modal } from '@/shared/ui/custom'
 
 import { useCreateColumn } from '../model/hooks/useCreateColumn'
 
@@ -16,9 +16,9 @@ export const CreateColumnModal = ({ boardId }: { boardId: string }) => {
 		<Modal
 			trigger={
 				<div className='flex flex-col relative rounded-t-md overflow-hidden cursor-pointer transition-all group w-74'>
-					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 dark:bg-neutral-900'>
+					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 bg-background dark:bg-neutral-900'>
 						<Plus />
-						<h3 className='font-semibold text-base text-white'>
+						<h3 className='font-semibold text-base dark:text-white'>
 							{t('heading')}
 						</h3>
 					</div>

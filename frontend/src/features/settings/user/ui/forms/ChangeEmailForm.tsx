@@ -14,14 +14,12 @@ export const ChangeEmailForm = ({ t }: { t: (key: string) => string }) => {
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
 			>
-				<div className='flex flex-col gap-4'>
-					<FormInputController
-						name='email'
-						label={t('security.emailModalLabel')}
-						placeholder={t('security.emailModalPlaceholder')}
-						control={form.control}
-					/>
-				</div>
+				<FormInputController
+					name='email'
+					label={t('security.emailModalLabel')}
+					placeholder={t('security.emailModalPlaceholder')}
+					control={form.control}
+				/>
 			</FormWrapper>
 		</Form>
 	)

@@ -21,11 +21,13 @@ model User {
 
   role UserRole @default(USER)
 
-  userStats     UserStats?
-  boards        BoardMember[]
-  messages      Message[]
-  boardInvites  BoardInvite[]
-  notifications Notification[]
+  userStats             UserStats?
+  boards                BoardMember[]
+  messages              Message[]
+  boardInvites          BoardInvite[]
+  notifications         Notification[]
+  userAchievements      UserAchievements[]
+  achievementProgresses AchievementProgress[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -57,7 +59,9 @@ model UserStats {
 model UserAchievements {
   id String @id @default(uuid())
 
-  userId        String   @map("user_id")
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   achievementId String   @map("achievement_id")
   achievedAt    DateTime @default(now()) @map("achieved_at")
 
@@ -94,9 +98,9 @@ model BoardMember {
   joinedAt DateTime @default(now())
 
   userId  String @map("user_id")
-  user    User   @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   boardId String @map("board_id")
-  board   Board  @relation(fields: [boardId], references: [id])
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -110,7 +114,7 @@ model BoardInvite {
   token String @unique
 
   boardId String @map("board_id")
-  board   Board  @relation(fields: [boardId], references: [id])
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
 
   createdBy String @map("created_by")
   creator   User   @relation(fields: [createdBy], references: [id])
@@ -148,7 +152,7 @@ model Card {
   position    Int
   priority    Priority
   deadline    DateTime?
-  done        Boolean
+  done        Boolean   @default(false)
 
   tags Tag[]
 
@@ -200,7 +204,7 @@ model Message {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  chat   Chat?  @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId String
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -245,11 +249,13 @@ model Achievement {
 model AchievementProgress {
   id String @id @default(uuid())
 
-  userId        String @map("user_id")
-  achievementId String @map("achievement_id")
-  progress      Int
+  progress Int
 
-  achievement Achievement @relation(fields: [achievementId], references: [id])
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  achievementId String      @map("achievement_id")
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

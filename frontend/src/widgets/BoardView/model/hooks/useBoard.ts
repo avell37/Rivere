@@ -1,3 +1,4 @@
+'use client'
 import {
 	KeyboardSensor,
 	PointerSensor,
@@ -8,15 +9,15 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
-import { fetchBoardById } from '@/entities/Board/model/api/boardApi'
-import { IColumn } from '@/entities/Column/model/types/IColumn'
+import { IBoard, fetchBoardById } from '@/entities/Board'
+import { IColumn } from '@/entities/Column'
 
 import { useDndStore } from '@/features/drag-and-drop'
 
 export const useBoard = (boardId: string) => {
 	const { columns, setColumns } = useDndStore()
 
-	const { data: board, isLoading } = useQuery({
+	const { data: board, isLoading } = useQuery<IBoard, unknown>({
 		queryKey: ['get board', boardId],
 		queryFn: () => fetchBoardById(boardId),
 		enabled: !!boardId
@@ -32,22 +33,26 @@ export const useBoard = (boardId: string) => {
 		}
 	}, [board, setColumns])
 
-	const backgroundStyle: React.CSSProperties = board?.background
-		? board.background.url
-			? {
-					backgroundImage: `url(${board.background.url})`,
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					backgroundRepeat: 'no-repeat'
-				}
-			: board.background.color?.includes('gradient')
-				? {
-						backgroundImage: board.background.color,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center'
-					}
-				: { backgroundColor: board.background.color }
-		: {}
+	const backgroundStyle: React.CSSProperties = {}
+
+	if (board?.background) {
+		const { url, color } = board.background
+
+		if (url) {
+			backgroundStyle.backgroundImage = `url(${url})`
+			backgroundStyle.backgroundSize = 'cover'
+			backgroundStyle.backgroundPosition = 'center'
+			backgroundStyle.backgroundRepeat = 'no-repeat'
+		} else if (color) {
+			if (color.includes('gradient')) {
+				backgroundStyle.backgroundImage = color
+				backgroundStyle.backgroundSize = 'cover'
+				backgroundStyle.backgroundPosition = 'center'
+			} else {
+				backgroundStyle.backgroundColor = color
+			}
+		}
+	}
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {

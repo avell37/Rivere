@@ -1,5 +1,5 @@
 import { baseAxios } from '@/shared/api/interceptors'
-import { API_URL } from '@/shared/libs/constants/api.config'
+import { API_URL } from '@/shared/libs'
 
 import { IAchievement } from '../types/IAchievement'
 

@@ -1,18 +1,11 @@
 import { create } from 'zustand'
 
-export interface Notification {
-	id: string
-	type: string
-	message: string
-	entityId?: string
-	read: boolean
-	createdAt: string
-}
+import { INotification } from '../types/INotification'
 
 interface NotificationsState {
-	notifications: Notification[]
-	add: (not: Notification) => void
-	setAll: (nots: Notification[]) => void
+	notifications: INotification[]
+	add: (not: INotification) => void
+	setAll: (nots: INotification[]) => void
 	markAllReadLocal: () => void
 	clearLocal: () => void
 }

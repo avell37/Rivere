@@ -1,16 +1,15 @@
-import { Notification } from '../model/store/useNotificationsStore'
+import { NotificationListProps } from '../model/types/NotificationProps'
 
 import { NotificationItem } from './NotificationItem'
 
-interface NotificationListProps {
-	notifications: Notification[]
-}
-
 export const NotificationsList = ({ notifications }: NotificationListProps) => {
 	return (
-		<div className='relative flex flex-col gap-4 z-100 p-2 max-h-[400px] overflow-y-auto'>
+		<div className='flex flex-col gap-2 max-h-[360px] overflow-y-auto pr-1'>
 			{notifications.map(notification => (
-				<NotificationItem key={notification.id} {...notification} />
+				<NotificationItem
+					key={notification.entityId}
+					{...notification}
+				/>
 			))}
 		</div>
 	)

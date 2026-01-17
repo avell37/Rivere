@@ -1,25 +1,24 @@
 'use client'
 import { UseFormReturn } from 'react-hook-form'
 
-import { FormInputController } from '@/shared/ui/custom'
-import { BackgroundPicker } from '@/shared/ui/custom/BoardBackgroundChanger/BackgroundPicker'
-import { BackgroundPreview } from '@/shared/ui/custom/BoardBackgroundChanger/BackgroundPreview'
-import { Button, DialogClose, DialogFooter, Input } from '@/shared/ui/external'
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage
-} from '@/shared/ui/external/Form/Form'
+	BackgroundPicker,
+	BackgroundPreview,
+	FormInputController
+} from '@/shared/ui/custom'
+import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
 
 interface CreateBoardFormProps {
 	form: UseFormReturn<any>
 	onSubmit: (data: any) => void
+	t: (key: string) => string
 }
 
-export const CreateBoardForm = ({ form, onSubmit }: CreateBoardFormProps) => {
+export const CreateBoardForm = ({
+	form,
+	onSubmit,
+	t
+}: CreateBoardFormProps) => {
 	const bg = form.watch('background')
 
 	return (
@@ -31,19 +30,19 @@ export const CreateBoardForm = ({ form, onSubmit }: CreateBoardFormProps) => {
 				<BackgroundPreview background={bg} />
 				<FormInputController
 					name='title'
-					label='Название'
-					placeholder='Название доски'
+					label={t('createModalLabel')}
+					placeholder={t('createModalPlaceholder')}
 					control={form.control}
 				/>
 				<BackgroundPicker control={form.control} />
 				<DialogFooter>
-					<DialogClose asChild>
-						<Button variant='outline'>Закрыть</Button>
-					</DialogClose>
+					<Button type='submit'>{t('createModalSubmit')}</Button>
 
-					<Button type='submit' variant='outline'>
-						Сохранить
-					</Button>
+					<DialogClose asChild>
+						<Button variant='outline'>
+							{t('createModalClose')}
+						</Button>
+					</DialogClose>
 				</DialogFooter>
 			</form>
 		</Form>

@@ -7,6 +7,7 @@ import { ChatService } from '../chat/chat.service';
 import { ReorderCardInput } from './inputs/reorder-card.input';
 import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
 import { StatisticsService } from '../statistics/statistics.service';
+import { AchievementsService } from '../achievements/achievements.service';
 
 @Injectable()
 export class CardService {
@@ -14,6 +15,7 @@ export class CardService {
         private readonly prisma: PrismaService,
         private readonly chat: ChatService,
         private readonly statistics: StatisticsService,
+        private readonly achievements: AchievementsService,
     ) {}
 
     async create(userId: string, input: CreateCardInput) {
@@ -70,6 +72,11 @@ export class CardService {
 
         if (!card.done && updatedCard.done) {
             await this.statistics.onCardCompleted(userId);
+            await this.achievements.updateAchievementProgress(
+                userId,
+                'tenTasksCompleted',
+                1,
+            );
         }
 
         return updatedCard;

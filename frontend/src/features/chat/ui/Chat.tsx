@@ -1,15 +1,13 @@
 'use client'
 
 import { Send } from 'lucide-react'
-import { useLocale, useTranslations } from 'next-intl'
 
-import { formatDate } from '@/shared/libs/formattedDate'
 import { Button, Input, ScrollArea } from '@/shared/ui/external'
-import { Spinner } from '@/shared/ui/external/Spinner/Spinner'
 
 import { useChat } from '../model/hooks/useChat'
 import { useChatStore } from '../model/store/useChatStore'
 
+import { ChatSkeleton } from './ChatSkeleton'
 import { ChatUserMessage } from './ChatUserMessage'
 
 export const Chat = ({ cardId }: { cardId: string }) => {
@@ -28,20 +26,12 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 	})
 	const { messages } = useChatStore()
 
-	if (isPending) {
-		return (
-			<div className='border-l bg-zinc-900 p-4'>
-				<div className='flex justify-center items-center h-[450px] w-[450px]'>
-					<Spinner className='size-8' />
-				</div>
-			</div>
-		)
-	}
+	if (isPending) return <ChatSkeleton />
 
 	if (!userId) return null
 
 	return (
-		<div className='flex flex-col items-center p-4 border-l bg-zinc-900'>
+		<div className='flex flex-col items-center p-4 border-l dark:bg-zinc-900'>
 			<div className='flex flex-col h-[450px] w-[450px]'>
 				<ScrollArea className='h-[400px] w-[450px] rounded-md p-2'>
 					<div className='flex-1 flex flex-col gap-4 rounded-md overflow-y-auto p-2'>
@@ -66,12 +56,14 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 						value={message || ''}
 						onChange={e => setMessage(e.target.value)}
 						onKeyDown={handleKeySubmitMessage}
+						disabled={isPending}
 					/>
 					<Button
 						size='none'
 						variant='none'
 						className='absolute top-2.5 right-2'
 						onClick={handleSubmitMessage}
+						disabled={isPending}
 					>
 						<Send />
 					</Button>

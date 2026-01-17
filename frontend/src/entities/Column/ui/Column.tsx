@@ -1,64 +1,27 @@
 'use client'
 
-import { useDroppable } from '@dnd-kit/core'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { GripVertical } from 'lucide-react'
 
-import { ICard } from '@/entities/Card/model/types/ICard'
-import { CardList } from '@/entities/Card/ui/CardList'
+import { CardList } from '@/entities/Card'
 
-import { DeleteColumnModal } from '@/features/column/delete/ui/DeleteColumnModal'
-import { EditColumnModal } from '@/features/column/edit/ui/EditColumnModal'
+import { useColumn } from '../model/hooks/useColumn'
+import { ColumnProps } from '../model/types/ColumnProps'
 
-interface ColumnProps {
-	id: string
-	title: string
-	cards: ICard[]
-	boardId: string
-}
+import { ColumnActions } from './ColumnActions'
 
 export const Column = ({ id, title, cards, boardId }: ColumnProps) => {
-	const {
-		attributes,
-		listeners,
-		setNodeRef: setSortableRef,
-		transform,
-		transition,
-		isDragging
-	} = useSortable({
-		id,
-		data: {
-			type: 'column',
-			column: {
-				id,
-				title,
-				cards
-			}
-		}
-	})
-	const { isOver } = useDroppable({
-		id: `column-${id}`,
-		data: {
-			type: 'column',
-			columnId: id
-		}
-	})
-
-	const style = {
-		transform: CSS.Transform.toString(transform),
-		transition
-	}
+	const { attributes, listeners, setNodeRef, style, isDragging, isOver } =
+		useColumn({ id, title, cards })
 
 	return (
 		<div
-			ref={setSortableRef}
+			ref={setNodeRef}
 			style={style}
 			className={`w-76 flex flex-col gap-3 break-all
 				${isDragging ? 'opacity-70' : ''} 
-				${isOver && 'bg-neutral-900/20 dark:bg-neutral-900/20 rounded-lg'}`}
+				${isOver && 'bg-neutral-200/50 dark:bg-neutral-900/20 rounded-lg'}`}
 		>
-			<div className='dark:bg-neutral-900 p-4 rounded-lg shadow flex justify-between gap-2 dark:text-white'>
+			<div className='bg-white dark:bg-neutral-900 p-4 rounded-lg shadow flex justify-between gap-2 dark:text-white'>
 				<div className='flex items-center gap-2'>
 					<GripVertical
 						{...attributes}
@@ -71,8 +34,7 @@ export const Column = ({ id, title, cards, boardId }: ColumnProps) => {
 					</span>
 				</div>
 				<div className='flex items-center gap-2'>
-					<EditColumnModal columnId={id} />
-					<DeleteColumnModal columnId={id} />
+					<ColumnActions columnId={id} boardId={boardId} />
 				</div>
 			</div>
 			<CardList cards={cards} columnId={id} boardId={boardId} />

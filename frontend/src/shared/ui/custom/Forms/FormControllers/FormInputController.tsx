@@ -6,9 +6,9 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
-	FormMessage
-} from '@/shared/ui/external/Form/Form'
-import { Input } from '@/shared/ui/external/Input/Input'
+	FormMessage,
+	Input
+} from '@/shared/ui/external'
 
 interface FormInputControllerProps {
 	name: string
@@ -44,7 +44,7 @@ export const FormInputController = ({
 			name={name}
 			render={({ field }) => (
 				<FormItem>
-					<FormLabel className='text-sm text-gray-300'>
+					<FormLabel className='text-sm dark:text-gray-300'>
 						{label}
 					</FormLabel>
 					<div className='relative'>
@@ -70,7 +70,7 @@ export const FormInputController = ({
 						</FormControl>
 
 						{element && (
-							<span className='absolute right-2 top-2.5'>
+							<span className='absolute right-2 top-1.5'>
 								{element}
 							</span>
 						)}

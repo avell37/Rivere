@@ -1,20 +1,13 @@
-import { formatDate } from '@/shared/libs/formattedDate'
+import { formatDate } from '@/shared/utils'
 
-import { IMessage } from '../types/IMessage'
-
-interface useChatMessageProps {
-	message: IMessage
-	previousMessage?: IMessage
-	currentUserId: string
-	locale?: string
-}
+import { ChatUserMessageProps } from '../types/IChat'
 
 export const useChatMessage = ({
 	message,
 	previousMessage,
 	currentUserId,
 	locale = 'ru'
-}: useChatMessageProps) => {
+}: ChatUserMessageProps) => {
 	const isMyMessage = currentUserId === message.userId
 
 	const messageDate = formatDate(message.createdAt, locale)
