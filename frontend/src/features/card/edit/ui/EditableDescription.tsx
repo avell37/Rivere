@@ -6,7 +6,7 @@ import { FormTextareaController } from '@/shared/ui/custom'
 import { useUpdateCard } from '../model/hooks/useUpdateCard'
 import { EditableProps } from '../model/types/EditableProps'
 
-export const EditableDescription = ({ cardId }: EditableProps) => {
+export const EditableDescription = ({ cardId, t }: EditableProps) => {
 	const { control, watch } = useFormContext()
 	const descriptionValue = watch('description')
 

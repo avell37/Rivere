@@ -9,12 +9,7 @@ import { useGetUser } from '@/entities/User'
 import { NotificationsVisible } from '@/features/notifications'
 
 import { PUBLIC_URL } from '@/shared/libs'
-import {
-	Separator,
-	Sheet,
-	SheetContent,
-	SheetTrigger
-} from '@/shared/ui/external'
+import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/external'
 
 import { UserMenu } from '../UserMenu/ui/UserMenu'
 

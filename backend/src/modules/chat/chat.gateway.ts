@@ -5,12 +5,9 @@ import {
     WebSocketGateway,
     WebSocketServer,
 } from '@nestjs/websockets';
-import { ChatService } from './chat.service';
 import { Server, Socket } from 'socket.io';
 import { MessagesService } from '../messages/messages.service';
 import { CreateMessageDto } from '../messages/dto/create-message.dto';
-import { NotificationsService } from '../notifications/notifications.service';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 
 @WebSocketGateway({
     cors: { origin: '*' },
