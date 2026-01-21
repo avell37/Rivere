@@ -1,5 +1,6 @@
 export * from './model/api/cardApi'
 export * from './model/hooks/useCard'
+export * from './model/hooks/useCardEvents'
 export * from './model/hooks/useToggleDone'
 export * from './model/types/CardPayloads'
 export * from './model/types/CardPriority'

@@ -14,6 +14,7 @@ import { SessionActivityMiddleware } from './middlewares/session-activity.middle
 import { NotificationsModule } from 'src/modules/notifications/notifications.module';
 import { AchievementsModule } from 'src/modules/achievements/achievements.module';
 import { StatisticsModule } from 'src/modules/statistics/statistics.module';
+import { BoardInvitesModule } from 'src/modules/board-invites/board-invites.module';
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { StatisticsModule } from 'src/modules/statistics/statistics.module';
         PrismaModule,
         RedisModule,
         BoardModule,
+        BoardInvitesModule,
         ColumnModule,
         CardModule,
         ChatModule,

@@ -7,21 +7,50 @@ import {
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { AxiosError } from 'axios'
+import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useEffect, useMemo } from 'react'
 
-import { IBoard, fetchBoardById } from '@/entities/Board'
+import { IBoard, fetchBoardById, useGetBoard } from '@/entities/Board'
+import { getBoardSocket } from '@/entities/Board/model/utils/board.socket'
+import { useCardEvents } from '@/entities/Card/model/hooks/useCardEvents'
 import { IColumn } from '@/entities/Column'
+import { useColumnEvents } from '@/entities/Column/model/hooks/useColumnEvents'
+import { useUserStore } from '@/entities/User'
 
 import { useDndStore } from '@/features/drag-and-drop'
 
+import { PUBLIC_URL } from '@/shared/libs'
+import { handleApiError } from '@/shared/utils'
+
+import { useBoardEvents } from './useBoardEvents'
+
 export const useBoard = (boardId: string) => {
 	const { columns, setColumns } = useDndStore()
+	const { user } = useUserStore()
+	const router = useRouter()
+	const t = useTranslations()
 
-	const { data: board, isLoading } = useQuery<IBoard, unknown>({
-		queryKey: ['get board', boardId],
-		queryFn: () => fetchBoardById(boardId),
-		enabled: !!boardId
-	})
+	const { board, isLoading, error, backgroundStyle } = useGetBoard(boardId)
+
+	const socket = useMemo(() => {
+		if (!user?.id || !boardId) return null
+		return getBoardSocket(user.id, boardId)
+	}, [user?.id, boardId])
+
+	useBoardEvents(socket, boardId)
+	useColumnEvents(socket, boardId)
+	useCardEvents(socket, boardId)
+
+	useEffect(() => {
+		if (error) {
+			handleApiError(error, t)
+			if (error?.response?.status === 403) {
+				router.push(PUBLIC_URL.boards())
+			}
+		}
+	}, [error, t, router])
 
 	useEffect(() => {
 		if (board?.columns) {
@@ -32,27 +61,6 @@ export const useBoard = (boardId: string) => {
 			])
 		}
 	}, [board, setColumns])
-
-	const backgroundStyle: React.CSSProperties = {}
-
-	if (board?.background) {
-		const { url, color } = board.background
-
-		if (url) {
-			backgroundStyle.backgroundImage = `url(${url})`
-			backgroundStyle.backgroundSize = 'cover'
-			backgroundStyle.backgroundPosition = 'center'
-			backgroundStyle.backgroundRepeat = 'no-repeat'
-		} else if (color) {
-			if (color.includes('gradient')) {
-				backgroundStyle.backgroundImage = color
-				backgroundStyle.backgroundSize = 'cover'
-				backgroundStyle.backgroundPosition = 'center'
-			} else {
-				backgroundStyle.backgroundColor = color
-			}
-		}
-	}
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {

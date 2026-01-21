@@ -14,7 +14,11 @@ export const EditColumnModal = ({
 	columnId,
 	boardId
 }: EditColumnModalProps) => {
-	const { form, onSubmit } = useEditColumn({ columnId, boardId })
+	const { form, onSubmit } = useEditColumn({
+		columnId,
+		boardId,
+		onSuccess: () => onOpenChange(false)
+	})
 	const t = useTranslations('column.edit')
 
 	return (

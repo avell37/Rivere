@@ -62,7 +62,7 @@ export const UserMenu = () => {
 								</div>
 							</SidebarMenuButton>
 						</DropdownMenuTrigger>
-						<DropdownMenuContent className='w-58'>
+						<DropdownMenuContent className='w-58 z-100'>
 							{fields.map(item => (
 								<DropdownMenuItem
 									key={item.id}

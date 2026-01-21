@@ -14,9 +14,5 @@ export const fetchBoardByIdServer = async (id: string): Promise<IBoard> => {
 		cache: 'no-store'
 	})
 
-	if (!response.ok) {
-		throw new Error('Ошибка при получении доски')
-	}
-
 	return response.json()
 }

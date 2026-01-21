@@ -55,7 +55,9 @@ export const ChatUserMessage = ({
 								: 'rounded-l-md rounded-r-2xl bg-violet-800/80'
 						}`}
 					>
-						<p className='text-sm'>{message.text}</p>
+						<p className='text-sm max-w-[300px] break-all'>
+							{message.text}
+						</p>
 						<span className='text-xs flex justify-end items-end pl-6'>
 							{formatTime(message.createdAt, locale)}
 						</span>

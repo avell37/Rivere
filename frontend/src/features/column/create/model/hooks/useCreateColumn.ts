@@ -14,7 +14,13 @@ import {
 	CreateColumnSchema
 } from '../validation/create-column.z.validation'
 
-export const useCreateColumn = (boardId: string) => {
+export const useCreateColumn = ({
+	boardId,
+	onSuccess
+}: {
+	boardId: string
+	onSuccess: () => void
+}) => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 	const form = useForm<CreateColumnRequest>({
@@ -32,6 +38,7 @@ export const useCreateColumn = (boardId: string) => {
 			form.reset()
 			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
 			toast.success(t('column.create.createSuccess'))
+			onSuccess()
 		},
 		onError: err => handleApiError(err, t)
 	})

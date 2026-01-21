@@ -28,7 +28,7 @@ export const LanguageSwitcher = () => {
 			<SelectTrigger className='w-[180px] border px-2 py-1 rounded hover:bg-custom-hover transition-all'>
 				<SelectValue placeholder={t('selectLanguage')} />
 			</SelectTrigger>
-			<SelectContent>
+			<SelectContent className='z-100'>
 				<SelectItem value='ru'>
 					<div className='flex items-center gap-1'>
 						<Image

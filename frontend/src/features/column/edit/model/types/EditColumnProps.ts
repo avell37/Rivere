@@ -12,3 +12,7 @@ export interface EditColumnModalProps extends IBoardColumnIdentifiers {
 	open: boolean
 	onOpenChange: (open: boolean) => void
 }
+
+export interface EditColumnProps extends IBoardColumnIdentifiers {
+	onSuccess: () => void
+}

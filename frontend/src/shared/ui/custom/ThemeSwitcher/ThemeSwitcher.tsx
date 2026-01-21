@@ -30,7 +30,7 @@ export const ThemeSwitcher = () => {
 			<SelectTrigger className='w-[180px] px-2 py-1 rounded hover:bg-custom-hover transition-all'>
 				<SelectValue placeholder={t('selectTheme')} />
 			</SelectTrigger>
-			<SelectContent>
+			<SelectContent className='z-100'>
 				<SelectItem value='light'>
 					<div className='flex items-center gap-2'>
 						<Sun className='size-4' />

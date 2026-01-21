@@ -328,7 +328,7 @@
 			"noMatches": "Passwords do not match"
 		},
 		"board": {
-			"min": "Minimum board title length is 4 characters",
+			"min": "Minimum board title length is 1 character",
 			"max": "Maximum board title length is 32 characters"
 		},
 		"column": {

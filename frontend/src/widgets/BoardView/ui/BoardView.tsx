@@ -30,7 +30,7 @@ export const BoardView = ({ boardId }: { boardId: string }) => {
 				className='fixed top-0 left-0 w-full h-screen -z-10'
 				style={backgroundStyle}
 			/>
-			<div className='fixed items-center px-4 py-3 w-full bg-background/80 dark:bg-zinc-600/30 backdrop-blur-md'>
+			<div className='fixed items-center px-4 py-3 w-full bg-gray-200/60 dark:bg-zinc-600/30 backdrop-blur-md z-100'>
 				<div
 					className={`inline-flex items-center justify-between mx-auto w-full transition-all
 					${state === 'collapsed' ? 'max-w-[1900px]' : 'max-w-[1620px]'}`}
@@ -45,7 +45,7 @@ export const BoardView = ({ boardId }: { boardId: string }) => {
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
 			>
-				<div className='flex flex-col gap-6 p-4 h-full pt-20'>
+				<div className='flex flex-col gap-6 p-4 pt-20'>
 					<ColumnList boardId={boardId} columns={columns} />
 				</div>
 				<BoardDragOverlay

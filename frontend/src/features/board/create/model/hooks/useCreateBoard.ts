@@ -14,7 +14,7 @@ import {
 	CreateBoardSchema
 } from '../validation/create-board.z.validation'
 
-export const useCreateBoard = () => {
+export const useCreateBoard = ({ onSuccess }: { onSuccess: () => void }) => {
 	const t = useTranslations()
 	const queryClient = useQueryClient()
 
@@ -36,6 +36,7 @@ export const useCreateBoard = () => {
 			form.reset()
 			queryClient.invalidateQueries({ queryKey: ['get boards'] })
 			toast.success(t('board.create.createSuccess'))
+			onSuccess()
 		},
 		onError: err => handleApiError(err, t)
 	})

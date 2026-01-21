@@ -20,26 +20,29 @@ export const CreateInviteModal = ({ boardId }: { boardId: string }) => {
 		}
 	}
 
-	return (
-		<div className='flex flex-col'>
-			<h2 className='text-lg mb-3'>{t('heading')}</h2>
+	const isCreateDisabled = createPending || !!createInviteData?.link
 
-			{createInviteData ? (
-				<div className='flex gap-2'>
-					<Input
-						className='flex-1'
-						readOnly
-						value={createInviteData.link}
-					/>
-					<Button onClick={handleCopy}>
-						<Copy />
-					</Button>
-				</div>
-			) : (
-				<Button onClick={handleCreate} disabled={createPending}>
-					{t('createLink')}
+	return (
+		<div className='flex flex-col gap-4'>
+			<h2 className='text-lg font-semibold'>{t('heading')}</h2>
+
+			<div className='flex gap-2'>
+				<Input
+					className='flex-1'
+					readOnly
+					value={createInviteData?.link ?? ''}
+				/>
+				<Button
+					variant='outline'
+					disabled={!createInviteData}
+					onClick={handleCopy}
+				>
+					<Copy />
 				</Button>
-			)}
+			</div>
+			<Button onClick={handleCreate} disabled={isCreateDisabled}>
+				{t('createLink')}
+			</Button>
 		</div>
 	)
 }

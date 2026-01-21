@@ -8,9 +8,13 @@ export interface BoardItemProps {
 
 export interface BoardMembersListProps {
 	members: IBoardMember[]
+	boardId: string
 }
 
 export interface BoardMemberItemProps {
 	member: IBoardMember
 	joinedAtText: string
+	onRemove?: () => void
+	canRemove: boolean
+	isLoading?: boolean
 }

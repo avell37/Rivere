@@ -9,10 +9,6 @@ export const BOARD_BACKGROUND = {
 			color: 'linear-gradient(135deg, #4FACFE, #00F2FE)'
 		},
 		{
-			id: 'ocean',
-			color: 'linear-gradient(135deg, #2BC0E4, #EAECC6)'
-		},
-		{
 			id: 'forest',
 			color: 'linear-gradient(135deg, #5A9A55, #A8E063)'
 		},
@@ -21,16 +17,24 @@ export const BOARD_BACKGROUND = {
 			color: 'linear-gradient(135deg, #134E5E, #71B280)'
 		},
 		{
+			id: 'ocean',
+			color: 'linear-gradient(135deg, #2BC0E4, #EAECC6)'
+		},
+		{
 			id: 'lavender',
 			color: 'linear-gradient(135deg, #B06AB3, #4568DC)'
+		},
+		{
+			id: 'dark',
+			color: 'linear-gradient(135deg, #434343, #000000)'
 		},
 		{
 			id: 'galaxy',
 			color: 'linear-gradient(135deg, #2B1055, #7597DE)'
 		},
 		{
-			id: 'dark',
-			color: 'linear-gradient(135deg, #434343, #000000)'
+			id: 'ember',
+			color: 'linear-gradient(135deg, #D31027, #EA384D)'
 		},
 		{
 			id: 'graphite',
@@ -39,6 +43,10 @@ export const BOARD_BACKGROUND = {
 		{
 			id: 'midnight',
 			color: 'linear-gradient(135deg, #141E30, #243B55)'
+		},
+		{
+			id: 'crimson',
+			color: 'linear-gradient(135deg, #CB2D3E, #EF473A)'
 		}
 	]
 }

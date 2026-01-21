@@ -4,10 +4,14 @@ import { CreateColumnInput } from './inputs/create-column.input';
 import { UpdateColumnInput } from './inputs/update-column.input';
 import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
 import { ReorderColumnInput } from './inputs/reorder-column.input';
+import { ColumnGateway } from './column.gateway';
 
 @Injectable()
 export class ColumnService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly columnGateway: ColumnGateway,
+    ) {}
 
     async create(userId: string, input: CreateColumnInput) {
         const { boardId, title } = input;
@@ -18,13 +22,17 @@ export class ColumnService {
             where: { boardId },
         });
 
-        return this.prisma.column.create({
+        const column = await this.prisma.column.create({
             data: {
                 boardId,
                 title,
                 position: count + 1,
             },
         });
+
+        this.columnGateway.columnCreated(boardId, column);
+
+        return column;
     }
 
     async update(userId: string, columnId: string, input: UpdateColumnInput) {
@@ -45,12 +53,16 @@ export class ColumnService {
             boardId: column.boardId,
         });
 
-        return this.prisma.column.update({
+        const updated = await this.prisma.column.update({
             where: { id: columnId },
             data: {
                 title,
             },
         });
+
+        this.columnGateway.columnUpdated(column.boardId, updated);
+
+        return updated;
     }
 
     async reorder(userId: string, input: ReorderColumnInput) {
@@ -90,10 +102,14 @@ export class ColumnService {
 
         await this.prisma.$transaction(operations);
 
-        return this.prisma.column.findMany({
+        const reordered = await this.prisma.column.findMany({
             where: { boardId },
             orderBy: { position: 'asc' },
         });
+
+        this.columnGateway.columnsReordered(boardId, reordered);
+
+        return reordered;
     }
 
     async delete(userId: string, columnId: string) {
@@ -113,8 +129,12 @@ export class ColumnService {
             boardId: column.boardId,
         });
 
-        return this.prisma.column.delete({
+        await this.prisma.column.delete({
             where: { id: columnId },
         });
+
+        this.columnGateway.columnDeleted(column.boardId, columnId);
+
+        return true;
     }
 }

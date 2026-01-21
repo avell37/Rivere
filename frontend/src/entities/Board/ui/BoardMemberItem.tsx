@@ -1,15 +1,20 @@
+import { X } from 'lucide-react'
+
 import { UserAvatar } from '@/entities/User'
 
-import { Badge } from '@/shared/ui/external'
+import { Badge, Button } from '@/shared/ui/external'
 
 import { BoardMemberItemProps } from '../model/types/BoardProps'
 
 export const BoardMemberItem = ({
 	member,
-	joinedAtText
+	joinedAtText,
+	canRemove,
+	isLoading,
+	onRemove
 }: BoardMemberItemProps) => {
 	return (
-		<div className='flex items-center gap-4 rounded-lg bg-muted p-4 shadow-sm'>
+		<div className='relative flex items-center gap-4 rounded-lg bg-muted p-4 shadow-sm'>
 			<UserAvatar
 				avatar={member?.user?.avatar}
 				username={member?.user?.nickname}
@@ -23,6 +28,18 @@ export const BoardMemberItem = ({
 					{joinedAtText}
 				</span>
 			</div>
+
+			{canRemove && (
+				<Button
+					variant='none'
+					size='none'
+					className='absolute right-4'
+					disabled={isLoading}
+					onClick={onRemove}
+				>
+					<X />
+				</Button>
+			)}
 		</div>
 	)
 }

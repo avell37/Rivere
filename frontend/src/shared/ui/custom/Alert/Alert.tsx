@@ -38,7 +38,7 @@ export const Alert = ({
 			)}
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle className='text-white'>
+					<AlertDialogTitle className='dark:text-white'>
 						{title}
 					</AlertDialogTitle>
 					{description && (

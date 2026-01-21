@@ -13,7 +13,7 @@ export const Header = () => {
 	return (
 		<header
 			className={`fixed top-0 right-0 flex items-center transition-all duration-200
-		justify-between bg-background border-b px-4 ${state === 'expanded' ? 'left-(--sidebar-width)' : 'left-0'}`}
+		justify-between bg-background border-b px-4 z-10 ${state === 'expanded' ? 'left-(--sidebar-width)' : 'left-0'}`}
 		>
 			<SidebarTrigger className='cursor-pointer' />
 			<div className='flex items-center gap-2'>

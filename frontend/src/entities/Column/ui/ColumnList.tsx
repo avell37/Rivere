@@ -18,14 +18,8 @@ export const ColumnList = ({ boardId, columns }: ColumnListProps) => {
 				items={columns.map((column: IColumn) => column.id) ?? []}
 				strategy={horizontalListSortingStrategy}
 			>
-				{columns?.map((column: IColumn) => (
-					<Column
-						key={column.id}
-						id={column.id}
-						title={column.title}
-						cards={column.cards}
-						boardId={column.boardId}
-					/>
+				{columns?.map((props: IColumn) => (
+					<Column key={props.id} {...props} />
 				))}
 			</SortableContext>
 			<CreateColumnModal boardId={boardId} />

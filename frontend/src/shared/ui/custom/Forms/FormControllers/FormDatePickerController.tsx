@@ -62,6 +62,7 @@ export const FormDatePickerController = ({
 								<Calendar
 									mode='single'
 									selected={date}
+									disabled={{ before: new Date() }}
 									onSelect={date => {
 										if (!date) return
 

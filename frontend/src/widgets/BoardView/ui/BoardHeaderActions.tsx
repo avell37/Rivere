@@ -1,6 +1,6 @@
 import { Link, Users } from 'lucide-react'
 
-import { BoardActions, BoardMembersList } from '@/entities/Board'
+import { BoardMembersList } from '@/entities/Board'
 
 import { CreateInviteModal } from '@/features/board-invite'
 
@@ -8,6 +8,8 @@ import { Modal } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 
 import { BoardHeaderActionsProps } from '../model/types/BoardProps'
+
+import { BoardActions } from './BoardActions'
 
 export const BoardHeaderActions = ({ board }: BoardHeaderActionsProps) => {
 	return (
@@ -41,7 +43,10 @@ export const BoardHeaderActions = ({ board }: BoardHeaderActionsProps) => {
 				contentClassname='max-w-lg'
 			>
 				<div className='flex flex-col gap-4'>
-					<BoardMembersList members={board.members} />
+					<BoardMembersList
+						members={board.members}
+						boardId={board.id}
+					/>
 				</div>
 			</Modal>
 			<BoardActions boardId={board.id} />

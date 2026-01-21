@@ -1,6 +1,7 @@
 export * from './model/hooks/useBoard'
 export * from './model/hooks/useBoardDndHandlers'
 export * from './model/types/BoardProps'
+export * from './ui/BoardActions'
 export * from './ui/BoardDragOverlay'
 export * from './ui/BoardHeaderActions'
 export * from './ui/BoardHeaderActionsSkeleton'

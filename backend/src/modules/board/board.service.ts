@@ -1,17 +1,16 @@
 import {
     ConflictException,
-    ForbiddenException,
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateBoardInput } from './inputs/create-board.input';
-import { randomBytes } from 'crypto';
-import { addDays } from 'date-fns';
+
 import { ConfigService } from '@nestjs/config';
 import { AchievementsService } from '../achievements/achievements.service';
 import { UpdateBoardInput } from './inputs/update-board.input';
 import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
+import { BoardGateway } from './board.gateway';
 
 @Injectable()
 export class BoardService {
@@ -19,6 +18,7 @@ export class BoardService {
         private readonly prisma: PrismaService,
         private readonly config: ConfigService,
         private readonly achievementsService: AchievementsService,
+        private readonly boardGateway: BoardGateway,
     ) {}
 
     async create(userId: string, input: CreateBoardInput) {
@@ -111,6 +111,12 @@ export class BoardService {
             },
         });
 
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
         if (!board) {
             throw new NotFoundException({
                 code: 'errors.board.notFound',
@@ -175,7 +181,7 @@ export class BoardService {
             boardId,
         });
 
-        return this.prisma.board.update({
+        const updated = await this.prisma.board.update({
             where: { id: boardId },
             data: {
                 title,
@@ -185,137 +191,35 @@ export class BoardService {
                 },
             },
         });
+
+        this.boardGateway.boardEdited(boardId, updated);
+
+        return updated;
     }
 
-    async deleteBoard(boardId: string) {
+    async deleteBoard(userId: string, boardId: string) {
+        const board = await this.prisma.board.findUnique({
+            where: { id: boardId },
+        });
+
+        if (!board) {
+            throw new NotFoundException({
+                code: 'errors.board.notFound',
+                message: 'Доска не найдена',
+            });
+        }
+
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
         await this.prisma.board.delete({
             where: { id: boardId },
         });
 
-        return true;
-    }
-
-    async createInvite(userId: string, boardId: string) {
-        const boardMember = await this.prisma.boardMember.findFirst({
-            where: { boardId, userId },
-        });
-
-        if (!boardMember) {
-            throw new ForbiddenException({
-                code: 'errors.board.invite.notMember',
-                message: 'Вы не являетесь участником этой доски',
-            });
-        }
-
-        const token = randomBytes(16).toString('hex');
-        const invite = await this.prisma.boardInvite.create({
-            data: {
-                token,
-                boardId,
-                createdBy: userId,
-                expiresAt: addDays(new Date(), 1),
-            },
-        });
-
-        return {
-            link: `${this.config.getOrThrow<string>('ALLOWED_ORIGIN')}/invite/${invite.token}`,
-            expiresAt: invite.expiresAt,
-        };
-    }
-
-    async getInvite(token: string) {
-        const invite = await this.prisma.boardInvite.findUnique({
-            where: { token },
-            include: {
-                board: {
-                    select: {
-                        id: true,
-                        title: true,
-                        members: true,
-                    },
-                },
-                creator: {
-                    select: {
-                        id: true,
-                        nickname: true,
-                        avatar: true,
-                    },
-                },
-            },
-        });
-
-        if (!invite) {
-            throw new NotFoundException({
-                code: 'errors.board.invite.notFound',
-                message: 'Приглашение не найдено',
-            });
-        }
-
-        if (invite.expiresAt < new Date()) {
-            await this.prisma.boardInvite.deleteMany({
-                where: { token },
-            });
-            throw new ForbiddenException({
-                code: 'errors.board.invite.notValid',
-                message: 'Приглашение истекло',
-            });
-        }
-
-        return {
-            board: {
-                id: invite.board.id,
-                title: invite.board.title,
-                membersCount: invite.board.members.length,
-            },
-            invitedBy: invite.creator,
-            expiresAt: invite.expiresAt,
-        };
-    }
-
-    async acceptInvite(userId: string, token: string) {
-        const invite = await this.prisma.boardInvite.findUnique({
-            where: { token },
-        });
-
-        if (!invite) {
-            throw new NotFoundException({
-                code: 'errors.board.invite.notFound',
-                message: 'Приглашение не найдено',
-            });
-        }
-        if (invite.expiresAt < new Date()) {
-            throw new ForbiddenException({
-                code: 'errors.board.invite.notValid',
-                message: 'Приглашение истекло',
-            });
-        }
-
-        const isAlreadyMember = await this.prisma.boardMember.findFirst({
-            where: {
-                boardId: invite.boardId,
-                userId,
-            },
-        });
-
-        if (isAlreadyMember) {
-            throw new ConflictException({
-                code: 'errors.board.invite.alreadyMember',
-                message: 'Вы уже являетесь участником этой доски',
-            });
-        }
-
-        await this.prisma.$transaction([
-            this.prisma.boardMember.create({
-                data: {
-                    userId,
-                    boardId: invite.boardId,
-                    role: 'MEMBER',
-                },
-            }),
-            this.prisma.boardInvite.deleteMany({
-                where: { id: invite.id },
-            }),
-        ]);
+        this.boardGateway.boardDeleted(boardId, userId);
 
         return true;
     }

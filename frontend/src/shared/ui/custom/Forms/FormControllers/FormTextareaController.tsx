@@ -17,6 +17,7 @@ interface FormTextareaProps<T extends Record<string, any>> {
 	className?: string
 	autoFocus?: boolean
 	disabled?: boolean
+	onClick?: () => void
 	onBlur?: () => void
 }
 
@@ -28,6 +29,7 @@ export const FormTextareaController = <T extends FieldValues>({
 	className,
 	autoFocus,
 	disabled,
+	onClick,
 	onBlur
 }: FormTextareaProps<T>) => {
 	return (
@@ -54,6 +56,7 @@ export const FormTextareaController = <T extends FieldValues>({
 							placeholder={placeholder}
 							autoFocus={autoFocus}
 							disabled={disabled}
+							onClick={onClick}
 							onBlur={() => {
 								field.onBlur()
 								onBlur?.()

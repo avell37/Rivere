@@ -1,14 +1,12 @@
 'use client'
 
-import { CreateBoardModal } from '@/features/board'
-
 import { IBoard } from '../model/types/IBoard'
 
 import { BoardItem } from './BoardItem'
 
 export const BoardList = ({ boards }: { boards: IBoard[] }) => {
 	return (
-		<div className='flex flex-wrap gap-4'>
+		<div className='grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4'>
 			{boards?.map((board: IBoard) => (
 				<div key={board.id}>
 					<BoardItem
@@ -18,7 +16,6 @@ export const BoardList = ({ boards }: { boards: IBoard[] }) => {
 					/>
 				</div>
 			))}
-			<CreateBoardModal />
 		</div>
 	)
 }

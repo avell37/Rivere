@@ -17,12 +17,13 @@ export const EditableDescription = ({ cardId, t }: EditableProps) => {
 
 	if (!isEditing) {
 		return (
-			<p
-				className='text-xs cursor-pointer break-all pr-4'
+			<FormTextareaController
+				name='description'
+				className='rounded break-all resize-none pr-4 whitespace-pre-wrap'
+				control={control}
+				disabled={isLoading}
 				onClick={() => setIsEditing(true)}
-			>
-				{descriptionValue || t('editDescription')}
-			</p>
+			/>
 		)
 	}
 

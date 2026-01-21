@@ -1,4 +1,5 @@
 import { Priority } from './CardPriority'
+import { ICard } from './ICard'
 
 export interface CardProps {
 	id: string
@@ -25,4 +26,16 @@ export interface CardDoneButtonProps {
 	done: boolean
 	boardId: string
 	className?: string
+}
+
+export interface ICardMoved {
+	cardId: string
+	fromColumnId: string
+	toColumnId: string
+	position: number
+}
+
+export interface ICardsReordered {
+	columnId: string
+	cards: ICard[]
 }

@@ -19,7 +19,7 @@ export class BoardBackground {
 export class CreateBoardInput {
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
     @IsString({ message: 'Название доски должно быть строкой' })
-    @MinLength(4, { message: 'Минимальная длина названия доски 4 символа' })
+    @MinLength(1, { message: 'Минимальная длина названия доски 1 символ' })
     @MaxLength(64, { message: 'Максимальная длина названия доски 64 символа' })
     title: string;
 

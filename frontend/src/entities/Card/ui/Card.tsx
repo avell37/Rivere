@@ -51,7 +51,9 @@ export const Card = (props: CardPropsWithBoardId) => {
 						<h3 className='text-sm'>{title}</h3>
 					</div>
 					{description && (
-						<span className='text-xs'>{description}</span>
+						<span className='text-xs whitespace-pre-wrap wrap-break-word'>
+							{description}
+						</span>
 					)}
 				</div>
 				<div className='flex flex-col items-end justify-end gap-2 pt-4 pb-2'>

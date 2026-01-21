@@ -3,12 +3,11 @@ import Link from 'next/link'
 
 import { API_URL } from '@/shared/libs'
 
-import { useBoard } from '@/widgets/BoardView'
-
+import { useGetBoard } from '../model/hooks/useGetBoard'
 import { BoardItemProps } from '../model/types/BoardProps'
 
 export const BoardItem = ({ id, title, members }: BoardItemProps) => {
-	const { backgroundStyle } = useBoard(id)
+	const { backgroundStyle } = useGetBoard(id)
 	const t = useTranslations('board')
 
 	return (
@@ -18,7 +17,9 @@ export const BoardItem = ({ id, title, members }: BoardItemProps) => {
 		>
 			<div className='rounded-t-md h-30' style={backgroundStyle} />
 			<div className='p-2 text-white flex flex-col items-start group rounded-b-md bg-zinc-800/30 dark:bg-zinc-800/80'>
-				<h3 className='font-semibold text-base'>{title}</h3>
+				<h3 className='font-semibold text-base truncate max-w-[180px]'>
+					{title}
+				</h3>
 				<span className='text-xs'>
 					{t('members', { count: members })}
 				</span>

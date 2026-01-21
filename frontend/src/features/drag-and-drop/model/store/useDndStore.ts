@@ -9,7 +9,7 @@ interface DndStore {
 	activeColumn: IColumn | null
 	activeCard: ICard | null
 	setCards: (cards: ICard[]) => void
-	setColumns: (columns: IColumn[]) => void
+	setColumns: (columns: IColumn[] | ((prev: IColumn[]) => IColumn[])) => void
 	setActiveColumn: (column: IColumn | null) => void
 	setActiveCard: (card: ICard | null) => void
 }
@@ -20,7 +20,11 @@ export const useDndStore = create<DndStore>((set, get) => ({
 	activeColumn: null,
 	activeCard: null,
 	setCards: cards => set({ cards: cards }),
-	setColumns: columns => set({ columns: columns }),
+	setColumns: columns =>
+		set(state => ({
+			columns:
+				typeof columns === 'function' ? columns(state.columns) : columns
+		})),
 	setActiveColumn: column => set({ activeColumn: column }),
 	setActiveCard: card => set({ activeCard: card })
 }))

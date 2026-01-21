@@ -8,6 +8,7 @@ import { ReorderCardInput } from './inputs/reorder-card.input';
 import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
 import { StatisticsService } from '../statistics/statistics.service';
 import { AchievementsService } from '../achievements/achievements.service';
+import { CardGateway } from './card.gateway';
 
 @Injectable()
 export class CardService {
@@ -16,6 +17,7 @@ export class CardService {
         private readonly chat: ChatService,
         private readonly statistics: StatisticsService,
         private readonly achievements: AchievementsService,
+        private readonly cardGateway: CardGateway,
     ) {}
 
     async create(userId: string, input: CreateCardInput) {
@@ -45,12 +47,17 @@ export class CardService {
 
         const chat = await this.chat.createChat({ cardId: card.id });
 
+        this.cardGateway.cardCreated(card.column.boardId, card);
+
         return card;
     }
 
     async update(userId: string, cardId: string, input: UpdateCardInput) {
         const card = await this.prisma.card.findUnique({
             where: { id: cardId },
+            include: {
+                column: true,
+            },
         });
 
         if (!card)
@@ -69,6 +76,8 @@ export class CardService {
             where: { id: cardId },
             data: input,
         });
+
+        this.cardGateway.cardUpdated(card.column.boardId, updatedCard);
 
         if (!card.done && updatedCard.done) {
             await this.statistics.onCardCompleted(userId);
@@ -113,11 +122,25 @@ export class CardService {
         const operations = cards.map((id, index) => {
             return this.prisma.card.update({
                 where: { id },
-                data: { position: index + 1 },
+                data: { position: index },
             });
         });
 
         await this.prisma.$transaction(operations);
+
+        const column = await this.prisma.column.findUnique({
+            where: { id: columnId },
+        });
+
+        if (column) {
+            this.cardGateway.cardsReordered(column.boardId, {
+                columnId,
+                cards: cards.map((id, index) => ({
+                    id,
+                    position: index,
+                })),
+            });
+        }
 
         return this.prisma.card.findMany({
             where: { columnId },
@@ -172,18 +195,30 @@ export class CardService {
             },
         });
 
-        return this.prisma.card.update({
+        const updatedCard = await this.prisma.card.update({
             where: { id: cardId },
             data: {
                 columnId: newColumnId,
-                position: position,
+                position,
             },
         });
+
+        this.cardGateway.cardMoved(card.column.boardId, {
+            cardId,
+            fromColumnId: card.columnId,
+            toColumnId: newColumnId,
+            position,
+        });
+
+        return updatedCard;
     }
 
     async delete(userId: string, cardId: string) {
         const card = await this.prisma.card.findUnique({
             where: { id: cardId },
+            include: {
+                column: true,
+            },
         });
 
         if (!card)
@@ -198,9 +233,13 @@ export class CardService {
             columnId: card.columnId,
         });
 
-        return this.prisma.card.delete({
+        const deleted = await this.prisma.card.delete({
             where: { id: cardId },
         });
+
+        this.cardGateway.cardDeleted(card.column.boardId, cardId);
+
+        return deleted;
     }
 
     async getChatByCard(cardId: string) {

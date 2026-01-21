@@ -1,5 +1,6 @@
 export * from './model/api/columnApi'
 export * from './model/hooks/useColumn'
+export * from './model/hooks/useColumnEvents'
 export * from './model/types/ColumnPayload'
 export * from './model/types/ColumnProps'
 export * from './model/types/IColumn'

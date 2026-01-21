@@ -79,47 +79,10 @@ export class BoardController {
     @HttpCode(200)
     @Authorization()
     @Delete(':boardId')
-    async deleteBoard(@Param('boardId') boardId: string) {
-        return this.boardService.deleteBoard(boardId);
-    }
-
-    @ApiOperation({
-        summary: 'Создание инвайта',
-        description: 'Создает инвайт-ссылку, чтобы присоединиться к доске.',
-    })
-    @HttpCode(200)
-    @Authorization()
-    @Post(':boardId/invites')
-    async createInvite(
+    async deleteBoard(
         @SessionUser('id') userId: string,
         @Param('boardId') boardId: string,
     ) {
-        return this.boardService.createInvite(userId, boardId);
-    }
-
-    @ApiOperation({
-        summary: 'Получить данные приглашения',
-        description:
-            'При вызове метода отдаются данные о доске, создателе приглашения и дате истечения приглашения.',
-    })
-    @HttpCode(200)
-    @Authorization()
-    @Get('invites/:token')
-    async getInvite(@Param('token') token: string) {
-        return this.boardService.getInvite(token);
-    }
-
-    @ApiOperation({
-        summary: 'Принять инвайт',
-        description: 'При вызове метода принимается приглашение в доску.',
-    })
-    @HttpCode(200)
-    @Authorization()
-    @Post('invites/:token')
-    async acceptInvite(
-        @SessionUser('id') userId: string,
-        @Param('token') token: string,
-    ) {
-        return this.boardService.acceptInvite(userId, token);
+        return this.boardService.deleteBoard(userId, boardId);
     }
 }

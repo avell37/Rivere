@@ -40,3 +40,13 @@ export const deleteBoard = async (id: string): Promise<boolean> => {
 	const response = await baseAxios.delete(`${API_URL.boards()}${id}`)
 	return response.data
 }
+
+export const deleteMember = async (
+	boardId: string,
+	userId: string
+): Promise<boolean> => {
+	const response = await baseAxios.delete(
+		`${API_URL.members()}${boardId}/${userId}`
+	)
+	return response.data
+}

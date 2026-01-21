@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardController } from './board.controller';
 import { AchievementsModule } from '../achievements/achievements.module';
+import { BoardMembersModule } from './members/board-members.module';
+import { BoardGateway } from './board.gateway';
 
 @Module({
-    imports: [AchievementsModule],
+    imports: [AchievementsModule, BoardMembersModule],
     controllers: [BoardController],
-    providers: [BoardService],
+    providers: [BoardGateway, BoardService],
 })
 export class BoardModule {}

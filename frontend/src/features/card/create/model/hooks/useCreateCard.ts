@@ -7,9 +7,9 @@ import { toast } from 'sonner'
 
 import { ICard, createCard } from '@/entities/Card'
 
-import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
 import { handleApiError } from '@/shared/utils'
 
+import { CreateCardProps } from '../types/CreateCardProps'
 import {
 	CreateCardRequest,
 	CreateCardSchema
@@ -17,8 +17,9 @@ import {
 
 export const useCreateCard = ({
 	columnId,
-	boardId
-}: IBoardColumnIdentifiers) => {
+	boardId,
+	onSuccess
+}: CreateCardProps) => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 	const form = useForm<CreateCardRequest>({
@@ -36,6 +37,7 @@ export const useCreateCard = ({
 			form.reset()
 			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
 			toast.success(t('card.create.createSuccess'))
+			onSuccess(false)
 		},
 		onError: err => handleApiError(err, t)
 	})

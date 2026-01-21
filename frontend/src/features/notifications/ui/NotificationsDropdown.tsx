@@ -16,7 +16,7 @@ export const NotificationsDropdown = () => {
 					<NotificationBell />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className='w-[400px]'>
+			<DropdownMenuContent className='w-[400px] z-100'>
 				<Notifications />
 			</DropdownMenuContent>
 		</DropdownMenu>

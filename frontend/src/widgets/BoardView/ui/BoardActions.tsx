@@ -30,7 +30,7 @@ export const BoardActions = ({ boardId }: { boardId: string }) => {
 						<MoreHorizontal />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className='mr-3'>
+				<DropdownMenuContent className='mr-3 z-100'>
 					<DropdownMenuItem onSelect={() => setEditOpen(true)}>
 						<Edit />
 						{t('edit')}

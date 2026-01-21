@@ -7,9 +7,9 @@ import { toast } from 'sonner'
 
 import { IColumn, updateColumn } from '@/entities/Column'
 
-import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
 import { handleApiError } from '@/shared/utils'
 
+import { EditColumnProps } from '../types/EditColumnProps'
 import {
 	EditColumnRequest,
 	EditColumnSchema
@@ -17,8 +17,9 @@ import {
 
 export const useEditColumn = ({
 	columnId,
-	boardId
-}: IBoardColumnIdentifiers) => {
+	boardId,
+	onSuccess
+}: EditColumnProps) => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 	const form = useForm<EditColumnRequest>({
@@ -36,6 +37,7 @@ export const useEditColumn = ({
 			form.reset()
 			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
 			toast.success(t('column.edit.editSuccess'))
+			onSuccess()
 		},
 		onError: err => handleApiError(err, t)
 	})

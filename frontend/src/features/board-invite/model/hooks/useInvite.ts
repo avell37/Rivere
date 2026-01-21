@@ -1,16 +1,28 @@
+'use client'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
+import { PUBLIC_URL } from '@/shared/libs'
 import { handleApiError } from '@/shared/utils'
 
-import { acceptInvite, createInvite, getInviteData } from '../api/inviteApi'
+import {
+	acceptInvite,
+	createInvite,
+	declineInvite,
+	getInviteData
+} from '../api/inviteApi'
 import {
 	CreateInviteResponse,
 	GetInviteResponse
 } from '../types/InviteResponse'
 
-export const useInvite = (token?: string) => {
+export const useInvite = (token: string) => {
 	const t = useTranslations()
+	const router = useRouter()
 
 	const {
 		data: createInviteData,
@@ -18,13 +30,16 @@ export const useInvite = (token?: string) => {
 		isPending: createPending
 	} = useMutation<CreateInviteResponse, unknown, string>({
 		mutationKey: ['create invite'],
-		mutationFn: (boardId: string) => createInvite(boardId),
+		mutationFn: createInvite,
 		onError: err => handleApiError(err, t)
 	})
 
-	const { data, isPending } = useQuery<GetInviteResponse>({
-		queryKey: ['get invite data'],
-		queryFn: () => getInviteData(token!),
+	const { data, isPending, isError, error } = useQuery<
+		GetInviteResponse,
+		AxiosError
+	>({
+		queryKey: ['get invite data', token],
+		queryFn: () => getInviteData(token),
 		enabled: !!token
 	})
 
@@ -35,13 +50,43 @@ export const useInvite = (token?: string) => {
 			onError: err => handleApiError(err, t)
 		})
 
+	const { mutate: declineInviteToBoard, isPending: declinePending } =
+		useMutation<boolean, unknown, string>({
+			mutationKey: ['decline invite'],
+			mutationFn: (token: string) => declineInvite(token),
+			onError: err => handleApiError(err, t)
+		})
+
+	const handleAccept = async () => {
+		await acceptInviteToBoard(token)
+		router.push(PUBLIC_URL.boards())
+		toast.success(t('invite.acceptedInvite'))
+	}
+
+	const handleDecline = async () => {
+		await declineInviteToBoard(token)
+		router.push(PUBLIC_URL.boards())
+		toast.success('Приглашение отклонено')
+	}
+
+	useEffect(() => {
+		if (isError) {
+			handleApiError(error, t)
+			router.replace(PUBLIC_URL.boards())
+		}
+	}, [isError, error])
+
 	return {
 		createInviteData,
 		data,
 		isPending,
 		createPending,
 		acceptPending,
+		declinePending,
+		handleAccept,
+		handleDecline,
 		createInviteToBoard,
-		acceptInviteToBoard
+		acceptInviteToBoard,
+		declineInviteToBoard
 	}
 }
