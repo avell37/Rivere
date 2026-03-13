@@ -1,22 +1,20 @@
+'use client'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
+import {
+	INotification,
+	INotificationActionResponse,
+	clearNotifications,
+	getUserNotifications,
+	markAllRead,
+	useNotificationsStore
+} from '@/entities/Notification'
 import { useUserStore } from '@/entities/User'
 
 import { handleApiError } from '@/shared/utils'
-
-import {
-	clearNotifications,
-	getUserNotifications,
-	markAllRead
-} from '../api/notificationApi'
-import { useNotificationsStore } from '../store/useNotificationsStore'
-import {
-	INotification,
-	INotificationActionResponse
-} from '../types/INotification'
 
 export const useNotificationsActions = () => {
 	const queryClient = useQueryClient()

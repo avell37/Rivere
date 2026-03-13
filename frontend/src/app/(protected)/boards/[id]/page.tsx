@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { fetchBoardByIdServer } from '@/entities/Board/model/api/boardApi.server'
 
-import { BoardView } from '@/widgets/BoardView'
+import { Board } from '@/widgets/Kanban-board/ui/board/Board'
 
 interface Props {
 	params: { id: string }
@@ -22,5 +22,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BoardPage({ params }: Props) {
 	const { id } = await params
-	return <BoardView boardId={id} />
+
+	return <Board boardId={id} />
 }

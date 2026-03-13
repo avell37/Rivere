@@ -20,7 +20,7 @@ import {
 	GetInviteResponse
 } from '../types/InviteResponse'
 
-export const useInvite = (token: string) => {
+export const useInvite = (token?: string) => {
 	const t = useTranslations()
 	const router = useRouter()
 
@@ -39,31 +39,35 @@ export const useInvite = (token: string) => {
 		AxiosError
 	>({
 		queryKey: ['get invite data', token],
-		queryFn: () => getInviteData(token),
-		enabled: !!token
+		queryFn: () => getInviteData(token as string),
+		enabled: Boolean(token)
 	})
 
 	const { mutate: acceptInviteToBoard, isPending: acceptPending } =
 		useMutation<boolean, unknown, string>({
 			mutationKey: ['accept invite'],
-			mutationFn: (token: string) => acceptInvite(token),
+			mutationFn: acceptInvite,
 			onError: err => handleApiError(err, t)
 		})
 
 	const { mutate: declineInviteToBoard, isPending: declinePending } =
 		useMutation<boolean, unknown, string>({
 			mutationKey: ['decline invite'],
-			mutationFn: (token: string) => declineInvite(token),
+			mutationFn: declineInvite,
 			onError: err => handleApiError(err, t)
 		})
 
 	const handleAccept = async () => {
+		if (!token) return
+
 		await acceptInviteToBoard(token)
 		router.push(PUBLIC_URL.boards())
 		toast.success(t('invite.acceptedInvite'))
 	}
 
 	const handleDecline = async () => {
+		if (!token) return
+
 		await declineInviteToBoard(token)
 		router.push(PUBLIC_URL.boards())
 		toast.success('Приглашение отклонено')

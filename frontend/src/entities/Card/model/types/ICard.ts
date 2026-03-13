@@ -1,3 +1,5 @@
+import { IChat } from '@/entities/Chat'
+
 import { Priority } from './CardPriority'
 
 export interface ICard {
@@ -9,6 +11,7 @@ export interface ICard {
 	deadline: string
 	columnId: string
 	chatId: string
+	chat: IChat
 	done: boolean
 	createdAt?: Date
 	updatedAt?: Date

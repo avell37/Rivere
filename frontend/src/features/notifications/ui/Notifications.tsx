@@ -1,12 +1,15 @@
+'use client'
 import { Bell } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+
+import {
+	NotificationsList,
+	useNotificationsStore
+} from '@/entities/Notification'
 
 import { Button } from '@/shared/ui/external'
 
 import { useNotificationsActions } from '../model/hooks/useNotificationsActions'
-import { useNotificationsStore } from '../model/store/useNotificationsStore'
-
-import { NotificationsList } from './NotificationsList'
 
 export const Notifications = () => {
 	const notifications = useNotificationsStore(state => state.notifications)

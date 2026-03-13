@@ -1,3 +1,4 @@
+'use client'
 import { useTranslations } from 'next-intl'
 
 import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'

@@ -92,7 +92,30 @@ export class CardService {
     }
 
     async reorder(userId: string, input: ReorderCardInput) {
-        const { columnId, cards } = input;
+        const { columnId, ids } = input;
+
+        const column = await this.prisma.column.findUnique({
+            where: { id: columnId },
+            include: {
+                board: { select: { id: true } },
+            },
+        });
+
+        if (!column) {
+            throw new NotFoundException({
+                code: 'column.notFound',
+                message: 'Колонка не найдена',
+            });
+        }
+
+        const cards = await this.prisma.card.findMany({
+            where: { id: { in: ids } },
+            include: { column: true },
+        });
+
+        if (cards.length !== ids.length) {
+            throw new NotFoundException('Одна из карточек не найдена');
+        }
 
         await checkBoardAccess({
             prisma: this.prisma,
@@ -100,52 +123,26 @@ export class CardService {
             columnId,
         });
 
-        const existingCards = await this.prisma.card.findMany({
-            where: {
-                id: {
-                    in: cards,
-                },
-                columnId,
-            },
-            select: {
-                id: true,
-            },
-        });
+        await this.prisma.$transaction(
+            ids.map((id, index) =>
+                this.prisma.card.update({
+                    where: { id },
+                    data: { columnId, position: index },
+                }),
+            ),
+        );
 
-        if (existingCards.length !== cards.length) {
-            throw new NotFoundException({
-                code: 'card.notFoundMultiple',
-                message: 'Одна или несколько карточек не найдены',
-            });
-        }
-
-        const operations = cards.map((id, index) => {
-            return this.prisma.card.update({
-                where: { id },
-                data: { position: index },
-            });
-        });
-
-        await this.prisma.$transaction(operations);
-
-        const column = await this.prisma.column.findUnique({
-            where: { id: columnId },
-        });
-
-        if (column) {
-            this.cardGateway.cardsReordered(column.boardId, {
-                columnId,
-                cards: cards.map((id, index) => ({
-                    id,
-                    position: index,
-                })),
-            });
-        }
-
-        return this.prisma.card.findMany({
+        const reordered = await this.prisma.card.findMany({
             where: { columnId },
             orderBy: { position: 'asc' },
         });
+
+        this.cardGateway.cardsReordered(column.boardId, {
+            columnId,
+            cards: reordered,
+        });
+
+        return reordered;
     }
 
     async reorderToNewColumn(userId: string, input: ReorderToNewColumn) {
@@ -156,12 +153,13 @@ export class CardService {
             include: { column: true },
         });
 
-        if (!card) {
-            throw new NotFoundException({
-                code: 'card.notFound',
-                message: 'Карточка не найдена',
-            });
-        }
+        if (!card) throw new NotFoundException('Card not found');
+
+        const newColumn = await this.prisma.column.findUnique({
+            where: { id: newColumnId },
+        });
+
+        if (!newColumn) throw new NotFoundException('Column not found');
 
         await checkBoardAccess({
             prisma: this.prisma,
@@ -172,42 +170,46 @@ export class CardService {
         await checkBoardAccess({
             prisma: this.prisma,
             userId,
-            columnId: newColumnId,
+            boardId: newColumn.boardId,
         });
 
-        await this.prisma.card.updateMany({
-            where: {
-                columnId: card.columnId,
-                position: { gt: card.position },
-            },
-            data: {
-                position: { decrement: 1 },
-            },
+        const cardsCount = await this.prisma.card.count({
+            where: { columnId: newColumnId },
         });
 
-        await this.prisma.card.updateMany({
-            where: {
-                columnId: newColumnId,
-                position: { gte: position },
-            },
-            data: {
-                position: { increment: 1 },
-            },
-        });
+        const safePosition = Math.max(0, Math.min(position, cardsCount));
 
-        const updatedCard = await this.prisma.card.update({
-            where: { id: cardId },
-            data: {
-                columnId: newColumnId,
-                position,
-            },
+        const updatedCard = await this.prisma.$transaction(async (prisma) => {
+            await prisma.card.updateMany({
+                where: {
+                    columnId: card.columnId,
+                    position: { gt: card.position },
+                },
+                data: { position: { decrement: 1 } },
+            });
+
+            await prisma.card.updateMany({
+                where: {
+                    columnId: newColumnId,
+                    position: { gte: safePosition },
+                },
+                data: { position: { increment: 1 } },
+            });
+
+            return prisma.card.update({
+                where: { id: cardId },
+                data: {
+                    columnId: newColumnId,
+                    position: safePosition,
+                },
+            });
         });
 
         this.cardGateway.cardMoved(card.column.boardId, {
             cardId,
             fromColumnId: card.columnId,
             toColumnId: newColumnId,
-            position,
+            position: safePosition,
         });
 
         return updatedCard;

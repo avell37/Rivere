@@ -23,11 +23,11 @@ export const fetchReorderColumns = async ({
 
 export const fetchReorderCards = async ({
 	columnId,
-	cards
+	ids
 }: ReorderCards): Promise<ICard[]> => {
 	const response = await baseAxios.post(`${API_URL.cards()}reorder`, {
 		columnId,
-		cards
+		ids
 	})
 	return response.data
 }

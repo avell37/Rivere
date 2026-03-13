@@ -5,7 +5,7 @@ export class ReorderCardInput {
     @IsString({ message: 'ID колонки должен быть строкой' })
     columnId: string;
 
-    @IsArray({ message: 'Карточки должны быть массивом' })
-    @IsString({ each: true, message: 'Карточки должны быть строками' })
-    cards: string[];
+    @IsArray({ message: 'ID карточек должны быть массивом' })
+    @IsString({ each: true, message: 'ID карточек должны быть строками' })
+    ids: string[];
 }

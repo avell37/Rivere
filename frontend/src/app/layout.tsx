@@ -4,7 +4,11 @@ import { getLocale, getMessages } from 'next-intl/server'
 import { Montserrat } from 'next/font/google'
 
 import { SITE_DESCRIPTION, SITE_NAME } from '@/shared/libs/constants/seo.const'
-import { QueryProvider, ThemeProvider, ToastProvider } from '@/shared/providers'
+import {
+	QueryProvider,
+	ThemeProviderClient,
+	ToastProvider
+} from '@/shared/providers'
 
 import './globals.css'
 
@@ -34,15 +38,10 @@ export default async function RootLayout({
 			<body className={`${montserrat.variable} antialiased h-full`}>
 				<NextIntlClientProvider messages={messages}>
 					<QueryProvider>
-						<ThemeProvider
-							attribute='class'
-							defaultTheme='dark'
-							enableSystem
-							disableTransitionOnChange
-						>
+						<ThemeProviderClient>
 							<ToastProvider />
 							{children}
-						</ThemeProvider>
+						</ThemeProviderClient>
 					</QueryProvider>
 				</NextIntlClientProvider>
 			</body>

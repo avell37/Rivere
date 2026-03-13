@@ -33,11 +33,11 @@ export const BoardMemberItem = ({
 				<Button
 					variant='none'
 					size='none'
-					className='absolute right-4'
+					className='absolute top-2 right-2'
 					disabled={isLoading}
 					onClick={onRemove}
 				>
-					<X />
+					<X className='text-red-500' />
 				</Button>
 			)}
 		</div>

@@ -5,14 +5,14 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { IColumn, createColumn } from '@/entities/Column'
-
-import { handleApiError } from '@/shared/utils'
-
 import {
 	CreateColumnRequest,
-	CreateColumnSchema
-} from '../validation/create-column.z.validation'
+	CreateColumnSchema,
+	IColumn,
+	createColumn
+} from '@/entities/Column'
+
+import { handleApiError } from '@/shared/utils'
 
 export const useCreateColumn = ({
 	boardId,

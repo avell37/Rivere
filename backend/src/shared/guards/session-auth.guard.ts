@@ -25,7 +25,7 @@ export class SessionAuthGuard implements CanActivate {
         const userId = session.userId;
 
         if (!session || !userId) {
-            destroySession(request, this.configService);
+            await destroySession(request, this.configService);
             throw new UnauthorizedException({
                 code: 'errors.user.unauthorized',
                 message: 'Необходима авторизация',
@@ -36,7 +36,7 @@ export class SessionAuthGuard implements CanActivate {
         const sessionExists = await this.redis.get(sessionKey);
 
         if (!sessionExists) {
-            destroySession(request, this.configService);
+            await destroySession(request, this.configService);
             throw new UnauthorizedException({
                 code: 'errors.user.unauthorized',
                 message: 'Необходима авторизация',
@@ -58,7 +58,7 @@ export class SessionAuthGuard implements CanActivate {
         });
 
         if (!user) {
-            destroySession(request, this.configService);
+            await destroySession(request, this.configService);
             throw new UnauthorizedException({
                 code: 'errors.user.notFound',
                 message: 'Пользователь не найден',

@@ -1,3 +1,5 @@
+import { NotificationBell } from '@/entities/Notification'
+
 import {
 	Button,
 	DropdownMenu,
@@ -5,7 +7,6 @@ import {
 	DropdownMenuTrigger
 } from '@/shared/ui/external'
 
-import { NotificationBell } from './NotificationBell'
 import { Notifications } from './Notifications'
 
 export const NotificationsDropdown = () => {

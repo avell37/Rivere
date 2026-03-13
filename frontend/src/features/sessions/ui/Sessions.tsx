@@ -1,12 +1,12 @@
+'use client'
 import { useLocale, useTranslations } from 'next-intl'
+
+import { SessionList, SessionsSkeleton } from '@/entities/Session'
 
 import { Alert } from '@/shared/ui/custom'
 import { Button, Separator } from '@/shared/ui/external'
 
 import { useSession } from '../model/hooks/useSession'
-
-import { SessionList } from './SessionList'
-import { SessionsSkeleton } from './SessionsSkeleton'
 
 export const Sessions = () => {
 	const {

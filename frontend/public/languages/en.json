@@ -168,7 +168,7 @@
 	},
 	"card": {
 		"create": {
-			"heading": "Create card",
+			"heading": "Add card",
 			"createTitle": "Add a new card",
 			"createDescription": "Enter a title for the new card",
 			"createTitleModalLabel": "Title",
@@ -336,9 +336,9 @@
 			"max": "Maximum column title length is 32 characters"
 		},
 		"card": {
-			"min": "Minimum card title length is 4 characters",
+			"min": "Minimum card title length is 2 characters",
 			"max": "Maximum card title length is 32 characters",
-			"descriptionMax": "Maximum card description length is 100 characters",
+			"descriptionMax": "Maximum card description length is 128 characters",
 			"priority": "Select task priority"
 		}
 	},

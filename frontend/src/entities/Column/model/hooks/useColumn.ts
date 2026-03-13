@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 
 import { ColumnData } from '../types/ColumnProps'
 
-export const useColumn = ({ id, title, cards }: ColumnData) => {
+export const useColumn = ({ id }: ColumnData) => {
 	const {
 		attributes,
 		listeners,
@@ -18,14 +18,12 @@ export const useColumn = ({ id, title, cards }: ColumnData) => {
 		data: {
 			type: 'column',
 			column: {
-				id,
-				title,
-				cards
+				id
 			}
 		}
 	})
 	const { isOver, setNodeRef: setDroppableRef } = useDroppable({
-		id: `column-${id}`,
+		id,
 		data: {
 			type: 'column',
 			columnId: id

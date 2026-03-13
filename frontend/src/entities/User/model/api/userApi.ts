@@ -1,4 +1,5 @@
-import { ISession, ISessionActionsResponse } from '@/features/sessions'
+import { ISession, ISessionActionsResponse } from '@/entities/Session'
+
 import {
 	ChangeEmailRequest,
 	ChangeNicknameRequest,

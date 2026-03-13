@@ -5,15 +5,16 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { IColumn, updateColumn } from '@/entities/Column'
+import {
+	EditColumnRequest,
+	EditColumnSchema,
+	IColumn,
+	updateColumn
+} from '@/entities/Column'
 
 import { handleApiError } from '@/shared/utils'
 
 import { EditColumnProps } from '../types/EditColumnProps'
-import {
-	EditColumnRequest,
-	EditColumnSchema
-} from '../validation/edit-column.z.validation'
 
 export const useEditColumn = ({
 	columnId,

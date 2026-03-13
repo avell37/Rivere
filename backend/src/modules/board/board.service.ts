@@ -104,8 +104,26 @@ export class BoardService {
                     },
                 },
                 columns: {
+                    orderBy: {
+                        position: 'asc',
+                    },
                     include: {
-                        cards: true,
+                        cards: {
+                            orderBy: {
+                                position: 'asc',
+                            },
+                            include: {
+                                chat: {
+                                    include: {
+                                        _count: {
+                                            select: {
+                                                messages: true,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },

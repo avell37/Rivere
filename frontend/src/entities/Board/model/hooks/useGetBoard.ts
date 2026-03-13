@@ -13,7 +13,8 @@ export const useGetBoard = (boardId: string) => {
 		queryKey: ['get board', boardId],
 		queryFn: () => fetchBoardById(boardId),
 		enabled: !!boardId,
-		retry: false
+		retry: false,
+		staleTime: 1000
 	})
 
 	const backgroundStyle: React.CSSProperties = {}

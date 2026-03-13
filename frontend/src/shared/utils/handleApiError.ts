@@ -34,6 +34,4 @@ export const handleApiError = (err: unknown, t: (key: string) => string) => {
 			return
 		}
 	}
-
-	toast.error(t('errors.unexpected'))
 }

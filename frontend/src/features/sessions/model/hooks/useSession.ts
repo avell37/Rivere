@@ -1,15 +1,17 @@
+'use client'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
-import { handleApiError } from '@/shared/utils'
-
 import {
+	ISession,
+	ISessionActionsResponse,
 	getUserSessions,
 	terminateAllExceptCurrent,
 	terminateSession
-} from '../api/sessionApi'
-import { ISession, ISessionActionsResponse } from '../types/ISession'
+} from '@/entities/Session'
+
+import { handleApiError } from '@/shared/utils'
 
 export const useSession = () => {
 	const t = useTranslations()
