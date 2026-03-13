@@ -120,3 +120,7 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+::-webkit-scrollbar-track {
+	margin: 4px 0 4px 8px;
+}

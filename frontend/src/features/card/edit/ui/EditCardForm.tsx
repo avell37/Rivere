@@ -4,38 +4,29 @@ import { TextAlignJustify } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 
-import { CardDoneButton } from '@/entities/Card'
-
-import { Form } from '@/shared/ui/external'
-
-import { EditCardProps } from '../model/types/EditCardProps'
 import {
+	CardDoneButton,
+	CardPropsWithBoardId,
 	EditCardRequest,
 	EditCardSchema
-} from '../model/validation/edit-card.z.validation'
+} from '@/entities/Card'
+
+import { Form } from '@/shared/ui/external'
 
 import { EditableDeadline } from './EditableDeadline'
 import { EditableDescription } from './EditableDescription'
 import { EditablePriority } from './EditablePriority'
 import { EditableTitle } from './EditableTitle'
 
-export const EditCardForm = ({
-	id,
-	title,
-	description,
-	priority,
-	deadline,
-	done,
-	boardId
-}: EditCardProps) => {
+export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
 	const t = useTranslations('card.edit')
 	const form = useForm<EditCardRequest>({
 		resolver: zodResolver(EditCardSchema),
 		defaultValues: {
-			title,
-			description,
-			priority,
-			deadline
+			title: card.title,
+			description: card.description,
+			priority: card.priority,
+			deadline: card.deadline
 		}
 	})
 
@@ -44,16 +35,16 @@ export const EditCardForm = ({
 			<div className='flex flex-col gap-6 w-full pt-4'>
 				<div className='flex items-center gap-2'>
 					<CardDoneButton
-						cardId={id}
-						done={done}
+						cardId={card.id}
+						done={card.done}
 						boardId={boardId}
-						className='mt-2'
+						className='mt-2 w-5 h-5'
 					/>
-					<EditableTitle cardId={id} />
+					<EditableTitle cardId={card.id} />
 				</div>
 				<div className='flex gap-4'>
-					<EditablePriority cardId={id} t={t} />
-					<EditableDeadline cardId={id} t={t} />
+					<EditablePriority cardId={card.id} t={t} />
+					<EditableDeadline cardId={card.id} t={t} />
 				</div>
 				<div className='flex flex-col gap-4'>
 					<div className='flex items-center gap-2'>
@@ -62,7 +53,7 @@ export const EditCardForm = ({
 							{t('description')}
 						</span>
 					</div>
-					<EditableDescription cardId={id} t={t} />
+					<EditableDescription cardId={card.id} t={t} />
 				</div>
 			</div>
 		</Form>

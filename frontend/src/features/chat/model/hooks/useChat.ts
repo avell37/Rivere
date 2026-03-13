@@ -4,12 +4,9 @@ import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Socket } from 'socket.io-client'
 
+import { IChat, IMessage, fetchChat, useChatStore } from '@/entities/Chat'
 import { useUserStore } from '@/entities/User'
 
-import { fetchChat } from '../api/chatApi'
-import { useChatStore } from '../store/useChatStore'
-import { IChat } from '../types/IChat'
-import { IMessage } from '../types/IMessage'
 import { getChatSocket } from '../utils/chat.socket'
 
 export const useChat = ({ cardId }: { cardId: string }) => {
@@ -17,6 +14,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 
 	const [message, setMessage] = useState<string>('')
 	const [chatId, setChatId] = useState<string | null>(null)
+	const [showEmoji, setShowEmoji] = useState(false)
 
 	const socketRef = useRef<Socket | null>(null)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -27,9 +25,9 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 	const locale = useLocale()
 
 	const handleKeySubmitMessage = (
-		e: React.KeyboardEvent<HTMLInputElement>
+		e: React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
-		if (e.key === 'Enter') {
+		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault()
 			handleSubmitMessage()
 		}
@@ -84,6 +82,11 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		setMessage('')
 	}, [user, chatId, message])
 
+	const handleEmojiClick = (emojiData: any) => {
+		setMessage(prev => (prev || '') + emojiData.native)
+		setShowEmoji(false)
+	}
+
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView()
 	}, [messages])
@@ -95,8 +98,11 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		message,
 		messagesEndRef,
 		isPending,
+		showEmoji,
 		handleKeySubmitMessage,
 		handleSubmitMessage,
-		setMessage
+		handleEmojiClick,
+		setMessage,
+		setShowEmoji
 	}
 }

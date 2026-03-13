@@ -1,11 +1,5 @@
-import { EditCardRequest } from '../validation/edit-card.z.validation'
+import { ICard } from '@/entities/Card'
 
 export interface EditCardProps {
-	id: string
-	title: string
-	description?: string
-	priority: EditCardRequest['priority']
-	deadline: string
-	done: boolean
-	boardId: string
+	card: ICard
 }

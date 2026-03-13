@@ -1,3 +1,4 @@
+'use client'
 import { Eye, EyeClosed } from 'lucide-react'
 
 import { FormInputController, FormWrapper } from '@/shared/ui/custom'

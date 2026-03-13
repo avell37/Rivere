@@ -1,3 +1,4 @@
+'use client'
 import { useTranslations } from 'next-intl'
 
 import { Alert } from '@/shared/ui/custom'

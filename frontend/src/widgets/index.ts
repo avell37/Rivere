@@ -1,5 +1,4 @@
 export * from './Boards/ui/Boards'
-export * from './BoardView'
 export * from './Header/Header'
 export * from './Main'
 export * from './Sidebars'

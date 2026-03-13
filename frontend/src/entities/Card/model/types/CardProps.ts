@@ -1,23 +1,13 @@
+import { CSSProperties } from 'react'
+
 import { Priority } from './CardPriority'
 import { ICard } from './ICard'
 
 export interface CardProps {
-	id: string
-	title: string
-	description?: string
-	priority: Priority
-	deadline: string
-	done: boolean
-	columnId: string
+	card: ICard
 }
 
-export interface CardModalProps {
-	id: string
-	title: string
-	description?: string
-	priority: Priority
-	deadline: string
-	done: boolean
+export interface CardPropsWithBoardId extends CardProps {
 	boardId: string
 }
 
@@ -38,4 +28,12 @@ export interface ICardMoved {
 export interface ICardsReordered {
 	columnId: string
 	cards: ICard[]
+}
+
+export interface CardDraggingProps {
+	setNodeRef: (element: HTMLElement | null) => void
+	style?: CSSProperties
+	title: string
+	priority: Priority
+	done: boolean
 }

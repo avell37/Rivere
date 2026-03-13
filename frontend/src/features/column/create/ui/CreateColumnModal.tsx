@@ -1,7 +1,7 @@
 'use client'
 import { Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
 import { Modal } from '@/shared/ui/custom'
 
@@ -9,7 +9,7 @@ import { useCreateColumn } from '../model/hooks/useCreateColumn'
 
 import { CreateColumnForm } from './CreateColumnForm'
 
-export const CreateColumnModal = ({ boardId }: { boardId: string }) => {
+export const CreateColumnModal = memo(({ boardId }: { boardId: string }) => {
 	const [open, setOpen] = useState(false)
 	const { form, onSubmit } = useCreateColumn({
 		boardId,
@@ -38,4 +38,4 @@ export const CreateColumnModal = ({ boardId }: { boardId: string }) => {
 			<CreateColumnForm form={form} onSubmit={onSubmit} t={t} />
 		</Modal>
 	)
-}
+})

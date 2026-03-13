@@ -5,7 +5,7 @@ export interface ReorderColumns {
 
 export interface ReorderCards {
 	columnId: string
-	cards: string[]
+	ids: string[]
 }
 
 export interface ReorderCardToColumn {

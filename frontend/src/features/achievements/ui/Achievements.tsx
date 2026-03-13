@@ -1,10 +1,12 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-import { useGetAchievements } from '../model/hooks/useGetAchievements'
+import {
+	AchievementList,
+	AchievementListSkeleton
+} from '@/entities/Achievement'
 
-import { AchievementList } from './AchievementsList'
-import { AchievementListSkeleton } from './AchievementsListSkeleton'
+import { useGetAchievements } from '../model/hooks/useGetAchievements'
 
 export const Achievements = () => {
 	const { achievements, earnedCount, isLoading } = useGetAchievements()

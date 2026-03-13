@@ -5,14 +5,14 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { IBoard, createBoard } from '@/entities/Board'
-
-import { handleApiError } from '@/shared/utils'
-
 import {
 	CreateBoardRequest,
-	CreateBoardSchema
-} from '../validation/create-board.z.validation'
+	CreateBoardSchema,
+	IBoard,
+	createBoard
+} from '@/entities/Board'
+
+import { handleApiError } from '@/shared/utils'
 
 export const useCreateBoard = ({ onSuccess }: { onSuccess: () => void }) => {
 	const t = useTranslations()

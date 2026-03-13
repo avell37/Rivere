@@ -4,33 +4,18 @@ import { CSS } from '@dnd-kit/utilities'
 
 import { priorityOptions } from '@/shared/config'
 
-import { CardProps } from '../types/CardProps'
+import { ICard } from '../types/ICard'
 
-export const useCard = ({
-	id,
-	title,
-	description,
-	priority,
-	deadline,
-	done,
-	columnId
-}: CardProps) => {
-	const priorityConfig = priorityOptions[priority]
+export const useCard = ({ card }: { card: ICard }) => {
+	const priorityConfig = priorityOptions[card.priority]
 	const sortable = useSortable({
-		id,
+		id: card.id,
 		data: {
 			type: 'card',
-			card: {
-				id,
-				title,
-				description,
-				priority,
-				deadline,
-				done,
-				columnId
-			}
+			card: card
 		}
 	})
+
 	const style = {
 		transform: CSS.Transform.toString(sortable.transform),
 		transition: sortable.transition

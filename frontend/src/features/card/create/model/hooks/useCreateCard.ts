@@ -5,15 +5,16 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { ICard, createCard } from '@/entities/Card'
+import {
+	CreateCardRequest,
+	CreateCardSchema,
+	ICard,
+	createCard
+} from '@/entities/Card'
 
 import { handleApiError } from '@/shared/utils'
 
 import { CreateCardProps } from '../types/CreateCardProps'
-import {
-	CreateCardRequest,
-	CreateCardSchema
-} from '../validation/create-card.z.validation'
 
 export const useCreateCard = ({
 	columnId,

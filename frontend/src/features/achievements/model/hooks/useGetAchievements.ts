@@ -1,8 +1,7 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 
-import { getAchievements } from '../api/achievementsApi'
-import { IAchievement } from '../types/IAchievement'
+import { IAchievement, getAchievements } from '@/entities/Achievement'
 
 export const useGetAchievements = () => {
 	const { data: achievements, isLoading } = useQuery<IAchievement[], unknown>(

@@ -1,3 +1,4 @@
+'use client'
 import { FormInputController, FormWrapper } from '@/shared/ui/custom'
 import { Form } from '@/shared/ui/external'
 

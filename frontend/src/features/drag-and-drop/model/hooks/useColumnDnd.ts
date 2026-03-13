@@ -3,24 +3,32 @@ import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
+import { Dispatch, SetStateAction } from 'react'
+
+import { IColumn } from '@/entities/Column'
 
 import { handleApiError } from '@/shared/utils/handleApiError'
 
 import { fetchReorderColumns } from '../api/reorderApi'
-import { useDndStore } from '../store/useDndStore'
 import { ReorderColumns } from '../types/ReorderPayload'
 
 interface ColumnDndProps {
+	columns: IColumn[]
+	setActiveColumn: (column: IColumn | null) => void
+	setColumns: Dispatch<SetStateAction<IColumn[]>>
 	boardId: string
 }
 
-export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
+export const useColumnDnd = ({
+	columns,
+	setActiveColumn,
+	setColumns,
+	boardId
+}: ColumnDndProps) => {
 	const t = useTranslations()
 	const queryClient = useQueryClient()
-	const { columns, setColumns, setActiveColumn, setActiveCard } =
-		useDndStore()
 
-	const reorderColumns = useMutation({
+	const { mutate: reorderColumns } = useMutation({
 		mutationKey: ['reorder columns', boardId],
 		mutationFn: ({ boardId, columns }: ReorderColumns) =>
 			fetchReorderColumns({ boardId, columns }),
@@ -30,58 +38,30 @@ export const useColumnDnd = ({ boardId }: ColumnDndProps) => {
 		onError: err => handleApiError(err, t)
 	})
 
-	const getOverColumnId = (over: DragEndEvent['over']) => {
-		if (!over?.data.current) return null
-
-		const { type } = over.data.current
-
-		if (type === 'column') {
-			return over.data.current.column.id
-		} else if (type === 'card') {
-			return over.data.current.card.columnId
-		} else if (type === 'column-end') {
-			return over.data.current.columnId
-		}
-
-		return null
-	}
-
 	const onColumnDragStart = ({ active }: DragStartEvent) => {
-		setActiveCard(null)
 		if (!active || active.data.current?.type !== 'column') return
-		setActiveColumn(active.data.current.column)
+		const column = columns.find(col => col.id === active.id)
+		if (column) setActiveColumn(column)
 	}
 
-	const onColumnDragEnd = async (event: DragEndEvent) => {
-		const { active, over } = event
-
+	const onColumnDragEnd = ({ active, over }: DragEndEvent) => {
 		setActiveColumn(null)
 
-		if (!over) return
+		if (!active || !over || active.data.current?.type !== 'column') return
 
-		const activeId = active.data.current?.column.id
-		const overId = getOverColumnId(over)
+		const activeColumnIndex = columns.findIndex(col => col.id === active.id)
+		const overColumnIndex = columns.findIndex(col => col.id === over.id)
 
-		if (!activeId || !overId || activeId === overId) return
+		if (activeColumnIndex === overColumnIndex) return
 
-		const oldIndex = columns.findIndex(col => col.id === activeId)
-		const newIndex = columns.findIndex(col => col.id === overId)
+		const updatedColumns = arrayMove(
+			columns,
+			activeColumnIndex,
+			overColumnIndex
+		)
 
-		if (oldIndex === -1 || newIndex === -1) return
-
-		const newOrder = arrayMove(columns, oldIndex, newIndex)
-
-		const orderWithPositions = newOrder.map((col, i) => ({
-			...col,
-			position: i + 1
-		}))
-
-		setColumns(orderWithPositions)
-
-		reorderColumns.mutate({
-			boardId,
-			columns: newOrder.map(col => col.id)
-		})
+		setColumns(updatedColumns)
+		reorderColumns({ boardId, columns: updatedColumns.map(col => col.id) })
 	}
 
 	return {

@@ -1,6 +1,8 @@
+'use client'
 import { useEffect } from 'react'
 
-import { useNotificationsStore } from '../store/useNotificationsStore'
+import { useNotificationsStore } from '@/entities/Notification'
+
 import { getNotificationsSocket } from '../utils/notification.socket'
 
 export const useNotifications = (userId?: string | null) => {

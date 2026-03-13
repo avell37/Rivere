@@ -1,9 +1,9 @@
-import { CreateBoardRequest, EditBoardRequest } from '@/features/board'
-
 import { baseAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
 
 import { IBoard } from '../types/IBoard'
+import { CreateBoardRequest } from '../validation/create-board.z.validation'
+import { EditBoardRequest } from '../validation/edit-board.z.validation'
 
 export const fetchUserBoards = async (): Promise<IBoard[]> => {
 	const response = await baseAxios.get(`${API_URL.boards()}userBoards`)
