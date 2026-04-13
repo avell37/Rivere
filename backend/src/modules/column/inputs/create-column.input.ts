@@ -7,8 +7,8 @@ export class CreateColumnInput {
 
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
     @IsString({ message: 'Название колонки должно быть строкой' })
-    @MinLength(4, {
-        message: 'Название колонки должно быть не менее 4 символов',
+    @MinLength(1, {
+        message: 'Название колонки должно быть не менее 1 символа',
     })
     @MaxLength(32, {
         message: 'Название колонки должно быть не более 32 символов',

@@ -13,6 +13,7 @@ import { LoginInput } from './inputs/login.input';
 import type { Request } from 'express';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { ApiOperation } from '@nestjs/swagger';
+import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
 
 @Controller('session')
 export class SessionController {
@@ -38,10 +39,7 @@ export class SessionController {
         if (!req.session.userId) {
             throw new UnauthorizedException();
         }
-        return this.sessionService.findAllUserSessions(
-            req.session.userId,
-            req.session.id,
-        );
+        return this.sessionService.findAllUserSessions(req);
     }
 
     @ApiOperation({
@@ -90,8 +88,12 @@ export class SessionController {
     })
     @HttpCode(200)
     @Post('login')
-    async login(@Req() req: Request, @Body() input: LoginInput) {
-        return this.sessionService.login(req, input);
+    async login(
+        @Req() req: Request,
+        @Body() input: LoginInput,
+        @UserAgent() userAgent: string,
+    ) {
+        return this.sessionService.login(req, input, userAgent);
     }
 
     @ApiOperation({

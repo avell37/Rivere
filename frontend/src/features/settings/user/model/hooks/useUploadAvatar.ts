@@ -18,7 +18,7 @@ export const useUploadAvatar = () => {
 		mutationFn: uploadAvatar,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.success('Аватар обновлен')
+			toast.success(t('profile.settings.security.avatarChanged'))
 		},
 		onError: err => handleApiError(err, t)
 	})

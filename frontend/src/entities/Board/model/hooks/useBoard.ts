@@ -21,7 +21,7 @@ export const useBoard = (boardId: string) => {
 	const router = useRouter()
 	const t = useTranslations()
 
-	const { board, isLoading, error, backgroundStyle } = useGetBoard(boardId)
+	const { board, isLoading, error } = useGetBoard(boardId)
 
 	const socket = useMemo(() => {
 		if (!user?.id || !boardId) return null
@@ -50,7 +50,6 @@ export const useBoard = (boardId: string) => {
 	return {
 		board,
 		columns,
-		isLoading,
-		backgroundStyle
+		isLoading
 	}
 }

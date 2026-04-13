@@ -2,12 +2,12 @@ import { Card, CardContent, CardHeader, Skeleton } from '@/shared/ui/external'
 
 export const ActivitySkeleton = () => {
 	return (
-		<Card className='max-w-sm w-full gap-2'>
+		<Card className='w-full gap-2'>
 			<CardHeader className='font-bold'>
 				<Skeleton className='w-48 h-6' />
 			</CardHeader>
-			<CardContent className='grid grid-cols-[repeat(15,1fr)] flex-wrap gap-1'>
-				{Array(90)
+			<CardContent className='flex flex-wrap gap-1'>
+				{Array(365)
 					.fill(0)
 					.map((el, idx) => (
 						<Skeleton

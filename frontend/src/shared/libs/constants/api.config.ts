@@ -5,6 +5,7 @@ export const API_URL = {
 
 	achievements: (url = '') => API_URL.root(`/achievements/${url}`),
 	auth: (url = '') => API_URL.root(`/account/${url}`),
+	passwordRecovery: (url = '') => API_URL.root(`/password-recovery/${url}`),
 	account: (url = '') => API_URL.root(`/account/${url}`),
 	session: (url = '') => API_URL.root(`/session/${url}`),
 	boards: (url = '') => API_URL.root(`/boards/${url}`),
@@ -14,5 +15,6 @@ export const API_URL = {
 	cards: (url = '') => API_URL.root(`/cards/${url}`),
 	files: (url = '') => API_URL.root(`/files/${url}`),
 	notifications: (url = '') => API_URL.root(`/notifications/${url}`),
+	verification: (url = '') => API_URL.root(`/verification/${url}`),
 	statistics: (url = '') => API_URL.root(`/statistics/${url}`)
 }

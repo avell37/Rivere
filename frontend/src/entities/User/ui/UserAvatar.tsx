@@ -1,3 +1,5 @@
+'use client'
+
 import { customAvatar } from '@/shared/config'
 import { SERVER_URL } from '@/shared/libs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/external'
@@ -14,7 +16,11 @@ export const UserAvatar = ({
 			className={`${avatarClassname ? avatarClassname : 'h-8 w-8 rounded-full'}`}
 		>
 			{avatar ? (
-				<AvatarImage src={`${SERVER_URL}${avatar}`} />
+				<AvatarImage
+					src={`${SERVER_URL}${avatar}`}
+					alt={username}
+					draggable={false}
+				/>
 			) : (
 				<AvatarFallback>{customAvatar(username || '')}</AvatarFallback>
 			)}

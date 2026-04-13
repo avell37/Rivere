@@ -35,7 +35,7 @@ export const useChangePassword = () => {
 		onSuccess: () => {
 			form.reset()
 			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.success('Пароль успешно изменен')
+			toast.success(t('profile.settings.security.passwordChanged'))
 		},
 		onError: err => handleApiError(err, t)
 	})

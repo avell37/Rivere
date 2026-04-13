@@ -38,10 +38,11 @@ export const CreateCardForm = ({ form, onSubmit, t }: CreateCardFormProps) => {
 					/>
 					<FormTextareaController
 						name='description'
+						label={t('createDescriptionModalLabel')}
 						placeholder={t('createDescriptionModalPlaceholder')}
 						control={form.control}
 					/>
-					<div className='flex gap-2'>
+					<div className='flex flex-col sm:flex-row gap-2'>
 						<FormSelectController
 							name='priority'
 							label={t('createPriorityModalLabel')}

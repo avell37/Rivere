@@ -34,10 +34,10 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 	if (!userId) return null
 
 	return (
-		<div className='flex flex-col items-center p-4 border-l dark:bg-zinc-900'>
-			<div className='flex flex-col h-[450px] w-[450px]'>
-				<ScrollArea className='h-[400px] w-[450px] rounded-md'>
-					<div className='flex-1 flex flex-col gap-4 rounded-md overflow-y-auto p-2'>
+		<div className='flex flex-col items-center p-4 border-l dark:bg-zinc-900 max-lg:border-l-0 max-lg:border-t w-full'>
+			<div className='flex flex-col h-[450px] lg:max-w-[450px] w-full max-lg:h-[60vh] min-h-0 max-lg:max-w-[850px] max-sm:h-[30vh]'>
+				<ScrollArea className='flex-1 w-full rounded-md overflow-hidden'>
+					<div className='flex flex-col gap-4 rounded-md overflow-y-auto h-full p-2'>
 						{messages.map((message: any, i) => (
 							<ChatUserMessage
 								key={message.id}
@@ -52,27 +52,31 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 						<div ref={messagesEndRef} />
 					</div>
 				</ScrollArea>
-				<div className='relative mt-2 flex items-end'>
+				<div className='relative mt-2 flex items-center gap-2'>
 					<Textarea
-						className='absolute -bottom-10 bg-zinc-100 dark:bg-zinc-800 border-none rounded-2xl px-4 pr-20 py-2 
-						resize-none min-h-10 max-h-[120px] focus-visible:ring-1 focus-visible:ring-blue-400 shadow-sm'
+						className='flex-1 w-full rounded-2xl px-4 pr-16 py-2 resize-none min-h-10 max-h-[120px] focus-visible:ring-1 focus-visible:ring-blue-400 shadow-sm'
 						placeholder={t('inputPlaceholder')}
 						value={message || ''}
 						onChange={e => setMessage(e.target.value)}
 						onKeyDown={handleKeySubmitMessage}
 						disabled={isPending}
 					/>
-					<div className='absolute -bottom-9 right-8'>
+					<div className='absolute bottom-2.5 right-11 flex'>
 						<Button
 							size='none'
 							variant='none'
 							className='group'
 							onClick={() => setShowEmoji(prev => !prev)}
 						>
-							<Smile className='text-zinc-500 group-hover:text-blue-400 transition-colors size-5' />
+							<Smile
+								className={`${showEmoji ? 'text-blue-500' : 'text-zinc-500'} group-hover:text-blue-400 transition-colors size-5 `}
+							/>
 						</Button>
 						{showEmoji && (
-							<div className='absolute bottom-12 right-0 z-50'>
+							<div
+								className='absolute bottom-6 right-3 z-50'
+								onWheel={e => e.stopPropagation()}
+							>
 								<Picker
 									data={data}
 									onEmojiSelect={handleEmojiClick}
@@ -83,11 +87,11 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 					<Button
 						size='none'
 						variant='none'
-						className='absolute -bottom-7 right-2 group'
+						className='absolute bottom-2.5 right-3'
 						onClick={handleSubmitMessage}
 						disabled={isPending}
 					>
-						<SendHorizonal className='group-hover:text-blue-400 transition-colors' />
+						<SendHorizonal className='group-hover:text-blue-400 transition-colors size-5' />
 					</Button>
 				</div>
 			</div>

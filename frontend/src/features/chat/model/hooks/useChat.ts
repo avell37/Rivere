@@ -84,7 +84,6 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 
 	const handleEmojiClick = (emojiData: any) => {
 		setMessage(prev => (prev || '') + emojiData.native)
-		setShowEmoji(false)
 	}
 
 	useEffect(() => {

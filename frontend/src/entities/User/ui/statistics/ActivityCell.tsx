@@ -24,9 +24,7 @@ export const ActivityCell = ({ date, value, t }: ActivityCellProps) => {
 					className='flex flex-col gap-1 text-xs'
 				>
 					<span>{format(parseISO(date), 'dd.MM.yyyy')}</span>
-					<span>
-						{t('closedCards')} {value}
-					</span>
+					<span>{t('closedCards', { count: value })}</span>
 				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>

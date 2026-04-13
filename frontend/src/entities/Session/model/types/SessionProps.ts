@@ -2,9 +2,11 @@ import { ISession } from './ISession'
 
 export interface SessionProps {
 	title: string
-	date: string
+	description: string
+	span: string
 	isCurrent?: boolean
 	icon: React.ReactNode
+	currentSession: string
 	onTerminate?: () => void
 }
 

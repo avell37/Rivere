@@ -9,6 +9,8 @@ import { useUserStore } from '@/entities/User'
 
 import { PUBLIC_URL } from '@/shared/libs'
 
+import { boardKeys } from './useBoardQueries'
+
 export const useBoardEvents = (socket: Socket | null, boardId: string) => {
 	const router = useRouter()
 	const queryClient = useQueryClient()
@@ -41,7 +43,9 @@ export const useBoardEvents = (socket: Socket | null, boardId: string) => {
 		}
 
 		const onBoardUpdated = () => {
-			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 		}
 
 		socket.on('board:kicked', onKicked)

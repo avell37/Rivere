@@ -2,6 +2,7 @@ import { X } from 'lucide-react'
 
 import { UserAvatar } from '@/entities/User'
 
+import { Alert } from '@/shared/ui/custom'
 import { Badge, Button } from '@/shared/ui/external'
 
 import { BoardMemberItemProps } from '../model/types/BoardProps'
@@ -11,6 +12,7 @@ export const BoardMemberItem = ({
 	joinedAtText,
 	canRemove,
 	isLoading,
+	t,
 	onRemove
 }: BoardMemberItemProps) => {
 	return (
@@ -30,15 +32,26 @@ export const BoardMemberItem = ({
 			</div>
 
 			{canRemove && (
-				<Button
-					variant='none'
-					size='none'
-					className='absolute top-2 right-2'
-					disabled={isLoading}
-					onClick={onRemove}
-				>
-					<X className='text-red-500' />
-				</Button>
+				<Alert
+					trigger={
+						<Button
+							type='button'
+							variant='none'
+							size='none'
+							className='absolute top-2 right-2'
+							disabled={isLoading}
+						>
+							<X className='text-red-500' />
+						</Button>
+					}
+					title={t('deleteMemberTitle', {
+						name: member.user.nickname
+					})}
+					description={t('deleteMemberDescription')}
+					actionText={t('deleteMemberActionText')}
+					cancelText={t('deleteMemberCancelText')}
+					onSubmit={onRemove}
+				/>
 			)}
 		</div>
 	)

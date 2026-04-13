@@ -30,8 +30,11 @@ export class BoardInvitesController {
     @HttpCode(200)
     @Authorization()
     @Get('invites/:token')
-    async getInvite(@Param('token') token: string) {
-        return this.boardInvitesService.getInvite(token);
+    async getInvite(
+        @Param('token') token: string,
+        @SessionUser('id') userId: string,
+    ) {
+        return this.boardInvitesService.getInvite(token, userId);
     }
 
     @ApiOperation({

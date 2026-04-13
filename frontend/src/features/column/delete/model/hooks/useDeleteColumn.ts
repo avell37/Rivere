@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
+import { boardKeys } from '@/entities/Board'
 import { IColumn, deleteColumn } from '@/entities/Column'
 
 import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
@@ -19,7 +20,9 @@ export const useDeleteColumn = ({
 		mutationKey: ['delete column'],
 		mutationFn: () => deleteColumn(columnId),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 			toast.success(t('column.delete.deleteSuccess'))
 		},
 		onError: err => handleApiError(err, t)

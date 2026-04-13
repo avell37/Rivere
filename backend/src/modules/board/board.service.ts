@@ -6,7 +6,6 @@ import {
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateBoardInput } from './inputs/create-board.input';
 
-import { ConfigService } from '@nestjs/config';
 import { AchievementsService } from '../achievements/achievements.service';
 import { UpdateBoardInput } from './inputs/update-board.input';
 import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
@@ -16,7 +15,6 @@ import { BoardGateway } from './board.gateway';
 export class BoardService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly config: ConfigService,
         private readonly achievementsService: AchievementsService,
         private readonly boardGateway: BoardGateway,
     ) {}
@@ -142,7 +140,12 @@ export class BoardService {
             });
         }
 
-        return board;
+        const member = board.members.find((member) => member.userId === userId);
+
+        return {
+            ...board,
+            isFavorite: member?.isFavorite ?? false,
+        };
     }
 
     async getUserBoards(userId: string) {
@@ -154,7 +157,9 @@ export class BoardService {
             },
             include: {
                 members: {
-                    include: {
+                    select: {
+                        userId: true,
+                        isFavorite: true,
                         user: {
                             select: {
                                 username: true,
@@ -172,7 +177,16 @@ export class BoardService {
             },
         });
 
-        return boards;
+        return boards.map((board) => {
+            const currentUser = board.members.find(
+                (member) => member.userId === userId,
+            );
+
+            return {
+                ...board,
+                isFavorite: currentUser?.isFavorite ?? false,
+            };
+        });
     }
 
     async updateBoard(
@@ -211,6 +225,29 @@ export class BoardService {
         });
 
         this.boardGateway.boardEdited(boardId, updated);
+
+        return updated;
+    }
+
+    async toggleFavorite(userId: string, boardId: string) {
+        const member = await this.prisma.boardMember.findFirst({
+            where: {
+                userId,
+                boardId,
+            },
+        });
+
+        if (!member) {
+            throw new NotFoundException({
+                code: 'errors.board.members.notFound',
+                message: 'Участник не найден',
+            });
+        }
+
+        const updated = await this.prisma.boardMember.update({
+            where: { id: member.id },
+            data: { isFavorite: !member.isFavorite },
+        });
 
         return updated;
     }

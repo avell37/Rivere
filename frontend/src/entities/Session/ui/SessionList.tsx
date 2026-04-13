@@ -1,6 +1,6 @@
-import { Monitor, Smartphone } from 'lucide-react'
+import { Laptop, Smartphone } from 'lucide-react'
 
-import { formatDate, formatTime } from '@/shared/utils'
+import { formatDate, formatTime, makeCapitalLetter } from '@/shared/utils'
 
 import { ISession } from '../model/types/ISession'
 import { SessionListProps } from '../model/types/SessionProps'
@@ -14,23 +14,32 @@ export const SessionList = ({
 	terminateSelectedSession
 }: SessionListProps) => {
 	return (
-		<div className='flex flex-col gap-4'>
+		<div className='flex flex-col gap-2'>
 			{userSessions?.map((session: ISession) => (
 				<SessionItem
 					key={session.id}
 					icon={
-						session?.device?.includes('Desktop') ? (
-							<Monitor />
-						) : (
-							<Smartphone />
-						)
+						<div className='bg-linear-to-br from-gray-700 to-gray-300 p-2 rounded-lg'>
+							{session?.metadata.device?.type?.includes(
+								'desktop'
+							) ? (
+								<Laptop />
+							) : (
+								<Smartphone />
+							)}
+						</div>
 					}
-					title={`${session.browser} | ${session.device}`}
-					date={t('lastActive', {
-						date: formatDate(session.lastActiveAt, locale),
-						time: formatTime(session.lastActiveAt, locale)
-					})}
+					title={`${t('browser')} · ${session.metadata.device.browser}`}
+					description={`${makeCapitalLetter(session.metadata.device.type)} · ${session.metadata.device.os} · ${t(
+						'lastActive',
+						{
+							date: formatDate(session.lastActiveAt, locale),
+							time: formatTime(session.lastActiveAt, locale)
+						}
+					)}`}
+					span={`${session.metadata.location.country} · ${session.metadata.location.city} · ${session.metadata.ip}`}
 					isCurrent={session.isCurrent}
+					currentSession={t('currentSession')}
 					onTerminate={() => terminateSelectedSession(session.id)}
 				/>
 			))}

@@ -41,7 +41,7 @@ export const useUpdateCard = (cardId: string, key: EditableKey) => {
 	}
 
 	const handleChange = (value: EditableValue) => {
-		mutation.mutate({ [key]: value } as UpdateCardPayload)
+		mutation.mutate({ [key]: value ?? null } as UpdateCardPayload)
 	}
 
 	return {

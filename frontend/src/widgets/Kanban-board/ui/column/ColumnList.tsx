@@ -22,7 +22,7 @@ export const ColumnList = memo(({ boardId }: ColumnListProps) => {
 			items={columnIds || []}
 			strategy={horizontalListSortingStrategy}
 		>
-			<ul className='flex gap-6 overflow-auto items-start'>
+			<ul className='flex gap-10'>
 				{columns?.map((column: IColumn) => (
 					<Column key={column.id} column={column} />
 				))}

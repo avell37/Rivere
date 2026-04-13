@@ -9,7 +9,7 @@ import { IUser } from '../types/IUser'
 export const useGetUser = () => {
 	const setUser = useUserStore(state => state.setUser)
 
-	const { data, status, error } = useQuery<IUser>({
+	const { data, status, error, isLoading } = useQuery<IUser>({
 		queryKey: ['get user data'],
 		queryFn: getUser,
 		retry: false
@@ -22,6 +22,7 @@ export const useGetUser = () => {
 	return {
 		data,
 		status,
-		error
+		error,
+		isLoading
 	}
 }

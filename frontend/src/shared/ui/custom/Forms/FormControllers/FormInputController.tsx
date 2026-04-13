@@ -44,9 +44,11 @@ export const FormInputController = ({
 			name={name}
 			render={({ field }) => (
 				<FormItem>
-					<FormLabel className='text-sm dark:text-gray-300'>
-						{label}
-					</FormLabel>
+					{label && (
+						<FormLabel className='text-sm dark:text-gray-300'>
+							{label}
+						</FormLabel>
+					)}
 					<div className='relative'>
 						{icon && (
 							<span className='absolute left-3 top-2.5'>

@@ -1,21 +1,22 @@
 'use client'
 
+import { Contact, User } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { UserAvatar, useUserStore } from '@/entities/User'
+import { useUserStore } from '@/entities/User'
 
 import { Sessions } from '@/features/sessions'
 import {
-	ChangeEmailForm,
 	ChangeNicknameForm,
-	ChangePasswordForm,
 	ChangeUsernameForm,
 	useUploadAvatar
 } from '@/features/settings'
 
 import { Modal } from '@/shared/ui/custom'
-import { Button, Input, Label, Separator } from '@/shared/ui/external'
+import { Button, Label, Separator } from '@/shared/ui/external'
 
+import { UserSettingsAvatar } from './UserSettingsAvatar'
+import { UserSettingsSecurity } from './UserSettingsSecurity'
 import { UserSettingsSkeleton } from './UserSettingsSkeleton'
 
 export const UserSettings = () => {
@@ -31,122 +32,99 @@ export const UserSettings = () => {
 	if (!user) return <UserSettingsSkeleton />
 
 	return (
-		<div className='flex flex-col items-center justify-center px-6 py-4 gap-8'>
-			<h1 className='font-bold text-2xl'>{t('title')}</h1>
+		<div className='container mx-auto flex flex-col items-center justify-center py-4 gap-8'>
 			<div className='flex flex-col gap-6 w-full'>
-				<div className='flex flex-col justify-center items-center gap-4'>
-					<UserAvatar
-						avatar={user.avatar}
-						username={user.username}
-						avatarClassname='w-64 h-64 rounded-full -z-1'
-					/>
-					<Input
-						type='file'
-						accept='image/*'
-						ref={fileInputRef}
-						className='hidden'
-						onChange={handleFileChange}
-					/>
-					<Button
-						onClick={handleChangeAvatarClick}
-						disabled={isPending}
-					>
-						{t('avatar.avatarChangeButton')}
-					</Button>
-				</div>
-				<h3 className='text-2xl font-bold'>
-					{t('personalInformation.heading')}
-				</h3>
-				<Separator />
-				<div className='grid grid-cols-2 gap-6'>
-					<div className='flex items-end gap-2 w-full'>
-						<div className='flex flex-col gap-2 w-full'>
-							<Label>
-								{t('personalInformation.usernameLabel')}
-							</Label>
-							<Input
-								className='w-full'
-								disabled
-								value={user?.username || ''}
-							/>
+				<div className='flex flex-col gap-6'>
+					<h3 className='text-2xl font-bold'>
+						{t('personalInformation.heading')}
+					</h3>
+					<div className='flex flex-col gap-6 bg-sidebar p-8 px-6 rounded-lg border'>
+						<UserSettingsAvatar
+							user={user}
+							fileInputRef={fileInputRef}
+							isPending={isPending}
+							handleFileChange={handleFileChange}
+							handleChangeAvatarClick={handleChangeAvatarClick}
+						/>
+						<div className='flex items-center gap-4'>
+							<div className='flex items-end gap-2 w-full rounded-lg p-2 bg-background hover:bg-black transition-all'>
+								<div className='flex gap-4 w-full'>
+									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
+										<User size={28} />
+									</div>
+									<div>
+										<Label className='text-sm text-gray-300'>
+											{t(
+												'personalInformation.usernameLabel'
+											)}
+										</Label>
+										<span className='text-sm'>
+											{user?.username}
+										</span>
+									</div>
+								</div>
+								<Modal
+									trigger={
+										<Button
+											variant='outline'
+											className='py-5'
+										>
+											{t(
+												'personalInformation.usernameButton'
+											)}
+										</Button>
+									}
+									contentClassname='max-w-md'
+								>
+									<ChangeUsernameForm t={t} />
+								</Modal>
+							</div>
+							<div className='flex items-end gap-2 w-full rounded-lg p-2 bg-background hover:bg-black transition-all'>
+								<div className='flex gap-4 w-full'>
+									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
+										<Contact size={28} />
+									</div>
+									<div>
+										<Label className='text-sm text-gray-300'>
+											{t(
+												'personalInformation.nicknameLabel'
+											)}
+										</Label>
+										<span className='text-sm'>
+											{user?.nickname}
+										</span>
+									</div>
+								</div>
+								<Modal
+									trigger={
+										<Button
+											variant='outline'
+											className='py-5'
+										>
+											{t(
+												'personalInformation.nicknameButton'
+											)}
+										</Button>
+									}
+									contentClassname='max-w-md'
+								>
+									<ChangeNicknameForm t={t} />
+								</Modal>
+							</div>
 						</div>
-						<Modal
-							trigger={
-								<Button>
-									{t('personalInformation.usernameButton')}
-								</Button>
-							}
-							contentClassname='max-w-md'
-						>
-							<ChangeUsernameForm t={t} />
-						</Modal>
 					</div>
-					<div className='flex items-end gap-2 w-full'>
-						<div className='flex flex-col gap-2 w-full'>
-							<Label>
-								{t('personalInformation.nicknameLabel')}
-							</Label>
-							<Input
-								className='w-full'
-								disabled
-								value={user?.nickname || ''}
-							/>
-						</div>
-						<Modal
-							trigger={
-								<Button>
-									{t('personalInformation.nicknameButton')}
-								</Button>
-							}
-							contentClassname='max-w-md'
-						>
-							<ChangeNicknameForm t={t} />
-						</Modal>
+				</div>
+				<div className='flex flex-col gap-4'>
+					<h3 className='text-2xl font-bold'>
+						{t('security.heading')}
+					</h3>
+					<Separator />
+					<div className='flex flex-col gap-4'>
+						<UserSettingsSecurity t={t} user={user} />
+						<Sessions />
 					</div>
 				</div>
 			</div>
-			<div className='flex flex-col gap-6 w-full'>
-				<h3 className='text-2xl font-bold'>{t('security.heading')}</h3>
-				<Separator />
-				<div className='flex gap-6'>
-					<div className='flex items-end gap-2 w-full'>
-						<div className='flex flex-col gap-2 w-full'>
-							<Label>{t('security.emailLabel')}</Label>
-							<Input
-								className='w-full'
-								disabled
-								value={user?.email || ''}
-							/>
-						</div>
-						<Modal
-							trigger={
-								<Button>{t('security.emailButton')}</Button>
-							}
-							contentClassname='max-w-md'
-						>
-							<ChangeEmailForm t={t} />
-						</Modal>
-					</div>
-					<div className='flex items-end gap-2 w-full'>
-						<div className='flex flex-col gap-2 w-full'>
-							<Label>{t('security.passwordLabel')}</Label>
-							<p className='text-sm text-muted-foreground'>
-								{t('security.passwordDescription')}
-							</p>
-						</div>
-
-						<Modal
-							trigger={
-								<Button>{t('security.passwordButton')}</Button>
-							}
-							contentClassname='max-w-md'
-						>
-							<ChangePasswordForm t={t} />
-						</Modal>
-					</div>
-				</div>
-			</div>
-			<Sessions />
 		</div>
 	)
 }

@@ -10,8 +10,8 @@ import { Priority } from 'generated/prisma/enums';
 export class UpdateCardInput {
     @IsOptional()
     @IsString({ message: 'Название карточки должно быть строкой' })
-    @MinLength(2, {
-        message: 'Название карточки должно быть не менее 4 символов',
+    @MinLength(1, {
+        message: 'Название карточки должно быть не менее 1 символа',
     })
     @MaxLength(32, {
         message: 'Название карточки должно быть не более 32 символов',
@@ -20,7 +20,7 @@ export class UpdateCardInput {
 
     @IsOptional()
     @IsString({ message: 'Описание должно быть строкой' })
-    @MaxLength(128, { message: 'Описание должно быть не более 128 символов' })
+    @MaxLength(256, { message: 'Описание должно быть не более 256 символов' })
     description?: string;
 
     @IsOptional()

@@ -11,7 +11,7 @@ import type { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { destroySession, saveSession } from 'src/shared/utils/session.util';
 import { RedisService } from 'src/core/redis/redis.service';
-import { parseUserAgent } from 'src/shared/utils/user-agent.util';
+import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
 
 @Injectable()
 export class SessionService {
@@ -37,46 +37,50 @@ export class SessionService {
 
         const session = JSON.parse(sessionData);
 
-        const parsed = parseUserAgent(session.userAgent);
-
         return {
             id: sessionId,
-            ...parsed,
             createdAt: session.createdAt,
             lastActiveAt: session.lastActiveAt,
-            isCurrent: true,
+            metadata: session.metadata,
         };
     }
 
-    async findAllUserSessions(userId: string, currentSessionId: string) {
+    async findAllUserSessions(req: Request) {
+        const userId = req.session.userId;
+
+        if (!userId) {
+            throw new NotFoundException({
+                code: 'session.notFoundMultiple',
+                message: 'Одна или несколько сессий не найдены',
+            });
+        }
+
         const prefix = this.config.getOrThrow<string>('SESSION_FOLDER');
         const keys = await this.redis.keys(`${prefix}*`);
 
-        const sessions: any[] = [];
+        const userSessions: any[] = [];
 
         for (const key of keys) {
-            const raw = await this.redis.get(key);
-            if (!raw) continue;
+            const sessionData = await this.redis.get(key);
 
-            const session = JSON.parse(raw);
+            if (sessionData) {
+                const session = JSON.parse(sessionData);
 
-            if (session.userId === userId) {
-                const id = key.replace(prefix, '');
-
-                const parsed = parseUserAgent(session.userAgent);
-
-                sessions.push({
-                    id,
-                    ...parsed,
-                    userAgent: session.userAgent,
-                    createdAt: session.createdAt,
-                    lastActiveAt: session.lastActiveAt,
-                    isCurrent: id === currentSessionId,
-                });
+                if (session.userId === userId) {
+                    userSessions.push({
+                        id: key.split(':')[1],
+                        createdAt: session.createdAt,
+                        lastActiveAt: session.lastActiveAt,
+                        metadata: session.metadata,
+                        isCurrent: key.split(':')[1] === req.session.id,
+                    });
+                }
             }
         }
 
-        return sessions;
+        userSessions.sort((a, b) => b.createdAt - a.createdAt);
+
+        return userSessions;
     }
 
     async terminateSession(
@@ -140,7 +144,7 @@ export class SessionService {
         };
     }
 
-    async login(req: Request, input: LoginInput) {
+    async login(req: Request, input: LoginInput, userAgent: string) {
         const { login, password } = input;
 
         const user = await this.prisma.user.findFirst({
@@ -168,7 +172,9 @@ export class SessionService {
             });
         }
 
-        return saveSession(req, user);
+        const metadata = getSessionMetadata(req, userAgent, this.config);
+
+        return saveSession(req, user, metadata);
     }
 
     async logout(req: Request) {

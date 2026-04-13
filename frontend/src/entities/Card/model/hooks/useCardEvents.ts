@@ -3,6 +3,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { Socket } from 'socket.io-client'
 
+import { boardKeys } from '@/entities/Board'
+
 export const useCardEvents = (socket: Socket | null, boardId: string) => {
 	const queryClient = useQueryClient()
 
@@ -10,7 +12,9 @@ export const useCardEvents = (socket: Socket | null, boardId: string) => {
 		if (!socket) return
 
 		const invalidateBoard = () => {
-			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 		}
 
 		socket.on('card:created', invalidateBoard)

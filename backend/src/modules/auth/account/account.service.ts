@@ -13,9 +13,12 @@ import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { FilesService } from 'src/modules/files/files.service';
 import { ChangeNicknameInput } from './inputs/change-nickname';
-import { saveSession } from 'src/shared/utils/session.util';
-import { Request } from 'express';
 import { StatisticsService } from 'src/modules/statistics/statistics.service';
+import { VerificationService } from '../verification/verification.service';
+import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
+import type { Request } from 'express';
+import { ConfigService } from '@nestjs/config';
+import { saveSession } from 'src/shared/utils/session.util';
 
 @Injectable()
 export class AccountService {
@@ -23,6 +26,8 @@ export class AccountService {
         private readonly prisma: PrismaService,
         private readonly filesService: FilesService,
         private readonly statistics: StatisticsService,
+        private readonly verificationService: VerificationService,
+        private readonly config: ConfigService,
     ) {}
 
     async me(id: string) {
@@ -36,6 +41,7 @@ export class AccountService {
                 role: true,
                 avatar: true,
                 boards: true,
+                isEmailVerified: true,
                 createdAt: true,
             },
         });
@@ -43,7 +49,7 @@ export class AccountService {
         return user;
     }
 
-    async create(req: Request, input: CreateUserInput) {
+    async create(req: Request, input: CreateUserInput, userAgent: string) {
         const { username, email, password } = input;
 
         const isUsernameExists = await this.prisma.user.findUnique({
@@ -77,9 +83,13 @@ export class AccountService {
             },
         });
 
+        await this.verificationService.sendVerificationToken(user);
+
         await this.statistics.getOrCreate(user.id);
 
-        return saveSession(req, user);
+        const metadata = getSessionMetadata(req, userAgent, this.config);
+
+        return saveSession(req, user, metadata);
     }
 
     async changeUsername(input: ChangeUsernameInput, user: User) {
@@ -143,6 +153,7 @@ export class AccountService {
             },
             data: {
                 email,
+                isEmailVerified: false,
             },
         });
 
@@ -163,6 +174,13 @@ export class AccountService {
             throw new NotFoundException({
                 code: 'errors.account.userNotFound',
                 message: 'Пользователь не найден',
+            });
+        }
+
+        if (newPassword === currentPassword) {
+            throw new BadRequestException({
+                code: 'errors.account.passwordSameAsCurrent',
+                message: 'Новый пароль совпадает со старым.',
             });
         }
 

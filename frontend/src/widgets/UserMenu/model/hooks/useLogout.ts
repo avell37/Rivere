@@ -23,7 +23,7 @@ export const useLogout = () => {
 		mutationFn: logout,
 		onSuccess: () => {
 			toast.success(t('account.logout'))
-			router.push(`${PUBLIC_URL.auth()}/login`)
+			router.push(`${PUBLIC_URL.login()}`)
 		},
 		onError: err => handleApiError(err, t)
 	})

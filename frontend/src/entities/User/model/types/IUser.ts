@@ -1,4 +1,4 @@
-import { IBoard } from '@/entities/Board/model/types/IBoard'
+import { IUserBoard } from '@/entities/Board'
 
 export interface IUser {
 	id: string
@@ -7,7 +7,8 @@ export interface IUser {
 	nickname: string
 	role: string
 	avatar: string
-	boards: IBoard[]
+	boards: IUserBoard[]
+	isEmailVerified: boolean
 	createdAt: Date
 	updatedAt?: Date
 }

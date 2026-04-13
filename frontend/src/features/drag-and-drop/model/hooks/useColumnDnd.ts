@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction } from 'react'
 
+import { boardKeys } from '@/entities/Board'
 import { IColumn } from '@/entities/Column'
 
 import { handleApiError } from '@/shared/utils/handleApiError'
@@ -33,7 +34,9 @@ export const useColumnDnd = ({
 		mutationFn: ({ boardId, columns }: ReorderColumns) =>
 			fetchReorderColumns({ boardId, columns }),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 		},
 		onError: err => handleApiError(err, t)
 	})

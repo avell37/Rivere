@@ -10,13 +10,19 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const { id } = await params
+	try {
+		const { id } = await params
 
-	const board = await fetchBoardByIdServer(id)
-	const t = await getTranslations('board')
+		const board = await fetchBoardByIdServer(id)
+		const t = await getTranslations('board')
 
-	return {
-		title: t('heading', { name: board.title })
+		return {
+			title: t('heading', { name: board.title })
+		}
+	} catch (err) {
+		return {
+			title: 'Board'
+		}
 	}
 }
 

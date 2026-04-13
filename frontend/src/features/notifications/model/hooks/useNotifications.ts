@@ -1,19 +1,22 @@
 'use client'
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
-
-import { useNotificationsStore } from '@/entities/Notification'
 
 import { getNotificationsSocket } from '../utils/notification.socket'
 
 export const useNotifications = (userId?: string | null) => {
-	const add = useNotificationsStore(state => state.add)
+	const queryClient = useQueryClient()
 
 	useEffect(() => {
 		if (!userId) return
 
 		const socket = getNotificationsSocket(userId)
 
-		socket.on('notification', notification => add(notification))
+		socket.on('notification', notification =>
+			queryClient.invalidateQueries({
+				queryKey: ['get user notifications', userId]
+			})
+		)
 
 		return () => {
 			socket.off('notification')

@@ -39,7 +39,11 @@ export const FormSelectController = ({
 			name={name}
 			render={({ field }) => (
 				<FormItem>
-					{label && <FormLabel>{label}</FormLabel>}
+					{label && (
+						<FormLabel className='text-sm dark:text-gray-300'>
+							{label}
+						</FormLabel>
+					)}
 
 					<Select
 						value={field.value}
@@ -48,7 +52,10 @@ export const FormSelectController = ({
 							onChange?.(value)
 						}}
 					>
-						<SelectTrigger className='w-48'>
+						<SelectTrigger
+							className='w-48 cursor-pointer hover:bg-accent 
+						hover:text-accent-foreground dark:hover:bg-input/50 transition-all'
+						>
 							<SelectValue placeholder={placeholder} />
 						</SelectTrigger>
 						<SelectContent className='w-full'>

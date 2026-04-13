@@ -38,7 +38,7 @@ export const ChatUserMessage = ({
 				)}
 
 				<div
-					className={`w-[350px] ${
+					className={`${
 						!isMyMessage && !showAvatarAndNickname ? 'ml-12' : ''
 					}`}
 				>
@@ -55,10 +55,14 @@ export const ChatUserMessage = ({
 								: 'rounded-l-md rounded-r-2xl bg-violet-800/80'
 						}`}
 					>
-						<p className='text-sm max-w-[300px] break-all whitespace-pre-wrap'>
+						<p className='text-sm max-w-[330px] break-words whitespace-pre-wrap'>
 							{message.text}
 						</p>
-						<span className='text-xs flex justify-end items-end pl-6'>
+						<span
+							className={`select-none text-xs flex justify-end 
+								items-end pl-6
+								${isMyMessage ? 'text-blue-300' : 'text-violet-400'}`}
+						>
 							{formatTime(message.createdAt, locale)}
 						</span>
 					</div>

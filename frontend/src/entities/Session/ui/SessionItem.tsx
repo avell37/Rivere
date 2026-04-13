@@ -4,24 +4,34 @@ import { SessionProps } from '../model/types/SessionProps'
 
 export const SessionItem = ({
 	title,
-	date,
+	description,
+	span,
 	isCurrent,
 	icon,
+	currentSession,
 	onTerminate
 }: SessionProps) => {
 	return (
-		<div className='relative flex justify-between gap-4'>
+		<div className='group relative flex justify-between gap-4 hover:bg-black rounded-sm p-4 transition-all'>
 			<div className='flex items-center gap-4'>
 				{icon}
-				<p>{title}</p>
+				<div className='flex flex-col'>
+					<p>{title}</p>
+					<span className='text-xs text-gray-400'>{description}</span>
+					<span className='text-xs text-gray-400'>{span}</span>
+				</div>
 			</div>
 			<div className='flex items-center'>
-				<span className='text-xs text-gray-400 mr-6'>{date}</span>
-				{!isCurrent && onTerminate && (
+				{!isCurrent && onTerminate ? (
 					<X
-						className='absolute -right-1 stroke-red-500 cursor-pointer size-5'
+						className='absolute right-2 stroke-red-500 cursor-pointer 
+						size-5 opacity-0 group-hover:opacity-100 transition-all'
 						onClick={onTerminate}
 					/>
+				) : (
+					<span className='text-xs text-gray-400'>
+						{currentSession}
+					</span>
 				)}
 			</div>
 		</div>

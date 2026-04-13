@@ -46,7 +46,7 @@ export class BoardInvitesService {
         };
     }
 
-    async getInvite(token: string) {
+    async getInvite(token: string, userId: string) {
         const invite = await this.prisma.boardInvite.findUnique({
             where: { token },
             include: {
@@ -84,6 +84,10 @@ export class BoardInvitesService {
             });
         }
 
+        const isMember = invite.board.members.some(
+            (member) => member.userId === userId,
+        );
+
         return {
             board: {
                 id: invite.board.id,
@@ -92,6 +96,7 @@ export class BoardInvitesService {
             },
             invitedBy: invite.creator,
             expiresAt: invite.expiresAt,
+            isMember,
         };
     }
 

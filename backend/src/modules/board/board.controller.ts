@@ -73,6 +73,20 @@ export class BoardController {
     }
 
     @ApiOperation({
+        summary: 'Добавить в избранное',
+        description: 'Добавляет определенную доску в избранное.',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Post(':boardId/favorite')
+    async toggleFavorite(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+    ) {
+        return this.boardService.toggleFavorite(userId, boardId);
+    }
+
+    @ApiOperation({
         summary: 'Удаление доски',
         description: 'Удаляет определенную доску по ID.',
     })

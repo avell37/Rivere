@@ -19,7 +19,7 @@ export const EditableDescription = ({ cardId }: EditableProps) => {
 		return (
 			<FormTextareaController
 				name='description'
-				className='rounded break-all resize-none pr-4 whitespace-pre-wrap'
+				className='rounded break-all resize-none pr-4 whitespace-pre-wrap max-sm:max-w-[350px]'
 				control={control}
 				disabled={isLoading}
 				onClick={() => setIsEditing(true)}

@@ -39,7 +39,7 @@ export const FormTextareaController = <T extends FieldValues>({
 			render={({ field, fieldState }) => (
 				<FormItem className={`flex flex-col gap-2.5 ${className}`}>
 					{label && (
-						<FormLabel className='text-gray-400 text-sm block'>
+						<FormLabel className='text-sm dark:text-gray-300'>
 							{label}
 						</FormLabel>
 					)}
@@ -47,7 +47,7 @@ export const FormTextareaController = <T extends FieldValues>({
 					<FormControl>
 						<Textarea
 							{...field}
-							className={`border text-start rounded-lg dark:text-white outline-none break-all transition-all resize-none
+							className={`border text-start rounded-lg dark:text-white outline-none break-all transition-all resize-none bg-transparent
                                 ${
 									fieldState.error
 										? 'border-red-600 hover:border-red-800'

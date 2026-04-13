@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
-import { AuthWrapper, LoginForm } from '@/features/auth'
+import { LoginForm } from '@/features/auth'
+
+import { AuthWrapper } from '@/shared/ui/custom'
 
 export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations('auth.login')

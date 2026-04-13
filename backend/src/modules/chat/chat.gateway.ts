@@ -20,12 +20,7 @@ export class ChatGateway {
     @WebSocketServer()
     server: Server;
 
-    constructor(
-        private readonly chatService: ChatService,
-        private readonly messagesService: MessagesService,
-        private readonly notification: NotificationsService,
-        private readonly prisma: PrismaService,
-    ) {}
+    constructor(private readonly messagesService: MessagesService) {}
 
     handleConnection(client: Socket) {
         client.emit('connected', client.id);

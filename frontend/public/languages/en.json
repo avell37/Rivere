@@ -34,15 +34,26 @@
 		}
 	},
 	"auth": {
+		"wrapper": {
+			"plug": "KANBAN_BOARD_TEAMS",
+			"heading": "Rivere",
+			"description": "A daily step toward total focus. Rivere helps you organize your daily routine in a convenient Kanban board.",
+			"registerTitle": "Welcome!",
+			"registerDescription": "Register your account to continue.",
+			"loginTitle": "Been here before?",
+			"loginDescription": "Sign in to your account to continue.",
+			"formSeparator": "or e-mail"
+		},
 		"login": {
 			"heading": "Login",
-			"loginLabel": "Login",
+			"loginLabel": "Email or username",
 			"loginPlaceholder": "Enter your e-mail or username",
 			"passwordLabel": "Password",
 			"passwordPlaceholder": "Enter your password",
 			"label": "No account?",
 			"submitButton": "Login",
-			"navigationButton": "Create"
+			"navigationButton": "Create",
+			"forgotPassword": "Forgot password?"
 		},
 		"register": {
 			"heading": "Registration",
@@ -55,6 +66,34 @@
 			"label": "Already have account?",
 			"submitButton": "Create",
 			"navigationButton": "Login"
+		},
+		"verifyEmail": {
+			"heading": "Verify email",
+			"title": "Check your email",
+			"description": "We sent a 6-digit code to your email. Enter the code below to verify your email and continue.",
+			"span": "Didn't find the email? Check your 'Spam' folder.",
+			"notReceived": "Didn't receive the code?",
+			"sendToken": "Resend code",
+			"submit": "Confirm",
+			"sendCode": "Code sent successfully!",
+			"successVerified": "Email verified successfully!"
+		},
+		"recoveryPassword": {
+			"heading": "Recovery password",
+			"step": "Step {current} of 3",
+			"sendCode": "Code sent successfully!",
+			"tokenSuccess": "Code successfully verified",
+			"passwordChanged": "Password successfully changed!",
+			"didntGetCode": "Didn't get the code?",
+			"resendAgain": "Resend again",
+			"checkSpam": "Check your 'Spam' folder",
+			"emailLabel": "E-mail",
+			"emailPlaceholder": "Enter your e-mail",
+			"buttonLabel": "Send code",
+			"newPasswordLabel": "New password",
+			"newPasswordPlaceholder": "Enter a new password",
+			"confirmPasswordLabel": "Confirm password",
+			"confirmPasswordPlaceholder": "Confirm your new password"
 		},
 		"google": "Continue with Google",
 		"yandex": "Continue with Yandex"
@@ -80,21 +119,36 @@
 	"statistics": {
 		"heading": "Statistics",
 		"activity": {
-			"heading": "Your activity over last 90 days:",
-			"closedCards": "Closed cards:"
-		}
+			"heading": "Your activity over last 365 days:"
+		},
+		"closedCards": "Closed cards: {count}",
+		"completedCards": "Completed cards",
+		"currentStreak": "Current streak",
+		"longestStreak": "Longest streak",
+		"usersInvited": "Users invited",
+		"days": "{count, plural, one {# day} few {# days} many {# days} other {# days}}"
 	},
 	"boards": {
 		"heading": "Boards",
 		"title": "Your boards:",
+		"favorites": "Your favorite boards:",
+		"noBoardsTitle": "No boards yet.",
+		"noBoardsDescription": "Create your first board to start organizing tasks and projects",
 		"members": {
 			"title": "List of board members:",
-			"joinedAt": "joined: {date} at {time}"
+			"joinedAt": "joined: {date} at {time}",
+			"deleteMemberTitle": "Are you sure you want to exclude {name}?",
+			"deleteMemberDescription": "This action cannot be undone, user will be removed from the board.",
+			"deleteMemberActionText": "Exclude",
+			"deleteMemberCancelText": "Cancel"
 		}
 	},
 	"board": {
 		"heading": "{name}",
 		"members": "{count, plural, one {# member} other {# members}}",
+		"deleteMember": "Member has been removed from the board",
+		"addedToFavorites": "Board has been successfully added to favorites.",
+		"removedFromFavorites": "Board has been successfully removed from favorites.",
 		"create": {
 			"heading": "Create board",
 			"title": "Add board",
@@ -173,10 +227,11 @@
 			"createDescription": "Enter a title for the new card",
 			"createTitleModalLabel": "Title",
 			"createTitleModalPlaceholder": "Card title",
+			"createDescriptionModalLabel": "Description",
 			"createDescriptionModalPlaceholder": "Describe your card",
 			"createPriorityModalLabel": "Priority",
 			"createPriorityModalPlaceholder": "Select priority",
-			"createDeadlineModalLabel": "Deadline",
+			"createDeadlineModalLabel": "Deadline (optional)",
 			"createDeadlineModalPlaceholder": "Select date",
 			"createModalSubmit": "Add",
 			"createModalClose": "Close",
@@ -184,11 +239,12 @@
 		},
 		"edit": {
 			"description": "Description",
+			"addDeadline": "Add deadline",
 			"editDescription": "Empty...",
 			"editPriorityLabel": "Priority",
 			"editPriorityPlaceholder": "Select priority",
 			"editDeadlineLabel": "Deadline",
-			"editDeadlinePlaceholder": "Select date",
+			"editDeadlinePlaceholder": "Select deadline",
 			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
@@ -202,7 +258,7 @@
 			"inputPlaceholder": "Write a message..."
 		},
 		"doneSuccess": "Successfully",
-		"expiresAt": "expires: {date}",
+		"expiresAt": "expires at: {date}",
 		"dragCard": "Drag the card here"
 	},
 	"notifications": {
@@ -250,6 +306,9 @@
 				"emailModalPlaceholder": "Enter your new e-mail",
 				"emailModalSubmit": "Change",
 				"emailModalClose": "Close",
+				"emailVerificationBadgeUnverified": "Not confirmed",
+				"emailVerificationBadgeVerified": "Confirmed",
+				"emailVerificationButton": "Confirm email",
 				"passwordLabel": "Password",
 				"passwordDescription": "The password is hidden for security reasons",
 				"passwordButton": "Change",
@@ -258,16 +317,24 @@
 				"newPasswordPlaceholder": "Enter a new password",
 				"confirmPasswordPlaceholder": "Confirm your new password",
 				"passwordModalSubmit": "Change",
-				"passwordModalClose": "Close"
+				"passwordModalClose": "Close",
+				"emailChanged": "Email successfully changed!",
+				"nicknameChanged": "Nickname successfully changed!",
+				"passwordChanged": "Password successfully changed!",
+				"usernameChanged": "Username successfully changed!",
+				"avatarChanged": "Avatar successfully changed!"
 			},
 			"session": {
 				"heading": "Active sessions",
+				"description": "Your sessions from different devices",
+				"browser": "Browser",
+				"currentSession": "Current session",
 				"clearSessionsButton": "End all except current",
 				"clearSessionsTitle": "Are you sure?",
 				"clearSessionsDescription": "All sessions except the current one will be permanently ended.",
 				"clearSessionsActionText": "End",
 				"clearSessionsCancelText": "Cancel",
-				"lastActive": "Last active: {date} in {time}"
+				"lastActive": "{date} in {time}"
 			}
 		}
 	},
@@ -276,7 +343,19 @@
 		"allEnded": "All other sessions have been ended."
 	},
 	"dropdownUserMenu": {
-		"profile": "Profile",
+		"customize": "Customize",
+		"select": "Select",
+		"theme": {
+			"heading": "Theme",
+			"light": "Light",
+			"dark": "Dark"
+		},
+		"language": {
+			"heading": "Language",
+			"ru": "Russian",
+			"en": "English"
+		},
+		"account": "Account",
 		"settings": "Settings",
 		"logout": "Logout"
 	},
@@ -285,6 +364,8 @@
 		"createLink": "Create link",
 		"copyLink": "Link copied to clipboard",
 		"acceptedInvite": "You have successfully joined the board!",
+		"canceledInvite": "You have declined the invitation to the board.",
+		"alreadyMember": "You are already a member of this board",
 		"page": {
 			"title": "invites you to the board: {boardName}",
 			"members": "{count, plural, one {# member} few {# members} many {# members} other {# members}}",
@@ -302,16 +383,6 @@
 			"heading": "Notifications"
 		}
 	},
-	"theme": {
-		"selectTheme": "Select theme...",
-		"light": "Light",
-		"dark": "Dark"
-	},
-	"language": {
-		"selectLanguage": "Select language",
-		"en": "English",
-		"ru": "Russian"
-	},
 	"validation": {
 		"username": {
 			"min": "Minimum username length is 4 characters",
@@ -325,7 +396,8 @@
 		"password": {
 			"min": "Minimum password length is 6 characters",
 			"max": "Maximum password length is 64 characters",
-			"noMatches": "Passwords do not match"
+			"noMatches": "Passwords do not match",
+			"sameAsCurrent": "New password is the same as old password"
 		},
 		"board": {
 			"min": "Minimum board title length is 1 character",
@@ -357,7 +429,8 @@
 			"usernameExists": "Username is already taken",
 			"emailExists": "Email is already taken",
 			"userNotFound": "User not found",
-			"notValidCurrentPassword": "Invalid current password"
+			"notValidCurrentPassword": "Invalid current password",
+			"passwordSameAsCurrent": "New password is the same as old password"
 		},
 		"board": {
 			"exists": "You already have a board with this name",
@@ -389,6 +462,7 @@
 		},
 		"session": {
 			"notFound": "Session not found",
+			"notFoundMultiple": "One or more sessions not found",
 			"terminateCurrent": "Cannot terminate current session",
 			"accessDenied": "Access denied"
 		},
@@ -396,6 +470,11 @@
 			"achievements": {
 				"notFound": "Achievement not found"
 			}
+		},
+		"token": {
+			"notFound": "Token not found",
+			"expired": "Token expired",
+			"invalid": "Invalid token"
 		}
 	}
 }
