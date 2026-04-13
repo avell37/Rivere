@@ -14,7 +14,10 @@ export const CreateCardSchema = z.object({
 	priority: z.enum([Priority.LOW, Priority.MEDIUM, Priority.HIGH], {
 		message: 'validation.card.priority'
 	}),
-	deadline: z.string({ message: 'validation.card.priority' }).min(1)
+	deadline: z
+		.string({ message: 'validation.card.priority' })
+		.min(1)
+		.optional()
 })
 
 export type CreateCardRequest = z.infer<typeof CreateCardSchema>

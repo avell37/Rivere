@@ -13,6 +13,8 @@ export const BoardList = ({ boards }: { boards: IBoard[] }) => {
 						id={board.id}
 						title={board.title}
 						members={board.members.length}
+						background={board.background}
+						isFavorite={board.isFavorite}
 					/>
 				</div>
 			))}

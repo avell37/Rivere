@@ -9,4 +9,5 @@ export interface GetInviteResponse {
 	board: InviteBoardInfo
 	invitedBy: InviteCreator
 	expiresAt: string
+	isMember: boolean
 }

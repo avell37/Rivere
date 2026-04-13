@@ -20,7 +20,7 @@ export const CreateColumnModal = memo(({ boardId }: { boardId: string }) => {
 	return (
 		<Modal
 			trigger={
-				<div className='flex flex-col relative rounded-t-md overflow-hidden cursor-pointer transition-all group w-74'>
+				<div className='flex flex-col relative rounded-t-md cursor-pointer transition-all group w-74'>
 					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 bg-background dark:bg-neutral-900'>
 						<Plus />
 						<h3 className='font-semibold text-base dark:text-white'>

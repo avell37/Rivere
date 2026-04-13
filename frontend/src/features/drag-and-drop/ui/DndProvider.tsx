@@ -1,3 +1,4 @@
+'use client'
 import {
 	DndContext,
 	DragEndEvent,
@@ -32,7 +33,6 @@ export const DndProvider = memo(({ boardId, children }: DndProviderProps) => {
 	} = useBoardStore()
 
 	const cardDragHandlers = useCardDnd({
-		columns,
 		setColumns,
 		setActiveCard
 	})

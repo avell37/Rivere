@@ -1,49 +1,88 @@
 'use client'
-import { Moon, Sun } from 'lucide-react'
+import { Moon, PaletteIcon, Sun } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
 
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from '../../external/Select/Select'
+	Button,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger
+} from '../../external'
 
-import { ThemeSwitcherSkeleton } from './ThemeSwitcherSkeleton'
+interface ThemeSwitcherProps {
+	variant?: 'dropdown' | 'alone'
+}
 
-export const ThemeSwitcher = () => {
-	const t = useTranslations('theme')
-	const { setTheme, theme } = useTheme()
-	const [mounted, setMounted] = useState(false)
+export const ThemeSwitcher = ({ variant = 'dropdown' }: ThemeSwitcherProps) => {
+	const t = useTranslations('dropdownUserMenu.theme')
+	const { setTheme } = useTheme()
 
-	useEffect(() => {
-		setMounted(true)
-	}, [])
+	const iconClass =
+		variant === 'alone'
+			? 'text-white group-hover:text-white/60 transition-all duration-200'
+			: ''
 
-	if (!mounted) return <ThemeSwitcherSkeleton />
+	const themeVariants = [
+		{
+			code: 'light',
+			label: t('light'),
+			icon: <Sun className={iconClass} />
+		},
+		{
+			code: 'dark',
+			label: t('dark'),
+			icon: <Moon className={iconClass} />
+		}
+	]
+
+	if (variant === 'alone') {
+		return (
+			<div className='flex items-center gap-1'>
+				{themeVariants.map(variant => (
+					<Button
+						key={variant.code}
+						variant='none'
+						size='none'
+						onClick={() => setTheme(variant.code)}
+						className='cursor-pointer group'
+					>
+						{variant.icon}
+					</Button>
+				))}
+			</div>
+		)
+	}
 
 	return (
-		<Select value={theme} onValueChange={setTheme}>
-			<SelectTrigger className='w-[180px] px-2 py-1 rounded hover:bg-custom-hover transition-all'>
-				<SelectValue placeholder={t('selectTheme')} />
-			</SelectTrigger>
-			<SelectContent className='z-100'>
-				<SelectItem value='light'>
-					<div className='flex items-center gap-2'>
-						<Sun className='size-4' />
-						{t('light')}
-					</div>
-				</SelectItem>
-				<SelectItem value='dark'>
-					<div className='flex items-center gap-2'>
-						<Moon className='size-4' />
-						{t('dark')}
-					</div>
-				</SelectItem>
-			</SelectContent>
-		</Select>
+		<DropdownMenuSub>
+			<DropdownMenuSubTrigger>
+				<PaletteIcon />
+				{t('heading')}
+			</DropdownMenuSubTrigger>
+			<DropdownMenuPortal>
+				<DropdownMenuSubContent className='w-10'>
+					<DropdownMenuGroup>
+						<DropdownMenuLabel className='text-xs text-gray-400'>
+							{t('heading')}
+						</DropdownMenuLabel>
+						{themeVariants.map(variant => (
+							<DropdownMenuItem
+								key={variant.code}
+								onClick={() => setTheme(variant.code)}
+								className='cursor-pointer'
+							>
+								{variant.icon}
+								{variant.label}
+							</DropdownMenuItem>
+						))}
+					</DropdownMenuGroup>
+				</DropdownMenuSubContent>
+			</DropdownMenuPortal>
+		</DropdownMenuSub>
 	)
 }

@@ -25,8 +25,8 @@ export const AchievementItem = ({
 			trigger={
 				<div
 					className={cn(
-						'relative w-50 rounded-xl border p-4 flex flex-col items-center gap-2 transition-all',
-						'hover:scale-[1.05] hover:shadow-md cursor-pointer',
+						'relative w-full rounded-xl border p-4 flex flex-col items-center gap-2 transition-all',
+						'hover:scale-[1.05] hover:shadow-md cursor-pointer flex-1 min-w-[140px] max-w-[220px]',
 						isEarned
 							? 'border-yellow-500/40'
 							: 'opacity-80 hover:opacity-100'

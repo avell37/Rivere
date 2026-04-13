@@ -10,7 +10,18 @@ export interface IBoard {
 		url: string | null
 		color: string | null
 	}
+	isFavorite: boolean
 	members: IBoardMember[]
 	createdAt?: Date
 	updatedAt?: Date
+}
+
+export interface IUserBoard {
+	id: string
+	boardId: string
+	role: 'OWNER' | 'ADMIN' | 'MEMBER'
+	isFavorite: boolean
+	joinedAt: string
+	createdAt: string
+	updatedAt: string
 }

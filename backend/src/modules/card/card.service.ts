@@ -114,7 +114,10 @@ export class CardService {
         });
 
         if (cards.length !== ids.length) {
-            throw new NotFoundException('Одна из карточек не найдена');
+            throw new NotFoundException({
+                code: 'card.notFound',
+                message: 'Одна из карточек не найдена',
+            });
         }
 
         await checkBoardAccess({
@@ -153,13 +156,21 @@ export class CardService {
             include: { column: true },
         });
 
-        if (!card) throw new NotFoundException('Card not found');
+        if (!card)
+            throw new NotFoundException({
+                code: 'card.notFound',
+                message: 'Карточка не найдена',
+            });
 
         const newColumn = await this.prisma.column.findUnique({
             where: { id: newColumnId },
         });
 
-        if (!newColumn) throw new NotFoundException('Column not found');
+        if (!newColumn)
+            throw new NotFoundException({
+                code: 'column.notFound',
+                message: 'Одна или несколько карточек не найдены',
+            });
 
         await checkBoardAccess({
             prisma: this.prisma,

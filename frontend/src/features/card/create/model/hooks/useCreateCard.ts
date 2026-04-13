@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { boardKeys } from '@/entities/Board'
 import {
 	CreateCardRequest,
 	CreateCardSchema,
@@ -36,7 +37,9 @@ export const useCreateCard = ({
 			createCard({ columnId, ...data }),
 		onSuccess: () => {
 			form.reset()
-			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 			toast.success(t('card.create.createSuccess'))
 			onSuccess(false)
 		},

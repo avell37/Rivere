@@ -3,9 +3,10 @@ import { AccountService } from './account.service';
 import { AccountController } from './account.controller';
 import { FilesModule } from 'src/modules/files/files.module';
 import { StatisticsModule } from 'src/modules/statistics/statistics.module';
+import { VerificationModule } from '../verification/verification.module';
 
 @Module({
-    imports: [FilesModule, StatisticsModule],
+    imports: [FilesModule, StatisticsModule, VerificationModule],
     controllers: [AccountController],
     providers: [AccountService],
 })

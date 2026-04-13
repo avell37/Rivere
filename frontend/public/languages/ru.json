@@ -34,15 +34,26 @@
 		}
 	},
 	"auth": {
+		"wrapper": {
+			"plug": "KANBAN_BOARD_TEAMS",
+			"heading": "Rivere",
+			"description": "Ежедневный шаг к полной концентрации. Rivere поможет вам организовать свой распорядок дня с помощью удобной доски Kanban.",
+			"registerTitle": "Добро пожаловать!",
+			"registerDescription": "Зарегистрируйте свою учетную запись, чтобы продолжить.",
+			"loginTitle": "Уже были тут?",
+			"loginDescription": "Войдите в свою учетную запись, чтобы продолжить.",
+			"formSeparator": "или через почту"
+		},
 		"login": {
 			"heading": "Вход в аккаунт",
-			"loginLabel": "Логин",
+			"loginLabel": "Почта или юзернейм",
 			"loginPlaceholder": "Введите свой e-mail или имя пользователя",
 			"passwordLabel": "Пароль",
 			"passwordPlaceholder": "Введите свой пароль",
 			"label": "Нет аккаунта?",
 			"submitButton": "Войти",
-			"navigationButton": "Создать"
+			"navigationButton": "Создать",
+			"forgotPassword": "Забыли пароль?"
 		},
 		"register": {
 			"heading": "Регистрация",
@@ -56,8 +67,36 @@
 			"submitButton": "Создать",
 			"navigationButton": "Войти"
 		},
+		"verifyEmail": {
+			"heading": "Верификация почты",
+			"title": "Проверьте вашу почту",
+			"description": "Мы отправили письмо с 6-ти значным кодом для подтверждения вашей почты. Введите код ниже, чтобы подтвердить вашу почту и продолжить.",
+			"span": "Не нашли письмо? Проверьте папку 'Спам'",
+			"notReceived": "Не получили код?",
+			"sendToken": "Отправить код повторно",
+			"submit": "Подтвердить",
+			"sendCode": "Код успешно отправлен!",
+			"successVerified": "Почта успешно подтверждена!"
+		},
+		"recoveryPassword": {
+			"heading": "Восстановление пароля",
+			"step": "Шаг {current} из 3",
+			"sendCode": "Код успешно отправлен!",
+			"tokenSuccess": "Код успешно подтвержден",
+			"passwordChanged": "Пароль успешно изменен!",
+			"didntGetCode": "Не получили код?",
+			"resendAgain": "Отправить снова",
+			"checkSpam": "Проверьте папку 'Спам'",
+			"emailLabel": "Почта",
+			"emailPlaceholder": "Введите вашу почту",
+			"buttonLabel": "Отправить код",
+			"newPasswordLabel": "Новый пароль",
+			"newPasswordPlaceholder": "Введите новый пароль",
+			"confirmPasswordLabel": "Подтвердить пароль",
+			"confirmPasswordPlaceholder": "Подтвердите ваш новый пароль"
+		},
 		"google": "Продолжить с Google",
-		"yandex": "Продолжить с Яндекс"
+		"yandex": "Продолжить через Яндекс"
 	},
 	"account": {
 		"auth": "Успешно",
@@ -80,21 +119,36 @@
 	"statistics": {
 		"heading": "Статистика",
 		"activity": {
-			"heading": "Ваша активность за последние 90 дней:",
-			"closedCards": "Закрыто карточек:"
-		}
+			"heading": "Ваша активность за последние 365 дней:"
+		},
+		"closedCards": "Закрыто карточек: {count}",
+		"completedCards": "Выполнено карточек",
+		"currentStreak": "Текущий стрик",
+		"longestStreak": "Рекордный стрик",
+		"usersInvited": "Приглашено пользователей",
+		"days": "{count, plural, one {# день} few {# дня} many {# дней} other {# дней}}"
 	},
 	"boards": {
 		"heading": "Доски",
 		"title": "Ваши доски:",
+		"favorites": "Ваши избранные доски:",
+		"noBoardsTitle": "Пока нет досок",
+		"noBoardsDescription": "Создай свою первую доску, чтобы начать организовывать задачи и проекты",
 		"members": {
 			"title": "Список участников доски:",
-			"joinedAt": "присоединился: {date} в {time}"
+			"joinedAt": "присоединился: {date} в {time}",
+			"deleteMemberTitle": "Вы действительно хотите исключить {name}?",
+			"deleteMemberDescription": "Это действие нельзя отменить, пользователь будет исключен из доски.",
+			"deleteMemberActionText": "Исключить",
+			"deleteMemberCancelText": "Отменить"
 		}
 	},
 	"board": {
 		"heading": "{name}",
 		"members": "{count, plural, one {# участник} few {# участника} many {# участников} other {# участников}}",
+		"deleteMember": "Участник исключен из доски",
+		"addedToFavorites": "Доска добавлена в избранное",
+		"removedFromFavorites": "Доска убрана из избранных",
 		"create": {
 			"heading": "Создать доску",
 			"title": "Добавить доску",
@@ -175,10 +229,11 @@
 			"createDescription": "Введите название для новой карточки",
 			"createTitleModalLabel": "Название",
 			"createTitleModalPlaceholder": "Название карточки",
+			"createDescriptionModalLabel": "Описание",
 			"createDescriptionModalPlaceholder": "Опишите вашу карточку",
 			"createPriorityModalLabel": "Приоритет",
 			"createPriorityModalPlaceholder": "Выберите приоритет",
-			"createDeadlineModalLabel": "Дедлайн",
+			"createDeadlineModalLabel": "Дедлайн (опционально)",
 			"createDeadlineModalPlaceholder": "Выберите дедлайн",
 			"createModalSubmit": "Добавить",
 			"createModalClose": "Закрыть",
@@ -186,11 +241,12 @@
 		},
 		"edit": {
 			"description": "Описание",
+			"addDeadline": "Добавить дедлайн",
 			"editDescription": "Пусто...",
 			"editPriorityLabel": "Приоритет",
 			"editPriorityPlaceholder": "Выберите приоритет задачи",
 			"editDeadlineLabel": "Дедлайн",
-			"editDeadlinePlaceholder": "Выберите новый дедлайн",
+			"editDeadlinePlaceholder": "Выберите дедлайн",
 			"editSuccess": "Изменения успешно применены"
 		},
 		"delete": {
@@ -204,7 +260,7 @@
 			"inputPlaceholder": "Написать сообщение..."
 		},
 		"doneSuccess": "Успешно",
-		"expiresAt": "истекает: {date}",
+		"expiresAt": "до: {date}",
 		"dragCard": "Перетащите карточку сюда"
 	},
 	"notifications": {
@@ -252,6 +308,9 @@
 				"emailModalPlaceholder": "Введите вашу новую электронную почту",
 				"emailModalSubmit": "Изменить",
 				"emailModalClose": "Закрыть",
+				"emailVerificationBadgeUnverified": "Не подтверждена",
+				"emailVerificationBadgeVerified": "Подтверждена",
+				"emailVerificationButton": "Подтвердить почту",
 				"passwordLabel": "Пароль",
 				"passwordDescription": "Пароль скрыт в целях безопасности.",
 				"passwordButton": "Изменить",
@@ -260,16 +319,24 @@
 				"newPasswordPlaceholder": "Введите ваш новый пароль",
 				"confirmPasswordPlaceholder": "Подтвердите новый пароль",
 				"passwordModalSubmit": "Изменить",
-				"passwordModalClose": "Закрыть"
+				"passwordModalClose": "Закрыть",
+				"emailChanged": "Почта успешно изменена!",
+				"nicknameChanged": "Никнейм успешно изменен!",
+				"passwordChanged": "Пароль успешно изменен!",
+				"usernameChanged": "Имя пользователя успешно изменено!",
+				"avatarChanged": "Аватар успешно изменен!"
 			},
 			"session": {
 				"heading": "Активные сессии",
+				"description": "Ваши сессии с разных устройств",
+				"browser": "Браузер",
+				"currentSession": "Текущая сессия",
 				"clearSessionsButton": "Завершить все, кроме текущей",
 				"clearSessionsTitle": "Вы уверены?",
 				"clearSessionsDescription": "Все сессии, кроме текущей, будут окончательно завершены.",
 				"clearSessionsActionText": "Завершить",
 				"clearSessionsCancelText": "Отмена",
-				"lastActive": "Последняя активность: {date} в {time}"
+				"lastActive": "{date} в {time}"
 			}
 		}
 	},
@@ -278,15 +345,29 @@
 		"allEnded": "Все другие сессии были завершены."
 	},
 	"dropdownUserMenu": {
-		"profile": "Профиль",
+		"customize": "Кастомизация",
+		"select": "Выберите",
+		"theme": {
+			"heading": "Тема",
+			"light": "Светлая",
+			"dark": "Темная"
+		},
+		"language": {
+			"heading": "Язык",
+			"ru": "Русский",
+			"en": "Английский"
+		},
+		"account": "Аккаунт",
 		"settings": "Настройки",
-		"logout": "Выход с аккаунта"
+		"logout": "Выход"
 	},
 	"invite": {
 		"heading": "Приглашение в доску",
 		"createLink": "Создать ссылку",
 		"copyLink": "Ссылка скопирована",
 		"acceptedInvite": "Вы успешно присоединились к доске!",
+		"canceledInvite": "Вы отклонили приглашение в доску.",
+		"alreadyMember": "Вы уже являетесь участником этой доски",
 		"page": {
 			"title": "приглашает вас в доску: {boardName}",
 			"members": "{count, plural, one {# участник} few {# участника} many {# участников} other {# участников}}",
@@ -304,16 +385,6 @@
 			"heading": "Уведомления"
 		}
 	},
-	"theme": {
-		"selectTheme": "Выберите тему...",
-		"light": "Светлая",
-		"dark": "Темная"
-	},
-	"language": {
-		"selectLanguage": "Выберите язык",
-		"en": "Английский",
-		"ru": "Русский"
-	},
 	"validation": {
 		"username": {
 			"min": "Минимальная длина имени пользователя 4 символа",
@@ -327,7 +398,8 @@
 		"password": {
 			"min": "Минимальная длина пароля 6 символов",
 			"max": "Максимальная длина пароля 64 символа",
-			"noMatches": "Пароли не совпадают"
+			"noMatches": "Пароли не совпадают",
+			"sameAsCurrent": "Новый пароль совпадает со старым."
 		},
 		"board": {
 			"min": "Минимальная длина названия доски 1 символ",
@@ -359,7 +431,8 @@
 			"usernameExists": "Имя пользователя уже занято",
 			"emailExists": "Электронная почта уже занята",
 			"userNotFound": "Пользователь не найден",
-			"notValidCurrentPassword": "Неверный текущий пароль"
+			"notValidCurrentPassword": "Неверный текущий пароль",
+			"passwordSameAsCurrent": "Новый пароль совпадает со старым."
 		},
 		"board": {
 			"exists": "У вас уже есть доска с таким названием",
@@ -391,6 +464,7 @@
 		},
 		"session": {
 			"notFound": "Сессия не найдена",
+			"notFoundMultiple": "Одна или несколько сессий не найдены",
 			"terminateCurrent": "Невозможно завершить текущую сессию",
 			"accessDenied": "Доступ запрещен"
 		},

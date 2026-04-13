@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    MaxLength,
+    MinLength,
+} from 'class-validator';
 import { Priority } from 'generated/prisma/enums';
 
 export class CreateCardInput {
@@ -8,14 +14,15 @@ export class CreateCardInput {
 
     @IsNotEmpty({ message: 'Название карточки обязательно' })
     @IsString({ message: 'Название карточки должно быть строкой' })
-    @MinLength(2, {
-        message: 'Название карточки должно быть не менее 2 символов',
+    @MinLength(1, {
+        message: 'Название карточки должно быть не менее 1 символа',
     })
     @MaxLength(32, {
         message: 'Название карточки должно быть не более 32 символов',
     })
     title: string;
 
+    @IsOptional()
     description?: string;
 
     @IsNotEmpty({ message: 'Приоритет обязателен' })
@@ -24,5 +31,6 @@ export class CreateCardInput {
 
     @IsNotEmpty({ message: 'Дедлайн обязателен' })
     @IsString({ message: 'Дедлайн должен быть строкой' })
-    deadline: string;
+    @IsOptional()
+    deadline?: string;
 }

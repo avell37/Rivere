@@ -27,14 +27,14 @@ export const CreateCardModal = memo(
 					<Button
 						variant='none'
 						size='none'
-						className='p-2 border cursor-pointer hover:bg-background'
+						className='p-2 mt-2 border cursor-pointer bg-black hover:bg-background'
 					>
 						<Plus />
 						{t('heading')}
 					</Button>
 				}
 				title={t('createTitle')}
-				contentClassname='sm:max-w-md'
+				contentClassname='w-full max-w-md'
 				open={open}
 				onOpenChange={setOpen}
 			>

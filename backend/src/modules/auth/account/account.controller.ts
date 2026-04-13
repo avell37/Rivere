@@ -20,6 +20,7 @@ import { ApiOperation } from '@nestjs/swagger';
 import { ChangeNicknameInput } from './inputs/change-nickname';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
+import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
 
 @Controller('account')
 export class AccountController {
@@ -41,8 +42,12 @@ export class AccountController {
     })
     @HttpCode(200)
     @Post('create')
-    async create(@Req() req: Request, @Body() input: CreateUserInput) {
-        return this.accountService.create(req, input);
+    async create(
+        @Req() req: Request,
+        @Body() input: CreateUserInput,
+        @UserAgent() userAgent: string,
+    ) {
+        return this.accountService.create(req, input, userAgent);
     }
 
     @ApiOperation({

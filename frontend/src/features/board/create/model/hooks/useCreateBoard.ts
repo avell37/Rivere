@@ -9,6 +9,7 @@ import {
 	CreateBoardRequest,
 	CreateBoardSchema,
 	IBoard,
+	boardKeys,
 	createBoard
 } from '@/entities/Board'
 
@@ -34,7 +35,7 @@ export const useCreateBoard = ({ onSuccess }: { onSuccess: () => void }) => {
 		mutationFn: (data: CreateBoardRequest) => createBoard(data),
 		onSuccess: () => {
 			form.reset()
-			queryClient.invalidateQueries({ queryKey: ['get boards'] })
+			queryClient.invalidateQueries({ queryKey: boardKeys.all })
 			toast.success(t('board.create.createSuccess'))
 			onSuccess()
 		},

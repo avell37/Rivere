@@ -36,6 +36,13 @@ export const updateBoard = async ({
 	return response.data
 }
 
+export const toggleFavorite = async (boardId: string) => {
+	const response = await baseAxios.post(
+		`${API_URL.boards()}${boardId}/favorite`
+	)
+	return response.data
+}
+
 export const deleteBoard = async (id: string): Promise<boolean> => {
 	const response = await baseAxios.delete(`${API_URL.boards()}${id}`)
 	return response.data

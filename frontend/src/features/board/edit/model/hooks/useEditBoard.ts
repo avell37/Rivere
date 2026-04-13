@@ -10,6 +10,7 @@ import {
 	EditBoardRequest,
 	EditBoardSchema,
 	IBoard,
+	boardKeys,
 	updateBoard,
 	useGetBoard
 } from '@/entities/Board'
@@ -55,7 +56,9 @@ export const useEditBoard = ({
 		mutationKey: ['update board', boardId],
 		mutationFn: (data: EditBoardRequest) => updateBoard({ boardId, data }),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 			toast.success(t('board.edit.editSuccess'))
 			onSuccess(false)
 		},

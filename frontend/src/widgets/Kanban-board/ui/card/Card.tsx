@@ -1,5 +1,5 @@
 'use client'
-import { MessageSquareMore } from 'lucide-react'
+import { Clock, MessageSquareMore } from 'lucide-react'
 import { memo } from 'react'
 
 import { CardDoneButton, ICard, useCard } from '@/entities/Card'
@@ -56,9 +56,12 @@ export const Card = memo(({ card, boardId, onClick }: props) => {
 							{card?.chat?._count?.messages}
 						</div>
 					</div>
-					<span className='absolute bottom-0 right-0 text-[10px]'>
-						до: {formatDate(card.deadline)}
-					</span>
+					{card.deadline && (
+						<span className='absolute bottom-0 right-0 flex items-center gap-1 text-[10px]'>
+							<Clock size={14} className='' />
+							до: {formatDate(card.deadline)}
+						</span>
+					)}
 				</div>
 			</div>
 			<DeleteCardModal cardId={card.id} boardId={boardId} />

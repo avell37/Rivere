@@ -1,6 +1,5 @@
-export * from './Boards/ui/Boards'
+export * from './Boards/Boards'
 export * from './Header/Header'
 export * from './Main'
-export * from './Sidebars'
 export * from './Statistics'
 export * from './UserMenu'

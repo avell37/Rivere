@@ -30,7 +30,7 @@ export const useChangeNickname = () => {
 		onSuccess: () => {
 			form.reset()
 			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.success('Данные успешно изменены')
+			toast.success(t('profile.settings.security.nicknameChanged'))
 		},
 		onError: err => handleApiError(err, t)
 	})

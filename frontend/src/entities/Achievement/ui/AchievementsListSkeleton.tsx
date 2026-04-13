@@ -1,4 +1,4 @@
-import { AchievementItemSkeleton } from '../../../entities/Achievement/ui/AchievementItemSkeleton'
+import { AchievementItemSkeleton } from './AchievementItemSkeleton'
 
 export const AchievementListSkeleton = () => {
 	return (

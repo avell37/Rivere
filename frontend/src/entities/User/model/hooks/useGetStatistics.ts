@@ -12,7 +12,7 @@ export const useGetStatistics = () => {
 		retry: false
 	})
 
-	const days = generateLastDays(90, data?.dailyCompletedCards ?? {})
+	const days = generateLastDays(365, data?.dailyCompletedCards ?? {})
 
 	return {
 		days,

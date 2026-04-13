@@ -15,7 +15,13 @@ baseAxios.interceptors.response.use(
 	res => res,
 	err => {
 		if (err.response?.status === 401) {
-			console.error('Unauthorized')
+			if (typeof window !== 'undefined') {
+				const isAuthPage = window.location.pathname.includes('/auth')
+
+				if (!isAuthPage) {
+					window.location.href = '/auth/login'
+				}
+			}
 		}
 		return Promise.reject(err)
 	}

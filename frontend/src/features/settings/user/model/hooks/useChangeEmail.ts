@@ -30,7 +30,7 @@ export const useChangeEmail = () => {
 		onSuccess: () => {
 			form.reset()
 			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.success('Данные успешно изменены')
+			toast.success(t('profile.settings.security.emailChanged'))
 		},
 		onError: err => handleApiError(err, t)
 	})

@@ -1,4 +1,4 @@
-import { ICard } from '@/entities/Card/model/types/ICard'
+import { ICard } from '@/entities/Card'
 
 export interface IColumn {
 	id: string

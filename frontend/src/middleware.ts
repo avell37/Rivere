@@ -5,16 +5,9 @@ export async function middleware(req: NextRequest) {
 	const session = req.cookies.get('session')?.value
 	const pathname = req.nextUrl.pathname
 
-	const authRoutes = ['/auth/login', '/auth/register']
+	const authRoutes = pathname.startsWith('/auth')
 
-	if (authRoutes.includes(pathname)) {
-		if (session) {
-			return NextResponse.redirect(new URL('/boards', req.url))
-		}
-		return NextResponse.next()
-	}
-
-	if (!session) {
+	if (!session && !authRoutes) {
 		return NextResponse.redirect(new URL('/auth/login', req.url))
 	}
 

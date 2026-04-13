@@ -19,5 +19,9 @@ export const ChangePasswordSchema = z
 		message: 'validation.password.noMatches',
 		path: ['confirmPassword']
 	})
+	.refine(data => data.currentPassword !== data.newPassword, {
+		message: 'validation.password.sameAsCurrent',
+		path: ['newPassword']
+	})
 
 export type ChangePasswordRequest = z.infer<typeof ChangePasswordSchema>

@@ -8,6 +8,11 @@ export interface BoardItemProps {
 	id: string
 	title: string
 	members: number
+	background: {
+		url: string | null
+		color: string | null
+	}
+	isFavorite?: boolean
 }
 
 export interface BoardMembersListProps {
@@ -18,9 +23,10 @@ export interface BoardMembersListProps {
 export interface BoardMemberItemProps {
 	member: IBoardMember
 	joinedAtText: string
-	onRemove?: () => void
 	canRemove: boolean
 	isLoading?: boolean
+	t: (key: string, values?: Record<string, any>) => string
+	onRemove?: () => void
 }
 
 export interface BoardDragOverlayProps {

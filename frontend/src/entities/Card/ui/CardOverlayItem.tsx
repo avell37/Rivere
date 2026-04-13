@@ -1,4 +1,6 @@
-import { Check, MessageSquareMore, X } from 'lucide-react'
+'use client'
+import { Check, Clock, MessageSquareMore, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { priorityColors } from '@/shared/config'
 import { cn, formatDate, formatPriority } from '@/shared/utils'
@@ -6,6 +8,7 @@ import { cn, formatDate, formatPriority } from '@/shared/utils'
 import { ICard } from '../model/types/ICard'
 
 export const CardOverlayItem = ({ card }: { card: ICard }) => {
+	const t = useTranslations()
 	return (
 		<div
 			className={`relative bg-background dark:bg-neutral-900 border rounded-lg shadow list-none}
@@ -41,9 +44,14 @@ export const CardOverlayItem = ({ card }: { card: ICard }) => {
 							{card?.chat?._count?.messages}
 						</div>
 					</div>
-					<span className='absolute bottom-0 right-0 text-[10px]'>
-						до: {formatDate(card.deadline)}
-					</span>
+					{card.deadline && (
+						<span className='absolute bottom-0 right-0 flex items-center gap-1 text-[10px]'>
+							<Clock size={14} className='' />
+							{t('card.expiresAt', {
+								date: formatDate(card.deadline)
+							})}
+						</span>
+					)}
 				</div>
 			</div>
 			<div className='absolute top-4 right-4 cursor-pointer'>

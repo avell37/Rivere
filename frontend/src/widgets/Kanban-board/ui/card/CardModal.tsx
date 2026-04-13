@@ -14,12 +14,13 @@ interface props {
 
 export const CardModal = memo(({ card, boardId }: props) => {
 	if (!card) return
+
 	return (
 		<div className='relative flex flex-col pt-2'>
 			<div className='pt-5'>
 				<Separator />
 			</div>
-			<div className='flex justify-between pl-6'>
+			<div className='flex justify-between gap-6 pl-6 max-lg:flex-col max-lg:pl-0'>
 				<EditCardForm card={card} boardId={boardId} />
 				<Chat cardId={card.id} />
 			</div>

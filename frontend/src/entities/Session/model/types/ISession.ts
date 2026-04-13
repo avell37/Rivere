@@ -1,12 +1,24 @@
+export interface Metadata {
+	device: {
+		browser: string
+		os: string
+		type: string
+	}
+	ip: string
+	location: {
+		city: string
+		country: string
+		latidute: string
+		longitude: string
+	}
+}
+
 export interface ISession {
 	id: string
-	browser: string
-	device: string
-	userAgent?: string
-	os: string
-	isCurrent: boolean
-	lastActiveAt: string
 	createdAt: string
+	lastActiveAt: string
+	metadata: Metadata
+	isCurrent: boolean
 }
 
 export interface ISessionActionsResponse {

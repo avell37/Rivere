@@ -15,6 +15,10 @@ import { NotificationsModule } from 'src/modules/notifications/notifications.mod
 import { AchievementsModule } from 'src/modules/achievements/achievements.module';
 import { StatisticsModule } from 'src/modules/statistics/statistics.module';
 import { BoardInvitesModule } from 'src/modules/board-invites/board-invites.module';
+import { MailModule } from 'src/modules/libs/mail/mail.module';
+import { VerificationModule } from 'src/modules/auth/verification/verification.module';
+import { PasswordRecoveryModule } from 'src/modules/auth/password-recovery/password-recovery.module';
+import { TokenModule } from 'src/modules/auth/token/token.module';
 
 @Module({
     imports: [
@@ -35,6 +39,10 @@ import { BoardInvitesModule } from 'src/modules/board-invites/board-invites.modu
         NotificationsModule,
         AchievementsModule,
         StatisticsModule,
+        MailModule,
+        VerificationModule,
+        PasswordRecoveryModule,
+        TokenModule,
     ],
 })
 export class CoreModule implements NestModule {

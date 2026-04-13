@@ -5,13 +5,13 @@ export interface CreateCardPayload {
 	title: string
 	description?: string
 	priority: Priority
-	deadline: string
+	deadline?: string | null
 }
 
 export interface UpdateCardPayload {
 	title?: string
 	description?: string
 	priority?: Priority
-	deadline?: string
+	deadline?: string | null
 	done?: boolean
 }

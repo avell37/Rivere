@@ -1,4 +1,5 @@
 'use client'
+import { BarChart3, SlidersHorizontal, Sparkles } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
@@ -16,11 +17,11 @@ export const Main = () => {
 
 			<section className='max-w-6xl mx-auto px-4 pt-20 pb-32'>
 				<div className='pt-10'>
-					<h1 className='text-5xl font-bold mb-6'>
+					<h1 className='text-5xl font-bold mb-6 max-lg:text-3xl'>
 						{t('startSection.title')}{' '}
 						<span>{t('startSection.name')}</span>
 					</h1>
-					<p className='text-lg opacity-80 max-w-2xl mb-10'>
+					<p className='text-lg opacity-80 max-w-2xl mb-10 max-lg:text-sm'>
 						{t('startSection.description')}
 					</p>
 
@@ -51,14 +52,17 @@ export const Main = () => {
 						<Advantage
 							title={t('secondSection.firstCard.title')}
 							text={t('secondSection.firstCard.description')}
+							icon={<Sparkles />}
 						/>
 						<Advantage
 							title={t('secondSection.secondCard.title')}
 							text={t('secondSection.secondCard.description')}
+							icon={<SlidersHorizontal />}
 						/>
 						<Advantage
 							title={t('secondSection.thirdCard.title')}
 							text={t('secondSection.thirdCard.description')}
+							icon={<BarChart3 />}
 						/>
 					</div>
 				</div>

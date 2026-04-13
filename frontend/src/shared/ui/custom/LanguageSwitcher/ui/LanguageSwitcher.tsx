@@ -1,57 +1,93 @@
 'use client'
+import { Languages } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
+	Button,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger
 } from '../../../external'
 import { useLanguage } from '../hooks/useLanguage'
 
-import { LanguageSwitcherSkeleton } from './LanguageSwitcherSkeleton'
+interface LanguageSwitcherProps {
+	variant?: 'dropdown' | 'alone'
+}
 
-export const LanguageSwitcher = () => {
-	const t = useTranslations('language')
-	const { language, changeLanguage } = useLanguage()
+export const LanguageSwitcher = ({
+	variant = 'dropdown'
+}: LanguageSwitcherProps) => {
+	const t = useTranslations('dropdownUserMenu.language')
+	const { changeLanguage } = useLanguage()
 
-	if (!language) return <LanguageSwitcherSkeleton />
+	const flagClass =
+		variant === 'alone'
+			? 'group-hover:opacity-70 transition-all duration-200'
+			: ''
+
+	const languages = [
+		{ code: 'ru', label: t('ru'), flag: '/icons/ru.svg' },
+		{ code: 'en', label: t('en'), flag: '/icons/us.svg' }
+	]
+
+	if (variant === 'alone') {
+		return (
+			<div className='flex items-center gap-2'>
+				{languages.map(lang => (
+					<Button
+						key={lang.code}
+						variant='none'
+						size='none'
+						onClick={() => changeLanguage(lang.code)}
+						className='group cursor-pointer'
+					>
+						<Image
+							src={lang.flag}
+							alt={lang.code}
+							width={18}
+							height={18}
+							className={flagClass}
+						/>
+					</Button>
+				))}
+			</div>
+		)
+	}
 
 	return (
-		<Select
-			value={language}
-			defaultValue={language}
-			onValueChange={changeLanguage}
-		>
-			<SelectTrigger className='w-[180px] border px-2 py-1 rounded hover:bg-custom-hover transition-all'>
-				<SelectValue placeholder={t('selectLanguage')} />
-			</SelectTrigger>
-			<SelectContent className='z-100'>
-				<SelectItem value='ru'>
-					<div className='flex items-center gap-1'>
-						<Image
-							src='/icons/ru.svg'
-							alt='RU'
-							width={18}
-							height={18}
-						/>
-						{t('ru')}
-					</div>
-				</SelectItem>
-				<SelectItem value='en'>
-					<div className='flex items-center gap-1'>
-						<Image
-							src='/icons/us.svg'
-							alt='RU'
-							width={18}
-							height={18}
-						/>
-						{t('en')}
-					</div>
-				</SelectItem>
-			</SelectContent>
-		</Select>
+		<DropdownMenuSub>
+			<DropdownMenuSubTrigger>
+				<Languages />
+				{t('heading')}
+			</DropdownMenuSubTrigger>
+			<DropdownMenuPortal>
+				<DropdownMenuSubContent className='w-10'>
+					<DropdownMenuGroup>
+						<DropdownMenuLabel className='text-xs text-gray-400'>
+							{t('heading')}
+						</DropdownMenuLabel>
+						{languages.map(lang => (
+							<DropdownMenuItem
+								key={lang.code}
+								onClick={() => changeLanguage(lang.code)}
+							>
+								<Image
+									src={lang.flag}
+									alt={lang.code}
+									width={18}
+									height={18}
+								/>
+								{lang.label}
+							</DropdownMenuItem>
+						))}
+					</DropdownMenuGroup>
+				</DropdownMenuSubContent>
+			</DropdownMenuPortal>
+		</DropdownMenuSub>
 	)
 }

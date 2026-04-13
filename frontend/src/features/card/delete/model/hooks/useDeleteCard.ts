@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
+import { boardKeys } from '@/entities/Board'
 import { ICard, deleteCard } from '@/entities/Card'
 
 import { handleApiError } from '@/shared/utils'
@@ -17,7 +18,9 @@ export const useDeleteCard = ({ cardId, boardId }: DeleteCardProps) => {
 		mutationKey: ['delete card'],
 		mutationFn: () => deleteCard(cardId),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get board', boardId] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 			toast.success(t('card.delete.deleteSuccess'))
 		},
 		onError: err => handleApiError(err, t)

@@ -4,7 +4,11 @@ export const PUBLIC_URL = {
 	root: (url = '') => `${url ? url : ''}`,
 
 	home: () => PUBLIC_URL.root('/'),
-	auth: () => PUBLIC_URL.root('/auth'),
+	login: () => PUBLIC_URL.root('/auth/login'),
+	register: () => PUBLIC_URL.root('/auth/register'),
+	verifyEmail: () => PUBLIC_URL.root('/auth/verify-email'),
+	recoveryPassword: () => PUBLIC_URL.root('/auth/recovery-password'),
+
 	achievements: () => PUBLIC_URL.root('/achievements'),
 	statistics: () => PUBLIC_URL.root('/statistics'),
 	boards: () => PUBLIC_URL.root('/boards'),

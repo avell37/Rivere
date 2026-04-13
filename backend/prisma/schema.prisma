@@ -21,6 +21,13 @@ model User {
 
   role UserRole @default(USER)
 
+  authProvider AuthProvider @default(LOCAL)
+  yandexId     String?      @unique
+
+  tokens          Token[]
+  isVerified      Boolean @default(false) @map("is_verified")
+  isEmailVerified Boolean @default(false) @map("is_email_verified")
+
   userStats             UserStats?
   boards                BoardMember[]
   messages              Message[]
@@ -33,6 +40,22 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model Token {
+  id String @id @default(uuid())
+
+  token     String    @unique
+  type      TokenType
+  expiresIn DateTime  @map("expires_in")
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tokens")
 }
 
 model UserStats {
@@ -48,7 +71,7 @@ model UserStats {
   lastActiveDate      DateTime?
 
   userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -94,8 +117,9 @@ model Board {
 model BoardMember {
   id String @id @default(uuid())
 
-  role     Role     @default(MEMBER)
-  joinedAt DateTime @default(now())
+  role       Role     @default(MEMBER)
+  isFavorite Boolean  @default(false)
+  joinedAt   DateTime @default(now())
 
   userId  String @map("user_id")
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -280,4 +304,16 @@ enum Priority {
   LOW
   MEDIUM
   HIGH
+}
+
+enum AuthProvider {
+  LOCAL
+  YANDEX
+}
+
+enum TokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+
+  @@map("tokens_types")
 }

@@ -2,9 +2,10 @@ export * from './model/api/boardApi'
 
 export * from './model/hooks/useBoard'
 export * from './model/hooks/useBoardEvents'
-export * from './model/hooks/useDeleteMember'
-export * from './model/hooks/useGetBoard'
-export * from './model/hooks/useGetBoards'
+export * from './model/hooks/useBoardItem'
+export * from './model/hooks/useBoardQueries'
+export * from './model/hooks/useBoardPermissions'
+export * from './model/hooks/useToggleFavoriteBoard'
 
 export * from './model/store/useBoardStore'
 

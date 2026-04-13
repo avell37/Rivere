@@ -13,16 +13,11 @@ import { handleApiError } from '@/shared/utils'
 import { fetchMoveCardToColumn, fetchReorderCards } from '../api/reorderApi'
 
 interface CardProps {
-	columns: IColumn[]
 	setActiveCard: (card: ICard | null) => void
 	setColumns: (columns: IColumn[] | ((prev: IColumn[]) => IColumn[])) => void
 }
 
-export const useCardDnd = ({
-	columns,
-	setActiveCard,
-	setColumns
-}: CardProps) => {
+export const useCardDnd = ({ setActiveCard, setColumns }: CardProps) => {
 	const t = useTranslations()
 
 	const { mutate: reorderCards } = useMutation({
@@ -51,7 +46,6 @@ export const useCardDnd = ({
 			if (active.data.current?.type !== 'card') return
 
 			const activeId = active.id as string
-			const activeCard = active.data.current.card as ICard
 
 			setColumns(prev => {
 				const fromIndex = prev.findIndex(col =>

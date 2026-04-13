@@ -47,7 +47,7 @@ export const CardList = memo(
 					<Modal
 						open
 						onOpenChange={() => setOpenCardId(null)}
-						contentClassname='p-0 sm:max-w-5xl'
+						contentClassname='lg:p-0 lg:max-w-5xl'
 					>
 						<CardModal
 							card={cards.find(card => card.id === openCardId)}

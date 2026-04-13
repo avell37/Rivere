@@ -5,7 +5,7 @@ import * as React from 'react'
 
 import { cn } from '@/shared/utils/twMerge'
 
-function Popover({
+function PopoverMain({
 	...props
 }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
 	return <PopoverPrimitive.Root data-slot='popover' {...props} />
@@ -45,4 +45,4 @@ function PopoverAnchor({
 	return <PopoverPrimitive.Anchor data-slot='popover-anchor' {...props} />
 }
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
+export { PopoverMain, PopoverTrigger, PopoverContent, PopoverAnchor }

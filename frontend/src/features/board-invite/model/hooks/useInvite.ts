@@ -1,10 +1,12 @@
 'use client'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
+
+import { boardKeys } from '@/entities/Board'
 
 import { PUBLIC_URL } from '@/shared/libs'
 import { handleApiError } from '@/shared/utils'
@@ -23,6 +25,7 @@ import {
 export const useInvite = (token?: string) => {
 	const t = useTranslations()
 	const router = useRouter()
+	const queryClient = useQueryClient()
 
 	const {
 		data: createInviteData,
@@ -47,6 +50,9 @@ export const useInvite = (token?: string) => {
 		useMutation<boolean, unknown, string>({
 			mutationKey: ['accept invite'],
 			mutationFn: acceptInvite,
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: boardKeys.all })
+			},
 			onError: err => handleApiError(err, t)
 		})
 
@@ -70,7 +76,7 @@ export const useInvite = (token?: string) => {
 
 		await declineInviteToBoard(token)
 		router.push(PUBLIC_URL.boards())
-		toast.success('Приглашение отклонено')
+		toast.success(t('invite.canceledInvite'))
 	}
 
 	useEffect(() => {
@@ -79,6 +85,13 @@ export const useInvite = (token?: string) => {
 			router.replace(PUBLIC_URL.boards())
 		}
 	}, [isError, error])
+
+	useEffect(() => {
+		if (data?.isMember) {
+			toast.info(t('invite.alreadyMember'))
+			router.replace(PUBLIC_URL.boards())
+		}
+	}, [data])
 
 	return {
 		createInviteData,

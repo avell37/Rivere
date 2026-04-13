@@ -17,10 +17,7 @@ export const FormWrapper = ({
 	closeText
 }: FormWrapperProps) => {
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className='flex flex-col gap-[30px] max-sm:px-2 w-full'
-		>
+		<form onSubmit={handleSubmit} className='flex flex-col gap-8 w-full'>
 			{children}
 			<div className='flex justify-end gap-2.5'>
 				<Button

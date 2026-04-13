@@ -9,8 +9,8 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-	Popover,
 	PopoverContent,
+	PopoverMain,
 	PopoverTrigger
 } from '@/shared/ui/external'
 
@@ -40,21 +40,29 @@ export const FormDatePickerController = ({
 
 				return (
 					<FormItem>
-						{label && <FormLabel>{label}</FormLabel>}
+						{label && (
+							<FormLabel className='text-sm dark:text-gray-300'>
+								{label}
+							</FormLabel>
+						)}
 
-						<Popover>
+						<PopoverMain>
 							<PopoverTrigger asChild>
 								<Button
 									type='button'
-									variant='outline'
-									className='w-48 justify-start text-left font-normal'
+									variant='transparent'
+									className='w-52 justify-start text-left font-normal'
 								>
-									<CalendarIcon />
-									{date
-										? new Intl.DateTimeFormat(locale, {
-												dateStyle: 'medium'
-											}).format(date)
-										: placeholder}
+									<CalendarIcon size={16} />
+									{date ? (
+										new Intl.DateTimeFormat(locale, {
+											dateStyle: 'medium'
+										}).format(date)
+									) : (
+										<span className='text-muted-foreground'>
+											{placeholder}
+										</span>
+									)}
 								</Button>
 							</PopoverTrigger>
 
@@ -72,7 +80,7 @@ export const FormDatePickerController = ({
 									}}
 								/>
 							</PopoverContent>
-						</Popover>
+						</PopoverMain>
 
 						<FormMessage />
 					</FormItem>
