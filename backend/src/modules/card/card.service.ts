@@ -8,7 +8,7 @@ import { ReorderCardInput } from './inputs/reorder-card.input';
 import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
 import { StatisticsService } from '../statistics/statistics.service';
 import { AchievementsService } from '../achievements/achievements.service';
-import { CardGateway } from './card.gateway';
+import { BoardGateway } from '../board/board.gateway';
 
 @Injectable()
 export class CardService {
@@ -17,7 +17,7 @@ export class CardService {
         private readonly chat: ChatService,
         private readonly statistics: StatisticsService,
         private readonly achievements: AchievementsService,
-        private readonly cardGateway: CardGateway,
+        private readonly gateway: BoardGateway,
     ) {}
 
     async create(userId: string, input: CreateCardInput) {
@@ -47,7 +47,7 @@ export class CardService {
 
         const chat = await this.chat.createChat({ cardId: card.id });
 
-        this.cardGateway.cardCreated(card.column.boardId, card);
+        this.gateway.cardCreated(card.column.boardId, card);
 
         return card;
     }
@@ -77,7 +77,7 @@ export class CardService {
             data: input,
         });
 
-        this.cardGateway.cardUpdated(card.column.boardId, updatedCard);
+        this.gateway.cardUpdated(card.column.boardId, updatedCard);
 
         if (!card.done && updatedCard.done) {
             await this.statistics.onCardCompleted(userId);
@@ -140,7 +140,7 @@ export class CardService {
             orderBy: { position: 'asc' },
         });
 
-        this.cardGateway.cardsReordered(column.boardId, {
+        this.gateway.cardsReordered(column.boardId, {
             columnId,
             cards: reordered,
         });
@@ -216,7 +216,7 @@ export class CardService {
             });
         });
 
-        this.cardGateway.cardMoved(card.column.boardId, {
+        this.gateway.cardMoved(card.column.boardId, {
             cardId,
             fromColumnId: card.columnId,
             toColumnId: newColumnId,
@@ -250,7 +250,7 @@ export class CardService {
             where: { id: cardId },
         });
 
-        this.cardGateway.cardDeleted(card.column.boardId, cardId);
+        this.gateway.cardDeleted(card.column.boardId, cardId);
 
         return deleted;
     }

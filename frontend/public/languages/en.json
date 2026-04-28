@@ -374,13 +374,68 @@
 			"declineButton": "Decline"
 		}
 	},
-	"creator": {
-		"heading": "Creator panel",
-		"achievements": {
-			"heading": "Achievements"
+	"admin": {
+		"heading": "Admin panel",
+		"trendWithPlus": "+{count} for today",
+		"trendWithoutPlus": "{count} for today",
+		"statistics": {
+			"users": {
+				"description": "total users",
+				"bottomContent": "View user list"
+			},
+			"boards": {
+				"description": "total boards",
+				"bottomContent": "Statistics are updated automatically"
+			},
+			"messages": {
+				"description": "total messages",
+				"bottomContent": "Statistics are updated automatically"
+			},
+			"completedCards": {
+				"description": "total completed cards",
+				"bottomContent": "Statistics are updated automatically"
+			},
+			"banned": {
+				"description": "total banned users",
+				"bottomContent": "Statistics are updated automatically"
+			}
 		},
-		"notifications": {
-			"heading": "Notifications"
+		"users": {
+			"actions": {
+				"userBanned": "User successfully banned!",
+				"userUnbanned": "User successfully unbanned!",
+				"userChangeRole": "User role changed successfully!"
+			},
+			"table": {
+				"user": "User",
+				"role": "Role",
+				"boards": "Boards",
+				"cards": "Cards",
+				"actions": "Actions"
+			},
+			"card": {
+				"nickname": "Nickname:",
+				"role": "Role:",
+				"boards": "Total boards:",
+				"emailVerified": "Verified email:",
+				"created": "Created:",
+				"updated": "Last updated:",
+				"statistics": "Statistics:",
+				"currentStreak": "Current streak (in days)",
+				"longestStreak": "Record streak (in days)",
+				"lastActive": "Last active:",
+				"usersInvited": "Users invited:"
+			},
+			"banModal": {
+				"trigger": "Ban",
+				"heading": "Ban {nickname}",
+				"banReasonLabel": "Ban reason",
+				"banReasonPlaceholder": "Enter ban reason",
+				"durationInHoursLabel": "Ban duration (in hours)",
+				"durationInHoursPlaceholder": "Enter ban duration",
+				"submitButton": "Ban",
+				"closeButton": "Close"
+			}
 		}
 	},
 	"validation": {
@@ -466,10 +521,8 @@
 			"terminateCurrent": "Cannot terminate current session",
 			"accessDenied": "Access denied"
 		},
-		"creator": {
-			"achievements": {
-				"notFound": "Achievement not found"
-			}
+		"admin": {
+			"unknownRole": "Unknown role"
 		},
 		"token": {
 			"notFound": "Token not found",

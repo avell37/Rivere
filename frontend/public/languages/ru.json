@@ -376,13 +376,68 @@
 			"declineButton": "Отклонить"
 		}
 	},
-	"creator": {
-		"heading": "Панель создателя",
-		"achievements": {
-			"heading": "Достижения"
+	"admin": {
+		"heading": "Панель администратора",
+		"trendWithPlus": "+{count} за сегодня",
+		"trendWithoutPlus": "{count} за сегодня",
+		"statistics": {
+			"users": {
+				"description": "пользователей всего",
+				"bottomContent": "Посмотреть список пользователей"
+			},
+			"boards": {
+				"description": "создано досок всего",
+				"bottomContent": "Статистика обновляется автоматически"
+			},
+			"messages": {
+				"description": "написано сообщений всего",
+				"bottomContent": "Статистика обновляется автоматически"
+			},
+			"completedCards": {
+				"description": "карточек выполнено всего",
+				"bottomContent": "Статистика обновляется автоматически"
+			},
+			"banned": {
+				"description": "пользователей забанено всего",
+				"bottomContent": "Статистика обновляется автоматически"
+			}
 		},
-		"notifications": {
-			"heading": "Уведомления"
+		"users": {
+			"actions": {
+				"userBanned": "Пользователь успешно заблокирован!",
+				"userUnbanned": "Пользователь успешно разблокирован!",
+				"userChangeRole": "Роль пользователя успешно изменена!"
+			},
+			"table": {
+				"user": "Пользователь",
+				"role": "Роль",
+				"boards": "Доски",
+				"cards": "Карточки",
+				"actions": "Действия"
+			},
+			"card": {
+				"nickname": "Никнейм:",
+				"role": "Роль:",
+				"boards": "Всего досок:",
+				"emailVerified": "Подтвержденная почта:",
+				"created": "Создан:",
+				"updated": "Последнее обновление:",
+				"statistics": "Статистика:",
+				"currentStreak": "Текущий стрик (в днях)",
+				"longestStreak": "Рекордный стрик (в днях)",
+				"lastActive": "Последняя активность:",
+				"usersInvited": "Приглашено пользователей:"
+			},
+			"banModal": {
+				"trigger": "Забанить",
+				"heading": "Забанить {nickname}",
+				"banReasonLabel": "Причина блокировки",
+				"banReasonPlaceholder": "Введите причину блокировки",
+				"durationInHoursLabel": "Длительность блокировки (в часах)",
+				"durationInHoursPlaceholder": "Введите длительность блокировки",
+				"submitButton": "Заблокировать",
+				"closeButton": "Закрыть"
+			}
 		}
 	},
 	"validation": {
@@ -468,10 +523,13 @@
 			"terminateCurrent": "Невозможно завершить текущую сессию",
 			"accessDenied": "Доступ запрещен"
 		},
-		"creator": {
-			"achievements": {
-				"notFound": "Достижение не найдено"
-			}
+		"admin": {
+			"unknownRole": "Неизвестная роль"
+		},
+		"token": {
+			"notFound": "Токен не найден",
+			"expired": "Токен просрочен",
+			"invalid": "Невалидный токен"
 		}
 	}
 }

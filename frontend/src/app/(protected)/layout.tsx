@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { useNotificationsActions } from '@/entities/Notification'
 import { useGetUser } from '@/entities/User'
 
+import { useModerationEvents } from '@/features/admin/users/model/hooks/useModerationEvents'
 import { useNotifications } from '@/features/notifications'
 
 import { PUBLIC_URL } from '@/shared/libs'
@@ -21,10 +22,20 @@ export default function ProtectedLayout({
 	const router = useRouter()
 	useNotifications(user?.id)
 	useNotificationsActions()
+	useModerationEvents(user?.id)
 
 	useEffect(() => {
-		if (!isLoading && !user) {
+		if (isLoading) return
+
+		if (!user) {
 			router.push(PUBLIC_URL.login())
+			return
+		}
+
+		const now = new Date()
+
+		if (user.bannedUntil && new Date(user.bannedUntil) > now) {
+			router.replace(PUBLIC_URL.banned())
 		}
 	}, [user, isLoading, router])
 

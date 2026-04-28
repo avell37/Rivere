@@ -6,10 +6,19 @@ import {
 	AchievementListSkeleton
 } from '@/entities/Achievement'
 
+import { Button } from '@/shared/ui/external'
+
 import { useGetAchievements } from '../model/hooks/useGetAchievements'
 
 export const Achievements = () => {
-	const { achievements, earnedCount, isLoading } = useGetAchievements()
+	const {
+		achievements,
+		filteredAchievements,
+		earnedCount,
+		isLoading,
+		filter,
+		setFilter
+	} = useGetAchievements()
 	const t = useTranslations('achievements')
 
 	if (!achievements || isLoading) {
@@ -31,7 +40,30 @@ export const Achievements = () => {
 					total: achievements.length
 				})}
 			</h1>
-			<AchievementList achievements={achievements} />
+			<div className='flex gap-2'>
+				<Button
+					variant={filter === 'all' ? 'default' : 'outline'}
+					className={`${filter === 'all' ? 'font-bold' : ''} cursor-pointer`}
+					onClick={() => setFilter('all')}
+				>
+					All
+				</Button>
+				<Button
+					variant={filter === 'earned' ? 'default' : 'outline'}
+					className={`${filter === 'earned' ? 'font-bold' : ''} cursor-pointer`}
+					onClick={() => setFilter('earned')}
+				>
+					Earned
+				</Button>
+				<Button
+					variant={filter === 'locked' ? 'default' : 'outline'}
+					className={`${filter === 'locked' ? 'font-bold' : ''} cursor-pointer`}
+					onClick={() => setFilter('locked')}
+				>
+					Locked
+				</Button>
+			</div>
+			<AchievementList achievements={filteredAchievements} />
 		</div>
 	)
 }

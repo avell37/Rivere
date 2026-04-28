@@ -1,16 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { CoreModule } from './core/core.module';
 import { ValidationPipe } from '@nestjs/common';
 import { RedisService } from './core/redis/redis.service';
 import cookieParser from 'cookie-parser';
 import { setupSwagger } from './shared/utils/swagger.util';
 import { sessionConfig } from './core/config/session.config';
+import { AppModule } from './core/app.module';
 
 async function bootstrap() {
-    const app = await NestFactory.create(CoreModule);
+    const app = await NestFactory.create(AppModule);
     const config = app.get(ConfigService);
     const redis = app.get(RedisService);
+    const expressApp = app.getHttpAdapter().getInstance();
+    expressApp.set('trust proxy', true);
 
     app.useGlobalPipes(new ValidationPipe());
     app.use(cookieParser());

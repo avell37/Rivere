@@ -4,10 +4,17 @@ import { Menu } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
+import { useGetUser } from '@/entities/User'
+
 import { NotificationsVisible } from '@/features/notifications'
 
 import { PUBLIC_URL } from '@/shared/libs'
-import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/external'
+import {
+	Separator,
+	Sheet,
+	SheetContent,
+	SheetTrigger
+} from '@/shared/ui/external'
 
 import { UserMenu } from '../UserMenu/ui/UserMenu'
 
@@ -15,14 +22,15 @@ import { HeaderNavFields } from './HeaderNavFields'
 
 export const Header = () => {
 	const t = useTranslations()
-	const headerNavFields = HeaderNavFields(t)
+	const { data: user } = useGetUser()
+	const headerNavFields = HeaderNavFields({ role: user?.role, t })
 
 	return (
 		<header
 			className={`flex items-center transition-all duration-200 w-full
-		justify-between bg-background border-b px-4 py-2 z-10`}
+		justify-between bg-header border-b px-4 py-2 z-10`}
 		>
-			<div className='flex items-center justify-between w-full'>
+			<div className='flex justify-between w-full'>
 				<div className='flex items-center gap-6'>
 					<BurgerMenu />
 					<Link
@@ -55,7 +63,8 @@ export const Header = () => {
 
 export const BurgerMenu = () => {
 	const t = useTranslations()
-	const headerNavFields = HeaderNavFields(t)
+	const { data: user } = useGetUser()
+	const headerNavFields = HeaderNavFields({ role: user?.role, t })
 
 	return (
 		<Sheet>

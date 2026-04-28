@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { User } from '@prisma/client';
+import type { User } from 'generated/prisma/client';
 import type { Request } from 'express';
 import { SessionMetadata } from '../types/session-metadata.types';
 

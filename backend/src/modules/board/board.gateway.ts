@@ -74,4 +74,66 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
             this.server.to(socketId).emit('board:kicked', { boardId });
         });
     }
+
+    // column
+
+    columnCreated(boardId: string, column: any) {
+        this.server.to(this.boardRoom(boardId)).emit('column:created', column);
+    }
+
+    columnUpdated(boardId: string, column: any) {
+        this.server.to(this.boardRoom(boardId)).emit('column:updated', column);
+    }
+
+    columnDeleted(boardId: string, columnId: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('column:deleted', { columnId });
+    }
+
+    columnsReordered(boardId: string, columns: any[]) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('column:reordered', columns);
+    }
+
+    // card
+
+    cardCreated(boardId: string, card: any) {
+        this.server.to(this.boardRoom(boardId)).emit('card:created', card);
+    }
+
+    cardUpdated(boardId: string, card: any) {
+        this.server.to(this.boardRoom(boardId)).emit('card:updated', card);
+    }
+
+    cardDeleted(boardId: string, cardId: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('card:deleted', { cardId });
+    }
+
+    cardMoved(
+        boardId: string,
+        payload: {
+            cardId: string;
+            fromColumnId: string;
+            toColumnId: string;
+            position: number;
+        },
+    ) {
+        this.server.to(this.boardRoom(boardId)).emit('card:moved', payload);
+    }
+
+    cardsReordered(
+        boardId: string,
+        payload: {
+            columnId: string;
+            cards: { id: string; position: number }[];
+        },
+    ) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('cards:reordered', payload);
+    }
 }

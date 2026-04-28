@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Control, FieldErrors } from 'react-hook-form'
+import { Control, FieldErrors, FieldPath, FieldValues } from 'react-hook-form'
 
 import {
 	FormControl,
@@ -10,9 +10,9 @@ import {
 	Input
 } from '@/shared/ui/external'
 
-interface FormInputControllerProps {
-	name: string
-	control: Control<any>
+interface FormInputControllerProps<T extends FieldValues> {
+	name: FieldPath<T>
+	control: Control<T>
 	placeholder?: string
 	type?: string
 	icon?: ReactNode
@@ -25,7 +25,7 @@ interface FormInputControllerProps {
 	onBlur?: () => void
 }
 
-export const FormInputController = ({
+export const FormInputController = <T extends FieldValues>({
 	name,
 	control,
 	placeholder = '',
@@ -37,7 +37,7 @@ export const FormInputController = ({
 	autoFocus,
 	disabled,
 	onBlur
-}: FormInputControllerProps) => {
+}: FormInputControllerProps<T>) => {
 	return (
 		<FormField
 			control={control}

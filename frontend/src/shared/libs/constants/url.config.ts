@@ -8,6 +8,7 @@ export const PUBLIC_URL = {
 	register: () => PUBLIC_URL.root('/auth/register'),
 	verifyEmail: () => PUBLIC_URL.root('/auth/verify-email'),
 	recoveryPassword: () => PUBLIC_URL.root('/auth/recovery-password'),
+	banned: () => PUBLIC_URL.root('/banned'),
 
 	achievements: () => PUBLIC_URL.root('/achievements'),
 	statistics: () => PUBLIC_URL.root('/statistics'),
@@ -18,6 +19,10 @@ export const PUBLIC_URL = {
 
 export const PRIVATE_URL = {
 	root: (url = '') => `${url ? url : ''}`,
-	achievements: () => PRIVATE_URL.root('/creator/achievements'),
-	notifications: () => PRIVATE_URL.root('/creator/notifications')
+
+	admin: () => PRIVATE_URL.root('/admin'),
+	adminUsers: (page: number, limit = 10) =>
+		PRIVATE_URL.root(
+			`${PRIVATE_URL.admin()}/users?page=${page}&limit=${limit}`
+		)
 }

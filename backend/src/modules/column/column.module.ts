@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ColumnService } from './column.service';
 import { ColumnController } from './column.controller';
-import { ColumnGateway } from './column.gateway';
+import { BoardModule } from '../board/board.module';
 
 @Module({
+    imports: [BoardModule],
     controllers: [ColumnController],
-    providers: [ColumnService, ColumnGateway],
+    providers: [ColumnService],
 })
 export class ColumnModule {}
