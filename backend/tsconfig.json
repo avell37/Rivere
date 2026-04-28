@@ -22,5 +22,6 @@
         "strictBindCallApply": false,
         "noFallthroughCasesInSwitch": false,
         "jsx": "react-jsx"
-    }
+    },
+    "include": ["src", "prisma", "generated"]
 }

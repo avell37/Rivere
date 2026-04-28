@@ -9,7 +9,8 @@ import { useUpdateCard } from '../model/hooks/useUpdateCard'
 import { EditableProps } from '../model/types/EditableProps'
 
 export const EditableDeadline = ({ cardId, t }: EditableProps) => {
-	const { control, setValue } = useFormContext()
+	const { control, setValue, watch } = useFormContext()
+	const deadline = watch('deadline')
 
 	const { handleChange } = useUpdateCard(cardId, 'deadline')
 
@@ -22,17 +23,19 @@ export const EditableDeadline = ({ cardId, t }: EditableProps) => {
 				control={control}
 				onChange={date => handleChange(date)}
 			/>
-			<Button
-				variant='none'
-				size='none'
-				className='mt-6'
-				onClick={() => {
-					setValue('deadline', null)
-					handleChange(null)
-				}}
-			>
-				<X className='size-4' />
-			</Button>
+			{deadline != null && (
+				<Button
+					variant='none'
+					size='none'
+					className='mt-6'
+					onClick={() => {
+						setValue('deadline', null)
+						handleChange(null)
+					}}
+				>
+					<X className='size-4' />
+				</Button>
+			)}
 		</div>
 	)
 }

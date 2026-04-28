@@ -174,6 +174,17 @@ export class SessionService {
 
         const metadata = getSessionMetadata(req, userAgent, this.config);
 
+        await this.prisma.userStats.upsert({
+            where: { userId: user.id },
+            update: {
+                lastActiveDate: new Date(),
+            },
+            create: {
+                userId: user.id,
+                lastActiveDate: new Date(),
+            },
+        });
+
         return saveSession(req, user, metadata);
     }
 

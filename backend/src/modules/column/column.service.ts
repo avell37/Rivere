@@ -4,13 +4,13 @@ import { CreateColumnInput } from './inputs/create-column.input';
 import { UpdateColumnInput } from './inputs/update-column.input';
 import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
 import { ReorderColumnInput } from './inputs/reorder-column.input';
-import { ColumnGateway } from './column.gateway';
+import { BoardGateway } from '../board/board.gateway';
 
 @Injectable()
 export class ColumnService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly columnGateway: ColumnGateway,
+        private readonly gateway: BoardGateway,
     ) {}
 
     async create(userId: string, input: CreateColumnInput) {
@@ -30,7 +30,7 @@ export class ColumnService {
             },
         });
 
-        this.columnGateway.columnCreated(boardId, column);
+        this.gateway.columnCreated(boardId, column);
 
         return column;
     }
@@ -60,7 +60,7 @@ export class ColumnService {
             },
         });
 
-        this.columnGateway.columnUpdated(column.boardId, updated);
+        this.gateway.columnUpdated(column.boardId, updated);
 
         return updated;
     }
@@ -107,7 +107,7 @@ export class ColumnService {
             orderBy: { position: 'asc' },
         });
 
-        this.columnGateway.columnsReordered(boardId, reordered);
+        this.gateway.columnsReordered(boardId, reordered);
 
         return reordered;
     }
@@ -133,7 +133,7 @@ export class ColumnService {
             where: { id: columnId },
         });
 
-        this.columnGateway.columnDeleted(column.boardId, columnId);
+        this.gateway.columnDeleted(column.boardId, columnId);
 
         return true;
     }

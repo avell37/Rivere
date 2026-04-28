@@ -1,9 +1,7 @@
 generator client {
-  provider            = "prisma-client"
-  output              = "../generated/prisma"
-  moduleFormat        = "cjs"
-  engineType          = "client"
-  importFileExtension = ""
+  provider     = "prisma-client-js"
+  moduleFormat = "cjs"
+  engineType   = "client"
 }
 
 datasource db {
@@ -27,6 +25,10 @@ model User {
   tokens          Token[]
   isVerified      Boolean @default(false) @map("is_verified")
   isEmailVerified Boolean @default(false) @map("is_email_verified")
+
+  bannedUntil DateTime? @map("banned_until")
+  banReason   String?   @map("ban_reason")
+  bannedAt    DateTime? @map("banned_at")
 
   userStats             UserStats?
   boards                BoardMember[]

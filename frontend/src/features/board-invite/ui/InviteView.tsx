@@ -25,7 +25,7 @@ export const InviteView = () => {
 	const t = useTranslations('invite')
 	const locale = useLocale()
 
-	if (!data || !isPending) return <InviteSkeleton />
+	if (!data || isPending) return <InviteSkeleton />
 
 	return (
 		<div className='h-screen flex items-center justify-center bg-linear-to-br from-white to-gray-300 dark:from-black/40 dark:to-zinc-800 px-4'>

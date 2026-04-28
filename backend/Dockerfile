@@ -18,14 +18,19 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --omit=dev
 
-COPY prisma ./prisma
-COPY prisma.config.ts ./
-COPY .env ./
+ENV NODE_ENV=production
+
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/generated ./generated
+COPY prisma.config.ts ./
+COPY .env ./
+COPY docker-entrypoint.sh .
+
+RUN npx prisma generate
+
+RUN chmod +x docker-entrypoint.sh
 
 EXPOSE 3000
 
-CMD ["node", "dist/src/main.js"]
+CMD ["sh", "./docker-entrypoint.sh"]

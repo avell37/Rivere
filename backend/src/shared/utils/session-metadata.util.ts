@@ -22,15 +22,15 @@ export function getSessionMetadata(
                 : req.ip) ||
             '0.0.0.0';
 
-    const location = lookup(ip) || {};
+    const location = lookup(ip);
     const device = new DeviceDetector().parse(userAgent);
 
     return {
         location: {
-            country: countries.getName(location.country, 'en') || 'Unknown',
-            city: location.city || 'Unknown',
-            latidute: location.ll[0] || 0,
-            longitude: location.ll[1] || 0,
+            country: countries.getName(location?.country, 'en') || 'Unknown',
+            city: location?.city || 'Unknown',
+            latidute: location?.ll?.[0] ?? 0,
+            longitude: location?.ll?.[1] ?? 0,
         },
         device: {
             browser: device.client?.name || 'Unknown',

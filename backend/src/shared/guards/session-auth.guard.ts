@@ -1,6 +1,7 @@
 import {
     CanActivate,
     ExecutionContext,
+    ForbiddenException,
     Injectable,
     UnauthorizedException,
 } from '@nestjs/common';
@@ -9,6 +10,7 @@ import { PrismaService } from 'src/core/prisma/prisma.service';
 import { destroySession } from '../utils/session.util';
 import { ConfigService } from '@nestjs/config';
 import { RedisService } from 'src/core/redis/redis.service';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class SessionAuthGuard implements CanActivate {
@@ -16,6 +18,7 @@ export class SessionAuthGuard implements CanActivate {
         private readonly prisma: PrismaService,
         private readonly configService: ConfigService,
         private readonly redis: RedisService,
+        private readonly reflector: Reflector,
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -54,14 +57,32 @@ export class SessionAuthGuard implements CanActivate {
                 email: true,
                 nickname: true,
                 avatar: true,
+                bannedUntil: true,
             },
         });
+
+        const skipBan = this.reflector.get<boolean>(
+            'skipBan',
+            context.getHandler(),
+        );
 
         if (!user) {
             await destroySession(request, this.configService);
             throw new UnauthorizedException({
                 code: 'errors.user.notFound',
                 message: 'Пользователь не найден',
+            });
+        }
+
+        if (
+            !skipBan &&
+            user.bannedUntil &&
+            new Date(user.bannedUntil) > new Date()
+        ) {
+            throw new ForbiddenException({
+                message: 'Пользователь заблокирован',
+                code: 'errors.user.banned',
+                bannedUntil: user.bannedUntil,
             });
         }
 

@@ -1,10 +1,10 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-import { IUser, UserAvatar } from '@/entities/User'
+import { IUser } from '@/entities/User'
 
 import { customAvatar } from '@/shared/config'
-import { SERVER_URL } from '@/shared/libs'
+import { S3_URL } from '@/shared/libs'
 import {
 	Avatar,
 	AvatarFallback,
@@ -36,7 +36,7 @@ export const UserSettingsAvatar = ({
 			>
 				{user.avatar ? (
 					<AvatarImage
-						src={`${SERVER_URL}${user.avatar}`}
+						src={`${S3_URL}${user.avatar}`}
 						alt={user.username}
 						draggable={false}
 						style={{ pointerEvents: 'none' }}

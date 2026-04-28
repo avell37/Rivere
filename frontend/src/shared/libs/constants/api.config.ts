@@ -1,4 +1,5 @@
 export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL as string
+export const S3_URL = process.env.NEXT_PUBLIC_S3_URL as string
 
 export const API_URL = {
 	root: (url = '') => `${url ? url : ''}`,
@@ -16,5 +17,7 @@ export const API_URL = {
 	files: (url = '') => API_URL.root(`/files/${url}`),
 	notifications: (url = '') => API_URL.root(`/notifications/${url}`),
 	verification: (url = '') => API_URL.root(`/verification/${url}`),
-	statistics: (url = '') => API_URL.root(`/statistics/${url}`)
+	statistics: (url = '') => API_URL.root(`/statistics/${url}`),
+
+	admin: (url = '') => API_URL.root(`/admin/${url}`)
 }

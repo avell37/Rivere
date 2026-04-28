@@ -8,7 +8,7 @@ import { CreateUserInput } from './inputs/create-user.input';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { hash, verify } from 'argon2';
 import { ChangeUsernameInput } from './inputs/change-username.input';
-import { User } from '@prisma/client';
+import type { User } from 'generated/prisma/client';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { FilesService } from 'src/modules/files/files.service';
@@ -42,6 +42,8 @@ export class AccountService {
                 avatar: true,
                 boards: true,
                 isEmailVerified: true,
+                banReason: true,
+                bannedUntil: true,
                 createdAt: true,
             },
         });
@@ -160,17 +162,17 @@ export class AccountService {
         return true;
     }
 
-    async changePassword(input: ChangePasswordInput, userId: User) {
+    async changePassword(input: ChangePasswordInput, user: User) {
         const { currentPassword, newPassword } = input;
 
-        const user = await this.prisma.user.findUnique({
-            where: { id: userId },
+        const currentUser = await this.prisma.user.findUnique({
+            where: { id: user.id },
             select: {
                 password: true,
             },
         });
 
-        if (!user) {
+        if (!currentUser) {
             throw new NotFoundException({
                 code: 'errors.account.userNotFound',
                 message: 'Пользователь не найден',
@@ -195,7 +197,7 @@ export class AccountService {
 
         await this.prisma.user.update({
             where: {
-                id: userId,
+                id: user.id,
             },
             data: {
                 password: await hash(newPassword),
@@ -206,11 +208,22 @@ export class AccountService {
     }
 
     async changeAvatar(file: Express.Multer.File, user: User) {
-        const uploaded = await this.filesService.saveFile(file, 'avatars');
+        const existingUser = await this.prisma.user.findUnique({
+            where: { id: user.id },
+            select: {
+                avatar: true,
+            },
+        });
+
+        if (existingUser?.avatar) {
+            await this.filesService.delete(existingUser.avatar);
+        }
+
+        const uploaded = await this.filesService.upload(file);
 
         await this.prisma.user.update({
             where: { id: user.id },
-            data: { avatar: uploaded.url },
+            data: { avatar: uploaded },
         });
 
         return uploaded;

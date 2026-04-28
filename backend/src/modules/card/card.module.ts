@@ -4,11 +4,11 @@ import { CardController } from './card.controller';
 import { ChatService } from '../chat/chat.service';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { AchievementsModule } from '../achievements/achievements.module';
-import { CardGateway } from './card.gateway';
+import { BoardModule } from '../board/board.module';
 
 @Module({
-    imports: [StatisticsModule, AchievementsModule],
+    imports: [StatisticsModule, AchievementsModule, BoardModule],
     controllers: [CardController],
-    providers: [CardService, ChatService, CardGateway],
+    providers: [CardService, ChatService],
 })
 export class CardModule {}

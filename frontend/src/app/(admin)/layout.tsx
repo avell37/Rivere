@@ -7,6 +7,8 @@ import { useGetUser } from '@/entities/User'
 
 import { PUBLIC_URL } from '@/shared/libs'
 
+import { Header } from '@/widgets'
+
 export default function AdminLayout({
 	children
 }: {
@@ -35,5 +37,10 @@ export default function AdminLayout({
 	)
 		return null
 
-	return <div>{children}</div>
+	return (
+		<main className='flex flex-col gap-6'>
+			<Header />
+			{children}
+		</main>
+	)
 }
