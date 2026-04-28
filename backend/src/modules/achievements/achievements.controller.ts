@@ -9,13 +9,13 @@ import {
 } from '@nestjs/common';
 import { AchievementsService } from './achievements.service';
 import { Roles } from 'src/shared/decorators/roles.decorator';
-import { UserRole } from 'generated/prisma/enums';
 import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { CreateAchievementInput } from './inputs/create-achievement.input';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { UpdateAchievementInput } from './inputs/update-achievement.input';
 import { ApiOperation } from '@nestjs/swagger';
 import { SessionUser } from 'src/shared/decorators/session-user.decorator';
+import { UserRole } from '@prisma/client';
 
 @Controller('achievements')
 @Authorization()
@@ -28,7 +28,7 @@ export class AchievementsController {
     })
     @HttpCode(200)
     @Post('create')
-    @Roles(UserRole.ADMIN, UserRole.CREATOR)
+    @Roles(UserRole.CREATOR)
     @UseGuards(RolesGuard)
     async createAchievement(@Body() input: CreateAchievementInput) {
         return this.achievementsService.createAchievement(input);

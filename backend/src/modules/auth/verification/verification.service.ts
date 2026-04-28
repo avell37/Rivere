@@ -3,12 +3,11 @@ import type { Request } from 'express';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { MailService } from 'src/modules/libs/mail/mail.service';
 import { VerificationInput } from './inputs/verification.input';
-import { TokenType } from 'generated/prisma/enums';
 import { saveSession } from 'src/shared/utils/session.util';
 import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
 import { ConfigService } from '@nestjs/config';
-import { User } from 'generated/prisma/client';
 import { TokenService } from '../token/token.service';
+import { TokenType, User } from '@prisma/client';
 
 @Injectable()
 export class VerificationService {

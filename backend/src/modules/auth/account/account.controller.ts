@@ -21,7 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
 import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
 import { SkipBanCheck } from 'src/shared/decorators/skip-ban.decorator';
-import type { User } from 'generated/prisma/client';
+import type { User } from '@prisma/client';
 
 @Controller('account')
 export class AccountController {
