@@ -3,8 +3,7 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import type { User } from 'generated/prisma/client';
-import { TokenType } from 'generated/prisma/enums';
+import type { TokenType, User } from '@prisma/client';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 
 import { v4 as uuidv4 } from 'uuid';

@@ -8,7 +8,6 @@ import { CreateUserInput } from './inputs/create-user.input';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { hash, verify } from 'argon2';
 import { ChangeUsernameInput } from './inputs/change-username.input';
-import type { User } from 'generated/prisma/client';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { FilesService } from 'src/modules/files/files.service';
@@ -19,6 +18,7 @@ import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
 import type { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { saveSession } from 'src/shared/utils/session.util';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AccountService {

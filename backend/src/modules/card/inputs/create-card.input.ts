@@ -1,3 +1,4 @@
+import type { Priority } from '@prisma/client';
 import {
     IsNotEmpty,
     IsOptional,
@@ -5,7 +6,6 @@ import {
     MaxLength,
     MinLength,
 } from 'class-validator';
-import { Priority } from 'generated/prisma/enums';
 
 export class CreateCardInput {
     @IsNotEmpty({ message: 'ID колонки обязателен' })

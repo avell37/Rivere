@@ -6,7 +6,7 @@ import {
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { BanUserInput } from './input/ban-user.input';
 import { EventsGateway } from 'src/core/events.gateway';
-import { UserRole } from 'generated/prisma/enums';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class AdminService {
