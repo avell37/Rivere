@@ -3,13 +3,13 @@ import type { Request } from 'express';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { MailService } from 'src/modules/libs/mail/mail.service';
 import { ResetPasswordInput } from './inputs/reset-password.input';
-import { TokenType } from 'generated/prisma/enums';
 import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
 import { ConfigService } from '@nestjs/config';
 import { TokenService } from '../token/token.service';
 import { hash } from 'argon2';
 import { CreateNewPasswordInput } from './inputs/create-new-password.input';
 import { VerifyTokenInput } from './inputs/verify-token.input';
+import { TokenType } from '@prisma/client';
 
 @Injectable()
 export class PasswordRecoveryService {

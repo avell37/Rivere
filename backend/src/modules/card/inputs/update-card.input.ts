@@ -1,3 +1,4 @@
+import type { Priority } from '@prisma/client';
 import {
     IsBoolean,
     IsOptional,
@@ -5,7 +6,6 @@ import {
     MaxLength,
     MinLength,
 } from 'class-validator';
-import { Priority } from 'generated/prisma/enums';
 
 export class UpdateCardInput {
     @IsOptional()

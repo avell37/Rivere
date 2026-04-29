@@ -10,10 +10,10 @@ import {
 import { AdminService } from './admin.service';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { Roles } from 'src/shared/decorators/roles.decorator';
-import { UserRole } from 'generated/prisma/enums';
 import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { SessionAuthGuard } from 'src/shared/guards/session-auth.guard';
 import { BanUserInput } from './input/ban-user.input';
+import { UserRole } from '@prisma/client';
 
 @UseGuards(SessionAuthGuard, RolesGuard)
 @Controller('admin')

@@ -4,9 +4,9 @@ import type { Request } from 'express';
 import { VerificationInput } from './inputs/verification.input';
 import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
 import { SessionUser } from 'src/shared/decorators/session-user.decorator';
-import type { User } from 'generated/prisma/client';
 import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { ApiOperation } from '@nestjs/swagger';
+import type { User } from '@prisma/client';
 
 @Controller('verification')
 export class VerificationController {

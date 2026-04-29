@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
-import type { User } from 'generated/prisma/client';
 import type { Request } from 'express';
 import { SessionMetadata } from '../types/session-metadata.types';
+import type { User } from '@prisma/client';
 
 export async function saveSession(
     req: Request,
