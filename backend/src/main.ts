@@ -27,6 +27,6 @@ async function bootstrap() {
 
     setupSwagger(app);
 
-    await app.listen(config.getOrThrow<number>('PORT'));
+    await app.listen(config.getOrThrow<number>('PORT'), '0.0.0.0');
 }
 bootstrap();
