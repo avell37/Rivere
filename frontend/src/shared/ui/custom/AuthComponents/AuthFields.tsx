@@ -7,6 +7,7 @@ type RegisterFormValues = {
 	username: string
 	email: string
 	password: string
+	privacy: boolean
 }
 
 type LoginFormValues = {

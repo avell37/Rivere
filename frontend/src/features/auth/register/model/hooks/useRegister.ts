@@ -23,7 +23,7 @@ export const useRegister = () => {
 
 	const form = useForm<SignUpRequest>({
 		resolver: zodResolver(registerSchema),
-		defaultValues: { username: '', email: '', password: '' }
+		defaultValues: { username: '', email: '', password: '', privacy: false }
 	})
 
 	const { mutate, isPending } = useMutation<

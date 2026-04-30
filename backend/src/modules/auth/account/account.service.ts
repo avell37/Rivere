@@ -186,7 +186,10 @@ export class AccountService {
             });
         }
 
-        const isValidPassword = await verify(user.password, currentPassword);
+        const isValidPassword = await verify(
+            currentUser.password,
+            currentPassword,
+        );
 
         if (!isValidPassword) {
             throw new BadRequestException({

@@ -41,7 +41,7 @@ export const UserAdminCard = ({
 }) => {
 	const t = useTranslations('admin.users.card')
 	if (!user) return null
-	console.log(user)
+
 	const handleChangeRole = (role: UserRole) => {
 		changeRole(role)
 	}
