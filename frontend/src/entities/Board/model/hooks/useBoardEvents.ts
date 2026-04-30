@@ -11,12 +11,16 @@ import { PUBLIC_URL } from '@/shared/libs'
 
 import { boardKeys } from './useBoardQueries'
 
-export const useBoardEvents = (socket: Socket | null, boardId: string) => {
+export const useBoardEvents = (
+	socketRef: React.MutableRefObject<Socket | null>,
+	boardId: string
+) => {
 	const router = useRouter()
 	const queryClient = useQueryClient()
 	const { user } = useUserStore()
 
 	useEffect(() => {
+		const socket = socketRef.current
 		if (!socket) return
 
 		socket.emit('board:join', { boardId })
@@ -59,5 +63,5 @@ export const useBoardEvents = (socket: Socket | null, boardId: string) => {
 			socket.off('board:deleted', onBoardDeleted)
 			socket.off('board:edited', onBoardUpdated)
 		}
-	}, [socket, boardId, queryClient, router])
+	}, [socketRef, boardId, queryClient, router, user?.id])
 }

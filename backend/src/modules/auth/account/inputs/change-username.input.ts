@@ -9,5 +9,5 @@ export class ChangeUsernameInput {
     @MaxLength(32, {
         message: 'Максимальная длина имени пользователя 32 символа',
     })
-    username: string;
+    username!: string;
 }

@@ -9,13 +9,13 @@ import {
     Get,
 } from '@nestjs/common';
 import { CardService } from './card.service';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { CreateCardInput } from './inputs/create-card.input';
 import { UpdateCardInput } from './inputs/update-card.input';
 import { ApiOperation } from '@nestjs/swagger';
 import { ReorderCardInput } from './inputs/reorder-card.input';
 import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
 
 @Controller('cards')
 export class CardController {

@@ -3,13 +3,14 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateBoardInput } from './inputs/create-board.input';
 
 import { AchievementsService } from '../achievements/achievements.service';
 import { UpdateBoardInput } from './inputs/update-board.input';
-import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
 import { BoardGateway } from './board.gateway';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
+import { BoardEventPayload } from './types/board-events.types';
 
 @Injectable()
 export class BoardService {
@@ -224,7 +225,19 @@ export class BoardService {
             },
         });
 
-        this.boardGateway.boardEdited(boardId, updated);
+        const boardBackground = {
+            url: (updated.background as { url?: string | null })?.url ?? null,
+            color:
+                (updated.background as { color?: string | null })?.color ??
+                null,
+        };
+
+        const payload: BoardEventPayload = {
+            title: board.title,
+            background: boardBackground,
+        };
+
+        this.boardGateway.boardEdited(boardId, payload);
 
         return updated;
     }

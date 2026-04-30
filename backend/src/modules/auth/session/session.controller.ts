@@ -11,9 +11,9 @@ import {
 import { SessionService } from './session.service';
 import { LoginInput } from './inputs/login.input';
 import type { Request } from 'express';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { ApiOperation } from '@nestjs/swagger';
-import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { UserAgent } from '@/shared/decorators/user-agent.decorator';
 
 @Controller('session')
 export class SessionController {

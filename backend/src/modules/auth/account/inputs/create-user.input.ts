@@ -15,16 +15,16 @@ export class CreateUserInput {
     @MaxLength(32, {
         message: 'Максимальная длина имени пользователя 32 символа',
     })
-    username: string;
+    username!: string;
 
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
     @IsString({ message: 'Электронная почта должна быть строкой' })
     @IsEmail()
-    email: string;
+    email!: string;
 
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
     @IsString({ message: 'Пароль должен быть строкой' })
     @MinLength(6, { message: 'Минимальная длина пароля 6 символов' })
     @MaxLength(64, { message: 'Максимальная длина пароля 64 символа' })
-    password: string;
+    password!: string;
 }

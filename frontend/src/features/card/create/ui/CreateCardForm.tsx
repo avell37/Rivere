@@ -1,6 +1,5 @@
 'use client'
 import { useTranslations } from 'next-intl'
-import { UseFormReturn } from 'react-hook-form'
 
 import { getPrioritySelectOptions } from '@/shared/config'
 import {
@@ -12,11 +11,7 @@ import {
 } from '@/shared/ui/custom'
 import { Form } from '@/shared/ui/external'
 
-interface CreateCardFormProps {
-	form: UseFormReturn<any>
-	onSubmit: (data: any) => void
-	t: (key: string) => string
-}
+import { CreateCardFormProps } from '../model/types/CreateCardProps'
 
 export const CreateCardForm = ({ form, onSubmit, t }: CreateCardFormProps) => {
 	const tPriority = useTranslations('priority')

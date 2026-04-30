@@ -22,7 +22,7 @@ import {
 
 const DragAndDropContext = createContext<DragAndDropContextProps | null>(null)
 
-export const DndProvider = memo(({ boardId, children }: DndProviderProps) => {
+const DndProviderComponent = ({ boardId, children }: DndProviderProps) => {
 	const {
 		columns,
 		activeCard,
@@ -65,7 +65,7 @@ export const DndProvider = memo(({ boardId, children }: DndProviderProps) => {
 			cardDragHandlers.onCardDragStart(e)
 			columnDragHandlers.onColumnDragStart(e)
 		},
-		[cardDragHandlers.onCardDragStart, columnDragHandlers.onColumnDragStart]
+		[cardDragHandlers, columnDragHandlers]
 	)
 
 	const handleDragEnd = useCallback(
@@ -73,7 +73,7 @@ export const DndProvider = memo(({ boardId, children }: DndProviderProps) => {
 			cardDragHandlers.onCardDragEnd(e)
 			columnDragHandlers.onColumnDragEnd(e)
 		},
-		[cardDragHandlers.onCardDragEnd, columnDragHandlers.onColumnDragEnd]
+		[cardDragHandlers, columnDragHandlers]
 	)
 
 	return (
@@ -88,7 +88,7 @@ export const DndProvider = memo(({ boardId, children }: DndProviderProps) => {
 			</DndContext>
 		</DragAndDropContext>
 	)
-})
+}
 
 export const useDragAndDrop = () => {
 	const context = useContext(DragAndDropContext)
@@ -101,3 +101,5 @@ export const useDragAndDrop = () => {
 
 	return context
 }
+
+export const DndProvider = memo(DndProviderComponent)

@@ -7,13 +7,13 @@ import { Socket } from 'socket.io-client'
 import { IChat, IMessage, fetchChat, useChatStore } from '@/entities/Chat'
 import { useUserStore } from '@/entities/User'
 
+import { EmojiData } from '../types/ChatProps'
 import { getChatSocket } from '../utils/chat.socket'
 
 export const useChat = ({ cardId }: { cardId: string }) => {
 	const user = useUserStore(state => state.user)
 
 	const [message, setMessage] = useState<string>('')
-	const [chatId, setChatId] = useState<string | null>(null)
 	const [showEmoji, setShowEmoji] = useState(false)
 
 	const socketRef = useRef<Socket | null>(null)
@@ -52,13 +52,14 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		if (!chat) return
 
 		setMessages(chat.messages)
-		setChatId(chat.id)
 	}, [chat, setMessages])
+
+	const chatId = chat?.id ?? null
 
 	useEffect(() => {
 		if (!socketRef.current || !chatId) return
-		const socket = socketRef.current
 
+		const socket = socketRef.current
 		socket.emit('join', { chatId })
 
 		const handleMessage = (msg: IMessage) => addMessage(msg)
@@ -82,7 +83,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		setMessage('')
 	}, [user, chatId, message])
 
-	const handleEmojiClick = (emojiData: any) => {
+	const handleEmojiClick = (emojiData: EmojiData) => {
 		setMessage(prev => (prev || '') + emojiData.native)
 	}
 

@@ -32,7 +32,7 @@ export const useOtpStep = ({
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['verify reset token'],
 		mutationFn: (data: { token: string }) => verifyResetToken(data),
-		onSuccess: data => {
+		onSuccess: () => {
 			toast.success(t('auth.recoveryPassword.tokenSuccess'))
 			setToken(otp)
 			onNext()

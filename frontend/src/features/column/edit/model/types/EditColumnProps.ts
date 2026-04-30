@@ -1,10 +1,17 @@
-import { UseFormReturn } from 'react-hook-form'
+'use client'
+import { FieldValues, UseFormReturn } from 'react-hook-form'
 
 import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
 
-export interface EditColumnFormProps {
-	form: UseFormReturn<any>
-	onSubmit: (data: any) => void
+export interface EditColumnFormValues {
+	title: string
+}
+
+export interface EditColumnFormProps<
+	T extends FieldValues = EditColumnFormValues
+> {
+	form: UseFormReturn<T>
+	onSubmit: (data: T) => void
 	t: (key: string) => string
 }
 

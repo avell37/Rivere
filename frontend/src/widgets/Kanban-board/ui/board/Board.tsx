@@ -13,7 +13,7 @@ import { BoardDragOverlay } from '../overlay/BoardDragOverlay'
 
 import { BoardHeaderActions } from './BoardHeaderActions'
 
-export const Board = memo(({ boardId }: { boardId: string }) => {
+const BoardComponent = ({ boardId }: { boardId: string }) => {
 	const { board, isLoading } = useBoard(boardId)
 	const { backgroundStyle } = useBoardItem(board?.background)
 
@@ -45,4 +45,6 @@ export const Board = memo(({ boardId }: { boardId: string }) => {
 			</ScrollArea.Root>
 		</div>
 	)
-})
+}
+
+export const Board = memo(BoardComponent)

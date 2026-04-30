@@ -13,7 +13,7 @@ export const StatisticsList = ({ stats }: { stats: AdminStats }) => {
 	return (
 		<div className='flex flex-wrap gap-3'>
 			{data?.map(stat => (
-				<StatisticCard {...stat} />
+				<StatisticCard {...stat} key={stat.key} />
 			))}
 		</div>
 	)

@@ -11,7 +11,7 @@ import { UserAdminList } from '@/widgets/Admin/users/UserAdminList'
 export const Users = () => {
 	const searchParams = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
-	const { data, isLoading, error } = useGetAllUsers(page)
+	const { data, isLoading } = useGetAllUsers(page)
 
 	if (isLoading || !data) {
 		return (

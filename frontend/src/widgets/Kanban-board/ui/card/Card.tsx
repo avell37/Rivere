@@ -15,7 +15,7 @@ interface props {
 	onClick: () => void
 }
 
-export const Card = memo(({ card, boardId, onClick }: props) => {
+const CardComponent = ({ card, boardId, onClick }: props) => {
 	const { setNodeRef, attributes, listeners, style, isDragging } = useCard({
 		card
 	})
@@ -67,4 +67,6 @@ export const Card = memo(({ card, boardId, onClick }: props) => {
 			<DeleteCardModal cardId={card.id} boardId={boardId} />
 		</li>
 	)
-})
+}
+
+export const Card = memo(CardComponent)

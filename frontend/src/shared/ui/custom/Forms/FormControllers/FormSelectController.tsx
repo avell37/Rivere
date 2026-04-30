@@ -1,4 +1,4 @@
-import { Control } from 'react-hook-form'
+import { Control, FieldValues, Path } from 'react-hook-form'
 
 import {
 	FormField,
@@ -12,12 +12,12 @@ import {
 	SelectValue
 } from '@/shared/ui/external'
 
-interface FormSelectControllerProps {
-	name: string
-	control: Control<any>
+interface FormSelectControllerProps<T extends FieldValues> {
+	name: Path<T>
+	control: Control<T>
 	label: string
 	placeholder: string
-	onChange?: (value: any) => void
+	onChange?: (value: string) => void
 	options: {
 		value: string
 		label: string
@@ -25,14 +25,14 @@ interface FormSelectControllerProps {
 	}[]
 }
 
-export const FormSelectController = ({
+export const FormSelectController = <T extends FieldValues>({
 	name,
 	control,
 	label,
 	placeholder,
 	onChange,
 	options
-}: FormSelectControllerProps) => {
+}: FormSelectControllerProps<T>) => {
 	return (
 		<FormField
 			control={control}

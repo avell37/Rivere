@@ -4,5 +4,5 @@ export class ResetPasswordInput {
     @IsNotEmpty()
     @IsString()
     @IsEmail()
-    email: string;
+    email!: string;
 }

@@ -1,10 +1,10 @@
+import { PrismaService } from '@/core/prisma/prisma.service';
 import {
     BadRequestException,
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
 import type { TokenType, User } from '@prisma/client';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 
 import { v4 as uuidv4 } from 'uuid';
 

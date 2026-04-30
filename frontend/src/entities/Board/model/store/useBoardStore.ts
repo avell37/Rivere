@@ -12,7 +12,7 @@ interface BoardStore {
 	setActiveColumn: (column: IColumn | null) => void
 }
 
-export const useBoardStore = create<BoardStore>((set, get) => ({
+export const useBoardStore = create<BoardStore>(set => ({
 	columns: [],
 	activeCard: null,
 	activeColumn: null,

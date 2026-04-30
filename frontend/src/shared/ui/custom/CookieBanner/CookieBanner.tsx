@@ -7,10 +7,11 @@ export const CookieBanner = () => {
 	const [visible, setVisible] = useState(false)
 
 	useEffect(() => {
-		const accepted = localStorage.getItem('cookieAccepted')
-		if (!accepted) {
-			setVisible(true)
+		const initCookieBanner = () => {
+			const accepted = localStorage.getItem('cookieAccepted')
+			setVisible(!accepted)
 		}
+		initCookieBanner()
 	}, [])
 
 	const handleAccept = () => {

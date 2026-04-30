@@ -1,3 +1,4 @@
+import { AuthPayload } from '@/shared/types/AuthPayload';
 import {
     ConnectedSocket,
     MessageBody,
@@ -8,19 +9,26 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import {
+    BoardEventPayload,
+    CardEventPayload,
+    ColumnEventPayload,
+} from './types/board-events.types';
 
 @WebSocketGateway({
     cors: { origin: '*' },
-    namespace: '/boards',
+    namespace: '/api/boards',
 })
 export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer()
-    server: Server;
+    server!: Server;
 
     private connections = new Map<string, Set<string>>();
 
     handleConnection(client: Socket) {
-        const userId = client.handshake.auth?.userId;
+        const auth = client.handshake.auth as AuthPayload;
+        const userId = auth?.userId;
+
         if (!userId || typeof userId !== 'string') return client.disconnect();
 
         const sockets = this.connections.get(userId) ?? new Set();
@@ -43,7 +51,7 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
         @ConnectedSocket() client: Socket,
         @MessageBody() { boardId }: { boardId: string },
     ) {
-        client.join(`board_${boardId}`);
+        void client.join(`board_${boardId}`);
     }
 
     @SubscribeMessage('board:leave')
@@ -51,14 +59,14 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
         @ConnectedSocket() client: Socket,
         @MessageBody() { boardId }: { boardId: string },
     ) {
-        client.leave(`board_${boardId}`);
+        void client.leave(`board_${boardId}`);
     }
 
     boardRoom(boardId: string) {
         return `board_${boardId}`;
     }
 
-    boardEdited(boardId: string, payload: any) {
+    boardEdited(boardId: string, payload: BoardEventPayload) {
         this.server.to(this.boardRoom(boardId)).emit('board:edited', payload);
     }
 
@@ -77,11 +85,11 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     // column
 
-    columnCreated(boardId: string, column: any) {
+    columnCreated(boardId: string, column: ColumnEventPayload) {
         this.server.to(this.boardRoom(boardId)).emit('column:created', column);
     }
 
-    columnUpdated(boardId: string, column: any) {
+    columnUpdated(boardId: string, column: ColumnEventPayload) {
         this.server.to(this.boardRoom(boardId)).emit('column:updated', column);
     }
 
@@ -91,7 +99,7 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
             .emit('column:deleted', { columnId });
     }
 
-    columnsReordered(boardId: string, columns: any[]) {
+    columnsReordered(boardId: string, columns: ColumnEventPayload[]) {
         this.server
             .to(this.boardRoom(boardId))
             .emit('column:reordered', columns);
@@ -99,11 +107,11 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     // card
 
-    cardCreated(boardId: string, card: any) {
+    cardCreated(boardId: string, card: CardEventPayload) {
         this.server.to(this.boardRoom(boardId)).emit('card:created', card);
     }
 
-    cardUpdated(boardId: string, card: any) {
+    cardUpdated(boardId: string, card: CardEventPayload) {
         this.server.to(this.boardRoom(boardId)).emit('card:updated', card);
     }
 

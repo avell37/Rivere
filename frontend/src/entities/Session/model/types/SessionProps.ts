@@ -1,3 +1,5 @@
+import { TranslateValues } from '@/entities/User'
+
 import { ISession } from './ISession'
 
 export interface SessionProps {
@@ -13,6 +15,6 @@ export interface SessionProps {
 export interface SessionListProps {
 	userSessions?: ISession[]
 	locale: string
-	t: (key: string, values?: Record<string, any>) => string
+	t: (key: string, values?: TranslateValues) => string
 	terminateSelectedSession: (id: string) => void
 }

@@ -9,5 +9,5 @@ export class UpdateColumnInput {
     @MaxLength(32, {
         message: 'Название колонки должно быть не более 32 символов',
     })
-    title: string;
+    title!: string;
 }

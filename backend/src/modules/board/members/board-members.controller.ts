@@ -1,9 +1,9 @@
 import { Controller, Delete, Param } from '@nestjs/common';
 import { BoardMembersService } from './board-members.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { RemoveMemberDto } from './dto/remove-member.dto';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
 
 @Controller('members')
 export class BoardMembersController {

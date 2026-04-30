@@ -150,7 +150,7 @@ export const useCardDnd = ({ setActiveCard, setColumns }: CardProps) => {
 				return next
 			})
 		},
-		[setColumns, reorderCards, setActiveCard]
+		[setColumns, reorderCards, setActiveCard, moveMutation]
 	)
 
 	return {

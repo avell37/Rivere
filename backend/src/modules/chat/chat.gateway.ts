@@ -11,11 +11,11 @@ import { CreateMessageDto } from '../messages/dto/create-message.dto';
 
 @WebSocketGateway({
     cors: { origin: '*' },
-    namespace: '/chat',
+    namespace: '/api/chat',
 })
 export class ChatGateway {
     @WebSocketServer()
-    server: Server;
+    server!: Server;
 
     constructor(private readonly messagesService: MessagesService) {}
 
@@ -28,7 +28,7 @@ export class ChatGateway {
         @MessageBody() { chatId }: { chatId: string },
         @ConnectedSocket() client: Socket,
     ) {
-        client.join(`chat_${chatId}`);
+        void client.join(`chat_${chatId}`);
     }
 
     @SubscribeMessage('leave')
@@ -36,7 +36,7 @@ export class ChatGateway {
         @MessageBody() { chatId }: { chatId: string },
         @ConnectedSocket() client: Socket,
     ) {
-        client.leave(`chat_${chatId}`);
+        void client.leave(`chat_${chatId}`);
     }
 
     @SubscribeMessage('message')
@@ -44,13 +44,21 @@ export class ChatGateway {
         @MessageBody() dto: CreateMessageDto,
         @ConnectedSocket() client: Socket,
     ) {
-        const message = await this.messagesService.create(dto);
+        try {
+            const message = await this.messagesService.create(dto);
 
-        if (!message.chat) {
-            console.warn('Сообщение не связано с чатом:', message.id);
-            return;
+            if (!message.chat) {
+                console.warn('Сообщение не связано с чатом:', message.id);
+                return;
+            }
+
+            this.server.to(`chat_${dto.chatId}`).emit('message:new', message);
+        } catch (err) {
+            console.error('Error creating message:', err);
+            client.emit('message:error', {
+                error: 'Failed to create message',
+                details: err instanceof Error ? err.message : 'Unknown error',
+            });
         }
-
-        this.server.to(`chat_${dto.chatId}`).emit('message:new', message);
     }
 }

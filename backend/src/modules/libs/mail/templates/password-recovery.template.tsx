@@ -1,3 +1,4 @@
+import { SessionMetadata } from '@/shared/types/session-metadata.types';
 import {
     Body,
     Container,
@@ -10,7 +11,6 @@ import {
     Text,
 } from '@react-email/components';
 import { Html } from '@react-email/html';
-import { SessionMetadata } from 'src/shared/types/session-metadata.types';
 
 interface PasswordRecoveryTemplateProps {
     token: string;

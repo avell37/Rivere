@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { Control, FieldValues } from 'react-hook-form'
+import { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 import { PUBLIC_URL } from '@/shared/libs'
 
@@ -9,7 +9,7 @@ import { Checkbox } from '../../external/Checkbox/Checkbox'
 
 interface PrivacyCheckboxProps<T extends FieldValues> {
 	control: Control<T>
-	name: any
+	name: FieldPath<T>
 }
 
 export const PrivacyCheckbox = <T extends FieldValues>({

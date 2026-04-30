@@ -12,7 +12,7 @@ interface props {
 	boardId: string
 }
 
-export const CardModal = memo(({ card, boardId }: props) => {
+const CardModalComponent = ({ card, boardId }: props) => {
 	if (!card) return
 
 	return (
@@ -26,4 +26,6 @@ export const CardModal = memo(({ card, boardId }: props) => {
 			</div>
 		</div>
 	)
-})
+}
+
+export const CardModal = memo(CardModalComponent)

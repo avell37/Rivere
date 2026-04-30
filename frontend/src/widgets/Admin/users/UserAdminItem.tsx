@@ -31,6 +31,7 @@ import {
 	TableRow
 } from '@/shared/ui/external'
 import { roleStyles } from '@/shared/utils'
+import { isUserBanned } from '@/shared/utils/ban.utils'
 
 export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 	const [open, setOpen] = useState(false)
@@ -41,8 +42,7 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 	const { removeBan } = useUnbanUser(user.id)
 	const { changeRole, isPending: rolePending } = useSetUserRole(user.id)
 
-	const isBanned =
-		user.bannedUntil && new Date(user.bannedUntil).getTime() > Date.now()
+	const isBanned = isUserBanned(user)
 
 	return (
 		<>

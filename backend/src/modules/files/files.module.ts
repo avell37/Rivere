@@ -3,7 +3,7 @@ import { FilesService } from './files.service';
 import { FilesController } from './files.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { path } from 'app-root-path';
-import { S3Module } from 'src/core/s3/s3.module';
+import { S3Module } from '@/core/s3/s3.module';
 
 @Module({
     imports: [

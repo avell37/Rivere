@@ -12,7 +12,7 @@ import { useDragAndDrop } from '@/features/drag-and-drop/ui/DndProvider'
 
 import { Column } from './Column'
 
-export const ColumnList = memo(({ boardId }: ColumnListProps) => {
+const ColumnListComponent = ({ boardId }: ColumnListProps) => {
 	const { columns } = useDragAndDrop()
 
 	const columnIds = useMemo(() => columns?.map(col => col.id), [columns])
@@ -32,4 +32,6 @@ export const ColumnList = memo(({ boardId }: ColumnListProps) => {
 			</ul>
 		</SortableContext>
 	)
-})
+}
+
+export const ColumnList = memo(ColumnListComponent)

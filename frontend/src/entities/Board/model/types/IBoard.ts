@@ -6,10 +6,7 @@ export interface IBoard {
 	id: string
 	title: string
 	columns: IColumn[]
-	background: {
-		url: string | null
-		color: string | null
-	}
+	background: BoardBackground
 	isFavorite: boolean
 	members: IBoardMember[]
 	createdAt?: Date
@@ -24,4 +21,9 @@ export interface IUserBoard {
 	joinedAt: string
 	createdAt: string
 	updatedAt: string
+}
+
+export interface BoardBackground {
+	url: string | null
+	color: string | null
 }

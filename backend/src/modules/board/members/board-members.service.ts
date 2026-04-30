@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { BoardGateway } from '../board.gateway';
+import { PrismaService } from '@/core/prisma/prisma.service';
 
 @Injectable()
 export class BoardMembersService {
