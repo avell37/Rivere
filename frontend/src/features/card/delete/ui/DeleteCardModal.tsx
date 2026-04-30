@@ -9,7 +9,7 @@ import { Button } from '@/shared/ui/external'
 import { useDeleteCard } from '../model/hooks/useDeleteCard'
 import { DeleteCardProps } from '../model/types/DeleteCardProps'
 
-export const DeleteCardModal = memo(({ cardId, boardId }: DeleteCardProps) => {
+const DeleteCardModalComponent = ({ cardId, boardId }: DeleteCardProps) => {
 	const { onSubmit } = useDeleteCard({ cardId, boardId })
 	const t = useTranslations('card.delete')
 
@@ -33,4 +33,6 @@ export const DeleteCardModal = memo(({ cardId, boardId }: DeleteCardProps) => {
 			onSubmit={onSubmit}
 		/>
 	)
-})
+}
+
+export const DeleteCardModal = memo(DeleteCardModalComponent)

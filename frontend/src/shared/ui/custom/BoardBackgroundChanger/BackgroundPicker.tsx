@@ -1,17 +1,25 @@
 'use client'
 import { useTranslations } from 'next-intl'
-import { Control, Controller } from 'react-hook-form'
+import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 
 import { BOARD_BACKGROUND } from '@/shared/config'
 
 import { Button } from '../../external'
 
-export const BackgroundPicker = ({ control }: { control: Control<any> }) => {
+interface BackgroundPickerProps<T extends FieldValues> {
+	control: Control<T>
+	name?: Path<T>
+}
+
+export const BackgroundPicker = <T extends FieldValues>({
+	control,
+	name = 'background' as Path<T>
+}: BackgroundPickerProps<T>) => {
 	const t = useTranslations('board.colors')
 
 	return (
 		<Controller
-			name='background'
+			name={name}
 			control={control}
 			render={({ field }) => (
 				<div className='flex flex-col gap-4'>

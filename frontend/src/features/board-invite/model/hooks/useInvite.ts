@@ -84,14 +84,14 @@ export const useInvite = (token?: string) => {
 			handleApiError(error, t)
 			router.replace(PUBLIC_URL.boards())
 		}
-	}, [isError, error])
+	}, [isError, error, t, router])
 
 	useEffect(() => {
 		if (data?.isMember) {
 			toast.info(t('invite.alreadyMember'))
 			router.replace(PUBLIC_URL.boards())
 		}
-	}, [data])
+	}, [data, t, router])
 
 	return {
 		createInviteData,

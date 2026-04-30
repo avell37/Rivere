@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateColumnInput } from './inputs/create-column.input';
 import { UpdateColumnInput } from './inputs/update-column.input';
-import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
 import { ReorderColumnInput } from './inputs/reorder-column.input';
 import { BoardGateway } from '../board/board.gateway';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 
 @Injectable()
 export class ColumnService {

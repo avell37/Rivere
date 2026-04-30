@@ -4,26 +4,28 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { AuthPayload } from '../../shared/types/AuthPayload';
 
 @WebSocketGateway({
     cors: { origin: '*' },
-    namespace: '/achievements',
+    namespace: '/api/achievements',
 })
 export class AchievementsGateway implements OnGatewayConnection {
     @WebSocketServer()
-    server: Server;
+    server!: Server;
 
     handleConnection(client: Socket) {
-        const userId = client.handshake.auth?.userId;
+        const auth = client.handshake.auth as AuthPayload;
+        const userId = auth?.userId;
 
-        client.join(`user_${userId}`);
+        void client.join(`user_${userId}`);
     }
 
-    sendProgress(userId: string, payload: any) {
+    sendProgress(userId: string, payload: unknown) {
         this.server.to(`user_${userId}`).emit('achievementProgress', payload);
     }
 
-    sendAchievement(userId: string, payload: any) {
+    sendAchievement(userId: string, payload: unknown) {
         this.server.to(`user_${userId}`).emit('achievementUnlocked', payload);
     }
 }

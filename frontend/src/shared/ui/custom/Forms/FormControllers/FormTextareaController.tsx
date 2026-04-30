@@ -9,7 +9,7 @@ import {
 	Textarea
 } from '@/shared/ui/external'
 
-interface FormTextareaProps<T extends Record<string, any>> {
+interface FormTextareaProps<T extends FieldValues> {
 	name: Path<T>
 	control: Control<T>
 	label?: string

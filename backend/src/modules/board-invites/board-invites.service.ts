@@ -7,8 +7,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'crypto';
 import { addDays } from 'date-fns';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { PrismaService } from '@/core/prisma/prisma.service';
 
 @Injectable()
 export class BoardInvitesService {

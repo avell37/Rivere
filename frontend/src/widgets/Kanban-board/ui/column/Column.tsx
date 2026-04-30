@@ -11,7 +11,7 @@ import { CardList } from '../card/CardList'
 
 import { ColumnActions } from './ColumnActions'
 
-export const Column = memo(({ column }: ColumnProps) => {
+const ColumnComponent = ({ column }: ColumnProps) => {
 	const { attributes, listeners, setNodeRef, style, isDragging } = useColumn({
 		id: column.id
 	})
@@ -71,4 +71,6 @@ export const Column = memo(({ column }: ColumnProps) => {
 			</li>
 		</div>
 	)
-})
+}
+
+export const Column = memo(ColumnComponent)

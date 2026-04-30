@@ -8,12 +8,12 @@ import {
     Post,
 } from '@nestjs/common';
 import { ColumnService } from './column.service';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { CreateColumnInput } from './inputs/create-column.input';
 import { UpdateColumnInput } from './inputs/update-column.input';
 import { ApiOperation } from '@nestjs/swagger';
 import { ReorderColumnInput } from './inputs/reorder-column.input';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
 
 @Controller('columns')
 export class ColumnController {

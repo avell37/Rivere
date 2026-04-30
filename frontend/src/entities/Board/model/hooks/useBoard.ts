@@ -1,7 +1,7 @@
 'use client'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { getBoardSocket, useGetBoard } from '@/entities/Board'
 import { useCardEvents } from '@/entities/Card'
@@ -23,14 +23,33 @@ export const useBoard = (boardId: string) => {
 
 	const { board, isLoading, error } = useGetBoard(boardId)
 
-	const socket = useMemo(() => {
-		if (!user?.id || !boardId) return null
-		return getBoardSocket(user.id, boardId)
+	const socketRef = useRef<ReturnType<typeof getBoardSocket> | null>(null)
+
+	useEffect(() => {
+		if (!user?.id || !boardId) return
+
+		const socket = getBoardSocket(user.id, boardId)
+		socketRef.current = socket
+
+		const onConnect = () => {
+			socket.emit('board:join', { boardId })
+		}
+
+		if (socket.connected) {
+			onConnect()
+		} else {
+			socket.on('connect', onConnect)
+		}
+
+		return () => {
+			socket.emit('board:leave', { boardId })
+			socket.off('connect', onConnect)
+		}
 	}, [user?.id, boardId])
 
-	useBoardEvents(socket, boardId)
-	useColumnEvents(socket, boardId)
-	useCardEvents(socket, boardId)
+	useBoardEvents(socketRef, boardId)
+	useColumnEvents(socketRef, boardId)
+	useCardEvents(socketRef, boardId)
 
 	useEffect(() => {
 		if (!board) return

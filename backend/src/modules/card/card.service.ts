@@ -1,7 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateCardInput } from './inputs/create-card.input';
-import { checkBoardAccess } from 'src/shared/utils/check-board-access.util';
 import { UpdateCardInput } from './inputs/update-card.input';
 import { ChatService } from '../chat/chat.service';
 import { ReorderCardInput } from './inputs/reorder-card.input';
@@ -9,6 +7,8 @@ import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
 import { StatisticsService } from '../statistics/statistics.service';
 import { AchievementsService } from '../achievements/achievements.service';
 import { BoardGateway } from '../board/board.gateway';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 
 @Injectable()
 export class CardService {
@@ -45,7 +45,7 @@ export class CardService {
             },
         });
 
-        const chat = await this.chat.createChat({ cardId: card.id });
+        await this.chat.createChat({ cardId: card.id });
 
         this.gateway.cardCreated(card.column.boardId, card);
 

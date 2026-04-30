@@ -3,7 +3,7 @@ import { API_URL } from '@/shared/libs'
 
 export const resetPassword = async (data: {
 	email: string
-}): Promise<Boolean> => {
+}): Promise<boolean> => {
 	const response = await baseAxios.post(
 		`${API_URL.passwordRecovery()}reset-password`,
 		data
@@ -13,7 +13,7 @@ export const resetPassword = async (data: {
 
 export const verifyResetToken = async (data: {
 	token: string
-}): Promise<Boolean> => {
+}): Promise<boolean> => {
 	const response = await baseAxios.post(
 		`${API_URL.passwordRecovery()}verify-reset-token`,
 		data
@@ -24,7 +24,7 @@ export const verifyResetToken = async (data: {
 export const createNewPassword = async (data: {
 	token: string
 	newPassword: string
-}): Promise<Boolean> => {
+}): Promise<boolean> => {
 	const response = await baseAxios.post(
 		`${API_URL.passwordRecovery()}create-new-password`,
 		data

@@ -4,7 +4,12 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { SendHorizonal, Smile } from 'lucide-react'
 
-import { ChatSkeleton, ChatUserMessage, useChatStore } from '@/entities/Chat'
+import {
+	ChatSkeleton,
+	ChatUserMessage,
+	IMessage,
+	useChatStore
+} from '@/entities/Chat'
 
 import { Button, ScrollArea, Textarea } from '@/shared/ui/external'
 
@@ -38,7 +43,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 			<div className='flex flex-col h-[450px] lg:max-w-[450px] w-full max-lg:h-[60vh] min-h-0 max-lg:max-w-[850px] max-sm:h-[30vh]'>
 				<ScrollArea className='flex-1 w-full rounded-md overflow-hidden'>
 					<div className='flex flex-col gap-4 rounded-md overflow-y-auto h-full p-2'>
-						{messages.map((message: any, i) => (
+						{messages.map((message: IMessage, i) => (
 							<ChatUserMessage
 								key={message.id}
 								currentUserId={userId}

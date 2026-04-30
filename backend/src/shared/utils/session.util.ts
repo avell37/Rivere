@@ -14,7 +14,10 @@ export async function saveSession(
 
     await new Promise<void>((resolve, reject) => {
         req.session.save((err) => {
-            if (err) return reject(err);
+            if (err)
+                return reject(
+                    err instanceof Error ? err : new Error(String(err)),
+                );
             resolve();
         });
     });
@@ -26,7 +29,10 @@ export async function destroySession(
 ) {
     await new Promise<void>((resolve, reject) => {
         req.session.destroy((err) => {
-            if (err) return reject(err);
+            if (err)
+                return reject(
+                    err instanceof Error ? err : new Error(String(err)),
+                );
             resolve();
         });
     });

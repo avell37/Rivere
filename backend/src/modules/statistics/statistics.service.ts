@@ -1,6 +1,6 @@
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { formatDay, getYesterday } from '@/shared/utils/date.util';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
-import { formatDay, getYesterday } from 'src/shared/utils/date.util';
 
 @Injectable()
 export class StatisticsService {

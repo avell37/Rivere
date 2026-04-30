@@ -10,7 +10,7 @@ import {
 export class CreateCardInput {
     @IsNotEmpty({ message: 'ID колонки обязателен' })
     @IsString({ message: 'ID колонки должен быть строкой' })
-    columnId: string;
+    columnId!: string;
 
     @IsNotEmpty({ message: 'Название карточки обязательно' })
     @IsString({ message: 'Название карточки должно быть строкой' })
@@ -20,14 +20,14 @@ export class CreateCardInput {
     @MaxLength(32, {
         message: 'Название карточки должно быть не более 32 символов',
     })
-    title: string;
+    title!: string;
 
     @IsOptional()
     description?: string;
 
     @IsNotEmpty({ message: 'Приоритет обязателен' })
     @IsString({ message: 'Приоритет должен быть строкой' })
-    priority: Priority;
+    priority!: Priority;
 
     @IsNotEmpty({ message: 'Дедлайн обязателен' })
     @IsString({ message: 'Дедлайн должен быть строкой' })

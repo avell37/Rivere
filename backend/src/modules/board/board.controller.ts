@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardInput } from './inputs/create-board.input';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { ApiOperation } from '@nestjs/swagger';
 import { UpdateBoardInput } from './inputs/update-board.input';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
 
 @Controller('boards')
 export class BoardController {

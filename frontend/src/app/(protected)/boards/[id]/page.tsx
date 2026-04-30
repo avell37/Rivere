@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			title: t('heading', { name: board.title })
 		}
 	} catch (err) {
+		console.warn('Failed to generate board metadata:', err)
 		return {
 			title: 'Board'
 		}

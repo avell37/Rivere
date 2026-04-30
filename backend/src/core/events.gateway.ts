@@ -1,3 +1,4 @@
+import { AuthPayload } from '@/shared/types/AuthPayload';
 import {
     OnGatewayConnection,
     WebSocketGateway,
@@ -7,16 +8,17 @@ import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
     cors: { origin: '*' },
-    namespace: '/events',
+    namespace: '/api/events',
 })
 export class EventsGateway implements OnGatewayConnection {
     @WebSocketServer()
-    server: Server;
+    server!: Server;
 
     private connections = new Map<string, Set<string>>();
 
     handleConnection(client: Socket) {
-        const userId = client.handshake.auth?.userId;
+        const auth = client.handshake.auth as AuthPayload;
+        const userId = auth?.userId;
 
         if (!userId) {
             client.disconnect();

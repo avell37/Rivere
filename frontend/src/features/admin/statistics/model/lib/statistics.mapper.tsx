@@ -15,7 +15,7 @@ import { formatTrend } from '../utils/formatTrend'
 
 export const mapStatistics = (
 	data: AdminStats,
-	t: (key: string, values?: Record<string, any>) => string
+	t: (key: string, values?: { count: string | number }) => string
 ) => {
 	return [
 		{

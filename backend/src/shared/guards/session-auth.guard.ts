@@ -6,11 +6,11 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import type { Request } from 'express';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { destroySession } from '../utils/session.util';
 import { ConfigService } from '@nestjs/config';
-import { RedisService } from 'src/core/redis/redis.service';
 import { Reflector } from '@nestjs/core';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { RedisService } from '@/core/redis/redis.service';
 
 @Injectable()
 export class SessionAuthGuard implements CanActivate {

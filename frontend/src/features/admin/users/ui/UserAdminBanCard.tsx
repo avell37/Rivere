@@ -1,14 +1,8 @@
 'use client'
-import { UseFormReturn } from 'react-hook-form'
-
 import { FormInputController, FormWrapper } from '@/shared/ui/custom'
 import { Form } from '@/shared/ui/external'
 
-interface UserAdminBanCardProps {
-	form: UseFormReturn<any>
-	t: (key: string) => string
-	onSubmit: (data: any) => void
-}
+import { UserAdminBanCardProps } from '../model/types/UsenBanProps'
 
 export const UserAdminBanCard = ({
 	form,

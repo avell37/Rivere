@@ -8,7 +8,7 @@ interface ChatStore {
 	addMessage: (msg: IMessage) => void
 }
 
-export const useChatStore = create<ChatStore>((set, get) => ({
+export const useChatStore = create<ChatStore>(set => ({
 	messages: [],
 	setMessages: newMessages => set({ messages: newMessages }),
 	addMessage: msg =>

@@ -3,10 +3,10 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { BanUserInput } from './input/ban-user.input';
-import { EventsGateway } from 'src/core/events.gateway';
 import { UserRole } from '@prisma/client';
+import { EventsGateway } from '@/core/events.gateway';
+import { PrismaService } from '@/core/prisma/prisma.service';
 
 @Injectable()
 export class AdminService {

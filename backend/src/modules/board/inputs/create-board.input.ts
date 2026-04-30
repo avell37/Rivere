@@ -21,8 +21,8 @@ export class CreateBoardInput {
     @IsString({ message: 'Название доски должно быть строкой' })
     @MinLength(1, { message: 'Минимальная длина названия доски 1 символ' })
     @MaxLength(64, { message: 'Максимальная длина названия доски 64 символа' })
-    title: string;
+    title!: string;
 
     @IsOptional()
-    background: BoardBackground;
+    background!: BoardBackground;
 }

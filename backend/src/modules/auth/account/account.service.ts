@@ -5,20 +5,20 @@ import {
     NotFoundException,
 } from '@nestjs/common';
 import { CreateUserInput } from './inputs/create-user.input';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { hash, verify } from 'argon2';
 import { ChangeUsernameInput } from './inputs/change-username.input';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
-import { FilesService } from 'src/modules/files/files.service';
 import { ChangeNicknameInput } from './inputs/change-nickname';
-import { StatisticsService } from 'src/modules/statistics/statistics.service';
 import { VerificationService } from '../verification/verification.service';
-import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
 import type { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { saveSession } from 'src/shared/utils/session.util';
 import { User } from '@prisma/client';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { FilesService } from '@/modules/files/files.service';
+import { StatisticsService } from '@/modules/statistics/statistics.service';
+import { getSessionMetadata } from '@/shared/utils/session-metadata.util';
+import { saveSession } from '@/shared/utils/session.util';
 
 @Injectable()
 export class AccountService {

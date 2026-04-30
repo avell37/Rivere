@@ -13,12 +13,12 @@ export const getAllUsers = async (page: number): Promise<UsersResponse> => {
 	return response.data
 }
 
-export const banUser = async (data: BanUserInput): Promise<Boolean> => {
+export const banUser = async (data: BanUserInput): Promise<boolean> => {
 	const response = await baseAxios.post(`${API_URL.admin()}ban`, data)
 	return response.data
 }
 
-export const unbanUser = async (userId: string): Promise<Boolean> => {
+export const unbanUser = async (userId: string): Promise<boolean> => {
 	const response = await baseAxios.post(`${API_URL.admin()}unban/${userId}`)
 	return response.data
 }
@@ -26,7 +26,7 @@ export const unbanUser = async (userId: string): Promise<Boolean> => {
 export const setUserRole = async (
 	userId: string,
 	role: string
-): Promise<Boolean> => {
+): Promise<boolean> => {
 	const response = await baseAxios.post(`${API_URL.admin()}role/${userId}`, {
 		role
 	})

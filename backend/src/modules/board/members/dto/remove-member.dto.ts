@@ -2,8 +2,8 @@ import { IsUUID } from 'class-validator';
 
 export class RemoveMemberDto {
     @IsUUID()
-    boardId: string;
+    boardId!: string;
 
     @IsUUID()
-    userId: string;
+    userId!: string;
 }
