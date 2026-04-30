@@ -2,10 +2,10 @@ import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 import { PasswordRecoveryService } from './password-recovery.service';
 import type { Request } from 'express';
 import { ResetPasswordInput } from './inputs/reset-password.input';
-import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
 import { VerifyTokenInput } from './inputs/verify-token.input';
 import { CreateNewPasswordInput } from './inputs/create-new-password.input';
 import { ApiOperation } from '@nestjs/swagger';
+import { UserAgent } from '@/shared/decorators/user-agent.decorator';
 
 @Controller('password-recovery')
 export class PasswordRecoveryController {

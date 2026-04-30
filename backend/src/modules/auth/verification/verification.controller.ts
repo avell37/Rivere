@@ -2,11 +2,11 @@ import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 import { VerificationService } from './verification.service';
 import type { Request } from 'express';
 import { VerificationInput } from './inputs/verification.input';
-import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { ApiOperation } from '@nestjs/swagger';
 import type { User } from '@prisma/client';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
+import { UserAgent } from '@/shared/decorators/user-agent.decorator';
 
 @Controller('verification')
 export class VerificationController {

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
     DeleteObjectCommand,
@@ -12,6 +12,7 @@ import { randomBytes } from 'node:crypto';
 export class S3Service {
     private readonly client: S3Client;
     private readonly bucket: string;
+    private readonly logger = new Logger(S3Service.name);
 
     public constructor(private readonly configService: ConfigService) {
         this.client = new S3Client({
@@ -44,6 +45,7 @@ export class S3Service {
             await this.client.send(command);
             return fileName;
         } catch (error) {
+            this.logger.error(`Failed to upload file: ${error}`);
             throw new BadRequestException({
                 code: 'errors.upload.failed',
                 message: 'Failed to uploading file to S3 storage',
@@ -60,6 +62,7 @@ export class S3Service {
         try {
             return this.client.send(command);
         } catch (error) {
+            this.logger.error(`Failed to delete file ${key}: ${error}`);
             throw new BadRequestException({
                 code: 'errors.upload.failed',
                 message: 'Failed to deleting file from S3 storage',

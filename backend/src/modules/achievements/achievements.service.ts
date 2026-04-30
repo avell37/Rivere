@@ -3,11 +3,11 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { AchievementsGateway } from './achievements.gateway';
 import { CreateAchievementInput } from './inputs/create-achievement.input';
 import { UpdateAchievementInput } from './inputs/update-achievement.input';
 import { NotificationsService } from '../notifications/notifications.service';
+import { PrismaService } from '@/core/prisma/prisma.service';
 
 @Injectable()
 export class AchievementsService {

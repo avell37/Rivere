@@ -4,14 +4,15 @@ import {
     NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 import { LoginInput } from './inputs/login.input';
 import { verify } from 'argon2';
 import type { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { destroySession, saveSession } from 'src/shared/utils/session.util';
-import { RedisService } from 'src/core/redis/redis.service';
-import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { RedisService } from '@/core/redis/redis.service';
+import { SessionData, UserSession } from '@/shared/types/session-types';
+import { getSessionMetadata } from '@/shared/utils/session-metadata.util';
+import { destroySession, saveSession } from '@/shared/utils/session.util';
 
 @Injectable()
 export class SessionService {
@@ -21,7 +22,7 @@ export class SessionService {
         private readonly redis: RedisService,
     ) {}
 
-    async findCurrentSession(req: Request) {
+    async findCurrentSession(req: Request): Promise<UserSession> {
         const sessionId = req.session.id;
 
         const sessionData = await this.redis.get(
@@ -35,7 +36,7 @@ export class SessionService {
             });
         }
 
-        const session = JSON.parse(sessionData);
+        const session = JSON.parse(sessionData) as SessionData;
 
         return {
             id: sessionId,
@@ -45,7 +46,7 @@ export class SessionService {
         };
     }
 
-    async findAllUserSessions(req: Request) {
+    async findAllUserSessions(req: Request): Promise<UserSession[]> {
         const userId = req.session.userId;
 
         if (!userId) {
@@ -58,13 +59,13 @@ export class SessionService {
         const prefix = this.config.getOrThrow<string>('SESSION_FOLDER');
         const keys = await this.redis.keys(`${prefix}*`);
 
-        const userSessions: any[] = [];
+        const userSessions: UserSession[] = [];
 
         for (const key of keys) {
             const sessionData = await this.redis.get(key);
 
             if (sessionData) {
-                const session = JSON.parse(sessionData);
+                const session = JSON.parse(sessionData) as SessionData;
 
                 if (session.userId === userId) {
                     userSessions.push({
@@ -105,7 +106,7 @@ export class SessionService {
             });
         }
 
-        const session = JSON.parse(raw);
+        const session = JSON.parse(raw) as SessionData;
 
         if (session.userId !== userId) {
             throw new UnauthorizedException({
@@ -130,7 +131,7 @@ export class SessionService {
             const raw = await this.redis.get(key);
             if (!raw) continue;
 
-            const session = JSON.parse(raw);
+            const session = JSON.parse(raw) as SessionData;
             const id = key.replace(prefix, '');
 
             if (session.userId === userId && id !== currentSessionId) {

@@ -1,6 +1,6 @@
 export const formatTrend = (
 	value: string | number,
-	t: (key: string, values?: Record<string, any>) => string
+	t: (key: string, values?: { count: string | number }) => string
 ) => {
 	if (value === 0) {
 		return t('admin.trendWithoutPlus', { count: 0 })

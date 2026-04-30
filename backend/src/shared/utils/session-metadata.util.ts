@@ -2,10 +2,12 @@ import type { Request } from 'express';
 import { SessionMetadata } from '../types/session-metadata.types';
 import { isDev } from './is-dev.util';
 import { lookup } from 'geoip-lite';
-import DeviceDetector = require('device-detector-js');
+import DeviceDetector from 'device-detector-js';
 import * as countries from 'i18n-iso-countries';
+import en from 'i18n-iso-countries/langs/en.json';
 import { ConfigService } from '@nestjs/config';
-countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
+import { DeviceResult } from '../types/session-types';
+countries.registerLocale(en);
 
 export function getSessionMetadata(
     req: Request,
@@ -23,11 +25,15 @@ export function getSessionMetadata(
             '0.0.0.0';
 
     const location = lookup(ip);
-    const device = new DeviceDetector().parse(userAgent);
+
+    const detector = new DeviceDetector();
+
+    const device = detector.parse(userAgent) as DeviceResult;
 
     return {
         location: {
-            country: countries.getName(location?.country, 'en') || 'Unknown',
+            country:
+                countries.getName(location?.country ?? '', 'en') || 'Unknown',
             city: location?.city || 'Unknown',
             latidute: location?.ll?.[0] ?? 0,
             longitude: location?.ll?.[1] ?? 0,

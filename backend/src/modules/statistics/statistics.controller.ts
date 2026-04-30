@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { ApiOperation } from '@nestjs/swagger';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
 
 @Controller('statistics')
 export class StatisticsController {

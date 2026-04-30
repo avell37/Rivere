@@ -1,9 +1,10 @@
 'use client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
+
+import { IUser } from '@/entities/User'
 
 import { handleApiError } from '@/shared/utils'
 
@@ -11,7 +12,6 @@ import { sendVerifyToken, verifyAccount } from '../api/verifyApi'
 
 export const useVerifyEmail = (options?: { onSuccess?: () => void }) => {
 	const [code, setCode] = useState('')
-	const router = useRouter()
 	const t = useTranslations()
 	const queryClient = useQueryClient()
 
@@ -33,7 +33,7 @@ export const useVerifyEmail = (options?: { onSuccess?: () => void }) => {
 		mutationKey: ['verify email'],
 		mutationFn: (code: string) => verifyAccount(code),
 		onSuccess: () => {
-			queryClient.setQueryData(['get user data'], (oldData: any) => ({
+			queryClient.setQueryData(['get user data'], (oldData: IUser) => ({
 				...oldData,
 				isEmailVerified: true
 			}))

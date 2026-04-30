@@ -1,6 +1,4 @@
 'use client'
-import { UseFormReturn } from 'react-hook-form'
-
 import {
 	BackgroundPicker,
 	BackgroundPreview,
@@ -8,11 +6,7 @@ import {
 } from '@/shared/ui/custom'
 import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
 
-interface CreateBoardFormProps {
-	form: UseFormReturn<any>
-	onSubmit: (data: any) => void
-	t: (key: string) => string
-}
+import { CreateBoardFormProps } from '../model/types/CreateBoardProps'
 
 export const CreateBoardForm = ({
 	form,

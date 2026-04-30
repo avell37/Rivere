@@ -9,7 +9,7 @@ import { useCreateColumn } from '../model/hooks/useCreateColumn'
 
 import { CreateColumnForm } from './CreateColumnForm'
 
-export const CreateColumnModal = memo(({ boardId }: { boardId: string }) => {
+const CreateColumnModalComponent = ({ boardId }: { boardId: string }) => {
 	const [open, setOpen] = useState(false)
 	const { form, onSubmit } = useCreateColumn({
 		boardId,
@@ -38,4 +38,6 @@ export const CreateColumnModal = memo(({ boardId }: { boardId: string }) => {
 			<CreateColumnForm form={form} onSubmit={onSubmit} t={t} />
 		</Modal>
 	)
-})
+}
+
+export const CreateColumnModal = memo(CreateColumnModalComponent)

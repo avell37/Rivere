@@ -3,7 +3,7 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class UpdateAchievementInput {
     @IsNotEmpty({ message: 'ID достижения обязателен' })
     @IsString({ message: 'ID достижения должен быть строкой' })
-    id: string;
+    id!: string;
 
     @IsOptional()
     @IsString({ message: 'Название достижения должно быть строкой' })

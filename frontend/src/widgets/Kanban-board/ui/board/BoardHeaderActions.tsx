@@ -1,3 +1,4 @@
+'use client'
 import { Link, Users } from 'lucide-react'
 import { memo } from 'react'
 
@@ -15,7 +16,7 @@ import { Button } from '@/shared/ui/external'
 
 import { BoardActions } from './BoardActions'
 
-export const BoardHeaderActions = memo(({ board }: BoardHeaderActionsProps) => {
+const BoardHeaderActionsComponent = ({ board }: BoardHeaderActionsProps) => {
 	const { isOwner } = useBoardPermissions(board.id)
 
 	return (
@@ -63,4 +64,6 @@ export const BoardHeaderActions = memo(({ board }: BoardHeaderActionsProps) => {
 			{isOwner && <BoardActions boardId={board.id} />}
 		</div>
 	)
-})
+}
+
+export const BoardHeaderActions = memo(BoardHeaderActionsComponent)

@@ -1,8 +1,8 @@
 import { Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { BoardInvitesService } from './board-invites.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
 
 @Controller('boardInvites')
 export class BoardInvitesController {

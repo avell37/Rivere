@@ -1,6 +1,6 @@
 import { CalendarIcon } from 'lucide-react'
 import { useLocale } from 'next-intl'
-import { Control } from 'react-hook-form'
+import { Control, FieldValues, Path } from 'react-hook-form'
 
 import {
 	Button,
@@ -14,21 +14,21 @@ import {
 	PopoverTrigger
 } from '@/shared/ui/external'
 
-interface FormDatePickerControllerProps {
-	name: string
-	control: Control<any>
+interface FormDatePickerControllerProps<T extends FieldValues> {
+	name: Path<T>
+	control: Control<T>
 	label: string
 	placeholder: string
 	onChange?: (value: string) => void
 }
 
-export const FormDatePickerController = ({
+export const FormDatePickerController = <T extends FieldValues>({
 	name,
 	control,
 	label,
 	placeholder,
 	onChange
-}: FormDatePickerControllerProps) => {
+}: FormDatePickerControllerProps<T>) => {
 	const locale = useLocale()
 
 	return (

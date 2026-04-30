@@ -1,5 +1,5 @@
 'use client'
-import { UseFormReturn, useWatch } from 'react-hook-form'
+import { useWatch } from 'react-hook-form'
 
 import {
 	BackgroundPicker,
@@ -8,11 +8,7 @@ import {
 } from '@/shared/ui/custom'
 import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
 
-interface EditBoardFormProps {
-	form: UseFormReturn<any>
-	onSubmit: (data: any) => void
-	t: (key: string) => string
-}
+import { EditBoardFormProps } from '../model/types/EditBoardProps'
 
 export const EditBoardForm = ({ form, onSubmit, t }: EditBoardFormProps) => {
 	const background = useWatch({

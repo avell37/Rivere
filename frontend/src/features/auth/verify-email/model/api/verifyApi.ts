@@ -1,7 +1,7 @@
 import { baseAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
 
-export const sendVerifyToken = async (): Promise<Boolean> => {
+export const sendVerifyToken = async (): Promise<boolean> => {
 	const response = await baseAxios.post(`${API_URL.verification()}send-token`)
 	return response.data
 }

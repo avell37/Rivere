@@ -12,7 +12,7 @@ export const useNotifications = (userId?: string | null) => {
 
 		const socket = getNotificationsSocket(userId)
 
-		socket.on('notification', notification =>
+		socket.on('notification', () =>
 			queryClient.invalidateQueries({
 				queryKey: ['get user notifications', userId]
 			})
@@ -22,5 +22,5 @@ export const useNotifications = (userId?: string | null) => {
 			socket.off('notification')
 			socket.disconnect()
 		}
-	}, [userId])
+	}, [userId, queryClient])
 }

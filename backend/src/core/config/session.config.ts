@@ -1,9 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import session from 'express-session';
 import { RedisService } from '../redis/redis.service';
-import { ms, StringValue } from 'src/shared/utils/ms.util';
-import { parseBoolean } from 'src/shared/utils/parse-boolean.util';
 import RedisStore from 'connect-redis';
+import { ms, StringValue } from '@/shared/utils/ms.util';
+import { parseBoolean } from '@/shared/utils/parse-boolean.util';
 
 export function sessionConfig(config: ConfigService, redis: RedisService) {
     return session({

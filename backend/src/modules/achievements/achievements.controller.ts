@@ -8,14 +8,14 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AchievementsService } from './achievements.service';
-import { Roles } from 'src/shared/decorators/roles.decorator';
-import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { CreateAchievementInput } from './inputs/create-achievement.input';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
 import { UpdateAchievementInput } from './inputs/update-achievement.input';
 import { ApiOperation } from '@nestjs/swagger';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { UserRole } from '@prisma/client';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { Roles } from '@/shared/decorators/roles.decorator';
+import { RolesGuard } from '@/shared/guards/roles.guard';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
 
 @Controller('achievements')
 @Authorization()

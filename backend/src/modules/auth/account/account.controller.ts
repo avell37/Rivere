@@ -10,8 +10,6 @@ import {
 } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateUserInput } from './inputs/create-user.input';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
-import { SessionUser } from 'src/shared/decorators/session-user.decorator';
 import { ChangeUsernameInput } from './inputs/change-username.input';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
@@ -19,9 +17,11 @@ import { ApiOperation } from '@nestjs/swagger';
 import { ChangeNicknameInput } from './inputs/change-nickname';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
-import { UserAgent } from 'src/shared/decorators/user-agent.decorator';
-import { SkipBanCheck } from 'src/shared/decorators/skip-ban.decorator';
 import type { User } from '@prisma/client';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { SkipBanCheck } from '@/shared/decorators/skip-ban.decorator';
+import { SessionUser } from '@/shared/decorators/session-user.decorator';
+import { UserAgent } from '@/shared/decorators/user-agent.decorator';
 
 @Controller('account')
 export class AccountController {

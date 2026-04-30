@@ -5,10 +5,14 @@ import { Socket } from 'socket.io-client'
 
 import { boardKeys } from '@/entities/Board'
 
-export const useColumnEvents = (socket: Socket | null, boardId: string) => {
+export const useColumnEvents = (
+	socketRef: React.MutableRefObject<Socket | null>,
+	boardId: string
+) => {
 	const queryClient = useQueryClient()
 
 	useEffect(() => {
+		const socket = socketRef.current
 		if (!socket) return
 
 		const invalidateBoard = () => {
@@ -28,5 +32,5 @@ export const useColumnEvents = (socket: Socket | null, boardId: string) => {
 			socket.off('column:deleted', invalidateBoard)
 			socket.off('column:reordered', invalidateBoard)
 		}
-	}, [socket, boardId, queryClient])
+	}, [socketRef, boardId, queryClient])
 }

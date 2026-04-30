@@ -27,15 +27,21 @@ export const Banned = () => {
 		}
 	}, [user, isLoading, router])
 
+	const bannedUntilDate = user?.bannedUntil
+		? new Date(user.bannedUntil)
+		: null
+
 	return (
 		<div className='h-screen flex items-center justify-center'>
 			<div className='p-6 rounded-xl bg-card text-center'>
 				<h1 className='text-2xl font-bold'>
 					Вы заблокированы на сайте Rivere
 				</h1>
-				<p className='mt-2 text-sm'>
-					до: {new Date(user?.bannedUntil!).toLocaleString()}
-				</p>
+				{bannedUntilDate && (
+					<p className='mt-2 text-sm'>
+						до: {bannedUntilDate.toLocaleString()}
+					</p>
+				)}
 				{user?.banReason && (
 					<p className='mt-1 text-sm'>Причина: {user.banReason}</p>
 				)}

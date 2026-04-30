@@ -1,15 +1,15 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import type { Request } from 'express';
-import { PrismaService } from 'src/core/prisma/prisma.service';
-import { MailService } from 'src/modules/libs/mail/mail.service';
 import { ResetPasswordInput } from './inputs/reset-password.input';
-import { getSessionMetadata } from 'src/shared/utils/session-metadata.util';
 import { ConfigService } from '@nestjs/config';
 import { TokenService } from '../token/token.service';
 import { hash } from 'argon2';
 import { CreateNewPasswordInput } from './inputs/create-new-password.input';
 import { VerifyTokenInput } from './inputs/verify-token.input';
 import { TokenType } from '@prisma/client';
+import { MailService } from '@/modules/libs/mail/mail.service';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { getSessionMetadata } from '@/shared/utils/session-metadata.util';
 
 @Injectable()
 export class PasswordRecoveryService {

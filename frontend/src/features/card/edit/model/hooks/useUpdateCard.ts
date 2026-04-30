@@ -31,7 +31,7 @@ export const useUpdateCard = (cardId: string, key: EditableKey) => {
 		if (isEditing) {
 			previousValueRef.current = getValues(key) as EditableValue
 		}
-	}, [isEditing, getValues])
+	}, [isEditing, getValues, key])
 
 	const handleBlur = (value: EditableValue) => {
 		setIsEditing(false)

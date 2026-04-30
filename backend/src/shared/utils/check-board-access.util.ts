@@ -1,5 +1,5 @@
+import { PrismaService } from '@/core/prisma/prisma.service';
 import { ForbiddenException } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma/prisma.service';
 
 export async function checkBoardAccess({
     prisma,

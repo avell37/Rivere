@@ -1,14 +1,8 @@
 'use client'
-import { UseFormReturn } from 'react-hook-form'
-
 import { FormInputController } from '@/shared/ui/custom'
 import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
 
-interface CreateColumnFormProps {
-	form: UseFormReturn<any>
-	onSubmit: (data: any) => void
-	t: (key: string) => string
-}
+import { CreateColumnFormProps } from '../model/types/CreateColumnProps'
 
 export const CreateColumnForm = ({
 	form,

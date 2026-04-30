@@ -8,12 +8,12 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { Authorization } from 'src/shared/decorators/authorization.decorator';
-import { Roles } from 'src/shared/decorators/roles.decorator';
-import { RolesGuard } from 'src/shared/guards/roles.guard';
-import { SessionAuthGuard } from 'src/shared/guards/session-auth.guard';
 import { BanUserInput } from './input/ban-user.input';
 import { UserRole } from '@prisma/client';
+import { SessionAuthGuard } from '@/shared/guards/session-auth.guard';
+import { RolesGuard } from '@/shared/guards/roles.guard';
+import { Authorization } from '@/shared/decorators/authorization.decorator';
+import { Roles } from '@/shared/decorators/roles.decorator';
 
 @UseGuards(SessionAuthGuard, RolesGuard)
 @Controller('admin')
