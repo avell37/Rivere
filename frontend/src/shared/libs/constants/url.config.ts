@@ -14,7 +14,8 @@ export const PUBLIC_URL = {
 	statistics: () => PUBLIC_URL.root('/statistics'),
 	boards: () => PUBLIC_URL.root('/boards'),
 	profile: () => PUBLIC_URL.root('/profile'),
-	userSettings: () => PUBLIC_URL.root('/profile/settings')
+	userSettings: () => PUBLIC_URL.root('/profile/settings'),
+	privacy: () => PUBLIC_URL.root('/privacy')
 }
 
 export const PRIVATE_URL = {

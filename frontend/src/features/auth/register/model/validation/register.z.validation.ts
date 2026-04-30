@@ -9,7 +9,10 @@ export const registerSchema = z.object({
 	password: z
 		.string()
 		.min(6, { message: 'validation.password.min' })
-		.max(64, { message: 'validation.password.max' })
+		.max(64, { message: 'validation.password.max' }),
+	privacy: z.boolean().refine(val => val === true, {
+		message: 'validation.privacy.required'
+	})
 })
 
 export type SignUpRequest = z.infer<typeof registerSchema>
