@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Button, Separator } from '@/shared/ui/external'
 
 import { Advantage } from './Advantage'
+import { Footer } from './Footer'
 import { MainHeader } from './MainHeader'
 
 export const Main = () => {
@@ -13,7 +14,7 @@ export const Main = () => {
 
 	return (
 		<div className='min-h-screen'>
-			<MainHeader t={t} />
+			<MainHeader />
 
 			<section className='max-w-6xl mx-auto px-4 pt-20 pb-32'>
 				<div className='pt-10'>
@@ -81,6 +82,8 @@ export const Main = () => {
 					</Button>
 				</Link>
 			</section>
+
+			<Footer />
 		</div>
 	)
 }

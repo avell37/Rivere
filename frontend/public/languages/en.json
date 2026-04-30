@@ -438,6 +438,58 @@
 			}
 		}
 	},
+	"privacy": {
+		"heading": "Privacy Policy",
+		"first": {
+			"heading": "1. General Provisions",
+			"description": "This website is a task and project management service. By using this website, the user agrees to this personal data processing policy."
+		},
+		"second": {
+			"heading": "2. What data we collect",
+			"firstData": "Email",
+			"secondData": "Username / nickname",
+			"thirdData": "Password (encrypted)",
+			"fourthData": "User content (boards, lists, cards, comments)",
+			"fifthData": "Technical data (IP address, browser, cookies)"
+		},
+		"third": {
+			"heading": "3. Purposes of data processing",
+			"firstData": "User registration and authorization",
+			"secondData": "Providing access to service functionality",
+			"thirdData": "Storing and displaying user data",
+			"fourthData": "Improving the quality of the service"
+		},
+		"fourth": {
+			"heading": "4. Cookies and authorization",
+			"description": "The site uses cookies to ensure proper operation, including user authorization. Cookies allow you to save user session and ensure secure access to the account."
+		},
+		"fifth": {
+			"heading": "5. Data Storage and Protection",
+			"description": "User data is stored on secure servers. Passwords are stored in encrypted form. We take reasonable measures to protect information from unauthorized access."
+		},
+		"sixth": {
+			"heading": "6. Transfer of Data to Third Parties",
+			"description": "We do not transfer personal data to third parties, except as required by law."
+		},
+		"seventh": {
+			"heading": "7. User Rights",
+			"firstData": "Editing Your Data",
+			"secondData": "Deleting Your Account",
+			"thirdData": "Revocation of Consent to Data Processing"
+		},
+		"eighth": {
+			"heading": "8. Contact Us",
+			"description": "For any questions regarding data processing, you can contact us by email:"
+		}
+	},
+	"banned": {
+		"heading": "You are blocked"
+	},
+	"footer": {
+		"heading": "© {date} Rivere. All rights reserved.",
+		"privacy": "Privacy Policy",
+		"contacts": "Contacts"
+	},
 	"validation": {
 		"username": {
 			"min": "Minimum username length is 4 characters",
@@ -453,6 +505,9 @@
 			"max": "Maximum password length is 64 characters",
 			"noMatches": "Passwords do not match",
 			"sameAsCurrent": "New password is the same as old password"
+		},
+		"privacy": {
+			"required": "Consent to this policy is required"
 		},
 		"board": {
 			"min": "Minimum board title length is 1 character",

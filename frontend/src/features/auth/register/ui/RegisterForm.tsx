@@ -6,6 +6,7 @@ import {
 	FormInputController,
 	RegistrationFields
 } from '@/shared/ui/custom'
+import { PrivacyCheckbox } from '@/shared/ui/custom/PrivacyCheckbox/PrivacyCheckbox'
 
 import { useRegister } from '../model/hooks/useRegister'
 
@@ -36,6 +37,8 @@ export const RegisterForm = () => {
 					className='pl-8'
 				/>
 			))}
+
+			<PrivacyCheckbox control={form.control} name='privacy' />
 		</FormAuthWrapper>
 	)
 }

@@ -17,6 +17,8 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     app.use(cookieParser());
 
+    app.setGlobalPrefix('api');
+
     app.use(sessionConfig(config, redis));
 
     app.enableCors({

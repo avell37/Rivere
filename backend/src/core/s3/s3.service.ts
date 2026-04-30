@@ -44,7 +44,6 @@ export class S3Service {
             await this.client.send(command);
             return fileName;
         } catch (error) {
-            console.log('S3 ERROR', error);
             throw new BadRequestException({
                 code: 'errors.upload.failed',
                 message: 'Failed to uploading file to S3 storage',
@@ -61,7 +60,6 @@ export class S3Service {
         try {
             return this.client.send(command);
         } catch (error) {
-            console.log('S3 ERROR', error);
             throw new BadRequestException({
                 code: 'errors.upload.failed',
                 message: 'Failed to deleting file from S3 storage',

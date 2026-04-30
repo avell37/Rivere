@@ -5,9 +5,10 @@ export async function middleware(req: NextRequest) {
 	const session = req.cookies.get('session')?.value
 	const pathname = req.nextUrl.pathname
 
-	const authRoutes = pathname.startsWith('/auth')
+	const isPublicRoute =
+		pathname.startsWith('/auth') || pathname.startsWith('/privacy')
 
-	if (!session && !authRoutes) {
+	if (!session && !isPublicRoute) {
 		return NextResponse.redirect(new URL('/auth/login', req.url))
 	}
 
@@ -16,11 +17,11 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
 	matcher: [
-		'/auth/:path*',
 		'/statistics/:path*',
 		'/boards/:path*',
 		'/achievements/:path*',
 		'/invite/:path*',
-		'/profile/:path*'
+		'/profile/:path*',
+		'/privacy'
 	]
 }

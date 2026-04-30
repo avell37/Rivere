@@ -9,6 +9,7 @@ import {
 	ThemeProviderClient,
 	ToastProvider
 } from '@/shared/providers'
+import { CookieBanner } from '@/shared/ui/custom/CookieBanner/CookieBanner'
 
 import './globals.css'
 
@@ -47,6 +48,7 @@ export default async function RootLayout({
 						<ThemeProviderClient>
 							<ToastProvider />
 							{children}
+							<CookieBanner />
 						</ThemeProviderClient>
 					</QueryProvider>
 				</NextIntlClientProvider>
