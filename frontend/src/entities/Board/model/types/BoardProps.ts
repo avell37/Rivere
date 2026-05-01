@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl'
 
 import { ICard } from '@/entities/Card'
 import { IColumn } from '@/entities/Column'
+import { TranslateValues } from '@/entities/User'
 
 import { IBoard } from './IBoard'
 import { IBoardMember } from './IBoardMember'
