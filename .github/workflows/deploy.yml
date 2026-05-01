@@ -61,6 +61,7 @@ jobs:
                   key: ${{ secrets.SERVER_SSH_KEY }}
                   script: |
                       cd /var/www/Rivere
+                      git reset --hard
                       git pull origin main
-                      docker-compose down
-                      docker-compose up -d --build
+                      docker compose down
+                      docker compose up -d --build
