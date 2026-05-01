@@ -1,4 +1,5 @@
-import { TranslateValues } from '@/entities/User'
+'use client'
+import { useTranslations } from 'next-intl'
 
 import { ISession } from './ISession'
 
@@ -15,6 +16,6 @@ export interface SessionProps {
 export interface SessionListProps {
 	userSessions?: ISession[]
 	locale: string
-	t: (key: string, values?: TranslateValues) => string
+	t: ReturnType<typeof useTranslations>
 	terminateSelectedSession: (id: string) => void
 }
