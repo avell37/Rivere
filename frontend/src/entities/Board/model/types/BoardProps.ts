@@ -1,3 +1,6 @@
+'use client'
+import { useTranslations } from 'next-intl'
+
 import { ICard } from '@/entities/Card'
 import { IColumn } from '@/entities/Column'
 import { TranslateValues } from '@/entities/User'
@@ -26,7 +29,7 @@ export interface BoardMemberItemProps {
 	joinedAtText: string
 	canRemove: boolean
 	isLoading?: boolean
-	t: (key: string, values?: TranslateValues) => string
+	t: ReturnType<typeof useTranslations>
 	onRemove?: () => void
 }
 

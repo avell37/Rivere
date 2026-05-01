@@ -1,6 +1,8 @@
 'use client'
 import { UseFormReturn } from 'react-hook-form'
 
+import { Priority } from '@/entities/Card'
+
 import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
 
 export interface CreateCardProps extends IBoardColumnIdentifiers {
@@ -10,8 +12,8 @@ export interface CreateCardProps extends IBoardColumnIdentifiers {
 export interface CreateCardFormData {
 	title: string
 	description?: string
-	priority: string
-	deadline?: Date
+	priority: Priority
+	deadline?: string
 }
 
 export interface CreateCardFormProps {

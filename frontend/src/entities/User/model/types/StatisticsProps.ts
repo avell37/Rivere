@@ -1,3 +1,6 @@
+'use client'
+import { useTranslations } from 'next-intl'
+
 import { ActivityDay } from './IUserStatistics'
 
 export type TranslateValues = Record<
@@ -14,10 +17,10 @@ export interface StatisticsCardProps {
 export interface ActivityCellProps {
 	date: string
 	value: number
-	t: (key: string, values?: TranslateValues) => string
+	t: ReturnType<typeof useTranslations>
 }
 
 export interface ActivityCardProps {
 	days: ActivityDay[]
-	t: (key: string, values?: TranslateValues) => string
+	t: ReturnType<typeof useTranslations>
 }
