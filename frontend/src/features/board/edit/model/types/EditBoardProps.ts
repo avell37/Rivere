@@ -4,7 +4,7 @@ import { UseFormReturn } from 'react-hook-form'
 import { BoardBackground } from '@/entities/Board'
 
 export interface EditBoardFormData {
-	title: string
+	title?: string
 	background: BoardBackground
 }
 
