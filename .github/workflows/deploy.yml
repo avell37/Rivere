@@ -60,7 +60,7 @@ jobs:
                   username: ${{ secrets.SERVER_USER }}
                   key: ${{ secrets.SERVER_SSH_KEY }}
                   script: |
-                      cd /var/www/rivere
+                      cd /var/www/Rivere
                       git pull origin main
                       docker-compose down
                       docker-compose up -d --build
