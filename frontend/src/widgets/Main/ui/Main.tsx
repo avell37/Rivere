@@ -64,7 +64,6 @@ export const Main = () => {
 										text={advantage.description}
 										icon={advantage.icon}
 										iconBg={advantage.wrapperIconClassname}
-										bg={advantage.wrapperClassname}
 									/>
 								))}
 							</div>
