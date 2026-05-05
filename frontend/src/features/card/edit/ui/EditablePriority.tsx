@@ -1,4 +1,5 @@
 'use client'
+import { CircleDashed } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useFormContext } from 'react-hook-form'
 
@@ -14,13 +15,16 @@ export const EditablePriority = ({ cardId, t }: EditableProps) => {
 	const tPriority = useTranslations('priority')
 
 	return (
-		<FormSelectController
-			name='priority'
-			label={t('editPriorityLabel')}
-			placeholder={t('editPriorityPlaceholder')}
-			control={control}
-			onChange={value => handleBlur(value)}
-			options={getPrioritySelectOptions(tPriority)}
-		/>
+		<div>
+			<FormSelectController
+				name='priority'
+				icon={<CircleDashed size={14} />}
+				label={t('editPriorityLabel')}
+				placeholder={t('editPriorityPlaceholder')}
+				control={control}
+				onChange={value => handleBlur(value)}
+				options={getPrioritySelectOptions(tPriority)}
+			/>
+		</div>
 	)
 }

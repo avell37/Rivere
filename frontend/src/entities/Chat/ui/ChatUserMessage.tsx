@@ -2,71 +2,30 @@ import { UserAvatar } from '@/entities/User'
 
 import { formatTime } from '@/shared/utils'
 
-import { useChatMessage } from '../model/hooks/useChatMessage'
 import { ChatUserMessageProps } from '../model/types/IChat'
 
-export const ChatUserMessage = ({
-	currentUserId,
-	message,
-	previousMessage,
-	locale
-}: ChatUserMessageProps) => {
-	const { isMyMessage, messageDate, showDateDivider, showAvatarAndNickname } =
-		useChatMessage({ message, previousMessage, currentUserId, locale })
-
+export const ChatUserMessage = ({ message, locale }: ChatUserMessageProps) => {
 	return (
-		<div className='mb-1'>
-			{showDateDivider && (
-				<div className='flex justify-center mb-4'>
-					<span className='text-xs dark:text-gray-400 px-2 py-1 rounded-2xl bg-gray-300/60 dark:bg-gray-600/50'>
-						{messageDate}
+		<div className='flex gap-3'>
+			<UserAvatar
+				avatar={message.user.avatar ?? undefined}
+				username={message.user.nickname}
+				avatarClassname='size-8 rounded-full'
+			/>
+
+			<div className='flex flex-col gap-1'>
+				<div className='flex items-center gap-2'>
+					<span className='text-sm font-medium'>
+						{message.user.nickname}
+					</span>
+					<span className='text-xs text-zinc-500'>
+						{formatTime(message.createdAt, locale)}
 					</span>
 				</div>
-			)}
 
-			<div
-				className={`flex items-end gap-2 ${
-					isMyMessage ? 'justify-end ml-10' : 'justify-start mr-5'
-				}`}
-			>
-				{!isMyMessage && showAvatarAndNickname && (
-					<UserAvatar
-						avatar={message.user.avatar ?? undefined}
-						username={message.user.nickname}
-						avatarClassname='size-10 rounded-full'
-					/>
-				)}
-
-				<div
-					className={`${
-						!isMyMessage && !showAvatarAndNickname ? 'ml-12' : ''
-					}`}
-				>
-					{!isMyMessage && showAvatarAndNickname && (
-						<div className='text-sm mb-1'>
-							{message.user.nickname}
-						</div>
-					)}
-
-					<div
-						className={`relative p-2 border rounded ${
-							isMyMessage
-								? 'rounded-l-2xl rounded-r-md bg-blue-500'
-								: 'rounded-l-md rounded-r-2xl bg-violet-800/80'
-						}`}
-					>
-						<p className='text-sm max-w-[330px] break-words whitespace-pre-wrap'>
-							{message.text}
-						</p>
-						<span
-							className={`select-none text-xs flex justify-end 
-								items-end pl-6
-								${isMyMessage ? 'text-blue-300' : 'text-violet-400'}`}
-						>
-							{formatTime(message.createdAt, locale)}
-						</span>
-					</div>
-				</div>
+				<p className='text-sm text-zinc-800 dark:text-zinc-200 whitespace-pre-wrap'>
+					{message.text}
+				</p>
 			</div>
 		</div>
 	)

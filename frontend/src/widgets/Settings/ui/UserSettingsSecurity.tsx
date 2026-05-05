@@ -22,19 +22,19 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 		<div className='flex flex-col gap-6 bg-sidebar p-4 px-2 rounded-lg border'>
 			<div className='flex flex-col gap-1'>
 				<div className='flex flex-col gap-1'>
-					<div className='flex justify-between items-center gap-2 p-4 hover:bg-black rounded-sm w-full transition-all'>
+					<div
+						className='flex flex-col sm:flex-row sm:items-center justify-between 
+					gap-3 p-4 hover:bg-black rounded-sm w-full transition-all'
+					>
 						<div className='flex gap-4'>
 							<div className='bg-linear-to-br from-orange-700 to-yellow-400 p-2 rounded-lg size-11'>
 								<Mail size={28} />
 							</div>
 							<div className='flex flex-col'>
-								<Label className='text-sm text-gray-300'>
-									{t('security.emailLabel')}
-								</Label>
-								<div className='flex items-center gap-2'>
-									<span className='text-sm'>
-										{user?.email}
-									</span>
+								<div className='flex gap-2'>
+									<Label className='text-sm text-gray-300'>
+										{t('security.emailLabel')}
+									</Label>
 									{!isVerified ? (
 										<Badge variant='destructive'>
 											{t(
@@ -44,7 +44,7 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 									) : (
 										<Badge
 											variant='default'
-											className='bg-green-500 text-white'
+											className='bg-green-500 text-white py-0'
 										>
 											{t(
 												'security.emailVerificationBadgeVerified'
@@ -52,9 +52,14 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 										</Badge>
 									)}
 								</div>
+								<div className='flex flex-wrap items-center gap-2'>
+									<span className='text-sm'>
+										{user?.email}
+									</span>
+								</div>
 							</div>
 						</div>
-						<div className='flex gap-2'>
+						<div className='flex flex-col sm:flex-row gap-2 w-full sm:w-auto'>
 							{!isVerified && (
 								<Modal
 									trigger={
@@ -85,7 +90,10 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 					</div>
 				</div>
 				<div className='flex gap-2'>
-					<div className='flex justify-between items-center gap-2 p-4 hover:bg-black rounded-sm w-full transition-all'>
+					<div
+						className='flex flex-col sm:flex-row sm:items-center justify-between 
+					gap-3 p-4 hover:bg-black rounded-sm w-full transition-all'
+					>
 						<div className='flex gap-4'>
 							<div className='bg-linear-to-br from-orange-700 to-yellow-400 p-2 rounded-lg'>
 								<KeyRound size={28} />

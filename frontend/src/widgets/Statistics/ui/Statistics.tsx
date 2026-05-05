@@ -16,7 +16,7 @@ export const Statistics = () => {
 	const fields = StatisticsFields(data, t)
 
 	return (
-		<div className='container mx-auto flex flex-col gap-6 p-8 px-0 w-full'>
+		<div className='container mx-auto flex flex-col gap-6 p-8 px-4 w-full'>
 			<div className='flex flex-wrap gap-4'>
 				{fields.map(field => (
 					<StatisticsCard

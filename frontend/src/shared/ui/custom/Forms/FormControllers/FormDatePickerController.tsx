@@ -17,6 +17,7 @@ import {
 interface FormDatePickerControllerProps<T extends FieldValues> {
 	name: Path<T>
 	control: Control<T>
+	icon?: React.ReactNode
 	label: string
 	placeholder: string
 	onChange?: (value: string) => void
@@ -25,6 +26,7 @@ interface FormDatePickerControllerProps<T extends FieldValues> {
 export const FormDatePickerController = <T extends FieldValues>({
 	name,
 	control,
+	icon,
 	label,
 	placeholder,
 	onChange
@@ -41,7 +43,8 @@ export const FormDatePickerController = <T extends FieldValues>({
 				return (
 					<FormItem>
 						{label && (
-							<FormLabel className='text-sm dark:text-gray-300'>
+							<FormLabel className='flex gap-1 text-sm dark:text-gray-300'>
+								{icon}
 								{label}
 							</FormLabel>
 						)}

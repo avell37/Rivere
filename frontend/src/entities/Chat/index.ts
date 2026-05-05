@@ -1,7 +1,5 @@
 export * from './model/api/chatApi'
 
-export * from './model/hooks/useChatMessage'
-
 export * from './model/store/useChatStore'
 
 export * from './model/types/IChat'

@@ -5,10 +5,8 @@ import { memo, useCallback, useMemo, useState } from 'react'
 
 import { ICard } from '@/entities/Card'
 
-import { Modal } from '@/shared/ui/custom'
-
 import { Card } from './Card'
-import { CardModal } from './CardModal'
+import { CardSheet } from './CardSheet'
 
 const CardListComponent = ({
 	cards,
@@ -49,16 +47,12 @@ const CardListComponent = ({
 			</ul>
 
 			{openCardId && (
-				<Modal
+				<CardSheet
 					open
 					onOpenChange={() => setOpenCardId(null)}
-					contentClassname='lg:p-0 lg:max-w-5xl'
-				>
-					<CardModal
-						card={cards.find(card => card.id === openCardId)}
-						boardId={boardId}
-					/>
-				</Modal>
+					card={cards.find(card => card.id === openCardId)}
+					boardId={boardId}
+				/>
 			)}
 		</div>
 	)

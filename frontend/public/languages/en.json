@@ -3,7 +3,8 @@
 		"heading": "Rivere",
 		"header": {
 			"login": "Login",
-			"register": "Register"
+			"register": "Register",
+			"boards": "Boards"
 		},
 		"startSection": {
 			"title": "Manage your tasks easily with",
@@ -13,21 +14,44 @@
 			"register": "Register"
 		},
 		"secondSection": {
-			"title": "Why Rivere?",
+			"title": "Why choose Rivere?",
 			"firstCard": {
-				"title": "Simplicity",
-				"description": "Minimal interface without overload. You can get started in a couple of minutes."
+				"title": "Start right now",
+				"description": "Start organizing your tasks and projects today."
 			},
 			"secondCard": {
-				"title": "Flexibility",
-				"description": "Customize boards and columns to suit any workflow."
+				"title": "Invite members to your team",
+				"description": "Work together on tasks and projects."
 			},
 			"thirdCard": {
-				"title": "Control",
-				"description": "See the progress of tasks and projects in one place."
+				"title": "Track your statistics",
+				"description": "Monitor your productivity and achieve new heights."
+			},
+			"fourthCard": {
+				"title": "Communicate with colleagues",
+				"description": "Discuss tasks and projects in a convenient chat."
+			},
+			"fifthCard": {
+				"title": "All protected",
+				"description": "Your information is always secure."
 			}
 		},
 		"thirdSection": {
+			"heading": "How to start?",
+			"firstStep": {
+				"title": "Create an account",
+				"description": "Register your account to start using Rivere."
+			},
+			"secondStep": {
+				"title": "Create your first board",
+				"description": "Add a board to start organizing your tasks and projects."
+			},
+			"thirdStep": {
+				"title": "Plan",
+				"description": "After creating a board, you can add cards, set deadlines and priorities, and track progress."
+			}
+		},
+		"fourthSection": {
 			"title": "Ready to get started?",
 			"description": "Create account and start managing tasks today.",
 			"register": "Create account"
@@ -108,8 +132,12 @@
 		"loading": "Your achievements:",
 		"issuedAt": "issued on {date} at {time}",
 		"firstBoard": {
-			"title": "School again??",
+			"title": "School again?",
 			"description": "Create your first board"
+		},
+		"firstMessage": {
+			"title": "Socialization",
+			"description": "Write your first message in the chat"
 		},
 		"tenTasksCompleted": {
 			"title": "I'm not rookie anymore",
