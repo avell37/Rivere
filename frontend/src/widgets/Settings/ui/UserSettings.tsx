@@ -32,7 +32,7 @@ export const UserSettings = () => {
 	if (!user) return <UserSettingsSkeleton />
 
 	return (
-		<div className='container mx-auto flex flex-col items-center justify-center py-4 gap-8'>
+		<div className='container mx-auto flex flex-col iitems-stretch md:items-center py-4 gap-6 md:gap-8 px-4'>
 			<div className='flex flex-col gap-6 w-full'>
 				<div className='flex flex-col gap-6'>
 					<h3 className='text-2xl font-bold'>
@@ -46,9 +46,12 @@ export const UserSettings = () => {
 							handleFileChange={handleFileChange}
 							handleChangeAvatarClick={handleChangeAvatarClick}
 						/>
-						<div className='flex items-center gap-4'>
-							<div className='flex items-end gap-2 w-full rounded-lg p-2 bg-background hover:bg-black transition-all'>
-								<div className='flex gap-4 w-full'>
+						<div className='flex flex-col md:flex-row gap-4'>
+							<div
+								className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full 
+							rounded-lg p-3 bg-background hover:bg-black transition-all'
+							>
+								<div className='flex gap-3 sm:gap-4 w-full'>
 									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
 										<User size={28} />
 									</div>
@@ -67,7 +70,7 @@ export const UserSettings = () => {
 									trigger={
 										<Button
 											variant='outline'
-											className='py-5'
+											className='w-full sm:w-auto'
 										>
 											{t(
 												'personalInformation.usernameButton'
@@ -79,8 +82,8 @@ export const UserSettings = () => {
 									<ChangeUsernameForm t={t} />
 								</Modal>
 							</div>
-							<div className='flex items-end gap-2 w-full rounded-lg p-2 bg-background hover:bg-black transition-all'>
-								<div className='flex gap-4 w-full'>
+							<div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full rounded-lg p-3 bg-background hover:bg-black transition-all'>
+								<div className='flex gap-3 sm:gap-4 w-full'>
 									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
 										<Contact size={28} />
 									</div>
@@ -99,7 +102,7 @@ export const UserSettings = () => {
 									trigger={
 										<Button
 											variant='outline'
-											className='py-5'
+											className='w-full sm:w-auto'
 										>
 											{t(
 												'personalInformation.nicknameButton'

@@ -42,11 +42,11 @@ export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
 					/>
 					<EditableTitle cardId={card.id} />
 				</div>
-				<div className='flex items-end gap-4 max-sm:flex-col max-sm:items-start'>
+				<div className='flex items-end gap-4 max-[470px]:flex-col max-sm:items-start'>
 					<EditablePriority cardId={card.id} t={t} />
 					<EditableDeadline cardId={card.id} t={t} />
 				</div>
-				<div className='flex flex-col gap-4'>
+				<div className='flex flex-col gap-4 mb-8'>
 					<div className='flex items-center gap-2'>
 						<TextAlignJustify size='16' />
 						<span className='text-xs font-bold'>

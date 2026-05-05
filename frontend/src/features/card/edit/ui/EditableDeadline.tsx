@@ -1,5 +1,5 @@
 'use client'
-import { X } from 'lucide-react'
+import { Calendar, X } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 
 import { FormDatePickerController } from '@/shared/ui/custom'
@@ -18,6 +18,7 @@ export const EditableDeadline = ({ cardId, t }: EditableProps) => {
 		<div className='flex items-center justify-center gap-2'>
 			<FormDatePickerController
 				name='deadline'
+				icon={<Calendar size={14} />}
 				label={t('editDeadlineLabel')}
 				placeholder={t('editDeadlinePlaceholder')}
 				control={control}

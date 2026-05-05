@@ -260,6 +260,7 @@ export class CardService {
             where: { cardId },
             include: {
                 messages: {
+                    orderBy: { createdAt: 'asc' },
                     include: {
                         user: {
                             select: {
