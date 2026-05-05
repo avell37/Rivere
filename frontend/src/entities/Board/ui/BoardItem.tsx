@@ -22,14 +22,14 @@ export const BoardItem = ({
 	return (
 		<Link
 			href={`${API_URL.boards()}${id}`}
-			className='flex flex-col relative rounded-md overflow-hidden cursor-pointer transition-all group min-w-[200px] w-full h-30'
+			className='flex flex-col relative rounded-md overflow-hidden cursor-pointer transition-all group max-w-[260px] w-full h-[120px]'
 		>
 			<BoardFavoriteButton
 				boardId={id}
 				isFavorite={isFavorite}
 				buttonClassname='absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition'
 			/>
-			<div className='rounded-t-md h-30' style={backgroundStyle} />
+			<div className='rounded-t-md h-full' style={backgroundStyle} />
 			<div className='p-2 text-white flex flex-col items-start group rounded-b-md bg-zinc-800/30 dark:bg-zinc-800/80'>
 				<h3 className='font-semibold text-base truncate max-w-[180px]'>
 					{title}
@@ -38,7 +38,7 @@ export const BoardItem = ({
 					{t('members', { count: members })}
 				</span>
 			</div>
-			<div className='absolute inset-0 group-hover:bg-black/35 transition-colors' />
+			<div className='absolute inset-0 group-hover:bg-black/35 transition-colors rounded-md' />
 		</Link>
 	)
 }

@@ -8,6 +8,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { MessagesService } from '../messages/messages.service';
 import { CreateMessageDto } from '../messages/dto/create-message.dto';
+import { AchievementsService } from '../achievements/achievements.service';
 
 @WebSocketGateway({
     cors: { origin: '*' },
@@ -17,7 +18,10 @@ export class ChatGateway {
     @WebSocketServer()
     server!: Server;
 
-    constructor(private readonly messagesService: MessagesService) {}
+    constructor(
+        private readonly messagesService: MessagesService,
+        private readonly achievementsService: AchievementsService,
+    ) {}
 
     handleConnection(client: Socket) {
         client.emit('connected', client.id);
@@ -46,6 +50,12 @@ export class ChatGateway {
     ) {
         try {
             const message = await this.messagesService.create(dto);
+
+            await this.achievementsService.updateAchievementProgress(
+                message.userId,
+                'firstMessage',
+                1,
+            );
 
             if (!message.chat) {
                 console.warn('Сообщение не связано с чатом:', message.id);

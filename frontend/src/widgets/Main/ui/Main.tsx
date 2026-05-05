@@ -1,89 +1,125 @@
 'use client'
-import { BarChart3, SlidersHorizontal, Sparkles } from 'lucide-react'
+import { LayoutDashboard, Pencil, Sparkles } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
-import { Button, Separator } from '@/shared/ui/external'
+import { Button } from '@/shared/ui/external'
 
-import { Advantage } from './Advantage'
+import { advantageCards } from '../model/lib/advantage.mapper'
+
+import { Advantage, AdvantageWithStep } from './Advantage'
 import { Footer } from './Footer'
 import { MainHeader } from './MainHeader'
 
 export const Main = () => {
 	const t = useTranslations('home')
+	const advantages = advantageCards(t)
 
 	return (
-		<div className='min-h-screen'>
-			<MainHeader />
+		<div className='relative min-h-screen bg-zinc-950 overflow-hidden'>
+			<div className='absolute inset-0 bg-linear-to-br from-zinc-950 via-indigo-950 to-zinc-900' />
 
-			<section className='max-w-6xl mx-auto px-4 pt-20 pb-32'>
-				<div className='pt-10'>
-					<h1 className='text-5xl font-bold mb-6 max-lg:text-3xl'>
-						{t('startSection.title')}{' '}
-						<span>{t('startSection.name')}</span>
-					</h1>
-					<p className='text-lg opacity-80 max-w-2xl mb-10 max-lg:text-sm'>
-						{t('startSection.description')}
-					</p>
+			<div className='relative z-10'>
+				<div className='min-h-screen'>
+					<MainHeader />
 
-					<div className='flex flex-col sm:flex-row gap-4'>
-						<Link href='auth/login'>
-							<Button className='cursor-pointer'>
-								{t('startSection.login')}
-							</Button>
-						</Link>
+					<section className='max-w-6xl mx-auto px-4 pt-20 pb-32'>
+						<div className='flex flex-col items-center text-center pt-10'>
+							<h1 className='text-7xl font-bold mb-6 max-lg:text-3xl'>
+								{t('startSection.title')}{' '}
+								<span>{t('startSection.name')}</span>
+							</h1>
+							<p className='text-xl opacity-80 max-w-2xl mb-10 max-lg:text-sm'>
+								{t('startSection.description')}
+							</p>
+
+							<div className='flex flex-col sm:flex-row gap-4'>
+								<Link href='auth/register'>
+									<Button
+										variant='outline'
+										size='lg'
+										className='cursor-pointer'
+									>
+										{t('startSection.register')}
+									</Button>
+								</Link>
+							</div>
+						</div>
+					</section>
+
+					<section className='py-24 text-center'>
+						<div className='max-w-6xl mx-auto px-4'>
+							<h2 className='text-4xl font-bold mb-14'>
+								{t('secondSection.title')}
+							</h2>
+
+							<div
+								className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 *:lg:col-span-2
+								[&>*:nth-last-child(-n+2)]:lg:col-span-3'
+							>
+								{advantages.map(advantage => (
+									<Advantage
+										key={advantage.key}
+										title={advantage.title}
+										text={advantage.description}
+										icon={advantage.icon}
+										iconBg={advantage.wrapperIconClassname}
+										bg={advantage.wrapperClassname}
+									/>
+								))}
+							</div>
+						</div>
+					</section>
+
+					<section className='py-20 text-center'>
+						<div className='max-w-6xl mx-auto px-4'>
+							<h2 className='text-4xl font-bold mb-14'>
+								Как начать работу?
+							</h2>
+							<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+								<AdvantageWithStep
+									step={1}
+									stepIcon={<Pencil />}
+									title={t('thirdSection.firstStep.title')}
+									text={t(
+										'thirdSection.firstStep.description'
+									)}
+								/>
+								<AdvantageWithStep
+									step={2}
+									stepIcon={<LayoutDashboard />}
+									title={t('thirdSection.secondStep.title')}
+									text={t(
+										'thirdSection.secondStep.description'
+									)}
+								/>
+								<AdvantageWithStep
+									step={3}
+									stepIcon={<Sparkles />}
+									title={t('thirdSection.thirdStep.title')}
+									text={t(
+										'thirdSection.thirdStep.description'
+									)}
+								/>
+							</div>
+						</div>
+					</section>
+
+					<section className='py-20 text-center'>
+						<h3 className='text-3xl font-semibold mb-4'>
+							{t('fourthSection.title')}
+						</h3>
+						<p className='mb-8'>{t('fourthSection.description')}</p>
 						<Link href='auth/register'>
 							<Button className='cursor-pointer'>
-								{t('startSection.register')}
+								{t('fourthSection.register')}
 							</Button>
 						</Link>
-					</div>
+					</section>
+
+					<Footer />
 				</div>
-			</section>
-
-			<Separator />
-
-			<section className='py-24'>
-				<div className='max-w-6xl mx-auto px-4'>
-					<h2 className='text-4xl font-bold mb-14'>
-						{t('secondSection.title')}
-					</h2>
-
-					<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-						<Advantage
-							title={t('secondSection.firstCard.title')}
-							text={t('secondSection.firstCard.description')}
-							icon={<Sparkles />}
-						/>
-						<Advantage
-							title={t('secondSection.secondCard.title')}
-							text={t('secondSection.secondCard.description')}
-							icon={<SlidersHorizontal />}
-						/>
-						<Advantage
-							title={t('secondSection.thirdCard.title')}
-							text={t('secondSection.thirdCard.description')}
-							icon={<BarChart3 />}
-						/>
-					</div>
-				</div>
-			</section>
-
-			<Separator />
-
-			<section className='py-20 text-center'>
-				<h3 className='text-3xl font-semibold mb-4'>
-					{t('thirdSection.title')}
-				</h3>
-				<p className='mb-8'>{t('thirdSection.description')}</p>
-				<Link href='auth/register'>
-					<Button className='cursor-pointer'>
-						{t('thirdSection.register')}
-					</Button>
-				</Link>
-			</section>
-
-			<Footer />
+			</div>
 		</div>
 	)
 }

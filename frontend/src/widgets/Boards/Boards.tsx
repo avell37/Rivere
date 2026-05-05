@@ -13,7 +13,7 @@ export const Boards = () => {
 	const { favoriteBoards, otherBoards, isPending } = useGetBoards()
 
 	return (
-		<div className='container mx-auto py-8'>
+		<div className='container mx-auto py-8 px-4'>
 			<div className={`mx-auto flex flex-col gap-4 transition-all`}>
 				{isPending ? (
 					<BoardListSkeleton />

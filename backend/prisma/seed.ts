@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as argon2 from 'argon2';
 import { PrismaClient, UserRole } from '@prisma/client';
+import { achievements } from './seed/achievements';
 
 const connectionString = process.env.DATABASE_URL!;
 const adapter = new PrismaPg({ connectionString });
@@ -27,6 +28,18 @@ async function main() {
             role: UserRole.CREATOR,
         },
     });
+
+    for (const achievement of achievements) {
+        await prisma.achievement.upsert({
+            where: { code: achievement.code },
+            update: {
+                title: achievement.title,
+                description: achievement.description,
+                goal: achievement.goal,
+            },
+            create: achievement,
+        });
+    }
 }
 
 main()

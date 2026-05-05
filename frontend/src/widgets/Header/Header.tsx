@@ -25,21 +25,21 @@ export const Header = () => {
 			className={`flex items-center transition-all duration-200 w-full
 		justify-between bg-header border-b px-4 py-2 z-10`}
 		>
-			<div className='flex justify-between w-full'>
-				<div className='flex items-center gap-6'>
+			<div className='flex justify-between w-full min-w-0'>
+				<div className='flex items-center gap-4 max-xl:gap-2 min-w-0'>
 					<BurgerMenu />
 					<Link
 						href={PUBLIC_URL.boards()}
-						className='text-3xl font-bold tracking-tight hover:opacity-80 transition mb-2'
+						className='text-xl sm:text-2xl md:text-3xl font-bold tracking-tight hover:opacity-80 transition truncate md:mb-2 max-md:mb-1'
 					>
 						Rivere
 					</Link>
-					<nav className='hidden md:flex items-center gap-4'>
+					<nav className='hidden md:flex items-center gap-4 max-xl:gap-2'>
 						{headerNavFields.map(item => (
 							<Link
 								key={item.title}
 								href={item.url}
-								className='flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition'
+								className='flex items-center gap-2 px-3 py-2 max-xl:px-1 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition'
 							>
 								<item.icon className='w-4 h-4' />
 								<span>{item.title}</span>
@@ -64,7 +64,7 @@ export const BurgerMenu = () => {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<button className='p-2 rounded-md hover:bg-muted transition md:hidden'>
+				<button className='rounded-md hover:bg-muted transition md:hidden cursor-pointer'>
 					<Menu className='w-5 h-5' />
 				</button>
 			</SheetTrigger>
