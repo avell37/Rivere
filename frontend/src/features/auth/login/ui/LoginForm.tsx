@@ -38,7 +38,7 @@ export const LoginForm = () => {
 									variant='none'
 									size='none'
 									type='button'
-									className='text-xs text-gray-400 cursor-pointer hover:underline'
+									className='text-xs text-muted-foreground cursor-pointer hover:underline'
 									onClick={() =>
 										router.push(
 											PUBLIC_URL.recoveryPassword()
@@ -54,6 +54,7 @@ export const LoginForm = () => {
 								{...field}
 								label={undefined}
 								className='pl-8'
+								disabled={isPending}
 							/>
 						</div>
 					) : (
@@ -62,6 +63,7 @@ export const LoginForm = () => {
 							control={form.control}
 							{...field}
 							className='pl-8'
+							disabled={isPending}
 						/>
 					)}
 				</div>

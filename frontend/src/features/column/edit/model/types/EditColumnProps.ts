@@ -11,6 +11,7 @@ export interface EditColumnFormProps<
 	T extends FieldValues = EditColumnFormValues
 > {
 	form: UseFormReturn<T>
+	isPending?: boolean
 	onSubmit: (data: T) => void
 	t: (key: string) => string
 }

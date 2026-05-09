@@ -24,15 +24,15 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 				<div className='flex flex-col gap-1'>
 					<div
 						className='flex flex-col sm:flex-row sm:items-center justify-between 
-					gap-3 p-4 hover:bg-black rounded-sm w-full transition-all'
+					gap-3 p-4 hover:bg-black/10 rounded-sm w-full transition-all'
 					>
 						<div className='flex gap-4'>
 							<div className='bg-linear-to-br from-orange-700 to-yellow-400 p-2 rounded-lg size-11'>
-								<Mail size={28} />
+								<Mail size={28} className='text-white' />
 							</div>
 							<div className='flex flex-col'>
 								<div className='flex gap-2'>
-									<Label className='text-sm text-gray-300'>
+									<Label className='text-sm text-black/90 dark:text-gray-300'>
 										{t('security.emailLabel')}
 									</Label>
 									{!isVerified ? (
@@ -68,7 +68,7 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 											className='cursor-pointer'
 											onClick={sendVerificationToken}
 										>
-											Подтвердить почту
+											{t('security.verifyEmail')}
 										</Button>
 									}
 									contentClassname='max-w-lg'
@@ -78,11 +78,16 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 							)}
 							<Modal
 								trigger={
-									<Button variant='outline'>
+									<Button
+										variant='outline'
+										className='cursor-pointer'
+									>
 										{t('security.emailButton')}
 									</Button>
 								}
 								contentClassname='max-w-md'
+								title={t('security.emailTitle')}
+								description={t('security.emailDescription')}
 							>
 								<ChangeEmailForm t={t} />
 							</Modal>
@@ -92,28 +97,33 @@ export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 				<div className='flex gap-2'>
 					<div
 						className='flex flex-col sm:flex-row sm:items-center justify-between 
-					gap-3 p-4 hover:bg-black rounded-sm w-full transition-all'
+					gap-3 p-4 hover:bg-black/10 rounded-sm w-full transition-all'
 					>
 						<div className='flex gap-4'>
 							<div className='bg-linear-to-br from-orange-700 to-yellow-400 p-2 rounded-lg'>
-								<KeyRound size={28} />
+								<KeyRound size={28} className='text-white' />
 							</div>
 							<div>
-								<Label className='text-sm text-gray-300'>
+								<Label className='text-sm text-black/90 dark:text-gray-300'>
 									{t('security.passwordLabel')}
 								</Label>
-								<span className='text-xs text-gray-400'>
-									{t('security.passwordDescription')}
+								<span className='text-xs text-black/80 dark:text-gray-400'>
+									{t('security.passwordSecret')}
 								</span>
 							</div>
 						</div>
 						<Modal
 							trigger={
-								<Button variant='outline'>
+								<Button
+									variant='outline'
+									className='cursor-pointer'
+								>
 									{t('security.passwordButton')}
 								</Button>
 							}
 							contentClassname='max-w-md'
+							title={t('security.passwordTitle')}
+							description={t('security.passwordDescription')}
 						>
 							<ChangePasswordForm t={t} />
 						</Modal>

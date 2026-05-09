@@ -17,7 +17,7 @@ export const DeleteColumnModal = ({
 	open,
 	onOpenChange
 }: DeleteColumnModalProps) => {
-	const { onSubmit } = useDeleteColumn({ columnId, boardId })
+	const { onSubmit, isPending } = useDeleteColumn({ columnId, boardId })
 	const t = useTranslations('column.delete')
 
 	return (
@@ -29,6 +29,7 @@ export const DeleteColumnModal = ({
 			actionText={t('deleteActionText')}
 			cancelText={t('deleteCancelText')}
 			onSubmit={onSubmit}
+			isPending={isPending}
 		/>
 	)
 }

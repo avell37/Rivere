@@ -16,8 +16,6 @@ import {
 import { LanguageSwitcher } from '../LanguageSwitcher/ui/LanguageSwitcher'
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher'
 
-import { AuthSocials } from './AuthSocials'
-
 interface AuthWrapperProps {
 	children: React.ReactNode
 	btnLabel?: string
@@ -84,15 +82,7 @@ export const AuthWrapper = ({
 											? t('registerDescription')
 											: t('loginDescription')}
 									</CardDescription>
-									<AuthSocials />
 								</CardHeader>
-								<div className='flex items-center text-sm text-muted-foreground'>
-									<div className='flex-1 h-px bg-border ml-6' />
-									<span className='px-3'>
-										{t('formSeparator')}
-									</span>
-									<div className='flex-1 h-px bg-border mr-6' />
-								</div>
 							</>
 						)}
 						<CardContent>{children}</CardContent>

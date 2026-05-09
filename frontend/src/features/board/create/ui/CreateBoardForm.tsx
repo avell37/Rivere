@@ -4,12 +4,19 @@ import {
 	BackgroundPreview,
 	FormInputController
 } from '@/shared/ui/custom'
-import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
+import {
+	Button,
+	DialogClose,
+	DialogFooter,
+	Form,
+	Spinner
+} from '@/shared/ui/external'
 
 import { CreateBoardFormProps } from '../model/types/CreateBoardProps'
 
 export const CreateBoardForm = ({
 	form,
+	isPending,
 	onSubmit,
 	t
 }: CreateBoardFormProps) => {
@@ -26,14 +33,37 @@ export const CreateBoardForm = ({
 					name='title'
 					label={t('createModalLabel')}
 					placeholder={t('createModalPlaceholder')}
+					disabled={isPending}
 					control={form.control}
 				/>
-				<BackgroundPicker control={form.control} />
+				<BackgroundPicker
+					control={form.control}
+					isPending={isPending}
+				/>
 				<DialogFooter>
-					<Button type='submit'>{t('createModalSubmit')}</Button>
+					<Button
+						variant='outline'
+						type='submit'
+						className='relative flex justify-center items-center rounded-md'
+						disabled={isPending}
+					>
+						<span className={isPending ? 'invisible' : 'visible'}>
+							{t('createModalSubmit')}
+						</span>
+
+						{isPending && (
+							<div className='absolute inset-0 flex items-center justify-center'>
+								<Spinner />
+							</div>
+						)}
+					</Button>
 
 					<DialogClose asChild>
-						<Button variant='outline'>
+						<Button
+							type='button'
+							variant='outline'
+							disabled={isPending}
+						>
 							{t('createModalClose')}
 						</Button>
 					</DialogClose>

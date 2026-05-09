@@ -1,3 +1,4 @@
+import { Button, Spinner } from '../../external'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -17,6 +18,8 @@ interface AlertProps {
 	actionText: string
 	cancelText: string
 	open?: boolean
+	isPending?: boolean
+
 	onSubmit?: () => void
 	onOpenChange?: (open: boolean) => void
 }
@@ -27,6 +30,7 @@ export const Alert = ({
 	description,
 	actionText,
 	cancelText,
+	isPending,
 	open,
 	onOpenChange,
 	onSubmit
@@ -42,16 +46,38 @@ export const Alert = ({
 						{title}
 					</AlertDialogTitle>
 					{description && (
-						<AlertDialogDescription className='text-xs text-red-400'>
+						<AlertDialogDescription className='text-sm'>
 							{description}
 						</AlertDialogDescription>
 					)}
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogAction onClick={onSubmit}>
-						{actionText}
+					<AlertDialogAction asChild>
+						<Button
+							variant='destructive'
+							onClick={e => {
+								e.preventDefault()
+								onSubmit?.()
+							}}
+							disabled={isPending}
+							className='relative text-white hover:bg-red-900'
+						>
+							<span
+								className={isPending ? 'invisible' : 'visible'}
+							>
+								{actionText}
+							</span>
+
+							{isPending && (
+								<div className='absolute inset-0 flex items-center justify-center'>
+									<Spinner />
+								</div>
+							)}
+						</Button>
 					</AlertDialogAction>
-					<AlertDialogCancel>{cancelText}</AlertDialogCancel>
+					<AlertDialogCancel disabled={isPending}>
+						{cancelText}
+					</AlertDialogCancel>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

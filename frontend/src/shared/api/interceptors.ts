@@ -16,9 +16,14 @@ baseAxios.interceptors.response.use(
 	err => {
 		if (err.response?.status === 401) {
 			if (typeof window !== 'undefined') {
-				const isAuthPage = window.location.pathname.includes('/auth')
+				const pathname = window.location.pathname
+				const publicRoutes = ['/', '/privacy', '/auth']
 
-				if (!isAuthPage) {
+				const isPublicRoute = publicRoutes.some(
+					route => pathname === route || pathname.startsWith(route)
+				)
+
+				if (!isPublicRoute) {
 					window.location.href = '/auth/login'
 				}
 			}

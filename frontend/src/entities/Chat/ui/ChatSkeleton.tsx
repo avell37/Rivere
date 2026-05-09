@@ -4,16 +4,14 @@ import { ChatMessagesSkeleton } from './ChatMessagesSkeleton'
 
 export const ChatSkeleton = () => {
 	return (
-		<div className='flex flex-col items-center p-4 border bg-zinc-900'>
-			<div className='flex flex-col h-[450px] w-[450px]'>
-				<div className='h-[400px] w-[450px] rounded-md p-2 overflow-hidden'>
-					<ChatMessagesSkeleton />
-				</div>
-
-				<div className='relative mt-2'>
-					<Skeleton className='h-10 w-full rounded-md' />
-					<Skeleton className='absolute top-2.5 right-2 h-5 w-5 rounded-sm' />
-				</div>
+		<div className='flex flex-col w-full max-h-86'>
+			<div className='flex-1 px-4 py-3'>
+				<ChatMessagesSkeleton />
+			</div>
+			<div className='relative mt-2 px-2'>
+				<Skeleton className='h-10 w-full rounded-md' />
+				<Skeleton className='absolute bottom-2.5 right-12 size-5 rounded-sm' />
+				<Skeleton className='absolute bottom-2.5 right-3 size-5 rounded-sm' />
 			</div>
 		</div>
 	)

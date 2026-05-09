@@ -5,7 +5,7 @@ import { Form } from '@/shared/ui/external'
 import { useChangeUsername } from '../../model/hooks/useChangeUsername'
 
 export const ChangeUsernameForm = ({ t }: { t: (key: string) => string }) => {
-	const { form, onSubmit } = useChangeUsername()
+	const { form, isPending, onSubmit } = useChangeUsername()
 
 	return (
 		<Form {...form}>
@@ -14,6 +14,7 @@ export const ChangeUsernameForm = ({ t }: { t: (key: string) => string }) => {
 				closeText={t('personalInformation.usernameModalClose')}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
+				isPending={isPending}
 			>
 				<FormInputController
 					name='username'
@@ -22,6 +23,7 @@ export const ChangeUsernameForm = ({ t }: { t: (key: string) => string }) => {
 						'personalInformation.usernameModalPlaceholder'
 					)}
 					control={form.control}
+					disabled={isPending}
 				/>
 			</FormWrapper>
 		</Form>

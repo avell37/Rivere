@@ -78,7 +78,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 					</Button>
 					{showEmoji && (
 						<div
-							className='absolute bottom-6 right-3 z-50'
+							className='absolute bottom-6 -right-20 z-50'
 							onWheel={e => e.stopPropagation()}
 						>
 							<Picker

@@ -1,13 +1,14 @@
 'use client'
 import { Link, Users } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { memo } from 'react'
 
 import {
+	BoardFavoriteButton,
 	BoardHeaderActionsProps,
 	BoardMembersList,
 	useBoardPermissions
 } from '@/entities/Board'
-import { BoardFavoriteButton } from '@/entities/Board/ui/BoardFavoriteButton'
 
 import { CreateInviteModal } from '@/features/board-invite'
 
@@ -17,6 +18,7 @@ import { Button } from '@/shared/ui/external'
 import { BoardActions } from './BoardActions'
 
 const BoardHeaderActionsComponent = ({ board }: BoardHeaderActionsProps) => {
+	const t = useTranslations()
 	const { isOwner } = useBoardPermissions(board.id)
 
 	return (
@@ -24,6 +26,7 @@ const BoardHeaderActionsComponent = ({ board }: BoardHeaderActionsProps) => {
 			<BoardFavoriteButton
 				boardId={board.id}
 				isFavorite={board.isFavorite}
+				isBoardPage={true}
 				buttonClassname='p-2 rounded-md hover:bg-white/70 dark:hover:bg-zinc-500 transition'
 			/>
 			<Modal
@@ -38,6 +41,8 @@ const BoardHeaderActionsComponent = ({ board }: BoardHeaderActionsProps) => {
 					</Button>
 				}
 				contentClassname='max-w-md'
+				title={t('invite.heading')}
+				description={t('invite.description')}
 			>
 				<CreateInviteModal boardId={board.id} />
 			</Modal>

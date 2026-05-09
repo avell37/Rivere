@@ -14,7 +14,7 @@ export const useDeleteCard = ({ cardId, boardId }: DeleteCardProps) => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 
-	const { mutate } = useMutation<ICard, unknown>({
+	const { mutate, isPending } = useMutation<ICard, unknown>({
 		mutationKey: ['delete card'],
 		mutationFn: () => deleteCard(cardId),
 		onSuccess: () => {
@@ -29,6 +29,7 @@ export const useDeleteCard = ({ cardId, boardId }: DeleteCardProps) => {
 	const onSubmit = () => mutate()
 
 	return {
-		onSubmit
+		onSubmit,
+		isPending
 	}
 }

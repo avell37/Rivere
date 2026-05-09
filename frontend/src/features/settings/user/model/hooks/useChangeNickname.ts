@@ -24,7 +24,7 @@ export const useChangeNickname = () => {
 		}
 	})
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationKey: ['update user data'],
 		mutationFn: (data: ChangeNicknameRequest) => changeNickname(data),
 		onSuccess: () => {
@@ -39,6 +39,7 @@ export const useChangeNickname = () => {
 
 	return {
 		form,
+		isPending,
 		onSubmit
 	}
 }

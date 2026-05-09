@@ -40,6 +40,7 @@ export const UserAdminCard = ({
 	changeRole: (role: string) => void
 }) => {
 	const t = useTranslations('admin.users.card')
+
 	if (!user) return null
 
 	const handleChangeRole = (role: UserRole) => {
@@ -76,7 +77,7 @@ export const UserAdminCard = ({
 				{currentUser.role === 'CREATOR' && user.role !== 'CREATOR' && (
 					<div className='flex flex-col gap-1'>
 						<Label className='text-xs text-muted-foreground'>
-							Изменить роль
+							{t('changeRole')}
 						</Label>
 						<Select
 							disabled={rolePending}

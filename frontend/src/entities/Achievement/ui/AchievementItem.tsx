@@ -62,12 +62,12 @@ export const AchievementItem = ({
 							: 'stroke-gray-400 opacity-40'
 					)}
 				/>
-				<p className='text-lg font-bold'>{t(`${code}.title`)}</p>
-				<span className='text-gray-400 text-sm'>
+				<p className='text-lg font-medium'>{t(`${code}.title`)}</p>
+				<span className='text-black/90 dark:text-gray-400 text-sm'>
 					{t(`${code}.description`)}
 				</span>
 				{achievedAt && (
-					<span className='text-gray-400 text-xs'>
+					<span className='text-black/80 dark:text-gray-400 text-xs'>
 						{t('issuedAt', {
 							date: formatDate(achievedAt, locale),
 							time: formatTime(achievedAt, locale)
@@ -76,7 +76,7 @@ export const AchievementItem = ({
 				)}
 				<div className='max-w-sm w-full text-center flex flex-col gap-4'>
 					<Progress value={percent} />
-					<span className=''>
+					<span className='text-black/80 dark:text-gray-400 text-sm'>
 						{progress}/{goal} ({percent}%)
 					</span>
 				</div>

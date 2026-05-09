@@ -16,7 +16,7 @@ const CreateCardModalComponent = ({
 	boardId
 }: IBoardColumnIdentifiers) => {
 	const [open, setOpen] = useState(false)
-	const { form, onSubmit } = useCreateCard({
+	const { form, isPending, onSubmit } = useCreateCard({
 		columnId,
 		boardId,
 		onSuccess: () => setOpen(false)
@@ -29,7 +29,7 @@ const CreateCardModalComponent = ({
 				<Button
 					variant='none'
 					size='none'
-					className='p-2 mt-2 border cursor-pointer bg-black hover:bg-background'
+					className='p-2 mt-2 border cursor-pointer bg-white dark:bg-black hover:bg-background'
 				>
 					<Plus />
 					{t('heading')}
@@ -40,7 +40,12 @@ const CreateCardModalComponent = ({
 			open={open}
 			onOpenChange={setOpen}
 		>
-			<CreateCardForm form={form} onSubmit={onSubmit} t={t} />
+			<CreateCardForm
+				form={form}
+				onSubmit={onSubmit}
+				isPending={isPending}
+				t={t}
+			/>
 		</Modal>
 	)
 }

@@ -129,6 +129,11 @@
 	"achievements": {
 		"heading": "Achievements",
 		"title": "Your achievements ({current}/{total}):",
+		"filters": {
+			"all": "All",
+			"earned": "Earned",
+			"locked": "Locked"
+		},
 		"loading": "Your achievements:",
 		"issuedAt": "issued on {date} at {time}",
 		"firstBoard": {
@@ -183,7 +188,7 @@
 			"description": "To start working with board, you need to create it, right?",
 			"createModalLabel": "Title",
 			"createModalPlaceholder": "Board name",
-			"createModalSubmit": "Add",
+			"createModalSubmit": "Create",
 			"createModalClose": "Close",
 			"createSuccess": "Board has been successfully created."
 		},
@@ -219,11 +224,11 @@
 	"column": {
 		"create": {
 			"heading": "Create column",
-			"createTitle": "Add a new column",
+			"createTitle": "Create a new column",
 			"createDescription": "Enter a title for the new column",
 			"createModalLabel": "Title",
 			"createModalPlaceholder": "Column title",
-			"createModalSubmit": "Add",
+			"createModalSubmit": "Create",
 			"createModalClose": "Close",
 			"createSuccess": "Column has been successfully created."
 		},
@@ -266,6 +271,7 @@
 			"createSuccess": "Card has been successfully created."
 		},
 		"edit": {
+			"comments": "Comments",
 			"description": "Description",
 			"addDeadline": "Add deadline",
 			"editDescription": "Empty...",
@@ -313,21 +319,28 @@
 			},
 			"personalInformation": {
 				"heading": "Personal information",
+				"usernameTitle": "Change username",
+				"usernameDescription": "Enter a new username. It must be unique and contain between 4 and 32 characters.",
 				"usernameLabel": "Username",
 				"usernameButton": "Change",
-				"usernameModalLabel": "Your username",
+				"usernameModalLabel": "Your new username",
 				"usernameModalPlaceholder": "Enter your new username",
 				"usernameModalSubmit": "Change",
 				"usernameModalClose": "Close",
+				"nicknameTitle": "Change nickname",
+				"nicknameDescription": "Enter a new nickname. It must be contain between 4 and 32 characters.",
 				"nicknameLabel": "Nickname",
 				"nicknameButton": "Change",
-				"nicknameModalLabel": "Your nickname",
+				"nicknameModalLabel": "Your new nickname",
 				"nicknameModalPlaceholder": "Enter your new nickname",
 				"nicknameModalSubmit": "Change",
 				"nicknameModalClose": "Close"
 			},
 			"security": {
 				"heading": "Security",
+				"verifyEmail": "Verify your email",
+				"emailTitle": "Change email",
+				"emailDescription": "Enter a new email. It must be unique.",
 				"emailLabel": "Email",
 				"emailButton": "Change",
 				"emailModalLabel": "Your new e-mail",
@@ -337,8 +350,10 @@
 				"emailVerificationBadgeUnverified": "Not confirmed",
 				"emailVerificationBadgeVerified": "Confirmed",
 				"emailVerificationButton": "Confirm email",
+				"passwordTitle": "Change password",
+				"passwordDescription": "Enter your old password, then create a new password and confirm it. You cannot use the same password twice.",
 				"passwordLabel": "Password",
-				"passwordDescription": "The password is hidden for security reasons",
+				"passwordSecret": "The password is hidden for security reasons",
 				"passwordButton": "Change",
 				"passwordModalTitle": "Change password:",
 				"currentPasswordPlaceholder": "Enter your current password",
@@ -389,6 +404,7 @@
 	},
 	"invite": {
 		"heading": "Invite to board",
+		"description": "The link is valid for 1 day. After accepting the invite, the link will be deleted.",
 		"createLink": "Create link",
 		"copyLink": "Link copied to clipboard",
 		"acceptedInvite": "You have successfully joined the board!",
@@ -404,6 +420,10 @@
 	},
 	"admin": {
 		"heading": "Admin panel",
+		"navigationBar": {
+			"statistics": "Statistics",
+			"users": "Users"
+		},
 		"trendWithPlus": "+{count} for today",
 		"trendWithoutPlus": "{count} for today",
 		"statistics": {
@@ -442,6 +462,7 @@
 				"actions": "Actions"
 			},
 			"card": {
+				"changeRole": "Change role",
 				"nickname": "Nickname:",
 				"role": "Role:",
 				"boards": "Total boards:",
@@ -455,7 +476,9 @@
 				"usersInvited": "Users invited:"
 			},
 			"banModal": {
-				"trigger": "Ban",
+				"ban": "Ban",
+				"unban": "Unban",
+				"unbanPending": "Unbanning...",
 				"heading": "Ban {nickname}",
 				"banReasonLabel": "Ban reason",
 				"banReasonPlaceholder": "Enter ban reason",
@@ -468,6 +491,9 @@
 	},
 	"privacy": {
 		"heading": "Privacy Policy",
+		"checkbox": {
+			"label": "I agree to the <link>Privacy Policy</link>"
+		},
 		"first": {
 			"heading": "1. General Provisions",
 			"description": "This website is a task and project management service. By using this website, the user agrees to this personal data processing policy."

@@ -1,10 +1,21 @@
 'use client'
 import { FormInputController } from '@/shared/ui/custom'
-import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
+import {
+	Button,
+	DialogClose,
+	DialogFooter,
+	Form,
+	Spinner
+} from '@/shared/ui/external'
 
 import { EditColumnFormProps } from '../model/types/EditColumnProps'
 
-export const EditColumnForm = ({ form, onSubmit, t }: EditColumnFormProps) => {
+export const EditColumnForm = ({
+	form,
+	isPending,
+	onSubmit,
+	t
+}: EditColumnFormProps) => {
 	return (
 		<Form {...form}>
 			<form
@@ -16,11 +27,34 @@ export const EditColumnForm = ({ form, onSubmit, t }: EditColumnFormProps) => {
 					label={t('editModalLabel')}
 					placeholder={t('editModalPlaceholder')}
 					control={form.control}
+					disabled={isPending}
 				/>
 				<DialogFooter>
-					<Button type='submit'>{t('editModalSubmit')}</Button>
+					<Button
+						variant='outline'
+						type='submit'
+						className='relative flex justify-center items-center rounded-md'
+						disabled={isPending}
+					>
+						<span className={isPending ? 'invisible' : 'visible'}>
+							{t('editModalSubmit')}
+						</span>
+
+						{isPending && (
+							<div className='absolute inset-0 flex items-center justify-center'>
+								<Spinner />
+							</div>
+						)}
+					</Button>
+
 					<DialogClose asChild>
-						<Button variant='outline'>{t('editModalClose')}</Button>
+						<Button
+							type='button'
+							variant='outline'
+							disabled={isPending}
+						>
+							{t('editModalClose')}
+						</Button>
 					</DialogClose>
 				</DialogFooter>
 			</form>

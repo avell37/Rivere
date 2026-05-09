@@ -9,6 +9,7 @@ export interface CreateBoardFormData {
 
 export interface CreateBoardFormProps {
 	form: UseFormReturn<CreateBoardFormData>
+	isPending?: boolean
 	onSubmit: (data: CreateBoardFormData) => void
 	t: (key: string) => string
 }

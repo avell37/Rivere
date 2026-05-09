@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { Control, FieldPath, FieldValues } from 'react-hook-form'
 
@@ -10,12 +11,16 @@ import { Checkbox } from '../../external/Checkbox/Checkbox'
 interface PrivacyCheckboxProps<T extends FieldValues> {
 	control: Control<T>
 	name: FieldPath<T>
+	isPending?: boolean
 }
 
 export const PrivacyCheckbox = <T extends FieldValues>({
 	control,
-	name
+	name,
+	isPending
 }: PrivacyCheckboxProps<T>) => {
+	const t = useTranslations()
+
 	return (
 		<FormField
 			control={control}
@@ -26,16 +31,22 @@ export const PrivacyCheckbox = <T extends FieldValues>({
 						<Checkbox
 							checked={field.value}
 							onCheckedChange={field.onChange}
+							disabled={isPending}
 						/>
 
-						<Label className='text-sm gap-1'>
-							Я согласен с{' '}
-							<Link
-								href={PUBLIC_URL.privacy()}
-								className='underline hover:text-primary'
-							>
-								политикой конфиденциальности
-							</Link>
+						<Label className='text-sm leading-snug max-w-full'>
+							<span className='break-words'>
+								{t.rich('privacy.checkbox.label', {
+									link: (chunks: React.ReactNode) => (
+										<Link
+											href={PUBLIC_URL.privacy()}
+											className='underline hover:text-primary'
+										>
+											{chunks}
+										</Link>
+									)
+								})}
+							</span>
 						</Label>
 					</div>
 

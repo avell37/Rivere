@@ -85,7 +85,7 @@ export const mapStatistics = (
 			value: data.banned.total,
 			description: t('admin.statistics.banned.description'),
 			wrapperIconClassname:
-				'bg-linear-to-br text-fuchsia-900 to-fuchsia-500',
+				'bg-linear-to-br from-fuchsia-900 to-fuchsia-500',
 			valueClassname: 'text-fuchsia-400',
 			trend: formatTrend(data.banned.today, t),
 			bottomContent: (

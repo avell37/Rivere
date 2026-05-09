@@ -14,7 +14,7 @@ export const useDeleteBoard = (boardId: string) => {
 	const router = useRouter()
 	const t = useTranslations()
 
-	const { mutate } = useMutation<boolean, unknown>({
+	const { mutate, isPending } = useMutation<boolean, unknown>({
 		mutationKey: ['delete board'],
 		mutationFn: () => deleteBoard(boardId),
 		onSuccess: () => {
@@ -27,5 +27,5 @@ export const useDeleteBoard = (boardId: string) => {
 
 	const onSubmit = () => mutate()
 
-	return { onSubmit }
+	return { onSubmit, isPending }
 }

@@ -7,6 +7,7 @@ export interface CreateColumnFormData {
 
 export interface CreateColumnFormProps {
 	form: UseFormReturn<CreateColumnFormData>
+	isPending?: boolean
 	onSubmit: (data: CreateColumnFormData) => void
 	t: (key: string) => string
 }

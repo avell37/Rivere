@@ -7,6 +7,8 @@ import { Socket } from 'socket.io-client'
 import { IChat, IMessage, fetchChat, useChatStore } from '@/entities/Chat'
 import { useUserStore } from '@/entities/User'
 
+import { useIsMobile } from '@/shared/config/useMobile'
+
 import { EmojiData } from '../types/ChatProps'
 import { getChatSocket } from '../utils/chat.socket'
 
@@ -23,10 +25,13 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 
 	const t = useTranslations('card.chat')
 	const locale = useLocale()
+	const isMobile = useIsMobile()
 
 	const handleKeySubmitMessage = (
 		e: React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
+		if (isMobile) return
+
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault()
 			handleSubmitMessage()

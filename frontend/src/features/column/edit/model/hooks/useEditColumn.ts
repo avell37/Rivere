@@ -31,7 +31,11 @@ export const useEditColumn = ({
 		}
 	})
 
-	const { mutate } = useMutation<IColumn, unknown, EditColumnRequest>({
+	const { mutate, isPending } = useMutation<
+		IColumn,
+		unknown,
+		EditColumnRequest
+	>({
 		mutationKey: ['update column'],
 		mutationFn: (data: EditColumnRequest) =>
 			updateColumn({ columnId, ...data }),
@@ -50,6 +54,7 @@ export const useEditColumn = ({
 
 	return {
 		form,
+		isPending,
 		onSubmit
 	}
 }

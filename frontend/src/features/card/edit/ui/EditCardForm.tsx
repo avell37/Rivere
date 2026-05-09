@@ -33,7 +33,7 @@ export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
 	return (
 		<Form {...form}>
 			<div className='flex flex-col gap-6 w-full pt-4'>
-				<div className='flex items-center gap-2'>
+				<div className='flex items-center gap-2 min-w-0'>
 					<CardDoneButton
 						cardId={card.id}
 						done={card.done}

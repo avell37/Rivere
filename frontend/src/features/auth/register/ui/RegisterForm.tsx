@@ -35,10 +35,15 @@ export const RegisterForm = () => {
 					control={form.control}
 					{...field}
 					className='pl-8'
+					disabled={isPending}
 				/>
 			))}
 
-			<PrivacyCheckbox control={form.control} name='privacy' />
+			<PrivacyCheckbox
+				name='privacy'
+				control={form.control}
+				isPending={isPending}
+			/>
 		</FormAuthWrapper>
 	)
 }

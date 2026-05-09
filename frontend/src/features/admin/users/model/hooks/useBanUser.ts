@@ -10,7 +10,7 @@ import {
 import { useSetBanUser } from './useAdminQueries'
 
 export const useBanUser = (userId: string) => {
-	const { banUserWithReason } = useSetBanUser(userId)
+	const { banUserWithReason, isPending } = useSetBanUser(userId)
 
 	const form = useForm<BanUserFormValues>({
 		resolver: zodResolver(BanUserSchema),
@@ -30,5 +30,9 @@ export const useBanUser = (userId: string) => {
 		})
 	}
 
-	return { form, onSubmit }
+	return {
+		form,
+		banPending: isPending,
+		onSubmit
+	}
 }

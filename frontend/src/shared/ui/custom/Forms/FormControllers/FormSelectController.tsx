@@ -24,6 +24,7 @@ interface FormSelectControllerProps<T extends FieldValues> {
 		label: string
 		icon?: React.ReactNode
 	}[]
+	disabled?: boolean
 }
 
 export const FormSelectController = <T extends FieldValues>({
@@ -33,7 +34,8 @@ export const FormSelectController = <T extends FieldValues>({
 	label,
 	placeholder,
 	onChange,
-	options
+	options,
+	disabled
 }: FormSelectControllerProps<T>) => {
 	return (
 		<FormField
@@ -54,6 +56,7 @@ export const FormSelectController = <T extends FieldValues>({
 							field.onChange(value)
 							onChange?.(value)
 						}}
+						disabled={disabled}
 					>
 						<SelectTrigger
 							className='w-48 cursor-pointer hover:bg-accent 

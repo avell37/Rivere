@@ -28,7 +28,7 @@ export const StatisticCard = ({
 				>
 					{icon}
 				</div>
-				<div className='absolute top-0 right-6 text-xs bg-green-900 p-2 rounded-xl text-green-500 font-medium'>
+				<div className='absolute top-0 right-6 text-xs text-green-300 bg-green-600 dark:bg-green-900 dark:text-green-500 p-2 rounded-xl font-medium'>
 					{trend}
 				</div>
 				<div>
