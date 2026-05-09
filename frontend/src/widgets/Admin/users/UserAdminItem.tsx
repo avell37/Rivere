@@ -99,10 +99,17 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 							<DropdownMenuContent align='end'>
 								<DropdownMenuItem asChild>
 									{isBanned ? (
-										<div onClick={() => removeBan()}>
+										<Button
+											variant='ghost'
+											onClick={() => removeBan()}
+											disabled={unbanPending}
+											className='w-full justify-start'
+										>
 											<UserRoundPlus size={14} />
-											{t('unban')}
-										</div>
+											{unbanPending
+												? t('unbanPending')
+												: t('unban')}
+										</Button>
 									) : (
 										<Modal
 											trigger={

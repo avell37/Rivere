@@ -480,6 +480,7 @@
 			"banModal": {
 				"ban": "Забанить",
 				"unban": "Разбанить",
+				"unbanPending": "Разбан...",
 				"heading": "Забанить {nickname}",
 				"banReasonLabel": "Причина блокировки",
 				"banReasonPlaceholder": "Введите причину блокировки",
