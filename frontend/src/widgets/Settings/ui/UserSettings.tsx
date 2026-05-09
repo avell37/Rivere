@@ -13,7 +13,7 @@ import {
 } from '@/features/settings'
 
 import { Modal } from '@/shared/ui/custom'
-import { Button, Label, Separator } from '@/shared/ui/external'
+import { Button, Label } from '@/shared/ui/external'
 
 import { UserSettingsAvatar } from './UserSettingsAvatar'
 import { UserSettingsSecurity } from './UserSettingsSecurity'
@@ -49,14 +49,17 @@ export const UserSettings = () => {
 						<div className='flex flex-col md:flex-row gap-4'>
 							<div
 								className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full 
-							rounded-lg p-3 bg-background hover:bg-black transition-all'
+							rounded-lg p-3 bg-background hover:bg-black/10 transition-all'
 							>
 								<div className='flex gap-3 sm:gap-4 w-full'>
 									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
-										<User size={28} />
+										<User
+											size={28}
+											className='text-white'
+										/>
 									</div>
 									<div>
-										<Label className='text-sm text-gray-300'>
+										<Label className='text-sm text-black/90 dark:text-gray-300'>
 											{t(
 												'personalInformation.usernameLabel'
 											)}
@@ -70,7 +73,7 @@ export const UserSettings = () => {
 									trigger={
 										<Button
 											variant='outline'
-											className='w-full sm:w-auto'
+											className='w-full sm:w-auto cursor-pointer'
 										>
 											{t(
 												'personalInformation.usernameButton'
@@ -78,17 +81,29 @@ export const UserSettings = () => {
 										</Button>
 									}
 									contentClassname='max-w-md'
+									title={t(
+										'personalInformation.usernameTitle'
+									)}
+									description={t(
+										'personalInformation.usernameDescription'
+									)}
 								>
 									<ChangeUsernameForm t={t} />
 								</Modal>
 							</div>
-							<div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full rounded-lg p-3 bg-background hover:bg-black transition-all'>
+							<div
+								className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full rounded-lg 
+							p-3 bg-background hover:bg-black/10 transition-all'
+							>
 								<div className='flex gap-3 sm:gap-4 w-full'>
 									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
-										<Contact size={28} />
+										<Contact
+											size={28}
+											className='text-white'
+										/>
 									</div>
 									<div>
-										<Label className='text-sm text-gray-300'>
+										<Label className='text-sm text-black/90 dark:text-gray-300'>
 											{t(
 												'personalInformation.nicknameLabel'
 											)}
@@ -102,7 +117,7 @@ export const UserSettings = () => {
 									trigger={
 										<Button
 											variant='outline'
-											className='w-full sm:w-auto'
+											className='w-full sm:w-auto cursor-pointer'
 										>
 											{t(
 												'personalInformation.nicknameButton'
@@ -110,6 +125,12 @@ export const UserSettings = () => {
 										</Button>
 									}
 									contentClassname='max-w-md'
+									title={t(
+										'personalInformation.nicknameTitle'
+									)}
+									description={t(
+										'personalInformation.nicknameDescription'
+									)}
 								>
 									<ChangeNicknameForm t={t} />
 								</Modal>
@@ -121,7 +142,6 @@ export const UserSettings = () => {
 					<h3 className='text-2xl font-bold'>
 						{t('security.heading')}
 					</h3>
-					<Separator />
 					<div className='flex flex-col gap-4'>
 						<UserSettingsSecurity t={t} user={user} />
 						<Sessions />

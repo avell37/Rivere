@@ -1,10 +1,12 @@
 'use client'
 import { Moon, Users } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
 import { PRIVATE_URL } from '@/shared/libs'
 
 export const NavBar = () => {
+	const t = useTranslations('admin.navigationBar')
 	const router = useRouter()
 
 	return (
@@ -14,14 +16,14 @@ export const NavBar = () => {
 				onClick={() => router.push(PRIVATE_URL.admin())}
 			>
 				<Moon size={20} />
-				Статистика
+				{t('statistics')}
 			</div>
 			<div
 				className='flex gap-2 text-sm hover:bg-muted p-2 rounded-xl cursor-pointer'
 				onClick={() => router.push(PRIVATE_URL.adminUsers(1))}
 			>
 				<Users size={20} />
-				Пользователи
+				{t('users')}
 			</div>
 		</nav>
 	)

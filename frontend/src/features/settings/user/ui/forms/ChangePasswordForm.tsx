@@ -7,7 +7,7 @@ import { Form } from '@/shared/ui/external'
 import { useChangePassword } from '../../model/hooks/useChangePassword'
 
 export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
-	const { form, passwordType, onSubmit, togglePasswords } =
+	const { form, passwordType, isPending, onSubmit, togglePasswords } =
 		useChangePassword()
 
 	return (
@@ -17,11 +17,9 @@ export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 				closeText={t('security.passwordModalClose')}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
+				isPending={isPending}
 			>
 				<div className='flex flex-col gap-4'>
-					<h1 className='font-bold'>
-						{t('security.passwordModalTitle')}
-					</h1>
 					<FormInputController
 						name='currentPassword'
 						type={passwordType}
@@ -44,6 +42,7 @@ export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 							</>
 						}
 						control={form.control}
+						disabled={isPending}
 					/>
 					<FormInputController
 						name='newPassword'
@@ -67,6 +66,7 @@ export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 							</>
 						}
 						control={form.control}
+						disabled={isPending}
 					/>
 					<FormInputController
 						name='confirmPassword'
@@ -90,6 +90,7 @@ export const ChangePasswordForm = ({ t }: { t: (key: string) => string }) => {
 							</>
 						}
 						control={form.control}
+						disabled={isPending}
 					/>
 				</div>
 			</FormWrapper>

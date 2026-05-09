@@ -12,7 +12,7 @@ export const EditableDeadline = ({ cardId, t }: EditableProps) => {
 	const { control, setValue, watch } = useFormContext()
 	const deadline = watch('deadline')
 
-	const { handleChange } = useUpdateCard(cardId, 'deadline')
+	const { handleChange, isLoading } = useUpdateCard(cardId, 'deadline')
 
 	return (
 		<div className='flex items-center justify-center gap-2'>
@@ -23,6 +23,7 @@ export const EditableDeadline = ({ cardId, t }: EditableProps) => {
 				placeholder={t('editDeadlinePlaceholder')}
 				control={control}
 				onChange={date => handleChange(date)}
+				disabled={isLoading}
 			/>
 			{deadline != null && (
 				<Button
@@ -33,6 +34,7 @@ export const EditableDeadline = ({ cardId, t }: EditableProps) => {
 						setValue('deadline', null)
 						handleChange(null)
 					}}
+					disabled={isLoading}
 				>
 					<X className='size-4' />
 				</Button>

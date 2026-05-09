@@ -76,7 +76,7 @@ export const useUnbanUser = (userId: string) => {
 
 	return {
 		removeBan,
-		isPending,
+		unbanPending: isPending,
 		isError
 	}
 }

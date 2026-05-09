@@ -44,7 +44,7 @@ export default function ProtectedLayout({
 	return (
 		<main className='flex-1 min-w-0 h-screen flex flex-col'>
 			<Header />
-			<div className='flex-1 min-w-0 overflow-auto'>{children}</div>
+			<div className='flex-1 min-w-0'>{children}</div>
 		</main>
 	)
 }

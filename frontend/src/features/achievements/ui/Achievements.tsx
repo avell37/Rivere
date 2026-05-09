@@ -42,25 +42,25 @@ export const Achievements = () => {
 			</h1>
 			<div className='flex gap-2'>
 				<Button
-					variant={filter === 'all' ? 'default' : 'outline'}
-					className={`${filter === 'all' ? 'font-bold' : ''} cursor-pointer`}
+					variant='outline'
+					className={`${filter === 'all' ? 'font-bold scale-105' : ''} cursor-pointer`}
 					onClick={() => setFilter('all')}
 				>
-					All
+					{t('filters.all')}
 				</Button>
 				<Button
-					variant={filter === 'earned' ? 'default' : 'outline'}
-					className={`${filter === 'earned' ? 'font-bold' : ''} cursor-pointer`}
+					variant='outline'
+					className={`${filter === 'earned' ? 'font-bold scale-105' : ''} cursor-pointer`}
 					onClick={() => setFilter('earned')}
 				>
-					Earned
+					{t('filters.earned')}
 				</Button>
 				<Button
-					variant={filter === 'locked' ? 'default' : 'outline'}
-					className={`${filter === 'locked' ? 'font-bold' : ''} cursor-pointer`}
+					variant='outline'
+					className={`${filter === 'locked' ? 'font-bold scale-105' : ''} cursor-pointer`}
 					onClick={() => setFilter('locked')}
 				>
-					Locked
+					{t('filters.locked')}
 				</Button>
 			</div>
 			<AchievementList achievements={filteredAchievements} />

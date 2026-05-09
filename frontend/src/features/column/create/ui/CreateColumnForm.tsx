@@ -1,11 +1,18 @@
 'use client'
 import { FormInputController } from '@/shared/ui/custom'
-import { Button, DialogClose, DialogFooter, Form } from '@/shared/ui/external'
+import {
+	Button,
+	DialogClose,
+	DialogFooter,
+	Form,
+	Spinner
+} from '@/shared/ui/external'
 
 import { CreateColumnFormProps } from '../model/types/CreateColumnProps'
 
 export const CreateColumnForm = ({
 	form,
+	isPending,
 	onSubmit,
 	t
 }: CreateColumnFormProps) => {
@@ -20,11 +27,32 @@ export const CreateColumnForm = ({
 					label={t('createModalLabel')}
 					placeholder={t('createModalPlaceholder')}
 					control={form.control}
+					disabled={isPending}
 				/>
 				<DialogFooter>
-					<Button type='submit'>{t('createModalSubmit')}</Button>
+					<Button
+						variant='outline'
+						type='submit'
+						className='relative flex justify-center items-center rounded-md'
+						disabled={isPending}
+					>
+						<span className={isPending ? 'invisible' : 'visible'}>
+							{t('createModalSubmit')}
+						</span>
+
+						{isPending && (
+							<div className='absolute inset-0 flex items-center justify-center'>
+								<Spinner />
+							</div>
+						)}
+					</Button>
+
 					<DialogClose asChild>
-						<Button variant='outline'>
+						<Button
+							type='button'
+							variant='outline'
+							disabled={isPending}
+						>
 							{t('createModalClose')}
 						</Button>
 					</DialogClose>

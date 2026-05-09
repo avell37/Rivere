@@ -8,15 +8,20 @@ import { useToggleFavoriteBoard } from '../model/hooks/useToggleFavoriteBoard'
 interface FavoriteButtonProps {
 	boardId: string
 	isFavorite?: boolean
+	isBoardPage?: boolean
 	buttonClassname?: string
 }
 
 export const BoardFavoriteButton = ({
 	boardId,
 	isFavorite,
+	isBoardPage,
 	buttonClassname
 }: FavoriteButtonProps) => {
 	const { handleToggleFavorite } = useToggleFavoriteBoard(boardId, isFavorite)
+
+	const baseColor = isBoardPage ? 'text-black dark:text-white' : 'text-white'
+	const fillColor = isBoardPage ? 'fill-black dark:fill-white' : 'fill-white'
 
 	return (
 		<Button
@@ -28,7 +33,7 @@ export const BoardFavoriteButton = ({
 		>
 			<Star
 				size={18}
-				className={`${isFavorite ? 'fill-white text-white' : 'text-white'}`}
+				className={`${baseColor} ${isFavorite ? fillColor : ''}`}
 			/>
 		</Button>
 	)

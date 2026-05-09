@@ -31,7 +31,11 @@ export const useCreateCard = ({
 		}
 	})
 
-	const { mutate } = useMutation<ICard, unknown, CreateCardRequest>({
+	const { mutate, isPending } = useMutation<
+		ICard,
+		unknown,
+		CreateCardRequest
+	>({
 		mutationKey: ['create card'],
 		mutationFn: (data: CreateCardRequest) =>
 			createCard({ columnId, ...data }),
@@ -50,6 +54,7 @@ export const useCreateCard = ({
 
 	return {
 		form,
+		isPending,
 		onSubmit
 	}
 }

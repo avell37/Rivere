@@ -13,22 +13,24 @@ export const PasswordStep = ({ token }: { token: string }) => {
 		<FormAuthWrapper
 			form={form}
 			isPending={isPending}
-			buttonLabel={t('buttonLabel')}
 			onSubmit={onSubmit}
+			buttonLabel={t('buttonLabel')}
 		>
 			<FormInputController
+				type='password'
 				name='newPassword'
 				label={t('newPasswordLabel')}
 				placeholder={t('newPasswordPlaceholder')}
 				control={form.control}
-				type='password'
+				disabled={isPending}
 			/>
 			<FormInputController
+				type='password'
 				name='confirmPassword'
 				label={t('confirmPasswordLabel')}
 				placeholder={t('confirmPasswordPlaceholder')}
 				control={form.control}
-				type='password'
+				disabled={isPending}
 			/>
 		</FormAuthWrapper>
 	)

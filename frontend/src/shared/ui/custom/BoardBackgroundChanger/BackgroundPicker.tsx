@@ -9,11 +9,13 @@ import { Button } from '../../external'
 interface BackgroundPickerProps<T extends FieldValues> {
 	control: Control<T>
 	name?: Path<T>
+	isPending?: boolean
 }
 
 export const BackgroundPicker = <T extends FieldValues>({
 	control,
-	name = 'background' as Path<T>
+	name = 'background' as Path<T>,
+	isPending
 }: BackgroundPickerProps<T>) => {
 	const t = useTranslations('board.colors')
 
@@ -40,6 +42,7 @@ export const BackgroundPicker = <T extends FieldValues>({
 									}
 									className={`w-8 h-8 rounded-full ${field.value?.color === bg.color ? 'border-white' : 'border-transparent'}`}
 									style={{ background: bg.color }}
+									disabled={isPending}
 								/>
 							))}
 						</div>

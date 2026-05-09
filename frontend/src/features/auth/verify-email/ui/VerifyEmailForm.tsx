@@ -19,14 +19,16 @@ export const VerifyEmailForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 					<MailCheck className='w-10 h-10 text-green-600' />
 				</div>
 				<h1 className='text-2xl font-bold mb-2'>{t('title')}</h1>
-				<p className='text-gray-500 mb-6'>{t('description')}</p>
+				<p className='text-sm text-muted-foreground mb-6'>
+					{t('description')}
+				</p>
 				<OtpStep
 					value={code}
 					onChange={setCode}
 					onComplete={verifyEmail}
 					isPending={isPending}
 				/>
-				<p className='text-sm text-gray-400 my-6'>
+				<p className='text-sm text-muted-foreground my-6'>
 					{t('notReceived')}
 					<Button
 						variant='none'
@@ -37,7 +39,9 @@ export const VerifyEmailForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 						{t('sendToken')}
 					</Button>
 				</p>
-				<span className='text-sm text-gray-400 my-6'>{t('span')}</span>
+				<span className='text-xs text-muted-foreground my-6'>
+					{t('span')}
+				</span>
 			</div>
 		</div>
 	)

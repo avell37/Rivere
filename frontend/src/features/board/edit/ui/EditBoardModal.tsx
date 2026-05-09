@@ -20,7 +20,7 @@ export const EditBoardModal = ({
 }: EditBoardModalProps) => {
 	const t = useTranslations('board.edit')
 
-	const { form, onSubmit } = useEditBoard({
+	const { form, isPending, onSubmit } = useEditBoard({
 		boardId,
 		onSuccess: onOpenChange
 	})
@@ -33,7 +33,12 @@ export const EditBoardModal = ({
 			description={t('editDescription')}
 			contentClassname='sm:max-w-md'
 		>
-			<EditBoardForm form={form} onSubmit={onSubmit} t={t} />
+			<EditBoardForm
+				form={form}
+				isPending={isPending}
+				onSubmit={onSubmit}
+				t={t}
+			/>
 		</Modal>
 	)
 }

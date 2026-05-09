@@ -3,7 +3,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form'
 
 import { PUBLIC_URL } from '@/shared/libs'
-import { Button, Form } from '@/shared/ui/external'
+import { Button, Form, Spinner } from '@/shared/ui/external'
 
 interface FormWrapperProps<T extends FieldValues> {
 	form: UseFormReturn<T>
@@ -48,7 +48,7 @@ export const FormAuthWrapper = <T extends FieldValues>({
 						to-pink-500 bg-left transition-all duration-500 hover:bg-right bg-size-[200%_100%]'
 					disabled={isPending}
 				>
-					{buttonLabel}
+					{isPending ? <Spinner /> : buttonLabel}
 				</Button>
 				{label && navigationLabel && (
 					<div className='text-center text-sm'>

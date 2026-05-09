@@ -14,7 +14,7 @@ export const EditColumnModal = ({
 	columnId,
 	boardId
 }: EditColumnModalProps) => {
-	const { form, onSubmit } = useEditColumn({
+	const { form, isPending, onSubmit } = useEditColumn({
 		columnId,
 		boardId,
 		onSuccess: () => onOpenChange(false)
@@ -29,7 +29,12 @@ export const EditColumnModal = ({
 			description={t('editDescription')}
 			contentClassname='sm:max-w-md'
 		>
-			<EditColumnForm form={form} onSubmit={onSubmit} t={t} />
+			<EditColumnForm
+				form={form}
+				isPending={isPending}
+				onSubmit={onSubmit}
+				t={t}
+			/>
 		</Modal>
 	)
 }

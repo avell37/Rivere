@@ -32,9 +32,9 @@ export const SessionList = ({
 								{session?.metadata.device?.type?.includes(
 									'desktop'
 								) ? (
-									<Laptop />
+									<Laptop className='text-white' />
 								) : (
-									<Smartphone />
+									<Smartphone className='text-white' />
 								)}
 							</div>
 						}

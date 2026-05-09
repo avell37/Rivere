@@ -1,5 +1,6 @@
 'use client'
 import { Clock, MessageSquareMore } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import { memo } from 'react'
 
 import { CardDoneButton, ICard, useCard } from '@/entities/Card'
@@ -16,6 +17,8 @@ interface props {
 }
 
 const CardComponent = ({ card, boardId, onClick }: props) => {
+	const t = useTranslations()
+	const locale = useLocale()
 	const { setNodeRef, attributes, listeners, style, isDragging } = useCard({
 		card
 	})
@@ -59,7 +62,9 @@ const CardComponent = ({ card, boardId, onClick }: props) => {
 					{card.deadline && (
 						<span className='absolute bottom-0 right-0 flex items-center gap-1 text-[10px]'>
 							<Clock size={14} className='' />
-							до: {formatDate(card.deadline)}
+							{t('card.expiresAt', {
+								date: formatDate(card.deadline, locale)
+							})}
 						</span>
 					)}
 				</div>

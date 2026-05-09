@@ -10,6 +10,7 @@ export interface EditBoardFormData {
 
 export interface EditBoardFormProps {
 	form: UseFormReturn<EditBoardFormData>
+	isPending?: boolean
 	onSubmit: (data: EditBoardFormData) => void
 	t: (key: string) => string
 }

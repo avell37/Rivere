@@ -30,7 +30,11 @@ export const useCreateBoard = ({ onSuccess }: { onSuccess: () => void }) => {
 		}
 	})
 
-	const { mutate } = useMutation<IBoard, unknown, CreateBoardRequest>({
+	const { mutate, isPending } = useMutation<
+		IBoard,
+		unknown,
+		CreateBoardRequest
+	>({
 		mutationKey: ['create board'],
 		mutationFn: (data: CreateBoardRequest) => createBoard(data),
 		onSuccess: () => {
@@ -46,6 +50,7 @@ export const useCreateBoard = ({ onSuccess }: { onSuccess: () => void }) => {
 
 	return {
 		form,
+		isPending,
 		onSubmit
 	}
 }

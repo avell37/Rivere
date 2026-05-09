@@ -31,7 +31,7 @@ export const OtpStepContainer = ({
 				onComplete={verifyToken}
 				isPending={isPending}
 			/>
-			<p className='text-sm text-gray-400 my-6'>
+			<p className='text-sm text-muted-foreground my-6'>
 				{t('didntGetCode')}
 				<Button
 					variant='none'
@@ -43,7 +43,9 @@ export const OtpStepContainer = ({
 					{t('resendAgain')}
 				</Button>
 			</p>
-			<span className='text-sm text-gray-400'>{t('checkSpam')}</span>
+			<span className='text-sm text-muted-foreground'>
+				{t('checkSpam')}
+			</span>
 		</div>
 	)
 }

@@ -129,6 +129,11 @@
 	"achievements": {
 		"heading": "Достижения",
 		"title": "Ваши достижения ({current}/{total}):",
+		"filters": {
+			"all": "Все",
+			"earned": "Полученные",
+			"locked": "Заблокированные"
+		},
 		"loading": "Ваши достижения:",
 		"issuedAt": "выдано {date} в {time}",
 		"firstBoard": {
@@ -183,7 +188,7 @@
 			"description": "Чтобы начать работу с доской, нужно ее создать, верно?",
 			"createModalLabel": "Название",
 			"createModalPlaceholder": "Название доски",
-			"createModalSubmit": "Сохранить",
+			"createModalSubmit": "Создать",
 			"createModalClose": "Закрыть",
 			"createSuccess": "Доска успешно создана"
 		},
@@ -220,11 +225,11 @@
 	"column": {
 		"create": {
 			"heading": "Создать колонку",
-			"createTitle": "Добавить колонку",
+			"createTitle": "Создать колонку",
 			"createDescription": "Введите названия для вашей новой колонки",
 			"createModalLabel": "Название",
 			"createModalPlaceholder": "Название колонки",
-			"createModalSubmit": "Добавить",
+			"createModalSubmit": "Создать",
 			"createModalClose": "Закрыть",
 			"createSuccess": "Колонка успешно создана"
 		},
@@ -268,6 +273,7 @@
 			"createSuccess": "Карточка успешно создана"
 		},
 		"edit": {
+			"comments": "Комментарии",
 			"description": "Описание",
 			"addDeadline": "Добавить дедлайн",
 			"editDescription": "Пусто...",
@@ -315,21 +321,28 @@
 			},
 			"personalInformation": {
 				"heading": "Личная информация",
+				"usernameTitle": "Изменить имя пользователя",
+				"usernameDescription": "Введите новое имя пользователя. Оно должно быть уникальным и содержать от 4 до 32 символов.",
 				"usernameLabel": "Имя пользователя",
 				"usernameButton": "Изменить",
-				"usernameModalLabel": "Ваше имя пользователя",
+				"usernameModalLabel": "Ваше новое имя пользователя",
 				"usernameModalPlaceholder": "Введите ваше новое имя пользователя",
 				"usernameModalSubmit": "Изменить",
 				"usernameModalClose": "Закрыть",
+				"nicknameTitle": "Изменить никнейм",
+				"nicknameDescription": "Введите новый никнейм. Оно должно содержать от 4 до 32 символов.",
 				"nicknameLabel": "Никнейм",
 				"nicknameButton": "Изменить",
-				"nicknameModalLabel": "Ваш никнейм",
+				"nicknameModalLabel": "Ваш новый никнейм",
 				"nicknameModalPlaceholder": "Введите ваш новый никнейм",
 				"nicknameModalSubmit": "Изменить",
 				"nicknameModalClose": "Закрыть"
 			},
 			"security": {
 				"heading": "Безопасность",
+				"verifyEmail": "Подтвердить почту",
+				"emailTitle": "Изменить почту",
+				"emailDescription": "Введите новую почту. Она должна быть уникальной.",
 				"emailLabel": "Почта",
 				"emailButton": "Изменить",
 				"emailModalLabel": "Ваша новая почта",
@@ -339,8 +352,10 @@
 				"emailVerificationBadgeUnverified": "Не подтверждена",
 				"emailVerificationBadgeVerified": "Подтверждена",
 				"emailVerificationButton": "Подтвердить почту",
+				"passwordTitle": "Изменить пароль",
+				"passwordDescription": "Введите свой старый пароль, а затем придумайте новый пароль и подтвердите его. Нельзя использовать один и тот же пароль.",
 				"passwordLabel": "Пароль",
-				"passwordDescription": "Пароль скрыт в целях безопасности.",
+				"passwordSecret": "Пароль скрыт в целях безопасности.",
 				"passwordButton": "Изменить",
 				"passwordModalTitle": "Изменить пароль:",
 				"currentPasswordPlaceholder": "Введите ваш старый пароль",
@@ -391,6 +406,7 @@
 	},
 	"invite": {
 		"heading": "Приглашение в доску",
+		"description": "Ссылка валидна 1 день. После принятия инвайта, ссылка удаляется.",
 		"createLink": "Создать ссылку",
 		"copyLink": "Ссылка скопирована",
 		"acceptedInvite": "Вы успешно присоединились к доске!",
@@ -406,6 +422,10 @@
 	},
 	"admin": {
 		"heading": "Панель администратора",
+		"navigationBar": {
+			"statistics": "Статистика",
+			"users": "Пользователи"
+		},
 		"trendWithPlus": "+{count} за сегодня",
 		"trendWithoutPlus": "{count} за сегодня",
 		"statistics": {
@@ -444,6 +464,7 @@
 				"actions": "Действия"
 			},
 			"card": {
+				"changeRole": "Изменить роль",
 				"nickname": "Никнейм:",
 				"role": "Роль:",
 				"boards": "Всего досок:",
@@ -457,7 +478,8 @@
 				"usersInvited": "Приглашено пользователей:"
 			},
 			"banModal": {
-				"trigger": "Забанить",
+				"ban": "Забанить",
+				"unban": "Разбанить",
 				"heading": "Забанить {nickname}",
 				"banReasonLabel": "Причина блокировки",
 				"banReasonPlaceholder": "Введите причину блокировки",
@@ -470,6 +492,9 @@
 	},
 	"privacy": {
 		"heading": "Политика конфиденциальности",
+		"checkbox": {
+			"label": "Я согласен с <link>политикой конфиденциальности</link>"
+		},
 		"first": {
 			"heading": "1. Общие положения",
 			"description": "Данный сайт представляет собой сервис для управления задачами и проектами. Используя сайт, пользователь соглашается с настоящей политикой обработки персональных данных."
