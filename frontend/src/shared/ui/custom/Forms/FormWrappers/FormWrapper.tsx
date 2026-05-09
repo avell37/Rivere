@@ -1,4 +1,4 @@
-import { Button, DialogClose } from '@/shared/ui/external'
+import { Button, DialogClose, Spinner } from '@/shared/ui/external'
 
 interface FormWrapperProps {
 	handleSubmit: () => void
@@ -7,6 +7,7 @@ interface FormWrapperProps {
 	submitText?: string
 	withClose?: boolean
 	closeText?: string
+	isPending?: boolean
 }
 
 export const FormWrapper = ({
@@ -14,17 +15,28 @@ export const FormWrapper = ({
 	children,
 	submitText,
 	withClose,
-	closeText
+	closeText,
+	isPending
 }: FormWrapperProps) => {
 	return (
 		<form onSubmit={handleSubmit} className='flex flex-col gap-8 w-full'>
 			{children}
 			<div className='flex justify-end gap-2.5'>
 				<Button
+					variant='outline'
 					type='submit'
-					className='flex justify-center items-center rounded-md'
+					className='relative flex justify-center items-center rounded-md'
+					disabled={isPending}
 				>
-					{submitText}
+					<span className={isPending ? 'invisible' : 'visible'}>
+						{submitText}
+					</span>
+
+					{isPending && (
+						<div className='absolute inset-0 flex items-center justify-center'>
+							<Spinner />
+						</div>
+					)}
 				</Button>
 				{withClose && (
 					<DialogClose asChild>
@@ -32,6 +44,7 @@ export const FormWrapper = ({
 							variant='outline'
 							type='button'
 							className='flex justify-center items-center'
+							disabled={isPending}
 						>
 							{closeText}
 						</Button>

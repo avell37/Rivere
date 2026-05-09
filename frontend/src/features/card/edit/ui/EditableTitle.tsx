@@ -15,7 +15,7 @@ export const EditableTitle = ({ cardId }: { cardId: string }) => {
 	)
 
 	return (
-		<div onClick={() => setIsEditing(true)} className='pr-4'>
+		<div onClick={() => setIsEditing(true)} className='pr-4 min-w-0'>
 			{isEditing ? (
 				<FormInputController
 					name='title'
@@ -26,7 +26,7 @@ export const EditableTitle = ({ cardId }: { cardId: string }) => {
 					onBlur={() => handleBlur(titleValue)}
 				/>
 			) : (
-				<h3 className='text-2xl font-bold cursor-pointer'>
+				<h3 className='text-2xl max-sm:text-xl font-bold cursor-pointer break-words'>
 					{titleValue}
 				</h3>
 			)}

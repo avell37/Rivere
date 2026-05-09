@@ -19,6 +19,7 @@ export * from './model/utils/canRemoveMember'
 export * from './model/validation/create-board.z.validation'
 export * from './model/validation/edit-board.z.validation'
 
+export * from './ui/BoardFavoriteButton'
 export * from './ui/BoardHeaderActionsSkeleton'
 export * from './ui/BoardItem'
 export * from './ui/BoardItemSkeleton'

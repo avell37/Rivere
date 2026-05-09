@@ -16,7 +16,7 @@ export const DeleteBoardModal = ({
 	boardId,
 	onOpenChange
 }: DeleteBoardModalProps) => {
-	const { onSubmit } = useDeleteBoard(boardId)
+	const { onSubmit, isPending } = useDeleteBoard(boardId)
 	const t = useTranslations('board.delete')
 
 	return (
@@ -28,6 +28,7 @@ export const DeleteBoardModal = ({
 			actionText={t('deleteActionText')}
 			cancelText={t('deleteCancelText')}
 			onSubmit={onSubmit}
+			isPending={isPending}
 		/>
 	)
 }

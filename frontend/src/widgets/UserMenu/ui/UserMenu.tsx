@@ -53,15 +53,15 @@ export const UserMenu = () => {
 						username={user?.username}
 					/>
 					<div className='flex flex-col leading-tight max-sm:hidden'>
-						<span className='truncate font-medium text-left'>
+						<span className='truncate font-medium text-left text-white'>
 							{user?.nickname}
 						</span>
-						<span className='text-xs font-light'>
+						<span className='text-xs font-light text-white'>
 							{user?.email}
 						</span>
 					</div>
 					<div className='ml-auto max-sm:hidden'>
-						<EllipsisVertical />
+						<EllipsisVertical className='text-white' />
 					</div>
 				</Button>
 			</DropdownMenuTrigger>

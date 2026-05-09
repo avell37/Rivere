@@ -29,6 +29,7 @@ export const OtpStep = ({
 					onComplete?.(val)
 				}
 			}}
+			disabled={isPending}
 		>
 			<InputOTPGroup className='mb-4'>
 				{Array.from({ length: 6 }).map((el, idx) => (

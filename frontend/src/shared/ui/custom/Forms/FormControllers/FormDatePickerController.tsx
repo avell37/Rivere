@@ -21,6 +21,7 @@ interface FormDatePickerControllerProps<T extends FieldValues> {
 	label: string
 	placeholder: string
 	onChange?: (value: string) => void
+	disabled?: boolean
 }
 
 export const FormDatePickerController = <T extends FieldValues>({
@@ -29,7 +30,8 @@ export const FormDatePickerController = <T extends FieldValues>({
 	icon,
 	label,
 	placeholder,
-	onChange
+	onChange,
+	disabled
 }: FormDatePickerControllerProps<T>) => {
 	const locale = useLocale()
 
@@ -55,6 +57,7 @@ export const FormDatePickerController = <T extends FieldValues>({
 									type='button'
 									variant='transparent'
 									className='w-52 justify-start text-left font-normal'
+									disabled={disabled}
 								>
 									<CalendarIcon size={16} />
 									{date ? (

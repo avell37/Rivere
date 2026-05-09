@@ -16,7 +16,7 @@ export const useDeleteColumn = ({
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 
-	const { mutate } = useMutation<IColumn, unknown>({
+	const { mutate, isPending } = useMutation<IColumn, unknown>({
 		mutationKey: ['delete column'],
 		mutationFn: () => deleteColumn(columnId),
 		onSuccess: () => {
@@ -31,6 +31,7 @@ export const useDeleteColumn = ({
 	const onSubmit = () => mutate()
 
 	return {
-		onSubmit
+		onSubmit,
+		isPending
 	}
 }

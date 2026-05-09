@@ -19,5 +19,6 @@ export interface CreateCardFormData {
 export interface CreateCardFormProps {
 	form: UseFormReturn<CreateCardFormData>
 	onSubmit: (data: CreateCardFormData) => void
+	isPending: boolean
 	t: (key: string) => string
 }

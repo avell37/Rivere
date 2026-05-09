@@ -21,6 +21,7 @@ export const EmailStep = ({ onNext }: { onNext: (email: string) => void }) => {
 				label={t('emailLabel')}
 				placeholder={t('emailPlaceholder')}
 				control={form.control}
+				disabled={isPending}
 			/>
 		</FormAuthWrapper>
 	)

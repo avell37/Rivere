@@ -1,6 +1,6 @@
 'use client'
 
-import { Ellipsis, UserRoundX } from 'lucide-react'
+import { Ellipsis, UserRoundPlus, UserRoundX } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
@@ -38,8 +38,8 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 	const t = useTranslations('admin.users.banModal')
 
 	const { data: currentUser } = useGetUser()
-	const { form, onSubmit } = useBanUser(user.id)
-	const { removeBan } = useUnbanUser(user.id)
+	const { form, banPending, onSubmit } = useBanUser(user.id)
+	const { removeBan, unbanPending } = useUnbanUser(user.id)
 	const { changeRole, isPending: rolePending } = useSetUserRole(user.id)
 
 	const isBanned = isUserBanned(user)
@@ -99,15 +99,23 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 							<DropdownMenuContent align='end'>
 								<DropdownMenuItem asChild>
 									{isBanned ? (
-										<div onClick={() => removeBan()}>
-											Разбанить
-										</div>
+										<Button
+											variant='ghost'
+											onClick={() => removeBan()}
+											disabled={unbanPending}
+											className='w-full justify-start'
+										>
+											<UserRoundPlus size={14} />
+											{unbanPending
+												? t('unbanPending')
+												: t('unban')}
+										</Button>
 									) : (
 										<Modal
 											trigger={
 												<div className='flex items-center gap-2 text-sm p-2 cursor-pointer hover:bg-muted/50 transition rounded'>
 													<UserRoundX size={14} />
-													{t('trigger')}
+													{t('ban')}
 												</div>
 											}
 											title={t('heading', {
@@ -119,6 +127,7 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 												form={form}
 												t={t}
 												onSubmit={onSubmit}
+												banPending={banPending}
 											/>
 										</Modal>
 									)}

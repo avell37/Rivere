@@ -45,7 +45,7 @@ export const ColumnOverlay = ({ column }: ColumnOverlayProps) => {
 					type='button'
 					variant='none'
 					size='none'
-					className='p-2 border cursor-pointer bg-black hover:bg-background'
+					className='p-2 border cursor-pointer bg-white dark:bg-black hover:bg-background'
 				>
 					<Plus />
 					{t('heading')}

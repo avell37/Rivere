@@ -11,7 +11,7 @@ import { EditableProps } from '../model/types/EditableProps'
 
 export const EditablePriority = ({ cardId, t }: EditableProps) => {
 	const { control } = useFormContext()
-	const { handleBlur } = useUpdateCard(cardId, 'priority')
+	const { handleBlur, isLoading } = useUpdateCard(cardId, 'priority')
 	const tPriority = useTranslations('priority')
 
 	return (
@@ -24,6 +24,7 @@ export const EditablePriority = ({ cardId, t }: EditableProps) => {
 				control={control}
 				onChange={value => handleBlur(value)}
 				options={getPrioritySelectOptions(tPriority)}
+				disabled={isLoading}
 			/>
 		</div>
 	)

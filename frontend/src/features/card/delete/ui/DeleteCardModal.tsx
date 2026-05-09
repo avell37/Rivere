@@ -1,7 +1,7 @@
 'use client'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Alert } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
@@ -10,7 +10,8 @@ import { useDeleteCard } from '../model/hooks/useDeleteCard'
 import { DeleteCardProps } from '../model/types/DeleteCardProps'
 
 const DeleteCardModalComponent = ({ cardId, boardId }: DeleteCardProps) => {
-	const { onSubmit } = useDeleteCard({ cardId, boardId })
+	const [open, setOpen] = useState(false)
+	const { onSubmit, isPending } = useDeleteCard({ cardId, boardId, setOpen })
 	const t = useTranslations('card.delete')
 
 	return (
@@ -31,6 +32,9 @@ const DeleteCardModalComponent = ({ cardId, boardId }: DeleteCardProps) => {
 			actionText={t('deleteActionText')}
 			cancelText={t('deleteCancelText')}
 			onSubmit={onSubmit}
+			isPending={isPending}
+			open={open}
+			onOpenChange={setOpen}
 		/>
 	)
 }

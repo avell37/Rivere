@@ -13,7 +13,12 @@ import { Form } from '@/shared/ui/external'
 
 import { CreateCardFormProps } from '../model/types/CreateCardProps'
 
-export const CreateCardForm = ({ form, onSubmit, t }: CreateCardFormProps) => {
+export const CreateCardForm = ({
+	form,
+	onSubmit,
+	isPending,
+	t
+}: CreateCardFormProps) => {
 	const tPriority = useTranslations('priority')
 
 	return (
@@ -21,6 +26,7 @@ export const CreateCardForm = ({ form, onSubmit, t }: CreateCardFormProps) => {
 			<FormWrapper
 				submitText={t('createModalSubmit')}
 				closeText={t('createModalClose')}
+				isPending={isPending}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
 			>
@@ -30,12 +36,14 @@ export const CreateCardForm = ({ form, onSubmit, t }: CreateCardFormProps) => {
 						label={t('createTitleModalLabel')}
 						placeholder={t('createTitleModalPlaceholder')}
 						control={form.control}
+						disabled={isPending}
 					/>
 					<FormTextareaController
 						name='description'
 						label={t('createDescriptionModalLabel')}
 						placeholder={t('createDescriptionModalPlaceholder')}
 						control={form.control}
+						disabled={isPending}
 					/>
 					<div className='flex flex-col sm:flex-row gap-2'>
 						<FormSelectController
@@ -44,12 +52,14 @@ export const CreateCardForm = ({ form, onSubmit, t }: CreateCardFormProps) => {
 							placeholder={t('createPriorityModalPlaceholder')}
 							control={form.control}
 							options={getPrioritySelectOptions(tPriority)}
+							disabled={isPending}
 						/>
 						<FormDatePickerController
 							name='deadline'
 							label={t('createDeadlineModalLabel')}
 							placeholder={t('createDeadlineModalPlaceholder')}
 							control={form.control}
+							disabled={isPending}
 						/>
 					</div>
 				</div>

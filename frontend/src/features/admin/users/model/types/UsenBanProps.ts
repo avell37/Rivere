@@ -8,6 +8,7 @@ export interface UserBanFormData {
 
 export interface UserAdminBanCardProps {
 	form: UseFormReturn<UserBanFormData>
+	banPending?: boolean
 	t: (key: string) => string
 	onSubmit: (data: UserBanFormData) => void
 }

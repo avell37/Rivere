@@ -12,13 +12,17 @@ export const SessionItem = ({
 	onTerminate
 }: SessionProps) => {
 	return (
-		<div className='group relative flex justify-between gap-4 hover:bg-black rounded-sm p-4 transition-all'>
+		<div className='group relative flex justify-between gap-4 hover:bg-black/10 rounded-sm p-4 transition-all'>
 			<div className='flex items-center gap-4'>
 				{icon}
 				<div className='flex flex-col'>
 					<p>{title}</p>
-					<span className='text-xs text-gray-400'>{description}</span>
-					<span className='text-xs text-gray-400'>{span}</span>
+					<span className='text-[11px] sm:text-xs text-black/90 dark:text-gray-400'>
+						{description}
+					</span>
+					<span className='text-[11px] sm:text-xs text-black/80 dark:text-gray-400'>
+						{span}
+					</span>
 				</div>
 			</div>
 			<div className='flex items-center'>

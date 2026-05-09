@@ -3,6 +3,7 @@
 import { Menu } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { useState } from 'react'
 
 import { useGetUser } from '@/entities/User'
 
@@ -61,8 +62,10 @@ export const BurgerMenu = () => {
 	const { data: user } = useGetUser()
 	const headerNavFields = HeaderNavFields({ role: user?.role, t })
 
+	const [open, setOpen] = useState(false)
+
 	return (
-		<Sheet>
+		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger asChild>
 				<button className='rounded-md hover:bg-muted transition md:hidden cursor-pointer'>
 					<Menu className='w-5 h-5' />
@@ -74,8 +77,9 @@ export const BurgerMenu = () => {
 					{headerNavFields.map(item => (
 						<Link
 							key={item.title}
-							href={item.url}
 							className='flex items-center gap-3 p-2 rounded-md hover:bg-muted transition'
+							href={item.url}
+							onClick={() => setOpen(false)}
 						>
 							<item.icon className='w-5 h-5' />
 							<span>{item.title}</span>

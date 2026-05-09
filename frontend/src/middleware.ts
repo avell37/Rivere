@@ -6,7 +6,9 @@ export async function middleware(req: NextRequest) {
 	const pathname = req.nextUrl.pathname
 
 	const isPublicRoute =
-		pathname.startsWith('/auth') || pathname.startsWith('/privacy')
+		pathname === '/' ||
+		pathname.startsWith('/auth') ||
+		pathname.startsWith('/privacy')
 
 	if (!session && !isPublicRoute) {
 		return NextResponse.redirect(new URL('/auth/login', req.url))

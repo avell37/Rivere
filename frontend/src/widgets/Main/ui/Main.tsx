@@ -25,11 +25,11 @@ export const Main = () => {
 
 					<section className='max-w-6xl mx-auto px-4 pt-20 pb-32'>
 						<div className='flex flex-col items-center text-center pt-10'>
-							<h1 className='text-7xl font-bold mb-6 max-lg:text-3xl'>
+							<h1 className='text-7xl font-bold mb-6 max-lg:text-3xl text-white'>
 								{t('startSection.title')}{' '}
 								<span>{t('startSection.name')}</span>
 							</h1>
-							<p className='text-xl opacity-80 max-w-2xl mb-10 max-lg:text-sm'>
+							<p className='text-xl opacity-80 max-w-2xl mb-10 max-lg:text-sm text-white'>
 								{t('startSection.description')}
 							</p>
 
@@ -49,7 +49,7 @@ export const Main = () => {
 
 					<section className='py-24 text-center'>
 						<div className='max-w-6xl mx-auto px-4'>
-							<h2 className='text-4xl font-bold mb-14'>
+							<h2 className='text-4xl font-bold mb-14 text-white'>
 								{t('secondSection.title')}
 							</h2>
 
@@ -72,13 +72,13 @@ export const Main = () => {
 
 					<section className='py-20 text-center'>
 						<div className='max-w-6xl mx-auto px-4'>
-							<h2 className='text-4xl font-bold mb-14'>
-								Как начать работу?
+							<h2 className='text-4xl font-bold mb-14 text-white'>
+								{t('thirdSection.heading')}
 							</h2>
 							<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
 								<AdvantageWithStep
 									step={1}
-									stepIcon={<Pencil />}
+									stepIcon={<Pencil className='text-white' />}
 									title={t('thirdSection.firstStep.title')}
 									text={t(
 										'thirdSection.firstStep.description'
@@ -86,7 +86,9 @@ export const Main = () => {
 								/>
 								<AdvantageWithStep
 									step={2}
-									stepIcon={<LayoutDashboard />}
+									stepIcon={
+										<LayoutDashboard className='text-white' />
+									}
 									title={t('thirdSection.secondStep.title')}
 									text={t(
 										'thirdSection.secondStep.description'
@@ -94,7 +96,9 @@ export const Main = () => {
 								/>
 								<AdvantageWithStep
 									step={3}
-									stepIcon={<Sparkles />}
+									stepIcon={
+										<Sparkles className='text-white' />
+									}
 									title={t('thirdSection.thirdStep.title')}
 									text={t(
 										'thirdSection.thirdStep.description'
@@ -105,12 +109,17 @@ export const Main = () => {
 					</section>
 
 					<section className='py-20 text-center'>
-						<h3 className='text-3xl font-semibold mb-4'>
+						<h3 className='text-3xl font-semibold mb-4 text-white'>
 							{t('fourthSection.title')}
 						</h3>
-						<p className='mb-8'>{t('fourthSection.description')}</p>
+						<p className='mb-8 text-white'>
+							{t('fourthSection.description')}
+						</p>
 						<Link href='auth/register'>
-							<Button className='cursor-pointer'>
+							<Button
+								variant='outline'
+								className='cursor-pointer'
+							>
 								{t('fourthSection.register')}
 							</Button>
 						</Link>

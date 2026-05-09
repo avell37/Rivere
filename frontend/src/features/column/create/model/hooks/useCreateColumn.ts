@@ -31,7 +31,11 @@ export const useCreateColumn = ({
 		}
 	})
 
-	const { mutate } = useMutation<IColumn, unknown, CreateColumnRequest>({
+	const { mutate, isPending } = useMutation<
+		IColumn,
+		unknown,
+		CreateColumnRequest
+	>({
 		mutationKey: ['create column'],
 		mutationFn: (data: CreateColumnRequest) =>
 			createColumn({ boardId, ...data }),
@@ -50,6 +54,7 @@ export const useCreateColumn = ({
 
 	return {
 		form,
+		isPending,
 		onSubmit
 	}
 }

@@ -6,6 +6,7 @@ import { UserAdminBanCardProps } from '../model/types/UsenBanProps'
 
 export const UserAdminBanCard = ({
 	form,
+	banPending,
 	t,
 	onSubmit
 }: UserAdminBanCardProps) => {
@@ -16,6 +17,7 @@ export const UserAdminBanCard = ({
 				closeText={t('closeButton')}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
+				isPending={banPending}
 			>
 				<div className='flex flex-col gap-4'>
 					<FormInputController
@@ -23,12 +25,14 @@ export const UserAdminBanCard = ({
 						label={t('banReasonLabel')}
 						placeholder={t('banReasonPlaceholder')}
 						control={form.control}
+						disabled={banPending}
 					/>
 					<FormInputController
 						name='durationInHours'
 						label={t('durationInHoursLabel')}
 						placeholder={t('durationInHoursPlaceholder')}
 						control={form.control}
+						disabled={banPending}
 					/>
 				</div>
 			</FormWrapper>

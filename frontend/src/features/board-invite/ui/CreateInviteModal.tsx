@@ -3,7 +3,7 @@ import { Copy } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
-import { Button, Input } from '@/shared/ui/external'
+import { Button, Input, Spinner } from '@/shared/ui/external'
 
 import { useInvite } from '../model/hooks/useInvite'
 
@@ -25,8 +25,6 @@ export const CreateInviteModal = ({ boardId }: { boardId: string }) => {
 
 	return (
 		<div className='flex flex-col gap-4'>
-			<h2 className='text-lg font-semibold'>{t('heading')}</h2>
-
 			<div className='flex gap-2'>
 				<Input
 					className='flex-1'
@@ -41,8 +39,21 @@ export const CreateInviteModal = ({ boardId }: { boardId: string }) => {
 					<Copy />
 				</Button>
 			</div>
-			<Button onClick={handleCreate} disabled={isCreateDisabled}>
-				{t('createLink')}
+			<Button
+				variant='outline'
+				onClick={handleCreate}
+				disabled={isCreateDisabled}
+				className='relative flex items-center justify-center'
+			>
+				<span className={createPending ? 'invisible' : 'visible'}>
+					{t('createLink')}
+				</span>
+
+				{createPending && (
+					<div className='absolute inset-0 flex items-center justify-center'>
+						<Spinner />
+					</div>
+				)}
 			</Button>
 		</div>
 	)

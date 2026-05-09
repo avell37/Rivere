@@ -29,7 +29,7 @@ export const useChangePassword = () => {
 		mode: 'onBlur'
 	})
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationKey: ['change password'],
 		mutationFn: (data: ChangePasswordRequest) => changePassword(data),
 		onSuccess: () => {
@@ -51,6 +51,7 @@ export const useChangePassword = () => {
 	return {
 		form,
 		passwordType,
+		isPending,
 		onSubmit,
 		togglePasswords
 	}
