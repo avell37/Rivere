@@ -8,7 +8,7 @@ import { useCardEvents } from '@/entities/Card'
 import { useColumnEvents } from '@/entities/Column'
 import { useUserStore } from '@/entities/User'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { PRIVATE_URL } from '@/shared/libs'
 import { handleApiError } from '@/shared/utils'
 
 import { useBoardStore } from '../store/useBoardStore'
@@ -21,7 +21,7 @@ export const useBoard = (boardId: string) => {
 	const router = useRouter()
 	const t = useTranslations()
 
-	const { board, isLoading, error } = useGetBoard(boardId)
+	const { board, boardPending, boardError } = useGetBoard(boardId)
 
 	const socketRef = useRef<ReturnType<typeof getBoardSocket> | null>(null)
 
@@ -58,17 +58,17 @@ export const useBoard = (boardId: string) => {
 	}, [board, setColumns])
 
 	useEffect(() => {
-		if (error) {
-			handleApiError(error, t)
-			if (error?.response?.status === 403) {
-				router.push(PUBLIC_URL.boards())
+		if (boardError) {
+			handleApiError(boardError, t)
+			if (boardError?.response?.status === 403) {
+				router.push(PRIVATE_URL.boards())
 			}
 		}
-	}, [error, t, router])
+	}, [boardError, t, router])
 
 	return {
 		board,
 		columns,
-		isLoading
+		boardPending
 	}
 }

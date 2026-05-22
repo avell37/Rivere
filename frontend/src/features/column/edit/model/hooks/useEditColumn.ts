@@ -1,19 +1,14 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { boardKeys } from '@/entities/Board'
 import {
 	EditColumnRequest,
 	EditColumnSchema,
-	IColumn,
-	updateColumn
+	useUpdateColumnMutation
 } from '@/entities/Column'
-
-import { handleApiError } from '@/shared/utils'
 
 import { EditColumnProps } from '../types/EditColumnProps'
 
@@ -22,8 +17,13 @@ export const useEditColumn = ({
 	boardId,
 	onSuccess
 }: EditColumnProps) => {
-	const queryClient = useQueryClient()
 	const t = useTranslations()
+
+	const { updateColumn, updateColumnPending } = useUpdateColumnMutation({
+		columnId,
+		boardId
+	})
+
 	const form = useForm<EditColumnRequest>({
 		resolver: zodResolver(EditColumnSchema),
 		defaultValues: {
@@ -31,30 +31,18 @@ export const useEditColumn = ({
 		}
 	})
 
-	const { mutate, isPending } = useMutation<
-		IColumn,
-		unknown,
-		EditColumnRequest
-	>({
-		mutationKey: ['update column'],
-		mutationFn: (data: EditColumnRequest) =>
-			updateColumn({ columnId, ...data }),
-		onSuccess: () => {
-			form.reset()
-			queryClient.invalidateQueries({
-				queryKey: boardKeys.single(boardId)
-			})
-			toast.success(t('column.edit.editSuccess'))
-			onSuccess()
-		},
-		onError: err => handleApiError(err, t)
-	})
-
-	const onSubmit: SubmitHandler<EditColumnRequest> = data => mutate(data)
+	const onSubmit: SubmitHandler<EditColumnRequest> = data =>
+		updateColumn(data, {
+			onSuccess: () => {
+				form.reset()
+				toast.success(t('column.edit.editSuccess'))
+				onSuccess()
+			}
+		})
 
 	return {
 		form,
-		isPending,
+		updateColumnPending,
 		onSubmit
 	}
 }

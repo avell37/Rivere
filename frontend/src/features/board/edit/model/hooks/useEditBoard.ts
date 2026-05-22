@@ -1,6 +1,5 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -9,13 +8,9 @@ import { toast } from 'sonner'
 import {
 	EditBoardRequest,
 	EditBoardSchema,
-	IBoard,
-	boardKeys,
-	updateBoard,
-	useGetBoard
+	useGetBoard,
+	useUpdateBoardMutation
 } from '@/entities/Board'
-
-import { handleApiError } from '@/shared/utils'
 
 export const useEditBoard = ({
 	boardId,
@@ -25,8 +20,8 @@ export const useEditBoard = ({
 	onSuccess: (open: boolean) => void
 }) => {
 	const { board } = useGetBoard(boardId)
-	const queryClient = useQueryClient()
 	const t = useTranslations()
+	const { updateBoard, updateBoardPending } = useUpdateBoardMutation(boardId)
 
 	const form = useForm<EditBoardRequest>({
 		resolver: zodResolver(EditBoardSchema),
@@ -48,28 +43,17 @@ export const useEditBoard = ({
 		})
 	}, [board, form])
 
-	const { mutate, isPending } = useMutation<
-		IBoard,
-		unknown,
-		EditBoardRequest
-	>({
-		mutationKey: ['update board', boardId],
-		mutationFn: (data: EditBoardRequest) => updateBoard({ boardId, data }),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: boardKeys.single(boardId)
-			})
-			toast.success(t('board.edit.editSuccess'))
-			onSuccess(false)
-		},
-		onError: err => handleApiError(err, t)
-	})
-
-	const onSubmit: SubmitHandler<EditBoardRequest> = data => mutate(data)
+	const onSubmit: SubmitHandler<EditBoardRequest> = data =>
+		updateBoard(data, {
+			onSuccess: () => {
+				toast.success(t('board.edit.editSuccess'))
+				onSuccess(false)
+			}
+		})
 
 	return {
 		form,
-		isPending,
+		updateBoardPending,
 		onSubmit
 	}
 }

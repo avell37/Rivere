@@ -12,7 +12,7 @@ import { CreateBoardForm } from './CreateBoardForm'
 
 export const CreateBoardModal = () => {
 	const [open, setOpen] = useState(false)
-	const { form, isPending, onSubmit } = useCreateBoard({
+	const { form, createBoardPending, onSubmit } = useCreateBoard({
 		onSuccess: () => setOpen(false)
 	})
 	const t = useTranslations('board.create')
@@ -37,7 +37,7 @@ export const CreateBoardModal = () => {
 		>
 			<CreateBoardForm
 				form={form}
-				isPending={isPending}
+				isPending={createBoardPending}
 				onSubmit={onSubmit}
 				t={t}
 			/>

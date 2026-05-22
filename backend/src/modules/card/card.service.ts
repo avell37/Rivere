@@ -9,6 +9,8 @@ import { AchievementsService } from '../achievements/achievements.service';
 import { BoardGateway } from '../board/board.gateway';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
+import { checkBoardPermission } from '@/shared/utils/board-permissions';
+import { BoardPermission } from '@/shared/types/board-permissions.enum';
 
 @Injectable()
 export class CardService {
@@ -23,7 +25,23 @@ export class CardService {
     async create(userId: string, input: CreateCardInput) {
         const { columnId, title, description, priority, deadline } = input;
 
-        await checkBoardAccess({ prisma: this.prisma, userId, columnId });
+        const column = await this.prisma.column.findUnique({
+            where: { id: columnId },
+        });
+
+        if (!column) {
+            throw new NotFoundException({
+                code: 'errors.column.notFound',
+                message: 'Колонка не найдена',
+            });
+        }
+
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId,
+            boardId: column.boardId,
+            permission: BoardPermission.CREATE_CARD,
+        });
 
         const lastCard = await this.prisma.card.findFirst({
             where: { columnId },
@@ -66,10 +84,11 @@ export class CardService {
                 message: 'Карточка не найдена',
             });
 
-        await checkBoardAccess({
+        await checkBoardPermission({
             prisma: this.prisma,
             userId,
-            columnId: card.columnId,
+            boardId: card.column.boardId,
+            permission: BoardPermission.UPDATE_CARD,
         });
 
         const updatedCard = await this.prisma.card.update({
@@ -240,19 +259,23 @@ export class CardService {
                 message: 'Карточка не найдена',
             });
 
-        await checkBoardAccess({
+        await checkBoardPermission({
             prisma: this.prisma,
             userId,
-            columnId: card.columnId,
+            boardId: card.column.boardId,
+            permission: BoardPermission.DELETE_CARD,
         });
 
-        const deleted = await this.prisma.card.delete({
+        await this.prisma.card.delete({
             where: { id: cardId },
         });
 
         this.gateway.cardDeleted(card.column.boardId, cardId);
 
-        return deleted;
+        return {
+            success: true,
+            message: 'Карточка успешно удалена',
+        };
     }
 
     async getChatByCard(cardId: string) {

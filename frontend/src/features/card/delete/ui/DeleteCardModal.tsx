@@ -11,7 +11,11 @@ import { DeleteCardProps } from '../model/types/DeleteCardProps'
 
 const DeleteCardModalComponent = ({ cardId, boardId }: DeleteCardProps) => {
 	const [open, setOpen] = useState(false)
-	const { onSubmit, isPending } = useDeleteCard({ cardId, boardId, setOpen })
+	const { onSubmit, deleteCardPending } = useDeleteCard({
+		cardId,
+		boardId,
+		setOpen
+	})
 	const t = useTranslations('card.delete')
 
 	return (
@@ -32,7 +36,7 @@ const DeleteCardModalComponent = ({ cardId, boardId }: DeleteCardProps) => {
 			actionText={t('deleteActionText')}
 			cancelText={t('deleteCancelText')}
 			onSubmit={onSubmit}
-			isPending={isPending}
+			isPending={deleteCardPending}
 			open={open}
 			onOpenChange={setOpen}
 		/>

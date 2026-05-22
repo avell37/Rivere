@@ -11,6 +11,8 @@ import { BoardGateway } from './board.gateway';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 import { BoardEventPayload } from './types/board-events.types';
+import { checkBoardPermission } from '@/shared/utils/board-permissions';
+import { BoardPermission } from '@/shared/types/board-permissions.enum';
 
 @Injectable()
 export class BoardService {
@@ -146,6 +148,7 @@ export class BoardService {
         return {
             ...board,
             isFavorite: member?.isFavorite ?? false,
+            currentUserRole: member?.role,
         };
     }
 
@@ -208,10 +211,11 @@ export class BoardService {
             });
         }
 
-        await checkBoardAccess({
+        await checkBoardPermission({
             prisma: this.prisma,
             userId,
             boardId,
+            permission: BoardPermission.MANAGE_BOARD,
         });
 
         const updated = await this.prisma.board.update({
@@ -257,12 +261,15 @@ export class BoardService {
             });
         }
 
-        const updated = await this.prisma.boardMember.update({
+        await this.prisma.boardMember.update({
             where: { id: member.id },
             data: { isFavorite: !member.isFavorite },
         });
 
-        return updated;
+        return {
+            success: true,
+            message: 'Доска добавлена в избранное',
+        };
     }
 
     async deleteBoard(userId: string, boardId: string) {
@@ -277,10 +284,11 @@ export class BoardService {
             });
         }
 
-        await checkBoardAccess({
+        await checkBoardPermission({
             prisma: this.prisma,
             userId,
             boardId,
+            permission: BoardPermission.DELETE_BOARD,
         });
 
         await this.prisma.board.delete({
@@ -289,6 +297,9 @@ export class BoardService {
 
         this.boardGateway.boardDeleted(boardId, userId);
 
-        return true;
+        return {
+            success: true,
+            message: 'Доска успешно удалена',
+        };
     }
 }

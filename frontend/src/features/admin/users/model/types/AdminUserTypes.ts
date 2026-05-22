@@ -7,8 +7,16 @@ export interface UsersResponse {
 	totalPages: number
 }
 
+export enum BanDurationUnit {
+	SECONDS = 'seconds',
+	MINUTES = 'minutes',
+	HOURS = 'hours',
+	DAYS = 'days'
+}
+
 export interface BanUserInput {
 	userId: string
 	reason: string
-	durationInHours: number
+	duration: number
+	unit: BanDurationUnit
 }

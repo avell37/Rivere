@@ -1,31 +1,20 @@
 'use client'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { ICard, UpdateCardPayload, updateCard } from '@/entities/Card'
-
-import { handleApiError } from '@/shared/utils'
+import { UpdateCardPayload, useUpdateCardMutation } from '@/entities/Card'
 
 import { EditableKey, EditableValue } from '../types/EditableProps'
 
 export const useUpdateCard = (cardId: string, key: EditableKey) => {
 	const t = useTranslations()
-	const queryClient = useQueryClient()
 	const [isEditing, setIsEditing] = useState(false)
 	const { getValues } = useFormContext()
 	const previousValueRef = useRef<EditableValue | null>(null)
 
-	const mutation = useMutation<ICard, unknown, UpdateCardPayload>({
-		mutationFn: (data: UpdateCardPayload) => updateCard(cardId, data),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['card'] })
-			toast.success(t('card.edit.editSuccess'))
-		},
-		onError: err => handleApiError(err, t)
-	})
+	const { updateCard, updateCardPending } = useUpdateCardMutation(cardId)
 
 	useEffect(() => {
 		if (isEditing) {
@@ -36,17 +25,25 @@ export const useUpdateCard = (cardId: string, key: EditableKey) => {
 	const handleBlur = (value: EditableValue) => {
 		setIsEditing(false)
 		if (value !== previousValueRef.current) {
-			mutation.mutate({ [key]: value } as UpdateCardPayload)
+			updateCard({ [key]: value } as UpdateCardPayload, {
+				onSuccess: () => {
+					toast.success(t('card.edit.editSuccess'))
+				}
+			})
 		}
 	}
 
 	const handleChange = (value: EditableValue) => {
-		mutation.mutate({ [key]: value ?? null } as UpdateCardPayload)
+		updateCard({ [key]: value ?? null } as UpdateCardPayload, {
+			onSuccess: () => {
+				toast.success(t('card.edit.editSuccess'))
+			}
+		})
 	}
 
 	return {
 		isEditing,
-		isLoading: mutation.isPending,
+		isLoading: updateCardPending,
 		setIsEditing,
 		handleBlur,
 		handleChange

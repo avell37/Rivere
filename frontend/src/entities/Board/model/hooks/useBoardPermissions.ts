@@ -1,12 +1,21 @@
 'use client'
-import { useGetUser } from '@/entities/User'
+import { BoardPermission, hasPermission } from '@/shared/utils'
+
+import { useGetBoard } from './useBoardQueries'
 
 export const useBoardPermissions = (boardId: string) => {
-	const { data: userData } = useGetUser()
+	const { board } = useGetBoard(boardId)
 
-	const member = userData?.boards?.find(brd => brd.boardId === boardId)
+	const role = board?.currentUserRole
+
+	const can = (permission: BoardPermission) => {
+		if (!role) return false
+
+		return hasPermission(role, permission)
+	}
 
 	return {
-		isOwner: member?.role === 'OWNER'
+		role,
+		can
 	}
 }

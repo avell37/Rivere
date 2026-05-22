@@ -1,14 +1,12 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { handleApiError } from '@/shared/utils'
-
-import { resetPassword } from '../api/recoveryApi'
 import { EmailRequest, emailSchema } from '../validation/email.z.validation'
+
+import { useSendEmailCode } from './useRecoveryPasswordQueries'
 
 export const useEmailStep = ({
 	onNext
@@ -22,11 +20,7 @@ export const useEmailStep = ({
 		defaultValues: { email: '' }
 	})
 
-	const { mutate: sendCode, isPending } = useMutation({
-		mutationKey: ['send recovery code'],
-		mutationFn: (data: EmailRequest) => resetPassword(data),
-		onError: err => handleApiError(err, t)
-	})
+	const { sendCode, sendCodePending } = useSendEmailCode()
 
 	const onSubmit: SubmitHandler<EmailRequest> = data => {
 		sendCode(data, {
@@ -39,7 +33,7 @@ export const useEmailStep = ({
 
 	return {
 		form,
-		isPending,
+		sendCodePending,
 		onSubmit
 	}
 }

@@ -6,6 +6,7 @@ import { VerifyTokenInput } from './inputs/verify-token.input';
 import { CreateNewPasswordInput } from './inputs/create-new-password.input';
 import { ApiOperation } from '@nestjs/swagger';
 import { UserAgent } from '@/shared/decorators/user-agent.decorator';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('password-recovery')
 export class PasswordRecoveryController {
@@ -13,6 +14,12 @@ export class PasswordRecoveryController {
         private readonly passwordRecoveryService: PasswordRecoveryService,
     ) {}
 
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 15,
+            limit: 3,
+        },
+    })
     @ApiOperation({
         summary: 'Сброс пароля',
         description:

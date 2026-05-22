@@ -14,12 +14,18 @@ import { SessionAuthGuard } from '@/shared/guards/session-auth.guard';
 import { RolesGuard } from '@/shared/guards/roles.guard';
 import { Authorization } from '@/shared/decorators/authorization.decorator';
 import { Roles } from '@/shared/decorators/roles.decorator';
+import { ApiOperation } from '@nestjs/swagger';
 
 @UseGuards(SessionAuthGuard, RolesGuard)
 @Controller('admin')
 export class AdminController {
     constructor(private readonly adminService: AdminService) {}
 
+    @ApiOperation({
+        summary: 'Статистика для администратора',
+        description:
+            'Отдает статистику для панели администратора. Доступен только для "ADMIN" или "CREATOR"',
+    })
     @Authorization()
     @Roles(UserRole.ADMIN, UserRole.CREATOR)
     @Get('admin-stats')
@@ -27,6 +33,11 @@ export class AdminController {
         return this.adminService.getAdminStats();
     }
 
+    @ApiOperation({
+        summary: 'Все пользователи для администратора',
+        description:
+            'Отдает всех пользователей, которые зарегистрированны на сайте для панели администратора. Доступен только для "ADMIN" или "CREATOR"',
+    })
     @Authorization()
     @Roles(UserRole.ADMIN, UserRole.CREATOR)
     @Get('admin-users')
@@ -40,6 +51,11 @@ export class AdminController {
         );
     }
 
+    @ApiOperation({
+        summary: 'Забанить пользователя',
+        description:
+            'Банит пользователя на определенное время с указанием причины. Доступен только для "ADMIN" или "CREATOR"',
+    })
     @Authorization()
     @Roles(UserRole.ADMIN, UserRole.CREATOR)
     @Post('ban')
@@ -47,6 +63,11 @@ export class AdminController {
         return this.adminService.banUser(input);
     }
 
+    @ApiOperation({
+        summary: 'Разбанить пользователя',
+        description:
+            'Разбан пользователя. Доступен только для "ADMIN" или "CREATOR"',
+    })
     @Authorization()
     @Roles(UserRole.ADMIN, UserRole.CREATOR)
     @Post('unban/:id')
@@ -54,6 +75,11 @@ export class AdminController {
         return this.adminService.unbanUser(id);
     }
 
+    @ApiOperation({
+        summary: 'Выдача новой роли',
+        description:
+            'Выдает новую роль из существующих. Доступен только для "CREATOR"',
+    })
     @Authorization()
     @Roles(UserRole.CREATOR)
     @Post('role/:id')

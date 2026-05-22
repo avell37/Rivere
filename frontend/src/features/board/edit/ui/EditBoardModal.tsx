@@ -4,14 +4,9 @@ import { useTranslations } from 'next-intl'
 import { Modal } from '@/shared/ui/custom'
 
 import { useEditBoard } from '../model/hooks/useEditBoard'
+import { EditBoardModalProps } from '../model/types/EditBoardProps'
 
 import { EditBoardForm } from './EditBoardForm'
-
-interface EditBoardModalProps {
-	open: boolean
-	onOpenChange: (open: boolean) => void
-	boardId: string
-}
 
 export const EditBoardModal = ({
 	open,
@@ -20,7 +15,7 @@ export const EditBoardModal = ({
 }: EditBoardModalProps) => {
 	const t = useTranslations('board.edit')
 
-	const { form, isPending, onSubmit } = useEditBoard({
+	const { form, updateBoardPending, onSubmit } = useEditBoard({
 		boardId,
 		onSuccess: onOpenChange
 	})
@@ -35,7 +30,7 @@ export const EditBoardModal = ({
 		>
 			<EditBoardForm
 				form={form}
-				isPending={isPending}
+				isPending={updateBoardPending}
 				onSubmit={onSubmit}
 				t={t}
 			/>

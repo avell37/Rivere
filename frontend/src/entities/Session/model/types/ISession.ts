@@ -20,8 +20,3 @@ export interface ISession {
 	metadata: Metadata
 	isCurrent: boolean
 }
-
-export interface ISessionActionsResponse {
-	code: string
-	message: string
-}

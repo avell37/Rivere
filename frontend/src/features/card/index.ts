@@ -1,9 +1,12 @@
 export * from './create/model/hooks/useCreateCard'
+export * from './create/model/types/CreateCardProps'
 export * from './create/ui/CreateCardForm'
 export * from './create/ui/CreateCardModal'
+
 export * from './delete/model/hooks/useDeleteCard'
 export * from './delete/model/types/DeleteCardProps'
 export * from './delete/ui/DeleteCardModal'
+
 export * from './edit/model/hooks/useUpdateCard'
 export * from './edit/model/types/EditableProps'
 export * from './edit/ui/EditCardForm'

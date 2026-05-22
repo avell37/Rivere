@@ -1,6 +1,10 @@
 export * from './model/api/achievementsApi'
+
+export * from './model/hooks/useAchievementsQueries'
+
 export * from './model/types/AchievementProps'
 export * from './model/types/IAchievement'
+
 export * from './ui/AchievementItem'
 export * from './ui/AchievementItemSkeleton'
 export * from './ui/AchievementsList'

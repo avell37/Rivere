@@ -3,7 +3,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 import { NotificationBell } from '@/entities/Notification'
 
-import { useIsMobile } from '@/shared/config/useMobile'
+import { useIsMobile } from '@/shared/config'
 import {
 	Button,
 	Drawer,

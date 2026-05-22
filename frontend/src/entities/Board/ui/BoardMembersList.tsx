@@ -1,25 +1,38 @@
 'use client'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
-import { useLocale, useTranslations } from 'next-intl'
 
-import { useUserStore } from '@/entities/User'
-
+import { Spinner } from '@/shared/ui/external'
 import { formatDate, formatTime } from '@/shared/utils'
 
-import { useDeleteMember } from '../model/hooks/useBoardQueries'
+import { useBoardMembers } from '../model/hooks/useBoardMembers'
 import { BoardMembersListProps } from '../model/types/BoardProps'
-import { canRemoveMember } from '../model/utils/canRemoveMember'
+import { canManageMember } from '../model/utils/member-permissions'
 
 import { BoardMemberItem } from './BoardMemberItem'
 
 export const BoardMembersList = ({
 	members,
+	membersPending,
 	boardId
 }: BoardMembersListProps) => {
-	const t = useTranslations('boards.members')
-	const locale = useLocale()
-	const { mutate: removeMember, isPending } = useDeleteMember(boardId)
-	const { user } = useUserStore()
+	const {
+		user,
+		pendingUserId,
+		deleteMemberId,
+		removeMemberPending,
+		currentUserRole,
+		canDeleteMember,
+		canManageRoles,
+		locale,
+		t,
+		removeMember,
+		handleChangeRole,
+		setDeleteMemberId
+	} = useBoardMembers({ members, boardId })
+
+	if (membersPending) {
+		return <Spinner />
+	}
 
 	return (
 		<section className='flex flex-col gap-4'>
@@ -28,16 +41,19 @@ export const BoardMembersList = ({
 				<ScrollArea.Viewport className='flex flex-col gap-2 max-h-150 h-full overflow-y-auto'>
 					<div className='flex flex-col gap-3'>
 						{members.map(member => {
-							const currentUserRole = members.find(
-								member => member.userId === user?.id
-							)?.role
-							const canRemove = currentUserRole
-								? canRemoveMember(currentUserRole, member.role)
-								: false
+							const memberAccess = canManageMember({
+								currentUserId: user?.id,
+								currentUserRole,
+								targetUserId: member.userId,
+								targetRole: member.role
+							})
 
 							return (
 								<BoardMemberItem
 									key={member.id}
+									isDeleteOpen={
+										deleteMemberId === member.userId
+									}
 									member={member}
 									joinedAtText={t('joinedAt', {
 										date: formatDate(
@@ -49,10 +65,24 @@ export const BoardMembersList = ({
 											locale
 										)
 									})}
-									canRemove={canRemove}
-									isLoading={isPending}
-									onRemove={() => removeMember(member.userId)}
+									changeRolePending={
+										pendingUserId === member.userId
+									}
+									isLoading={removeMemberPending}
+									canRemove={canDeleteMember && memberAccess}
+									canManageRoles={
+										canManageRoles && memberAccess
+									}
+									onRemove={() =>
+										removeMember({ userId: member.userId })
+									}
 									t={t}
+									changeRole={handleChangeRole(member.userId)}
+									setIsDeleteOpen={open =>
+										setDeleteMemberId(
+											open ? member.userId : null
+										)
+									}
 								/>
 							)
 						})}

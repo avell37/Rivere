@@ -21,6 +21,7 @@ export const EditablePriority = ({ cardId, t }: EditableProps) => {
 				icon={<CircleDashed size={14} />}
 				label={t('editPriorityLabel')}
 				placeholder={t('editPriorityPlaceholder')}
+				className='w-48'
 				control={control}
 				onChange={value => handleBlur(value)}
 				options={getPrioritySelectOptions(tPriority)}

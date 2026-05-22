@@ -1,12 +1,14 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { useGetUser } from '@/entities/User'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { PRIVATE_URL, PUBLIC_URL } from '@/shared/libs'
 
 export const Banned = () => {
+	const t = useTranslations('banned')
 	const { data: user, isLoading } = useGetUser()
 	const router = useRouter()
 
@@ -23,7 +25,7 @@ export const Banned = () => {
 		const isBanned = user.bannedUntil && new Date(user.bannedUntil) > now
 
 		if (!isBanned) {
-			router.replace(PUBLIC_URL.boards())
+			router.replace(PRIVATE_URL.boards())
 		}
 	}, [user, isLoading, router])
 
@@ -34,20 +36,19 @@ export const Banned = () => {
 	return (
 		<div className='h-screen flex items-center justify-center'>
 			<div className='p-6 rounded-xl bg-card text-center'>
-				<h1 className='text-2xl font-bold'>
-					Вы заблокированы на сайте Rivere
-				</h1>
+				<h1 className='text-2xl font-bold'>{t('title')}</h1>
 				{bannedUntilDate && (
 					<p className='mt-2 text-sm'>
-						до: {bannedUntilDate.toLocaleString()}
+						{t('date', { date: bannedUntilDate.toLocaleString() })}
 					</p>
 				)}
 				{user?.banReason && (
-					<p className='mt-1 text-sm'>Причина: {user.banReason}</p>
+					<p className='mt-1 text-sm'>
+						{t('reason', { reason: user.banReason })}
+					</p>
 				)}
 				<span className='text-sm text-muted-foreground break-all'>
-					Если вы не согласны с причиной бана, вы можете предоставить
-					доказательства на нашу почту: help@rivere.ru
+					{t('support')}
 				</span>
 			</div>
 		</div>

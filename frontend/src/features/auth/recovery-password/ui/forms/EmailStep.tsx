@@ -7,12 +7,12 @@ import { useEmailStep } from '../../model/hooks/useEmailStep'
 
 export const EmailStep = ({ onNext }: { onNext: (email: string) => void }) => {
 	const t = useTranslations('auth.recoveryPassword')
-	const { form, isPending, onSubmit } = useEmailStep({ onNext })
+	const { form, sendCodePending, onSubmit } = useEmailStep({ onNext })
 
 	return (
 		<FormAuthWrapper
 			form={form}
-			isPending={isPending}
+			isPending={sendCodePending}
 			buttonLabel={t('buttonLabel')}
 			onSubmit={onSubmit}
 		>
@@ -21,7 +21,7 @@ export const EmailStep = ({ onNext }: { onNext: (email: string) => void }) => {
 				label={t('emailLabel')}
 				placeholder={t('emailPlaceholder')}
 				control={form.control}
-				disabled={isPending}
+				disabled={sendCodePending}
 			/>
 		</FormAuthWrapper>
 	)

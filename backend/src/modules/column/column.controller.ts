@@ -55,11 +55,8 @@ export class ColumnController {
     @HttpCode(200)
     @Authorization()
     @Post('reorder')
-    async reorder(
-        @SessionUser('id') userId: string,
-        @Body() input: ReorderColumnInput,
-    ) {
-        return this.columnService.reorder(userId, input);
+    async reorder(@Body() input: ReorderColumnInput) {
+        return this.columnService.reorder(input);
     }
 
     @ApiOperation({

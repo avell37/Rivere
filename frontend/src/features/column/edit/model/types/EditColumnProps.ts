@@ -1,7 +1,7 @@
 'use client'
 import { FieldValues, UseFormReturn } from 'react-hook-form'
 
-import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
+import { IBoardColumnIdentifiers } from '@/shared/types'
 
 export interface EditColumnFormValues {
 	title: string

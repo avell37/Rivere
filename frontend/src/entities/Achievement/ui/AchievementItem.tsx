@@ -1,3 +1,4 @@
+'use client'
 import { Trophy } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 

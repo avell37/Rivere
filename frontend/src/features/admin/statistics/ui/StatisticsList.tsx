@@ -1,7 +1,7 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-import { StatisticCard } from '@/shared/ui/custom/StatisticCard/StatisticCard'
+import { StatisticCard } from '@/shared/ui/custom'
 
 import { mapStatistics } from '../model/lib/statistics.mapper'
 import { AdminStats } from '../model/types/AdminProps'

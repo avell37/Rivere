@@ -118,6 +118,7 @@ export class SessionService {
         await this.redis.del(key);
 
         return {
+            success: true,
             code: 'session.ended',
             message: 'Сессия завершена',
         };
@@ -140,6 +141,7 @@ export class SessionService {
         }
 
         return {
+            success: true,
             code: 'sessions.allEnded',
             message: 'Все сессии завершены',
         };
@@ -186,10 +188,20 @@ export class SessionService {
             },
         });
 
-        return saveSession(req, user, metadata);
+        await saveSession(req, user, metadata);
+
+        return {
+            success: true,
+            message: 'Успешно',
+        };
     }
 
     async logout(req: Request) {
-        return destroySession(req, this.config);
+        await destroySession(req, this.config);
+
+        return {
+            success: true,
+            message: 'Успешно',
+        };
     }
 }

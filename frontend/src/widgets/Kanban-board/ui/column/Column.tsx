@@ -3,18 +3,22 @@
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { memo, useMemo } from 'react'
 
-import { ColumnProps, useColumn } from '@/entities/Column'
+import { useBoardPermissions } from '@/entities/Board'
+import { IColumn, useColumn } from '@/entities/Column'
 
 import { CreateCardModal } from '@/features/card'
+
+import { BoardPermission } from '@/shared/utils'
 
 import { CardList } from '../card/CardList'
 
 import { ColumnActions } from './ColumnActions'
 
-const ColumnComponent = ({ column }: ColumnProps) => {
+const ColumnComponent = ({ column }: { column: IColumn }) => {
 	const { attributes, listeners, setNodeRef, style, isDragging } = useColumn({
 		id: column.id
 	})
+	const { can } = useBoardPermissions(column.boardId)
 	const columnCards = useMemo(
 		() => column.cards.filter(c => c && c.columnId === column.id),
 		[column.cards, column.id]
@@ -64,10 +68,12 @@ const ColumnComponent = ({ column }: ColumnProps) => {
 						<ScrollArea.Thumb className='block w-full bg-white/60 rounded-full' />
 					</ScrollArea.Scrollbar>
 				</ScrollArea.Root>
-				<CreateCardModal
-					columnId={column.id}
-					boardId={column.boardId}
-				/>
+				{can(BoardPermission.CREATE_CARD) && (
+					<CreateCardModal
+						columnId={column.id}
+						boardId={column.boardId}
+					/>
+				)}
 			</li>
 		</div>
 	)

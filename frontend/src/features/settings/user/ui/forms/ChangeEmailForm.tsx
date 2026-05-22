@@ -5,7 +5,7 @@ import { Form } from '@/shared/ui/external'
 import { useChangeEmail } from '../../model/hooks/useChangeEmail'
 
 export const ChangeEmailForm = ({ t }: { t: (key: string) => string }) => {
-	const { form, isPending, onSubmit } = useChangeEmail()
+	const { form, changeEmailPending, onSubmit } = useChangeEmail()
 
 	return (
 		<Form {...form}>
@@ -14,14 +14,14 @@ export const ChangeEmailForm = ({ t }: { t: (key: string) => string }) => {
 				closeText={t('security.emailModalClose')}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
-				isPending={isPending}
+				isPending={changeEmailPending}
 			>
 				<FormInputController
 					name='email'
 					label={t('security.emailModalLabel')}
 					placeholder={t('security.emailModalPlaceholder')}
 					control={form.control}
-					disabled={isPending}
+					disabled={changeEmailPending}
 				/>
 			</FormWrapper>
 		</Form>

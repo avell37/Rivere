@@ -1,19 +1,24 @@
 'use client'
 
-import { useGetAdminStatistics } from '@/features/admin/statistics/model/hooks/useGetAdminStatistics'
-import { StatisticsList } from '@/features/admin/statistics/ui/StatisticsList'
+import {
+	StatisticsList,
+	StatisticsListSkeleton,
+	useGetAdminStatistics
+} from '@/features/admin'
 
-import { NavBar } from '@/shared/ui/custom/NavBar/NavBar'
+import { NavBar } from '@/shared/ui/custom'
 
 export const Admin = () => {
-	const { stats } = useGetAdminStatistics()
-
-	if (!stats) return null
+	const { stats, statsPending } = useGetAdminStatistics()
 
 	return (
 		<div className='container mx-auto flex flex-col gap-6'>
 			<NavBar />
-			<StatisticsList stats={stats} />
+			{statsPending ? (
+				<StatisticsListSkeleton />
+			) : (
+				stats && <StatisticsList stats={stats} />
+			)}
 		</div>
 	)
 }

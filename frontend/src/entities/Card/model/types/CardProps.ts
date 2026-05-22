@@ -1,13 +1,9 @@
 import { CSSProperties } from 'react'
 
-import { Priority } from './CardPriority'
-import { ICard } from './ICard'
+import { ICard, Priority } from './ICard'
 
-export interface CardProps {
+export interface CardPropsWithBoardId {
 	card: ICard
-}
-
-export interface CardPropsWithBoardId extends CardProps {
 	boardId: string
 }
 
@@ -36,4 +32,9 @@ export interface CardDraggingProps {
 	title: string
 	priority: Priority
 	done: boolean
+}
+
+export interface ToggleDoneProps {
+	cardId: string
+	boardId: string
 }

@@ -1,62 +1,46 @@
 'use client'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { IUser } from '@/entities/User'
-
-import { handleApiError } from '@/shared/utils'
-
-import { sendVerifyToken, verifyAccount } from '../api/verifyApi'
+import {
+	useSendTokenMutation,
+	useVerifyEmailMutation
+} from './useVerifyQueries'
 
 export const useVerifyEmail = (options?: { onSuccess?: () => void }) => {
 	const [code, setCode] = useState('')
 	const t = useTranslations()
-	const queryClient = useQueryClient()
 
-	const { mutate: sendToken } = useMutation({
-		mutationKey: ['send token'],
-		mutationFn: () => sendVerifyToken(),
-		onSuccess: () => {
-			toast.success(t('auth.verifyEmail.sendCode'))
-		},
-		onError: err => handleApiError(err, t)
-	})
+	const { sendToken, sendTokenPending } = useSendTokenMutation()
+	const { verifyEmail, verifyEmailPending } = useVerifyEmailMutation()
 
-	const {
-		mutate: verifyEmail,
-		isPending,
-		isError,
-		isSuccess
-	} = useMutation({
-		mutationKey: ['verify email'],
-		mutationFn: (code: string) => verifyAccount(code),
-		onSuccess: () => {
-			queryClient.setQueryData(['get user data'], (oldData: IUser) => ({
-				...oldData,
-				isEmailVerified: true
-			}))
-			toast.success(t('auth.verifyEmail.successVerified'))
-			if (options?.onSuccess) {
-				options.onSuccess()
+	const sendVerificationToken = () =>
+		sendToken(undefined, {
+			onSuccess: () => {
+				toast.success(t('auth.verifyEmail.sendCode'))
 			}
-		},
-		onError: err => {
-			handleApiError(err, t)
-			setCode('')
-		}
-	})
+		})
 
-	const sendVerificationToken = () => sendToken()
+	const handleVerifyEmail = () =>
+		verifyEmail(code, {
+			onSuccess: () => {
+				toast.success(t('auth.verifyEmail.successVerified'))
+				if (options?.onSuccess) {
+					options.onSuccess()
+				}
+			},
+			onError: () => {
+				setCode('')
+			}
+		})
 
 	return {
 		code,
-		isPending,
-		isError,
-		isSuccess,
+		verifyEmailPending,
 		setCode,
 		sendVerificationToken,
-		verifyEmail
+		sendTokenPending,
+		handleVerifyEmail
 	}
 }

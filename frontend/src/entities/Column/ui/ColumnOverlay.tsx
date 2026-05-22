@@ -3,13 +3,13 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { MoreHorizontal, Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { CardOverlayList } from '@/entities/Card/ui/CardOverlayList'
+import { CardOverlayList } from '@/entities/Card'
 
 import { Button } from '@/shared/ui/external'
 
-import { ColumnOverlayProps } from '../model/types/ColumnProps'
+import { IColumn } from '../model/types/IColumn'
 
-export const ColumnOverlay = ({ column }: ColumnOverlayProps) => {
+export const ColumnOverlay = ({ column }: { column: IColumn }) => {
 	const t = useTranslations('card.create')
 
 	return (

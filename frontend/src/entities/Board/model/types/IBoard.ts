@@ -1,5 +1,7 @@
 import { IColumn } from '@/entities/Column'
 
+import { BoardRole } from '@/shared/utils'
+
 import { IBoardMember } from './IBoardMember'
 
 export interface IBoard {
@@ -8,6 +10,7 @@ export interface IBoard {
 	columns: IColumn[]
 	background: BoardBackground
 	isFavorite: boolean
+	currentUserRole: BoardRole
 	members: IBoardMember[]
 	createdAt?: Date
 	updatedAt?: Date

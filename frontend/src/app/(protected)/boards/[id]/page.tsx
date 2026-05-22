@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { fetchBoardByIdServer } from '@/entities/Board/model/api/boardApi.server'
 
-import { Board } from '@/widgets/Kanban-board/ui/board/Board'
+import { Board } from '@/widgets/Kanban-board'
 
 interface Props {
 	params: { id: string }

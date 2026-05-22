@@ -5,8 +5,13 @@ import { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 import { PUBLIC_URL } from '@/shared/libs'
 
-import { FormField, FormItem, FormMessage, Label } from '../../external'
-import { Checkbox } from '../../external/Checkbox/Checkbox'
+import {
+	Checkbox,
+	FormField,
+	FormItem,
+	FormMessage,
+	Label
+} from '../../external'
 
 interface PrivacyCheckboxProps<T extends FieldValues> {
 	control: Control<T>

@@ -50,6 +50,7 @@ export const CreateCardForm = ({
 							name='priority'
 							label={t('createPriorityModalLabel')}
 							placeholder={t('createPriorityModalPlaceholder')}
+							className='w-48'
 							control={form.control}
 							options={getPrioritySelectOptions(tPriority)}
 							disabled={isPending}

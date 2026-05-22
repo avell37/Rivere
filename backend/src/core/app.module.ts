@@ -18,27 +18,29 @@ import { PasswordRecoveryModule } from '@/modules/auth/password-recovery/passwor
 import { TokenModule } from '@/modules/auth/token/token.module';
 import { AdminModule } from '@/modules/admin/admin.module';
 import { SessionActivityMiddleware } from './middlewares/session-activity.middleware';
+import { CronModule } from '@/modules/cron/cron.module';
 
 @Module({
     imports: [
-        CoreModule,
-        SessionModule,
+        AdminModule,
         AccountModule,
+        AchievementsModule,
         BoardModule,
         BoardInvitesModule,
+        CoreModule,
         ColumnModule,
+        CronModule,
         CardModule,
         ChatModule,
-        MessagesModule,
         FilesModule,
-        NotificationsModule,
-        AchievementsModule,
-        StatisticsModule,
         MailModule,
-        VerificationModule,
+        MessagesModule,
+        NotificationsModule,
         PasswordRecoveryModule,
+        StatisticsModule,
+        SessionModule,
         TokenModule,
-        AdminModule,
+        VerificationModule,
     ],
 })
 export class AppModule implements NestModule {

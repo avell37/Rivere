@@ -6,7 +6,7 @@ import { Socket } from 'socket.io-client'
 import { boardKeys } from '@/entities/Board'
 
 export const useCardEvents = (
-	socketRef: React.MutableRefObject<Socket | null>,
+	socketRef: React.RefObject<Socket | null>,
 	boardId: string
 ) => {
 	const queryClient = useQueryClient()

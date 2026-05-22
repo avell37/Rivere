@@ -1,31 +1,24 @@
 'use client'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import { boardKeys, deleteBoard } from '@/entities/Board'
+import { useDeleteBoardMutation } from '@/entities/Board'
 
-import { PUBLIC_URL } from '@/shared/libs'
-import { handleApiError } from '@/shared/utils'
+import { PRIVATE_URL } from '@/shared/libs'
 
 export const useDeleteBoard = (boardId: string) => {
-	const queryClient = useQueryClient()
 	const router = useRouter()
 	const t = useTranslations()
+	const { deleteBoard, deleteBoardPending } = useDeleteBoardMutation()
 
-	const { mutate, isPending } = useMutation<boolean, unknown>({
-		mutationKey: ['delete board'],
-		mutationFn: () => deleteBoard(boardId),
-		onSuccess: () => {
-			router.push(PUBLIC_URL.boards())
-			queryClient.invalidateQueries({ queryKey: boardKeys.all })
-			toast.success(t('board.delete.deleteSuccess'))
-		},
-		onError: err => handleApiError(err, t)
-	})
+	const onSubmit = () =>
+		deleteBoard(boardId, {
+			onSuccess: () => {
+				router.push(PRIVATE_URL.boards())
+				toast.success(t('board.delete.deleteSuccess'))
+			}
+		})
 
-	const onSubmit = () => mutate()
-
-	return { onSubmit, isPending }
+	return { onSubmit, deleteBoardPending }
 }

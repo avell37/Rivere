@@ -1,4 +1,4 @@
-import { Users } from '@/widgets/Admin/users/Users'
+import { Users } from '@/widgets/Admin'
 
 export default function AdminUsersPage() {
 	return <Users />

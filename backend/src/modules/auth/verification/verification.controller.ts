@@ -7,6 +7,7 @@ import type { User } from '@prisma/client';
 import { Authorization } from '@/shared/decorators/authorization.decorator';
 import { SessionUser } from '@/shared/decorators/session-user.decorator';
 import { UserAgent } from '@/shared/decorators/user-agent.decorator';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('verification')
 export class VerificationController {
@@ -28,6 +29,12 @@ export class VerificationController {
         return this.verificationService.verify(request, input, user, userAgent);
     }
 
+    @Throttle({
+        default: {
+            ttl: 60000,
+            limit: 1,
+        },
+    })
     @ApiOperation({
         summary: 'Отправка токена верификации',
         description:

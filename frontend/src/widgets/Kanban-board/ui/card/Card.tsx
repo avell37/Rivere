@@ -3,22 +3,24 @@ import { Clock, MessageSquareMore } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { memo } from 'react'
 
+import { useBoardPermissions } from '@/entities/Board'
 import { CardDoneButton, ICard, useCard } from '@/entities/Card'
 
 import { DeleteCardModal } from '@/features/card'
 
 import { priorityColors } from '@/shared/config'
-import { formatDate, formatPriority } from '@/shared/utils'
+import { BoardPermission, formatDate, formatPriority } from '@/shared/utils'
 
-interface props {
+interface CardComponentProps {
 	card: ICard
 	boardId: string
 	onClick: () => void
 }
 
-const CardComponent = ({ card, boardId, onClick }: props) => {
+const CardComponent = ({ card, boardId, onClick }: CardComponentProps) => {
 	const t = useTranslations()
 	const locale = useLocale()
+	const { can } = useBoardPermissions(boardId)
 	const { setNodeRef, attributes, listeners, style, isDragging } = useCard({
 		card
 	})
@@ -69,7 +71,9 @@ const CardComponent = ({ card, boardId, onClick }: props) => {
 					)}
 				</div>
 			</div>
-			<DeleteCardModal cardId={card.id} boardId={boardId} />
+			{can(BoardPermission.DELETE_CARD) && (
+				<DeleteCardModal cardId={card.id} boardId={boardId} />
+			)}
 		</li>
 	)
 }

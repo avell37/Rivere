@@ -48,7 +48,7 @@ export const CardOverlayItem = ({ card }: { card: ICard }) => {
 					</div>
 					{card.deadline && (
 						<span className='absolute bottom-0 right-0 flex items-center gap-1 text-[10px]'>
-							<Clock size={14} className='' />
+							<Clock size={14} />
 							{t('card.expiresAt', {
 								date: formatDate(card.deadline, locale)
 							})}

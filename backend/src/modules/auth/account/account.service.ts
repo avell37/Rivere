@@ -91,7 +91,12 @@ export class AccountService {
 
         const metadata = getSessionMetadata(req, userAgent, this.config);
 
-        return saveSession(req, user, metadata);
+        await saveSession(req, user, metadata);
+
+        return {
+            success: true,
+            message: 'Аккаунт успешно создан',
+        };
     }
 
     async changeUsername(input: ChangeUsernameInput, user: User) {
@@ -117,7 +122,10 @@ export class AccountService {
             },
         });
 
-        return true;
+        return {
+            success: true,
+            message: 'Юзернейм успешно изменен',
+        };
     }
 
     async changeNickname(input: ChangeNicknameInput, user: User) {
@@ -132,7 +140,10 @@ export class AccountService {
             },
         });
 
-        return true;
+        return {
+            success: true,
+            message: 'Никнейм успешно изменен',
+        };
     }
 
     async changeEmail(input: ChangeEmailInput, user: User) {
@@ -159,7 +170,10 @@ export class AccountService {
             },
         });
 
-        return true;
+        return {
+            success: true,
+            message: 'Почта успешно изменена',
+        };
     }
 
     async changePassword(input: ChangePasswordInput, user: User) {
@@ -207,7 +221,10 @@ export class AccountService {
             },
         });
 
-        return true;
+        return {
+            success: true,
+            message: 'Пароль успешно изменен',
+        };
     }
 
     async changeAvatar(file: Express.Multer.File, user: User) {

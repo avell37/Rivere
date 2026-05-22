@@ -1,11 +1,10 @@
 'use client'
-
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { useGetUser } from '@/entities/User'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { PRIVATE_URL, PUBLIC_URL } from '@/shared/libs'
 
 import { Header } from '@/widgets'
 
@@ -25,7 +24,7 @@ export default function AdminLayout({
 			}
 
 			if (user.role !== 'ADMIN' && user.role !== 'CREATOR') {
-				router.push(PUBLIC_URL.boards())
+				router.push(PRIVATE_URL.boards())
 			}
 		}
 	}, [user, isLoading, router])

@@ -9,6 +9,8 @@ import { randomBytes } from 'crypto';
 import { addDays } from 'date-fns';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '@/core/prisma/prisma.service';
+import { checkBoardPermission } from '@/shared/utils/board-permissions';
+import { BoardPermission } from '@/shared/types/board-permissions.enum';
 
 @Injectable()
 export class BoardInvitesService {
@@ -29,6 +31,13 @@ export class BoardInvitesService {
                 message: 'Вы не являетесь участником этой доски',
             });
         }
+
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId,
+            boardId,
+            permission: BoardPermission.INVITE_USERS,
+        });
 
         const token = randomBytes(16).toString('hex');
         const invite = await this.prisma.boardInvite.create({
@@ -172,7 +181,10 @@ export class BoardInvitesService {
             entityId: invite.boardId,
         });
 
-        return true;
+        return {
+            success: true,
+            message: 'Инвайт в доску был принят',
+        };
     }
 
     async declineInvite(userId: string, token: string) {
@@ -217,6 +229,9 @@ export class BoardInvitesService {
             entityId: invite.boardId,
         });
 
-        return true;
+        return {
+            success: true,
+            message: 'Инвайт в доску был отклонен',
+        };
     }
 }

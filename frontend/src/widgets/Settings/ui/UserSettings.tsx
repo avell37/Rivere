@@ -22,7 +22,7 @@ import { UserSettingsSkeleton } from './UserSettingsSkeleton'
 export const UserSettings = () => {
 	const {
 		fileInputRef,
-		isPending,
+		uploadAvatarPending,
 		handleChangeAvatarClick,
 		handleFileChange
 	} = useUploadAvatar()
@@ -42,7 +42,7 @@ export const UserSettings = () => {
 						<UserSettingsAvatar
 							user={user}
 							fileInputRef={fileInputRef}
-							isPending={isPending}
+							isPending={uploadAvatarPending}
 							handleFileChange={handleFileChange}
 							handleChangeAvatarClick={handleChangeAvatarClick}
 						/>

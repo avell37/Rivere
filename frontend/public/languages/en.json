@@ -166,15 +166,7 @@
 		"title": "Your boards:",
 		"favorites": "Your favorite boards:",
 		"noBoardsTitle": "No boards yet.",
-		"noBoardsDescription": "Create your first board to start organizing tasks and projects",
-		"members": {
-			"title": "List of board members:",
-			"joinedAt": "joined: {date} at {time}",
-			"deleteMemberTitle": "Are you sure you want to exclude {name}?",
-			"deleteMemberDescription": "This action cannot be undone, user will be removed from the board.",
-			"deleteMemberActionText": "Exclude",
-			"deleteMemberCancelText": "Cancel"
-		}
+		"noBoardsDescription": "Create your first board to start organizing tasks and projects"
 	},
 	"board": {
 		"heading": "{name}",
@@ -208,6 +200,25 @@
 			"deleteCancelText": "Cancel",
 			"deleteSuccess": "Board has been successfully deleted."
 		},
+		"membersList": {
+			"title": "Board member list:",
+			"joinedAt": "joined: {date} at {time}",
+			"roles": {
+				"OWNER": "Owner",
+				"ADMIN": "Admin",
+				"MEMBER": "Member"
+			},
+			"changeRole": {
+				"heading": "Management",
+				"title": "Change role",
+				"success": "User role changed successfully!",
+				"kick": "Kick out"
+			},
+			"deleteMemberTitle": "Are you sure you want to kick {name}?",
+			"deleteMemberDescription": "This action cannot be undone. The user will be kicked from the board.",
+			"deleteMemberActionText": "Kick out",
+			"deleteMemberCancelText": "Cancel"
+		},
 		"colors": {
 			"heading": "Gradients"
 		},
@@ -219,6 +230,12 @@
 		"actions": {
 			"edit": "Edit",
 			"delete": "Delete"
+		},
+		"settings": {
+			"heading": "Board settings",
+			"sidebar": {
+				"members": "Members"
+			}
 		}
 	},
 	"column": {
@@ -381,6 +398,16 @@
 			}
 		}
 	},
+	"events": {
+		"board": {
+			"kicked": "You have been kicked from the board",
+			"boardDeleted": "Board deleted"
+		},
+		"moderation": {
+			"banned": "You have been banned for reason: {reason}",
+			"unbanned": "You have been unbanned"
+		}
+	},
 	"session": {
 		"ended": "The session has ended.",
 		"allEnded": "All other sessions have been ended."
@@ -473,7 +500,13 @@
 				"currentStreak": "Current streak (in days)",
 				"longestStreak": "Record streak (in days)",
 				"lastActive": "Last active:",
-				"usersInvited": "Users invited:"
+				"unknown": "Unknown",
+				"usersInvited": "Users invited:",
+				"roles": {
+					"select": "Select role",
+					"ADMIN": "Admin",
+					"USER": "User"
+				}
 			},
 			"banModal": {
 				"ban": "Ban",
@@ -482,8 +515,16 @@
 				"heading": "Ban {nickname}",
 				"banReasonLabel": "Ban reason",
 				"banReasonPlaceholder": "Enter ban reason",
-				"durationInHoursLabel": "Ban duration (in hours)",
-				"durationInHoursPlaceholder": "Enter ban duration",
+				"durationLabel": "Ban duration (in hours)",
+				"durationPlaceholder": "Enter ban duration",
+				"unitLabel": "Lock duration",
+				"unitPlaceholder": "Enter lock duration",
+				"unit": {
+					"seconds": "seconds",
+					"minutes": "minutes",
+					"hours": "hours",
+					"days": "days"
+				},
 				"submitButton": "Ban",
 				"closeButton": "Close"
 			}
@@ -537,7 +578,11 @@
 		}
 	},
 	"banned": {
-		"heading": "You are blocked"
+		"heading": "You are blocked",
+		"title": "You have been banned from Rivere",
+		"date": "until: {date}",
+		"reason": "Reason: {reason}",
+		"support": "If you disagree with the reason for the ban, you can provide proof to our email: help@rivere.ru"
 	},
 	"footer": {
 		"heading": "© {date} Rivere. All rights reserved.",
@@ -576,11 +621,20 @@
 			"max": "Maximum card title length is 32 characters",
 			"descriptionMax": "Maximum card description length is 128 characters",
 			"priority": "Select task priority"
+		},
+		"admin": {
+			"reason": {
+				"min": "Minimum length of block reason is 4 characters"
+			},
+			"duration": {
+				"min": "Minimum block duration is 1"
+			}
 		}
 	},
 	"errors": {
 		"unexpected": "An unexpected error occurred. Please try again later.",
 		"unauthorized": "You are not authorized",
+		"tooManyRequests": "Too many requests. Try later",
 		"achievements": {
 			"exists": "An achievement with this code already exists",
 			"notFound": "Achievement not found"
@@ -599,6 +653,7 @@
 		"board": {
 			"exists": "You already have a board with this name",
 			"notFound": "Board not found",
+			"forbidden": "Access denied",
 			"invite": {
 				"notMember": "You are not a member of this board",
 				"notFound": "Invite not found",

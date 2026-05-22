@@ -1,9 +1,12 @@
 'use client'
 import { UseFormReturn } from 'react-hook-form'
 
+import { BanDurationUnit } from './AdminUserTypes'
+
 export interface UserBanFormData {
 	reason: string
-	durationInHours: unknown
+	duration: number | unknown
+	unit: BanDurationUnit
 }
 
 export interface UserAdminBanCardProps {

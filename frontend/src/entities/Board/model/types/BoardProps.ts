@@ -4,7 +4,10 @@ import { useTranslations } from 'next-intl'
 import { ICard } from '@/entities/Card'
 import { IColumn } from '@/entities/Column'
 
-import { IBoard } from './IBoard'
+import { BoardRole } from '@/shared/utils'
+
+import { SettingsTab } from '../lib/boardSettingsSidebar'
+
 import { IBoardMember } from './IBoardMember'
 
 export interface BoardItemProps {
@@ -20,16 +23,22 @@ export interface BoardItemProps {
 
 export interface BoardMembersListProps {
 	members: IBoardMember[]
+	membersPending?: boolean
 	boardId: string
 }
 
 export interface BoardMemberItemProps {
 	member: IBoardMember
+	isDeleteOpen: boolean
 	joinedAtText: string
 	canRemove: boolean
+	canManageRoles: boolean
 	isLoading?: boolean
+	changeRolePending?: boolean
 	t: ReturnType<typeof useTranslations>
+	setIsDeleteOpen: (open: boolean) => void
 	onRemove?: () => void
+	changeRole: (value: BoardRole) => void
 }
 
 export interface BoardDragOverlayProps {
@@ -38,6 +47,20 @@ export interface BoardDragOverlayProps {
 	boardId: string
 }
 
-export interface BoardHeaderActionsProps {
-	board: IBoard
+export interface BoardUpdateMemberRoleRequest {
+	userId: string
+	role: BoardRole
+}
+
+export interface BoardFavoriteButtonProps {
+	boardId: string
+	isFavorite?: boolean
+	isBoardPage?: boolean
+	buttonClassname?: string
+}
+
+export interface BoardSidebarItem {
+	icon?: React.ReactNode
+	label: string
+	value: SettingsTab
 }

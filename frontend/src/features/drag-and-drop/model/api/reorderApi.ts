@@ -1,7 +1,7 @@
 import { ICard } from '@/entities/Card'
 import { IColumn } from '@/entities/Column'
 
-import { baseAxios } from '@/shared/api/interceptors'
+import { authAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
 
 import {
@@ -14,7 +14,7 @@ export const fetchReorderColumns = async ({
 	boardId,
 	columns
 }: ReorderColumns): Promise<IColumn> => {
-	const response = await baseAxios.post(`${API_URL.columns()}reorder`, {
+	const response = await authAxios.post(`${API_URL.columns()}reorder`, {
 		boardId,
 		columns
 	})
@@ -25,7 +25,7 @@ export const fetchReorderCards = async ({
 	columnId,
 	ids
 }: ReorderCards): Promise<ICard[]> => {
-	const response = await baseAxios.post(`${API_URL.cards()}reorder`, {
+	const response = await authAxios.post(`${API_URL.cards()}reorder`, {
 		columnId,
 		ids
 	})
@@ -37,7 +37,7 @@ export const fetchMoveCardToColumn = async ({
 	newColumnId,
 	position
 }: ReorderCardToColumn): Promise<ICard> => {
-	const response = await baseAxios.post(
+	const response = await authAxios.post(
 		`${API_URL.cards()}reorderToNewColumn`,
 		{
 			cardId,

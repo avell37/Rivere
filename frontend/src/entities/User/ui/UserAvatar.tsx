@@ -1,5 +1,4 @@
 'use client'
-
 import { customAvatar } from '@/shared/config'
 import { S3_URL } from '@/shared/libs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/external'

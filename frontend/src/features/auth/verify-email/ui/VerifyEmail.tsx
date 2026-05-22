@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { PRIVATE_URL } from '@/shared/libs'
 import { AuthWrapper } from '@/shared/ui/custom'
 
 import { VerifyEmailForm } from './VerifyEmailForm'
@@ -13,7 +13,7 @@ export const VerifyEmail = () => {
 	return (
 		<AuthWrapper showHeader={false}>
 			<VerifyEmailForm
-				onSuccess={() => router.push(PUBLIC_URL.boards())}
+				onSuccess={() => router.push(PRIVATE_URL.boards())}
 			/>
 		</AuthWrapper>
 	)
