@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class VerifyTokenInput {
-    @IsNotEmpty()
-    @IsString()
+    @IsNotEmpty({ message: 'Токен обязателен' })
+    @IsString({ message: 'Токен должен быть строкой' })
     token!: string;
 }

@@ -2,9 +2,9 @@
 
 import { useTranslations } from 'next-intl'
 
-import { UsersResponse } from '@/features/admin/users/model/types/AdminUserTypes'
+import { UsersResponse } from '@/features/admin'
 
-import { CustomPagination } from '@/shared/ui/custom/CustomPagination/CustomPagination'
+import { CustomPagination } from '@/shared/ui/custom'
 import {
 	Table,
 	TableBody,

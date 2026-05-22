@@ -1,37 +1,29 @@
 'use client'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
-import { boardKeys } from '@/entities/Board'
-import { IColumn, deleteColumn } from '@/entities/Column'
+import { useDeleteColumnMutation } from '@/entities/Column'
 
-import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
-import { handleApiError } from '@/shared/utils'
+import { IBoardColumnIdentifiers } from '@/shared/types'
 
 export const useDeleteColumn = ({
 	columnId,
 	boardId
 }: IBoardColumnIdentifiers) => {
-	const queryClient = useQueryClient()
 	const t = useTranslations()
-
-	const { mutate, isPending } = useMutation<IColumn, unknown>({
-		mutationKey: ['delete column'],
-		mutationFn: () => deleteColumn(columnId),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: boardKeys.single(boardId)
-			})
-			toast.success(t('column.delete.deleteSuccess'))
-		},
-		onError: err => handleApiError(err, t)
+	const { deleteColumn, deleteColumnPending } = useDeleteColumnMutation({
+		boardId
 	})
 
-	const onSubmit = () => mutate()
+	const onSubmit = () =>
+		deleteColumn(columnId, {
+			onSuccess: () => {
+				toast.success(t('column.delete.deleteSuccess'))
+			}
+		})
 
 	return {
 		onSubmit,
-		isPending
+		deleteColumnPending
 	}
 }

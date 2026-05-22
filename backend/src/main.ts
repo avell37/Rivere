@@ -7,6 +7,7 @@ import { setupSwagger } from './shared/utils/swagger.util';
 import { sessionConfig } from './core/config/session.config';
 import { AppModule } from './core/app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import helmet from 'helmet';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -20,6 +21,7 @@ async function bootstrap() {
     app.setGlobalPrefix('api');
 
     app.use(sessionConfig(config, redis));
+    app.use(helmet());
 
     app.enableCors({
         origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),

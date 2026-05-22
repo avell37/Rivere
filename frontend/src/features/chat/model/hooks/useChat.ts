@@ -1,13 +1,12 @@
 'use client'
-import { useQuery } from '@tanstack/react-query'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Socket } from 'socket.io-client'
 
-import { IChat, IMessage, fetchChat, useChatStore } from '@/entities/Chat'
+import { IMessage, useChatStore, useGetChat } from '@/entities/Chat'
 import { useUserStore } from '@/entities/User'
 
-import { useIsMobile } from '@/shared/config/useMobile'
+import { useIsMobile } from '@/shared/config'
 
 import { EmojiData } from '../types/ChatProps'
 import { getChatSocket } from '../utils/chat.socket'
@@ -26,6 +25,8 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 	const t = useTranslations('card.chat')
 	const locale = useLocale()
 	const isMobile = useIsMobile()
+
+	const { chat, chatPending } = useGetChat(cardId)
 
 	const handleKeySubmitMessage = (
 		e: React.KeyboardEvent<HTMLTextAreaElement>
@@ -46,12 +47,6 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 			socketRef.current = null
 		}
 	}, [])
-
-	const { data: chat, isPending } = useQuery<IChat>({
-		queryKey: ['messages', cardId],
-		queryFn: () => fetchChat(cardId),
-		enabled: Boolean(cardId)
-	})
 
 	useEffect(() => {
 		if (!chat) return
@@ -102,7 +97,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		userId: user?.id ?? null,
 		message,
 		messagesEndRef,
-		isPending,
+		chatPending,
 		showEmoji,
 		handleKeySubmitMessage,
 		handleSubmitMessage,

@@ -1,5 +1,6 @@
 'use client'
 import { useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Socket } from 'socket.io-client'
@@ -7,14 +8,15 @@ import { toast } from 'sonner'
 
 import { useUserStore } from '@/entities/User'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { PRIVATE_URL } from '@/shared/libs'
 
 import { boardKeys } from './useBoardQueries'
 
 export const useBoardEvents = (
-	socketRef: React.MutableRefObject<Socket | null>,
+	socketRef: React.RefObject<Socket | null>,
 	boardId: string
 ) => {
+	const t = useTranslations('events.board')
 	const router = useRouter()
 	const queryClient = useQueryClient()
 	const { user } = useUserStore()
@@ -28,8 +30,8 @@ export const useBoardEvents = (
 		const onKicked = ({ boardId: kickedBoardId }: { boardId: string }) => {
 			if (kickedBoardId !== boardId) return
 
-			toast.error('Вы были кикнуты с доски')
-			router.push(PUBLIC_URL.boards())
+			toast.error(t('kicked'))
+			router.push(PRIVATE_URL.boards())
 		}
 
 		const onBoardDeleted = ({
@@ -42,8 +44,8 @@ export const useBoardEvents = (
 			if (deletedBoardId !== boardId) return
 			if (deletedBy === user?.id) return
 
-			toast.error('Доска была удалена')
-			router.push(PUBLIC_URL.boards())
+			toast.error(t('boardDeleted'))
+			router.push(PRIVATE_URL.boards())
 		}
 
 		const onBoardUpdated = () => {
@@ -63,5 +65,5 @@ export const useBoardEvents = (
 			socket.off('board:deleted', onBoardDeleted)
 			socket.off('board:edited', onBoardUpdated)
 		}
-	}, [socketRef, boardId, queryClient, router, user?.id])
+	}, [socketRef, boardId, queryClient, router, user?.id, t])
 }

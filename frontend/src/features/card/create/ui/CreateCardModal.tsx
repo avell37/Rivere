@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { memo, useState } from 'react'
 
-import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
+import { IBoardColumnIdentifiers } from '@/shared/types'
 import { Modal } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 
@@ -16,7 +16,7 @@ const CreateCardModalComponent = ({
 	boardId
 }: IBoardColumnIdentifiers) => {
 	const [open, setOpen] = useState(false)
-	const { form, isPending, onSubmit } = useCreateCard({
+	const { form, createCardPending, onSubmit } = useCreateCard({
 		columnId,
 		boardId,
 		onSuccess: () => setOpen(false)
@@ -43,7 +43,7 @@ const CreateCardModalComponent = ({
 			<CreateCardForm
 				form={form}
 				onSubmit={onSubmit}
-				isPending={isPending}
+				isPending={createCardPending}
 				t={t}
 			/>
 		</Modal>

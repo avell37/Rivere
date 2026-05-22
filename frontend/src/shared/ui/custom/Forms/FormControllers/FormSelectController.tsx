@@ -11,13 +11,15 @@ import {
 	SelectTrigger,
 	SelectValue
 } from '@/shared/ui/external'
+import { cn } from '@/shared/utils'
 
 interface FormSelectControllerProps<T extends FieldValues> {
 	name: Path<T>
 	control: Control<T>
 	icon?: React.ReactNode
-	label: string
-	placeholder: string
+	label?: string
+	placeholder?: string
+	className?: string
 	onChange?: (value: string) => void
 	options: {
 		value: string
@@ -33,6 +35,7 @@ export const FormSelectController = <T extends FieldValues>({
 	icon,
 	label,
 	placeholder,
+	className,
 	onChange,
 	options,
 	disabled
@@ -42,7 +45,7 @@ export const FormSelectController = <T extends FieldValues>({
 			control={control}
 			name={name}
 			render={({ field }) => (
-				<FormItem>
+				<FormItem className='w-full'>
 					{label && (
 						<FormLabel className='flex gap-1 text-sm dark:text-gray-300'>
 							{icon}
@@ -59,8 +62,10 @@ export const FormSelectController = <T extends FieldValues>({
 						disabled={disabled}
 					>
 						<SelectTrigger
-							className='w-48 cursor-pointer hover:bg-accent 
-						hover:text-accent-foreground dark:hover:bg-input/50 transition-all'
+							className={cn(
+								'cursor-pointer hover:bg-accent hover:text-accent-foreground dark:hover:bg-input/50 transition-all',
+								className
+							)}
 						>
 							<SelectValue placeholder={placeholder} />
 						</SelectTrigger>

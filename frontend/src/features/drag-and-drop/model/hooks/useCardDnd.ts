@@ -1,34 +1,15 @@
 'use client'
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { useMutation } from '@tanstack/react-query'
-import { useTranslations } from 'next-intl'
 import { useCallback } from 'react'
 
-import { ICard } from '@/entities/Card'
-import { IColumn } from '@/entities/Column'
+import { CardDndProps } from '../types/DragAndDrop'
 
-import { handleApiError } from '@/shared/utils'
+import { useMoveCardsMutation, useReorderCardsMutation } from './useDndQueries'
 
-import { fetchMoveCardToColumn, fetchReorderCards } from '../api/reorderApi'
-
-interface CardProps {
-	setActiveCard: (card: ICard | null) => void
-	setColumns: (columns: IColumn[] | ((prev: IColumn[]) => IColumn[])) => void
-}
-
-export const useCardDnd = ({ setActiveCard, setColumns }: CardProps) => {
-	const t = useTranslations()
-
-	const { mutate: reorderCards } = useMutation({
-		mutationFn: fetchReorderCards,
-		onError: err => handleApiError(err, t)
-	})
-
-	const { mutate: moveMutation } = useMutation({
-		mutationFn: fetchMoveCardToColumn,
-		onError: err => handleApiError(err, t)
-	})
+export const useCardDnd = ({ setActiveCard, setColumns }: CardDndProps) => {
+	const { reorderCards } = useReorderCardsMutation()
+	const { moveCards } = useMoveCardsMutation()
 
 	const onCardDragStart = useCallback(
 		({ active }: DragStartEvent) => {
@@ -110,7 +91,7 @@ export const useCardDnd = ({ setActiveCard, setColumns }: CardProps) => {
 						cards: newCards
 					}
 
-					moveMutation({
+					moveCards({
 						cardId: activeId,
 						newColumnId: fromColumn.id,
 						position: toIndex
@@ -150,7 +131,7 @@ export const useCardDnd = ({ setActiveCard, setColumns }: CardProps) => {
 				return next
 			})
 		},
-		[setColumns, reorderCards, setActiveCard, moveMutation]
+		[setColumns, reorderCards, setActiveCard, moveCards]
 	)
 
 	return {

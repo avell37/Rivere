@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl'
 import {
 	FormAuthWrapper,
 	FormInputController,
+	PrivacyCheckbox,
 	RegistrationFields
 } from '@/shared/ui/custom'
-import { PrivacyCheckbox } from '@/shared/ui/custom/PrivacyCheckbox/PrivacyCheckbox'
 
 import { useRegister } from '../model/hooks/useRegister'
 

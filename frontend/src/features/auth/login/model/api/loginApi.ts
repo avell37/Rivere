@@ -1,10 +1,12 @@
-import { SignInRequest } from '@/features/auth'
-
 import { baseAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
-import { AuthResponse } from '@/shared/types/AuthResponse'
+import { ActionResponse } from '@/shared/types'
 
-export const login = async (data: SignInRequest): Promise<AuthResponse> => {
+import { SignInRequest } from '../validation/login.z.validation'
+
+export const loginApi = async (
+	data: SignInRequest
+): Promise<ActionResponse> => {
 	const response = await baseAxios.post(`${API_URL.session()}login`, data)
 	return response.data
 }

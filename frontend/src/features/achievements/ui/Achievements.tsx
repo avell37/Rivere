@@ -8,20 +8,20 @@ import {
 
 import { Button } from '@/shared/ui/external'
 
-import { useGetAchievements } from '../model/hooks/useGetAchievements'
+import { useAchievements } from '../model/hooks/useAchievements'
 
 export const Achievements = () => {
 	const {
 		achievements,
 		filteredAchievements,
 		earnedCount,
-		isLoading,
+		achievementsPending,
 		filter,
 		setFilter
-	} = useGetAchievements()
+	} = useAchievements()
 	const t = useTranslations('achievements')
 
-	if (!achievements || isLoading) {
+	if (!achievements || achievementsPending) {
 		return (
 			<div className='container mx-auto flex flex-col gap-4 p-8 px-0'>
 				<h1 className='text-2xl font-bold'>{t('loading')}</h1>

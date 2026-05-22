@@ -5,10 +5,11 @@ import { toast } from 'sonner'
 
 import { Button, Input, Spinner } from '@/shared/ui/external'
 
-import { useInvite } from '../model/hooks/useInvite'
+import { useCreateInvite } from '../model/hooks/useInviteQueries'
 
 export const CreateInviteModal = ({ boardId }: { boardId: string }) => {
-	const { createInviteData, createInviteToBoard, createPending } = useInvite()
+	const { createInviteData, createInviteToBoard, createPending } =
+		useCreateInvite()
 	const t = useTranslations('invite')
 	const handleCreate = async () => {
 		await createInviteToBoard(boardId)

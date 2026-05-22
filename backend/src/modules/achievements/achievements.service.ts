@@ -155,9 +155,14 @@ export class AchievementsService {
     }
 
     async deleteAchievement(id: string) {
-        return this.prisma.achievement.delete({
+        await this.prisma.achievement.delete({
             where: { id },
         });
+
+        return {
+            success: true,
+            message: 'Достижение удалено.',
+        };
     }
 
     async grantAchievement(userId: string, achievementId: string) {

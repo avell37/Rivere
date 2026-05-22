@@ -17,8 +17,7 @@ export class FilesController {
 
     @ApiOperation({
         summary: 'Публикация файлов',
-        description:
-            'Опубликует файлы на серверной части, в директории "uploads/.." ',
+        description: 'Опубликует файлы на S3 хранилище',
     })
     @HttpCode(200)
     @Post('upload')
@@ -29,8 +28,7 @@ export class FilesController {
 
     @ApiOperation({
         summary: 'Удаление файла',
-        description:
-            'Опубликует файлы на серверной части, в директории "uploads/.." ',
+        description: 'Удаляет файл с S3 хранилища',
     })
     @HttpCode(200)
     @Delete(':file')

@@ -3,10 +3,9 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-import { useNotificationsActions } from '@/entities/Notification'
 import { useGetUser } from '@/entities/User'
 
-import { useModerationEvents } from '@/features/admin/users/model/hooks/useModerationEvents'
+import { useModerationEvents } from '@/features/admin'
 import { useNotifications } from '@/features/notifications'
 
 import { PUBLIC_URL } from '@/shared/libs'
@@ -21,7 +20,6 @@ export default function ProtectedLayout({
 	const { data: user, isLoading } = useGetUser()
 	const router = useRouter()
 	useNotifications(user?.id)
-	useNotificationsActions()
 	useModerationEvents(user?.id)
 
 	useEffect(() => {

@@ -5,7 +5,7 @@ import { Form } from '@/shared/ui/external'
 import { useChangeNickname } from '../../model/hooks/useChangeNickname'
 
 export const ChangeNicknameForm = ({ t }: { t: (key: string) => string }) => {
-	const { form, isPending, onSubmit } = useChangeNickname()
+	const { form, changeNicknamePending, onSubmit } = useChangeNickname()
 
 	return (
 		<Form {...form}>
@@ -14,7 +14,7 @@ export const ChangeNicknameForm = ({ t }: { t: (key: string) => string }) => {
 				closeText={t('personalInformation.nicknameModalClose')}
 				withClose
 				handleSubmit={form.handleSubmit(onSubmit)}
-				isPending={isPending}
+				isPending={changeNicknamePending}
 			>
 				<FormInputController
 					name='nickname'
@@ -23,7 +23,7 @@ export const ChangeNicknameForm = ({ t }: { t: (key: string) => string }) => {
 						'personalInformation.nicknameModalPlaceholder'
 					)}
 					control={form.control}
-					disabled={isPending}
+					disabled={changeNicknamePending}
 				/>
 			</FormWrapper>
 		</Form>

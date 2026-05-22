@@ -1,12 +1,11 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
 
-import { useGetAllUsers } from '@/features/admin/users/model/hooks/useAdminQueries'
-import { UserAdminListSkeleton } from '@/features/admin/users/ui/UserAdminListSkeleton'
+import { UserAdminListSkeleton, useGetAllUsers } from '@/features/admin'
 
-import { NavBar } from '@/shared/ui/custom/NavBar/NavBar'
+import { NavBar } from '@/shared/ui/custom'
 
-import { UserAdminList } from '@/widgets/Admin/users/UserAdminList'
+import { UserAdminList } from './UserAdminList'
 
 export const Users = () => {
 	const searchParams = useSearchParams()

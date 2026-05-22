@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io-client'
 
-import { SERVER_URL } from '@/shared/libs/constants/api.config'
-import { createSocket } from '@/shared/utils/createSocket'
+import { SERVER_URL } from '@/shared/libs'
+import { createSocket } from '@/shared/utils'
 
 let socket: Socket | null = null
 

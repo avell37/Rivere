@@ -1,9 +1,9 @@
 services:
     backend:
         build: ./backend
-        container_name: rivere_backend
-        ports:
-            - "5000:5000"
+        read_only: true
+        expose:
+            - "5000"
         env_file:
             - ./backend/.env.production
         depends_on:
@@ -12,9 +12,9 @@ services:
 
     frontend:
         build: ./frontend
-        container_name: rivere_frontend
-        ports:
-            - "3000:3000"
+        read_only: true
+        expose:
+            - "3000"
         depends_on:
             - backend
         env_file:
@@ -22,7 +22,6 @@ services:
 
     db:
         image: postgres:15-alpine
-        container_name: rivere_db_postgres
         env_file:
             - ./backend/.env.production
         volumes:
@@ -30,9 +29,9 @@ services:
 
     redis:
         image: redis:8-alpine
-        container_name: rivere_db_redis
+        command: sh -c 'redis-server --requirepass "$$REDIS_PASSWORD" --appendonly yes'
         env_file:
-            - ./backend/.env
+            - ./backend/.env.production
 
     migrate:
         image: node:20-alpine
@@ -42,6 +41,19 @@ services:
         command: npx prisma db push --config prisma.config.ts
         depends_on:
             - db
+
+    nginx:
+        image: nginx:alpine
+        container_name: rivere_nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - /etc/letsencrypt:/etc/letsencrypt
+        depends_on:
+            - frontend
+            - backend
 
 volumes:
     postgres_data:

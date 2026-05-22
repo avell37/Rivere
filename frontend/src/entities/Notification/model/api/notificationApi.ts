@@ -1,23 +1,20 @@
-import { baseAxios } from '@/shared/api/interceptors'
+import { authAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
+import { ActionResponse } from '@/shared/types'
 
-import {
-	INotification,
-	INotificationActionResponse
-} from '../types/INotification'
+import { INotification } from '../types/INotification'
 
 export const getUserNotifications = async (): Promise<INotification[]> => {
-	const response = await baseAxios.get(`${API_URL.notifications()}`)
+	const response = await authAxios.get(`${API_URL.notifications()}`)
 	return response.data
 }
 
-export const markAllRead = async (): Promise<INotificationActionResponse> => {
-	const response = await baseAxios.patch(`${API_URL.notifications()}readAll`)
+export const markAllReadApi = async (): Promise<ActionResponse> => {
+	const response = await authAxios.patch(`${API_URL.notifications()}readAll`)
 	return response.data
 }
 
-export const clearNotifications =
-	async (): Promise<INotificationActionResponse> => {
-		const response = await baseAxios.delete(`${API_URL.notifications()}`)
-		return response.data
-	}
+export const clearNotificationsApi = async (): Promise<ActionResponse> => {
+	const response = await authAxios.delete(`${API_URL.notifications()}`)
+	return response.data
+}

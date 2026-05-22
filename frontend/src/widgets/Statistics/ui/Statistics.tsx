@@ -9,11 +9,11 @@ import { StatisticsSkeleton } from './StatisticsSkeleton'
 
 export const Statistics = () => {
 	const t = useTranslations('statistics')
-	const { data, isLoading, days } = useGetStatistics()
+	const { statistics, statisticsPending, days } = useGetStatistics()
 
-	if (isLoading || !data) return <StatisticsSkeleton />
+	if (statisticsPending || !statistics) return <StatisticsSkeleton />
 
-	const fields = StatisticsFields(data, t)
+	const fields = StatisticsFields(statistics, t)
 
 	return (
 		<div className='container mx-auto flex flex-col gap-6 p-8 px-4 w-full'>

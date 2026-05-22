@@ -1,18 +1,13 @@
 'use client'
 import { KeyRound, Mail } from 'lucide-react'
 
-import { IUser } from '@/entities/User'
-
 import { VerifyEmailForm, useVerifyEmail } from '@/features/auth'
 import { ChangeEmailForm, ChangePasswordForm } from '@/features/settings'
 
 import { Modal } from '@/shared/ui/custom'
 import { Badge, Button, Label } from '@/shared/ui/external'
 
-interface SecurityProps {
-	t: (key: string) => string
-	user: IUser
-}
+import { SecurityProps } from '../model/types/SettingsProps'
 
 export const UserSettingsSecurity = ({ t, user }: SecurityProps) => {
 	const { sendVerificationToken } = useVerifyEmail()

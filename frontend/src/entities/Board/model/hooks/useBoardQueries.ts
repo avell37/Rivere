@@ -2,30 +2,61 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
+import { MouseEvent } from 'react'
 import { toast } from 'sonner'
 
+import { ActionResponse } from '@/shared/types'
 import { handleApiError } from '@/shared/utils'
 
 import {
-	deleteMember,
+	createBoardApi,
+	deleteBoardApi,
 	fetchBoardById,
 	fetchUserBoards,
-	toggleFavorite
+	toggleFavoriteApi,
+	updateBoardApi
 } from '../api/boardApi'
 import { IBoard } from '../types/IBoard'
+import { CreateBoardRequest } from '../validation/create-board.z.validation'
+import { EditBoardRequest } from '../validation/edit-board.z.validation'
 
 export const boardKeys = {
+	create: ['create-board'],
 	all: ['get-boards'],
 	single: (id: string) => ['get-board', id],
-	deleteMember: ['delete-member'],
+	update: (id: string) => ['update-board', id],
+	delete: ['delete-board'],
 	toggleFavorite: (id: string) => ['toggle-favorite', id]
+}
+
+export const useCreateBoardMutation = () => {
+	const queryClient = useQueryClient()
+	const t = useTranslations()
+
+	const { mutate: createBoard, isPending: createBoardPending } = useMutation<
+		IBoard,
+		AxiosError,
+		CreateBoardRequest
+	>({
+		mutationKey: boardKeys.create,
+		mutationFn: createBoardApi,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: boardKeys.all })
+		},
+		onError: err => handleApiError(err, t)
+	})
+
+	return {
+		createBoard,
+		createBoardPending
+	}
 }
 
 export const useGetBoard = (boardId: string) => {
 	const {
 		data: board,
-		isLoading,
-		error
+		isLoading: boardPending,
+		error: boardError
 	} = useQuery<IBoard, AxiosError>({
 		queryKey: boardKeys.single(boardId),
 		queryFn: () => fetchBoardById(boardId),
@@ -36,13 +67,17 @@ export const useGetBoard = (boardId: string) => {
 
 	return {
 		board,
-		isLoading,
-		error
+		boardPending,
+		boardError
 	}
 }
 
 export const useGetBoards = () => {
-	const { data: boards, isPending } = useQuery<IBoard[], unknown>({
+	const {
+		data: boards,
+		isPending: boardsPending,
+		isError
+	} = useQuery<IBoard[], AxiosError>({
 		queryKey: boardKeys.all,
 		queryFn: fetchUserBoards
 	})
@@ -53,19 +88,24 @@ export const useGetBoards = () => {
 	return {
 		favoriteBoards,
 		otherBoards,
-		isPending
+		boardsPending,
+		isError
 	}
 }
 
-export const useDeleteMember = (boardId: string) => {
+export const useUpdateBoardMutation = (boardId: string) => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 
-	const { mutate, isPending } = useMutation<boolean, unknown, string>({
-		mutationKey: boardKeys.deleteMember,
-		mutationFn: (userId: string) => deleteMember(boardId, userId),
+	const { mutate: updateBoard, isPending: updateBoardPending } = useMutation<
+		IBoard,
+		AxiosError,
+		EditBoardRequest
+	>({
+		mutationKey: boardKeys.update(boardId),
+		mutationFn: (data: EditBoardRequest) =>
+			updateBoardApi({ boardId, data }),
 		onSuccess: () => {
-			toast.success(t('board.deleteMember'))
 			queryClient.invalidateQueries({
 				queryKey: boardKeys.single(boardId)
 			})
@@ -74,27 +114,55 @@ export const useDeleteMember = (boardId: string) => {
 	})
 
 	return {
-		isPending,
-		mutate
+		updateBoard,
+		updateBoardPending
 	}
 }
 
-export const useToggleFavorite = (
+export const useDeleteBoardMutation = () => {
+	const queryClient = useQueryClient()
+	const t = useTranslations()
+
+	const { mutate: deleteBoard, isPending: deleteBoardPending } = useMutation<
+		ActionResponse,
+		AxiosError,
+		string
+	>({
+		mutationKey: boardKeys.delete,
+		mutationFn: deleteBoardApi,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: boardKeys.all })
+		},
+		onError: err => handleApiError(err, t)
+	})
+
+	return {
+		deleteBoard,
+		deleteBoardPending
+	}
+}
+
+export const useToggleFavoriteMutation = (
 	boardId: string,
 	isFavorite: boolean | undefined
 ) => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 
-	const { mutate, isPending } = useMutation({
+	const {
+		mutate: toggleFavoriteBoard,
+		isPending: toggleFavoritePending,
+		isError
+	} = useMutation<ActionResponse, AxiosError, { boardId: string }>({
 		mutationKey: boardKeys.toggleFavorite(boardId),
-		mutationFn: () => toggleFavorite(boardId),
+		mutationFn: ({ boardId }) => toggleFavoriteApi(boardId),
 		onSuccess: () => {
-			if (isFavorite) {
-				toast.success(t('board.removedFromFavorites'))
-			} else {
-				toast.success(t('board.addedToFavorites'))
-			}
+			const message = isFavorite
+				? t('board.removedFromFavorites')
+				: t('board.addedToFavorites')
+
+			toast.success(message)
+
 			queryClient.invalidateQueries({
 				queryKey: boardKeys.all
 			})
@@ -105,8 +173,16 @@ export const useToggleFavorite = (
 		onError: err => handleApiError(err, t)
 	})
 
+	const handleToggleFavorite = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+		e.stopPropagation()
+
+		toggleFavoriteBoard({ boardId })
+	}
+
 	return {
-		isPending,
-		mutate
+		handleToggleFavorite,
+		toggleFavoritePending,
+		isError
 	}
 }

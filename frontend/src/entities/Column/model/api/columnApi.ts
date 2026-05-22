@@ -1,5 +1,6 @@
-import { baseAxios } from '@/shared/api/interceptors'
+import { authAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
+import { ActionResponse } from '@/shared/types'
 
 import {
 	CreateColumnPayload,
@@ -7,24 +8,26 @@ import {
 } from '../types/ColumnPayload'
 import { IColumn } from '../types/IColumn'
 
-export const createColumn = async (
+export const createColumnApi = async (
 	data: CreateColumnPayload
 ): Promise<IColumn> => {
-	const response = await baseAxios.post(`${API_URL.columns()}create`, data)
+	const response = await authAxios.post(`${API_URL.columns()}create`, data)
 	return response.data
 }
 
-export const updateColumn = async (
+export const updateColumnApi = async (
 	data: UpdateColumnPayload
 ): Promise<IColumn> => {
-	const response = await baseAxios.patch(
+	const response = await authAxios.patch(
 		`${API_URL.columns()}${data.columnId}`,
 		data
 	)
 	return response.data
 }
 
-export const deleteColumn = async (columnId: string): Promise<IColumn> => {
-	const response = await baseAxios.delete(`${API_URL.columns()}${columnId}`)
+export const deleteColumnApi = async (
+	columnId: string
+): Promise<ActionResponse> => {
+	const response = await authAxios.delete(`${API_URL.columns()}${columnId}`)
 	return response.data
 }

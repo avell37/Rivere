@@ -1,5 +1,5 @@
 export * from './boardBackgrounds'
 export * from './customAvatar'
 export * from './getActivityColor'
-export * from './priorityColors'
 export * from './priorityConfig'
+export * from './useMobile'

@@ -87,11 +87,15 @@ export const UserAdminCard = ({
 							}
 						>
 							<SelectTrigger className='w-[140px]'>
-								<SelectValue placeholder='Select role' />
+								<SelectValue placeholder={t('roles.select')} />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value='USER'>USER</SelectItem>
-								<SelectItem value='ADMIN'>ADMIN</SelectItem>
+								<SelectItem value='USER'>
+									{t('roles.USER')}
+								</SelectItem>
+								<SelectItem value='ADMIN'>
+									{t('roles.ADMIN')}
+								</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -171,7 +175,7 @@ export const UserAdminCard = ({
 					<p>
 						{new Date(
 							user?.userStats?.lastActiveDate
-						).toLocaleDateString() || 'Неизвестно'}
+						).toLocaleDateString() || t('unknown')}
 					</p>
 				</div>
 				<div>

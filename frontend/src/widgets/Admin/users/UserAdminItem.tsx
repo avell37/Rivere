@@ -7,31 +7,27 @@ import { useState } from 'react'
 import { IAdminUser, useGetUser } from '@/entities/User'
 
 import {
+	UserAdminBanForm,
+	UserAdminCard,
+	useBanUser,
 	useSetUserRole,
 	useUnbanUser
-} from '@/features/admin/users/model/hooks/useAdminQueries'
-import { useBanUser } from '@/features/admin/users/model/hooks/useBanUser'
-import { UserAdminBanCard } from '@/features/admin/users/ui/UserAdminBanCard'
-import { UserAdminCard } from '@/features/admin/users/ui/UserAdminCard'
+} from '@/features/admin'
 
 import { customAvatar } from '@/shared/config'
 import { S3_URL } from '@/shared/libs'
-import { Modal } from '@/shared/ui/custom'
+import { AppDropdown, Modal } from '@/shared/ui/custom'
 import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
 	Badge,
 	Button,
-	DropdownMenu,
-	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuTrigger,
 	TableCell,
 	TableRow
 } from '@/shared/ui/external'
-import { roleStyles } from '@/shared/utils'
-import { isUserBanned } from '@/shared/utils/ban.utils'
+import { isUserBanned, roleStyles } from '@/shared/utils'
 
 export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 	const [open, setOpen] = useState(false)
@@ -90,50 +86,49 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 						className='text-right'
 						onClick={e => e.stopPropagation()}
 					>
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
+						<AppDropdown
+							trigger={
 								<Button variant='ghost' size='icon'>
 									<Ellipsis size={16} />
 								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align='end'>
-								<DropdownMenuItem asChild>
-									{isBanned ? (
-										<Button
-											variant='ghost'
-											onClick={() => removeBan()}
-											disabled={unbanPending}
-											className='w-full justify-start'
-										>
-											<UserRoundPlus size={14} />
-											{unbanPending
-												? t('unbanPending')
-												: t('unban')}
-										</Button>
-									) : (
-										<Modal
-											trigger={
-												<div className='flex items-center gap-2 text-sm p-2 cursor-pointer hover:bg-muted/50 transition rounded'>
-													<UserRoundX size={14} />
-													{t('ban')}
-												</div>
-											}
-											title={t('heading', {
-												nickname: user.username
-											})}
-											contentClassname='max-w-xl'
-										>
-											<UserAdminBanCard
-												form={form}
-												t={t}
-												onSubmit={onSubmit}
-												banPending={banPending}
-											/>
-										</Modal>
-									)}
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+							}
+						>
+							<DropdownMenuItem asChild>
+								{isBanned ? (
+									<Button
+										variant='ghost'
+										onClick={() => removeBan()}
+										disabled={unbanPending}
+										className='w-full justify-start'
+									>
+										<UserRoundPlus size={14} />
+										{unbanPending
+											? t('unbanPending')
+											: t('unban')}
+									</Button>
+								) : (
+									<Modal
+										trigger={
+											<div className='flex items-center gap-2 text-sm p-2 cursor-pointer hover:bg-muted/50 transition rounded'>
+												<UserRoundX size={14} />
+												{t('ban')}
+											</div>
+										}
+										title={t('heading', {
+											nickname: user.username
+										})}
+										contentClassname='max-w-md'
+									>
+										<UserAdminBanForm
+											form={form}
+											t={t}
+											onSubmit={onSubmit}
+											banPending={banPending}
+										/>
+									</Modal>
+								)}
+							</DropdownMenuItem>
+						</AppDropdown>
 					</TableCell>
 				) : null}
 			</TableRow>

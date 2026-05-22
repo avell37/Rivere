@@ -1,6 +1,6 @@
 import { Award, Shield, SquareKanban, SquareMenu } from 'lucide-react'
 
-import { PRIVATE_URL, PUBLIC_URL } from '@/shared/libs'
+import { ADMIN_URL, PRIVATE_URL } from '@/shared/libs'
 
 export const HeaderNavFields = ({
 	role,
@@ -12,17 +12,17 @@ export const HeaderNavFields = ({
 	const baseFields = [
 		{
 			title: t('boards.heading'),
-			url: PUBLIC_URL.boards(),
+			url: PRIVATE_URL.boards(),
 			icon: SquareKanban
 		},
 		{
 			title: t('statistics.heading'),
-			url: PUBLIC_URL.statistics(),
+			url: PRIVATE_URL.statistics(),
 			icon: SquareMenu
 		},
 		{
 			title: t('achievements.heading'),
-			url: PUBLIC_URL.achievements(),
+			url: PRIVATE_URL.achievements(),
 			icon: Award
 		}
 	]
@@ -30,7 +30,7 @@ export const HeaderNavFields = ({
 	if (role === 'ADMIN' || role === 'CREATOR') {
 		baseFields.push({
 			title: t('admin.heading'),
-			url: PRIVATE_URL.admin(),
+			url: ADMIN_URL.admin(),
 			icon: Shield
 		})
 	}

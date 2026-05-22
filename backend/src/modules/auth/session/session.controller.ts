@@ -14,6 +14,7 @@ import type { Request } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
 import { Authorization } from '@/shared/decorators/authorization.decorator';
 import { UserAgent } from '@/shared/decorators/user-agent.decorator';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('session')
 export class SessionController {
@@ -82,6 +83,12 @@ export class SessionController {
         );
     }
 
+    @Throttle({
+        default: {
+            ttl: 60000,
+            limit: 5,
+        },
+    })
     @ApiOperation({
         summary: 'Вход в систему',
         description: 'Выдает сессию-токен для входа пользователя',

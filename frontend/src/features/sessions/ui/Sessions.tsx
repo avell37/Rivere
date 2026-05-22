@@ -14,8 +14,8 @@ export const Sessions = () => {
 		userSessions,
 		hasOtherSessions,
 		sessionsIsPending,
-		terminateAllSessions,
-		terminateSelectedSession
+		terminateAllExceptCurrent,
+		terminateSession
 	} = useSession()
 	const t = useTranslations('profile.settings.session')
 	const locale = useLocale()
@@ -44,7 +44,7 @@ export const Sessions = () => {
 					t={t}
 					locale={locale}
 					userSessions={userSessions}
-					terminateSelectedSession={terminateSelectedSession}
+					terminateSelectedSession={terminateSession}
 				/>
 				{hasOtherSessions && (
 					<Alert
@@ -61,7 +61,7 @@ export const Sessions = () => {
 						description={t('clearSessionsDescription')}
 						actionText={t('clearSessionsActionText')}
 						cancelText={t('clearSessionsCancelText')}
-						onSubmit={terminateAllSessions}
+						onSubmit={terminateAllExceptCurrent}
 					/>
 				)}
 			</div>

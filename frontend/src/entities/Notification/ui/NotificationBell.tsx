@@ -1,10 +1,10 @@
 'use client'
 import { Bell } from 'lucide-react'
 
-import { useNotificationsActions } from '../model/hooks/useNotificationsActions'
+import { useGetNotifications } from '../model/hooks/useNotificationQueries'
 
 export const NotificationBell = () => {
-	const { notifications } = useNotificationsActions()
+	const { notifications } = useGetNotifications()
 	const unreadCount = notifications.filter(not => !not.read).length
 
 	return (

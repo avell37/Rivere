@@ -1,73 +1,71 @@
-import { ISession, ISessionActionsResponse } from '@/entities/Session'
+import { ISession } from '@/entities/Session'
 
-import {
-	ChangeEmailRequest,
-	ChangeNicknameRequest,
-	ChangePasswordRequest,
-	ChangeUsernameRequest
-} from '@/features/settings'
-
-import { baseAxios } from '@/shared/api/interceptors'
+import { authAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
+import { ActionResponse } from '@/shared/types'
 
-import { IUploadedAvatar, IUser, IUserUpdateResponse } from '../types/IUser'
+import { IUploadedAvatar, IUser } from '../types/IUser'
 import { IUserStatistics } from '../types/IUserStatistics'
+import { ChangeEmailRequest } from '../validation/change-email.z.validation'
+import { ChangeNicknameRequest } from '../validation/change-nickname.z.validation'
+import { ChangePasswordRequest } from '../validation/change-password.z.validation'
+import { ChangeUsernameRequest } from '../validation/change-username.z.validation'
 
 export const getUser = async (): Promise<IUser> => {
-	const response = await baseAxios.get(`${API_URL.account()}`)
+	const response = await authAxios.get(`${API_URL.account()}`)
 	return response.data
 }
 
 export const getStatistics = async (): Promise<IUserStatistics> => {
-	const response = await baseAxios.get(`${API_URL.statistics()}`)
+	const response = await authAxios.get(`${API_URL.statistics()}`)
 	return response.data
 }
 
-export const changeUsername = async (
+export const changeUsernameApi = async (
 	data: ChangeUsernameRequest
-): Promise<IUserUpdateResponse> => {
-	const response = await baseAxios.post(
+): Promise<ActionResponse> => {
+	const response = await authAxios.post(
 		`${API_URL.account()}changeUsername`,
 		data
 	)
 	return response.data
 }
 
-export const changeEmail = async (
+export const changeEmailApi = async (
 	data: ChangeEmailRequest
-): Promise<IUserUpdateResponse> => {
-	const response = await baseAxios.post(
+): Promise<ActionResponse> => {
+	const response = await authAxios.post(
 		`${API_URL.account()}changeEmail`,
 		data
 	)
 	return response.data
 }
 
-export const changePassword = async (
+export const changePasswordApi = async (
 	data: ChangePasswordRequest
-): Promise<IUserUpdateResponse> => {
-	const response = await baseAxios.post(
+): Promise<ActionResponse> => {
+	const response = await authAxios.post(
 		`${API_URL.account()}changePassword`,
 		data
 	)
 	return response.data
 }
 
-export const changeNickname = async (
+export const changeNicknameApi = async (
 	data: ChangeNicknameRequest
-): Promise<IUserUpdateResponse> => {
-	const response = await baseAxios.post(
+): Promise<ActionResponse> => {
+	const response = await authAxios.post(
 		`${API_URL.account()}changeNickname`,
 		data
 	)
 	return response.data
 }
 
-export const uploadAvatar = async (file: File): Promise<IUploadedAvatar> => {
+export const uploadAvatarApi = async (file: File): Promise<IUploadedAvatar> => {
 	const formData = new FormData()
 	formData.append('file', file)
 
-	const response = await baseAxios.post(
+	const response = await authAxios.post(
 		`${API_URL.account()}changeAvatar`,
 		formData,
 		{ headers: { 'Content-Type': 'multipart/form-data' } }
@@ -76,12 +74,13 @@ export const uploadAvatar = async (file: File): Promise<IUploadedAvatar> => {
 	return response.data
 }
 
-export const logout = async (): Promise<ISessionActionsResponse> => {
-	const response = await baseAxios.post(`${API_URL.session()}`)
+export const logoutApi = async (): Promise<ActionResponse> => {
+	const response = await authAxios.post(`${API_URL.session()}`)
+	console.log(response)
 	return response.data
 }
 
-export const findCurrentSession = async (): Promise<ISession[]> => {
-	const response = await baseAxios.get(`${API_URL.session()}`)
+export const findCurrentSession = async (): Promise<ISession> => {
+	const response = await authAxios.get(`${API_URL.session()}`)
 	return response.data
 }

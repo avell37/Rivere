@@ -11,7 +11,7 @@ import { CreateColumnForm } from './CreateColumnForm'
 
 const CreateColumnModalComponent = ({ boardId }: { boardId: string }) => {
 	const [open, setOpen] = useState(false)
-	const { form, isPending, onSubmit } = useCreateColumn({
+	const { form, createColumnPending, onSubmit } = useCreateColumn({
 		boardId,
 		onSuccess: () => setOpen(false)
 	})
@@ -37,7 +37,7 @@ const CreateColumnModalComponent = ({ boardId }: { boardId: string }) => {
 		>
 			<CreateColumnForm
 				form={form}
-				isPending={isPending}
+				isPending={createColumnPending}
 				onSubmit={onSubmit}
 				t={t}
 			/>

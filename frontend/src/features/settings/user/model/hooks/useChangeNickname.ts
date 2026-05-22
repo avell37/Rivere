@@ -1,22 +1,20 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { changeNickname } from '@/entities/User'
-
-import { handleApiError } from '@/shared/utils'
-
 import {
 	ChangeNicknameRequest,
-	ChangeNicknameSchema
-} from '../validation/change-nickname.z.validation'
+	ChangeNicknameSchema,
+	useChangeNicknameMutation
+} from '@/entities/User'
 
 export const useChangeNickname = () => {
 	const t = useTranslations()
-	const queryClient = useQueryClient()
+	const { changeNickname, changeNicknamePending } =
+		useChangeNicknameMutation()
+
 	const form = useForm<ChangeNicknameRequest>({
 		resolver: zodResolver(ChangeNicknameSchema),
 		defaultValues: {
@@ -24,22 +22,17 @@ export const useChangeNickname = () => {
 		}
 	})
 
-	const { mutate, isPending } = useMutation({
-		mutationKey: ['update user data'],
-		mutationFn: (data: ChangeNicknameRequest) => changeNickname(data),
-		onSuccess: () => {
-			form.reset()
-			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.success(t('profile.settings.security.nicknameChanged'))
-		},
-		onError: err => handleApiError(err, t)
-	})
-
-	const onSubmit: SubmitHandler<ChangeNicknameRequest> = data => mutate(data)
+	const onSubmit: SubmitHandler<ChangeNicknameRequest> = data =>
+		changeNickname(data, {
+			onSuccess: () => {
+				form.reset()
+				toast.success(t('profile.settings.security.nicknameChanged'))
+			}
+		})
 
 	return {
 		form,
-		isPending,
+		changeNicknamePending,
 		onSubmit
 	}
 }

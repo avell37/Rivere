@@ -1,13 +1,14 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { PUBLIC_URL } from '@/shared/libs'
-import { AuthResponse } from '@/shared/types/AuthResponse'
+import { ActionResponse } from '@/shared/types'
 import { handleApiError } from '@/shared/utils'
 
 import { register } from '../api/registerApi'
@@ -27,21 +28,22 @@ export const useRegister = () => {
 	})
 
 	const { mutate, isPending } = useMutation<
-		AuthResponse,
-		unknown,
+		ActionResponse,
+		AxiosError,
 		SignUpRequest
 	>({
 		mutationKey: ['register user'],
-		mutationFn: (data: SignUpRequest) => register(data),
-		onSuccess: () => {
-			form.reset()
-			router.replace(PUBLIC_URL.verifyEmail())
-		},
+		mutationFn: register,
 		onError: err => handleApiError(err, t)
 	})
 
 	const onSubmit: SubmitHandler<SignUpRequest> = data => {
-		mutate(data)
+		mutate(data, {
+			onSuccess: () => {
+				form.reset()
+				router.replace(PUBLIC_URL.verifyEmail())
+			}
+		})
 	}
 
 	const toggleShowPassword = () => setShowPassword(prev => !prev)

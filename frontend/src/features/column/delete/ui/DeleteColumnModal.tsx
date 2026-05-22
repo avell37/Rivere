@@ -1,15 +1,10 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
 import { Alert } from '@/shared/ui/custom'
 
 import { useDeleteColumn } from '../model/hooks/useDeleteColumn'
-
-interface DeleteColumnModalProps extends IBoardColumnIdentifiers {
-	open: boolean
-	onOpenChange: (open: boolean) => void
-}
+import { DeleteColumnModalProps } from '../model/types/DeleteColumnProps'
 
 export const DeleteColumnModal = ({
 	columnId,
@@ -17,7 +12,10 @@ export const DeleteColumnModal = ({
 	open,
 	onOpenChange
 }: DeleteColumnModalProps) => {
-	const { onSubmit, isPending } = useDeleteColumn({ columnId, boardId })
+	const { onSubmit, deleteColumnPending } = useDeleteColumn({
+		columnId,
+		boardId
+	})
 	const t = useTranslations('column.delete')
 
 	return (
@@ -29,7 +27,7 @@ export const DeleteColumnModal = ({
 			actionText={t('deleteActionText')}
 			cancelText={t('deleteCancelText')}
 			onSubmit={onSubmit}
-			isPending={isPending}
+			isPending={deleteColumnPending}
 		/>
 	)
 }

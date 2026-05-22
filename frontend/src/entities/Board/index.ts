@@ -1,11 +1,15 @@
 export * from './model/api/boardApi'
+export * from './model/api/boardMemberApi'
 
 export * from './model/hooks/useBoard'
 export * from './model/hooks/useBoardEvents'
 export * from './model/hooks/useBoardItem'
 export * from './model/hooks/useBoardQueries'
 export * from './model/hooks/useBoardPermissions'
-export * from './model/hooks/useToggleFavoriteBoard'
+export * from './model/hooks/useBoardMembers'
+export * from './model/hooks/useBoardMembersQueries'
+
+export * from './model/lib/boardSettingsSidebar'
 
 export * from './model/store/useBoardStore'
 
@@ -14,7 +18,7 @@ export * from './model/types/IBoard'
 export * from './model/types/IBoardMember'
 
 export * from './model/utils/board.socket'
-export * from './model/utils/canRemoveMember'
+export * from './model/utils/member-permissions'
 
 export * from './model/validation/create-board.z.validation'
 export * from './model/validation/edit-board.z.validation'

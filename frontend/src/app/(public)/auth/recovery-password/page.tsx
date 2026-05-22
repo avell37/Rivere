@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
-import { RecoveryPassword } from '@/features/auth/recovery-password/ui/RecoveryPassword'
+import { RecoveryPassword } from '@/features/auth'
 
 import { AuthWrapper } from '@/shared/ui/custom'
 

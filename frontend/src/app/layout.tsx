@@ -9,7 +9,7 @@ import {
 	ThemeProviderClient,
 	ToastProvider
 } from '@/shared/providers'
-import { CookieBanner } from '@/shared/ui/custom/CookieBanner/CookieBanner'
+import { CookieBanner } from '@/shared/ui/custom'
 
 import './globals.css'
 
@@ -23,7 +23,10 @@ export const metadata: Metadata = {
 		absolute: SITE_NAME,
 		template: `%s | ${SITE_NAME}`
 	},
-	description: SITE_DESCRIPTION
+	description: SITE_DESCRIPTION,
+	icons: {
+		icon: '/icons/favicon.svg'
+	}
 }
 
 export default async function RootLayout({

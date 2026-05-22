@@ -13,7 +13,7 @@ import { Button } from '@/shared/ui/external'
 import { useLogin } from '../model/hooks/useLogin'
 
 export const LoginForm = () => {
-	const { form, isPending, showPassword, toggleShowPassword, onSubmit } =
+	const { form, loginPending, showPassword, toggleShowPassword, onSubmit } =
 		useLogin()
 	const t = useTranslations('auth.login')
 	const loginFields = LoginFields({ showPassword, toggleShowPassword, t })
@@ -22,7 +22,7 @@ export const LoginForm = () => {
 	return (
 		<FormAuthWrapper
 			form={form}
-			isPending={isPending}
+			isPending={loginPending}
 			label={t('label')}
 			buttonLabel={t('submitButton')}
 			navigationLabel={t('navigationButton')}
@@ -54,7 +54,7 @@ export const LoginForm = () => {
 								{...field}
 								label={undefined}
 								className='pl-8'
-								disabled={isPending}
+								disabled={loginPending}
 							/>
 						</div>
 					) : (
@@ -63,7 +63,7 @@ export const LoginForm = () => {
 							control={form.control}
 							{...field}
 							className='pl-8'
-							disabled={isPending}
+							disabled={loginPending}
 						/>
 					)}
 				</div>

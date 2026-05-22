@@ -1,23 +1,26 @@
-import { baseAxios } from '@/shared/api/interceptors'
+import { authAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
+import { ActionResponse } from '@/shared/types'
 
 import { CreateCardPayload, UpdateCardPayload } from '../types/CardPayloads'
 import { ICard } from '../types/ICard'
 
-export const createCard = async (data: CreateCardPayload): Promise<ICard> => {
-	const response = await baseAxios.post(`${API_URL.cards()}create`, data)
+export const createCardApi = async (
+	data: CreateCardPayload
+): Promise<ICard> => {
+	const response = await authAxios.post(`${API_URL.cards()}create`, data)
 	return response.data
 }
 
-export const updateCard = async (
+export const updateCardApi = async (
 	id: string,
 	data: UpdateCardPayload
 ): Promise<ICard> => {
-	const response = await baseAxios.patch(`${API_URL.cards()}${id}`, data)
+	const response = await authAxios.patch(`${API_URL.cards()}${id}`, data)
 	return response.data
 }
 
-export const deleteCard = async (id: string): Promise<ICard> => {
-	const response = await baseAxios.delete(`${API_URL.cards()}${id}`)
+export const deleteCardApi = async (id: string): Promise<ActionResponse> => {
+	const response = await authAxios.delete(`${API_URL.cards()}${id}`)
 	return response.data
 }
