@@ -1,24 +1,23 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { changePassword } from '@/entities/User'
-
-import { handleApiError } from '@/shared/utils'
-
 import {
 	ChangePasswordRequest,
-	ChangePasswordSchema
-} from '../validation/change-password.z.validation'
+	ChangePasswordSchema,
+	useChangePasswordMutation
+} from '@/entities/User'
 
 export const useChangePassword = () => {
-	const t = useTranslations()
-	const queryClient = useQueryClient()
 	const [showPasswords, setShowPasswords] = useState(false)
+
+	const t = useTranslations()
+	const { changePassword, changePasswordPending } =
+		useChangePasswordMutation()
+
 	const form = useForm<ChangePasswordRequest>({
 		resolver: zodResolver(ChangePasswordSchema),
 		defaultValues: {
@@ -29,29 +28,24 @@ export const useChangePassword = () => {
 		mode: 'onBlur'
 	})
 
-	const { mutate, isPending } = useMutation({
-		mutationKey: ['change password'],
-		mutationFn: (data: ChangePasswordRequest) => changePassword(data),
-		onSuccess: () => {
-			form.reset()
-			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.success(t('profile.settings.security.passwordChanged'))
-		},
-		onError: err => handleApiError(err, t)
-	})
-
 	const passwordType = showPasswords ? 'text' : 'password'
 
 	const togglePasswords = () => {
 		setShowPasswords(prev => !prev)
 	}
 
-	const onSubmit: SubmitHandler<ChangePasswordRequest> = data => mutate(data)
+	const onSubmit: SubmitHandler<ChangePasswordRequest> = data =>
+		changePassword(data, {
+			onSuccess: () => {
+				form.reset()
+				toast.success(t('profile.settings.security.passwordChanged'))
+			}
+		})
 
 	return {
 		form,
 		passwordType,
-		isPending,
+		changePasswordPending,
 		onSubmit,
 		togglePasswords
 	}

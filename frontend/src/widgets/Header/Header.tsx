@@ -9,7 +9,7 @@ import { useGetUser } from '@/entities/User'
 
 import { NotificationsVisible } from '@/features/notifications'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { PRIVATE_URL } from '@/shared/libs'
 import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/external'
 
 import { UserMenu } from '../UserMenu/ui/UserMenu'
@@ -30,7 +30,7 @@ export const Header = () => {
 				<div className='flex items-center gap-4 max-xl:gap-2 min-w-0'>
 					<BurgerMenu />
 					<Link
-						href={PUBLIC_URL.boards()}
+						href={PRIVATE_URL.boards()}
 						className='text-xl sm:text-2xl md:text-3xl font-bold tracking-tight hover:opacity-80 transition truncate md:mb-2 max-md:mb-1'
 					>
 						Rivere

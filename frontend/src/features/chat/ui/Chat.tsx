@@ -22,7 +22,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 		userId,
 		message,
 		messagesEndRef,
-		isPending,
+		chatPending,
 		showEmoji,
 		handleKeySubmitMessage,
 		handleSubmitMessage,
@@ -34,7 +34,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 	})
 	const { messages } = useChatStore()
 
-	if (isPending) return <ChatSkeleton />
+	if (chatPending) return <ChatSkeleton />
 
 	if (!userId) return null
 
@@ -63,7 +63,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 					value={message || ''}
 					onChange={e => setMessage(e.target.value)}
 					onKeyDown={handleKeySubmitMessage}
-					disabled={isPending}
+					disabled={chatPending}
 				/>
 				<div className='absolute bottom-2.5 right-11 flex'>
 					<Button
@@ -93,7 +93,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 					variant='none'
 					className='absolute bottom-2.5 right-3'
 					onClick={handleSubmitMessage}
-					disabled={isPending}
+					disabled={chatPending}
 				>
 					<SendHorizonal className='group-hover:text-blue-400 transition-colors size-5' />
 				</Button>

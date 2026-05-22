@@ -3,9 +3,7 @@ import { useDroppable } from '@dnd-kit/core'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { ColumnData } from '../types/ColumnProps'
-
-export const useColumn = ({ id }: ColumnData) => {
+export const useColumn = ({ id }: { id: string }) => {
 	const {
 		attributes,
 		listeners,
@@ -38,12 +36,12 @@ export const useColumn = ({ id }: ColumnData) => {
 	return {
 		attributes,
 		listeners,
+		style,
+		isDragging,
+		isOver,
 		setNodeRef: (node: HTMLElement | null) => {
 			setSortableRef(node)
 			setDroppableRef(node)
-		},
-		style,
-		isDragging,
-		isOver
+		}
 	}
 }

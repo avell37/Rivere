@@ -2,16 +2,20 @@
 import { Bell, Check, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import {
-	NotificationsList,
-	useNotificationsActions
-} from '@/entities/Notification'
+import { NotificationsList } from '@/entities/Notification'
 
 import { Button } from '@/shared/ui/external'
 
+import { useNotifications } from '../model/hooks/useNotifications'
+
 export const Notifications = () => {
-	const { notifications, handleMarkAllRead, handleClearAll, isClearing } =
-		useNotificationsActions()
+	const {
+		notifications,
+		handleMarkAllRead,
+		markAllReadPending,
+		handleClearAll,
+		clearAllPending
+	} = useNotifications()
 	const t = useTranslations('notifications')
 
 	return (
@@ -26,7 +30,7 @@ export const Notifications = () => {
 							variant='none'
 							size='none'
 							className='cursor-pointer'
-							disabled={isClearing}
+							disabled={clearAllPending || markAllReadPending}
 							onClick={() => handleMarkAllRead()}
 						>
 							<Check />
@@ -35,7 +39,7 @@ export const Notifications = () => {
 							variant='none'
 							size='none'
 							className='cursor-pointer'
-							disabled={isClearing}
+							disabled={clearAllPending || markAllReadPending}
 							onClick={() => handleClearAll()}
 						>
 							<Trash />

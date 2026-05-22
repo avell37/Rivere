@@ -8,7 +8,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-import { PRIVATE_URL } from '@/shared/libs'
+import { ADMIN_URL } from '@/shared/libs'
 
 import { AdminStats } from '../types/AdminProps'
 import { formatTrend } from '../utils/formatTrend'
@@ -28,7 +28,7 @@ export const mapStatistics = (
 			trend: formatTrend(data.users.today, t),
 			bottomContent: (
 				<Link
-					href={PRIVATE_URL.adminUsers(1)}
+					href={ADMIN_URL.adminUsers(1)}
 					className='flex items-end gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition mt-1'
 				>
 					{t('admin.statistics.users.bottomContent')}{' '}

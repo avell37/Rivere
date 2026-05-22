@@ -27,7 +27,6 @@ export class BoardInvitesController {
         description:
             'При вызове метода отдаются данные о доске, создателе приглашения и дате истечения приглашения.',
     })
-    @HttpCode(200)
     @Authorization()
     @Get('invites/:token')
     async getInvite(

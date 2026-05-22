@@ -22,9 +22,12 @@ model User {
   authProvider AuthProvider @default(LOCAL)
   yandexId     String?      @unique
 
-  tokens          Token[]
-  isVerified      Boolean @default(false) @map("is_verified")
+  tokens     Token[]
+  isVerified Boolean @default(false) @map("is_verified")
+
   isEmailVerified Boolean @default(false) @map("is_email_verified")
+  isTotpEnabled   Boolean @default(false) @map("is_totp_enabled")
+  totpSecret      String? @map("totp_secret")
 
   bannedUntil DateTime? @map("banned_until")
   banReason   String?   @map("ban_reason")

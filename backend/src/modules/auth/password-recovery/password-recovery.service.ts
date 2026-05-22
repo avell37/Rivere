@@ -51,7 +51,10 @@ export class PasswordRecoveryService {
             metadata,
         );
 
-        return true;
+        return {
+            success: true,
+            message: 'Токен отправлен на почту',
+        };
     }
 
     public async verifyResetToken(input: VerifyTokenInput) {
@@ -77,7 +80,10 @@ export class PasswordRecoveryService {
             TokenType.PASSWORD_RESET,
         );
 
-        return true;
+        return {
+            success: true,
+            message: 'Токен подтвержден',
+        };
     }
 
     public async createNewPassword(input: CreateNewPasswordInput) {
@@ -114,6 +120,9 @@ export class PasswordRecoveryService {
             where: { id: existingToken.id },
         });
 
-        return true;
+        return {
+            success: true,
+            message: 'Пароль успешно изменен',
+        };
     }
 }

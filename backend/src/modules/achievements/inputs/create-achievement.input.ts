@@ -10,7 +10,7 @@ export class CreateAchievementInput {
     @IsString({ message: 'Описание достижения должно быть строкой' })
     description!: string;
 
-    @IsInt()
+    @IsInt({ message: 'Цель должна быть числом' })
     @Min(1)
     goal!: number;
 }

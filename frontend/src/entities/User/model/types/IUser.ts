@@ -22,8 +22,6 @@ export interface IUploadedAvatar {
 	type: string
 }
 
-export type IUserUpdateResponse = true
-
 export interface IAdminUser {
 	id: string
 	username: string

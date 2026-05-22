@@ -7,12 +7,12 @@ import { usePasswordStep } from '../../model/hooks/usePasswordStep'
 
 export const PasswordStep = ({ token }: { token: string }) => {
 	const t = useTranslations('auth.recoveryPassword')
-	const { form, isPending, onSubmit } = usePasswordStep(token)
+	const { form, setPasswordPending, onSubmit } = usePasswordStep(token)
 
 	return (
 		<FormAuthWrapper
 			form={form}
-			isPending={isPending}
+			isPending={setPasswordPending}
 			onSubmit={onSubmit}
 			buttonLabel={t('buttonLabel')}
 		>
@@ -22,7 +22,7 @@ export const PasswordStep = ({ token }: { token: string }) => {
 				label={t('newPasswordLabel')}
 				placeholder={t('newPasswordPlaceholder')}
 				control={form.control}
-				disabled={isPending}
+				disabled={setPasswordPending}
 			/>
 			<FormInputController
 				type='password'
@@ -30,7 +30,7 @@ export const PasswordStep = ({ token }: { token: string }) => {
 				label={t('confirmPasswordLabel')}
 				placeholder={t('confirmPasswordPlaceholder')}
 				control={form.control}
-				disabled={isPending}
+				disabled={setPasswordPending}
 			/>
 		</FormAuthWrapper>
 	)

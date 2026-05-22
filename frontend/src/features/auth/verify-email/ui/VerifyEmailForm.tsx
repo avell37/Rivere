@@ -8,8 +8,14 @@ import { Button } from '@/shared/ui/external'
 import { useVerifyEmail } from '../model/hooks/useVerifyEmail'
 
 export const VerifyEmailForm = ({ onSuccess }: { onSuccess?: () => void }) => {
-	const { code, setCode, verifyEmail, isPending, sendVerificationToken } =
-		useVerifyEmail({ onSuccess })
+	const {
+		code,
+		setCode,
+		handleVerifyEmail,
+		verifyEmailPending,
+		sendVerificationToken,
+		sendTokenPending
+	} = useVerifyEmail({ onSuccess })
 	const t = useTranslations('auth.verifyEmail')
 
 	return (
@@ -25,8 +31,8 @@ export const VerifyEmailForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 				<OtpStep
 					value={code}
 					onChange={setCode}
-					onComplete={verifyEmail}
-					isPending={isPending}
+					onComplete={handleVerifyEmail}
+					isPending={verifyEmailPending}
 				/>
 				<p className='text-sm text-muted-foreground my-6'>
 					{t('notReceived')}
@@ -35,6 +41,7 @@ export const VerifyEmailForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 						size='none'
 						className='ml-1 underline cursor-pointer'
 						onClick={sendVerificationToken}
+						disabled={sendTokenPending}
 					>
 						{t('sendToken')}
 					</Button>

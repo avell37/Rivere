@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { useGetUser } from '@/entities/User'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { PRIVATE_URL } from '@/shared/libs'
 import { Button } from '@/shared/ui/external'
 
 import { UserMenu } from '@/widgets/UserMenu'
@@ -23,7 +23,7 @@ export const MainHeader = () => {
 				</Link>
 
 				{user && (
-					<Link href={PUBLIC_URL.boards()}>
+					<Link href={PRIVATE_URL.boards()}>
 						<Button variant='ghost' className='text-white'>
 							{t('header.boards')}
 						</Button>
@@ -48,7 +48,7 @@ export const MainHeader = () => {
 							<HeaderSettings />
 						</>
 					) : (
-						<UserMenu />
+						<UserMenu isMainPage />
 					)}
 				</div>
 			</div>

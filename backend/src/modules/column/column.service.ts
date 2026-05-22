@@ -4,7 +4,8 @@ import { UpdateColumnInput } from './inputs/update-column.input';
 import { ReorderColumnInput } from './inputs/reorder-column.input';
 import { BoardGateway } from '../board/board.gateway';
 import { PrismaService } from '@/core/prisma/prisma.service';
-import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
+import { checkBoardPermission } from '@/shared/utils/board-permissions';
+import { BoardPermission } from '@/shared/types/board-permissions.enum';
 
 @Injectable()
 export class ColumnService {
@@ -16,7 +17,12 @@ export class ColumnService {
     async create(userId: string, input: CreateColumnInput) {
         const { boardId, title } = input;
 
-        await checkBoardAccess({ prisma: this.prisma, userId, boardId });
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId,
+            boardId,
+            permission: BoardPermission.CREATE_COLUMN,
+        });
 
         const count = await this.prisma.column.count({
             where: { boardId },
@@ -47,10 +53,11 @@ export class ColumnService {
                 message: 'Колонка не найдена',
             });
 
-        await checkBoardAccess({
+        await checkBoardPermission({
             prisma: this.prisma,
             userId,
             boardId: column.boardId,
+            permission: BoardPermission.UPDATE_COLUMN,
         });
 
         const updated = await this.prisma.column.update({
@@ -65,14 +72,8 @@ export class ColumnService {
         return updated;
     }
 
-    async reorder(userId: string, input: ReorderColumnInput) {
+    async reorder(input: ReorderColumnInput) {
         const { boardId, columns } = input;
-
-        await checkBoardAccess({
-            prisma: this.prisma,
-            userId,
-            boardId,
-        });
 
         const existingColumns = await this.prisma.column.findMany({
             where: {
@@ -123,10 +124,11 @@ export class ColumnService {
                 message: 'Колонка не найдена',
             });
 
-        await checkBoardAccess({
+        await checkBoardPermission({
             prisma: this.prisma,
             userId,
             boardId: column.boardId,
+            permission: BoardPermission.DELETE_COLUMN,
         });
 
         await this.prisma.column.delete({
@@ -135,6 +137,9 @@ export class ColumnService {
 
         this.gateway.columnDeleted(column.boardId, columnId);
 
-        return true;
+        return {
+            success: true,
+            message: 'Колонка успешно удалена',
+        };
     }
 }

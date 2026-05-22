@@ -1,4 +1,4 @@
-import { Priority } from './CardPriority'
+import { Priority } from './ICard'
 
 export interface CreateCardPayload {
 	columnId: string

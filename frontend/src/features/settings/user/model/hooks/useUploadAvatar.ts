@@ -1,27 +1,15 @@
 'use client'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
 import { toast } from 'sonner'
 
-import { uploadAvatar } from '@/entities/User'
-
-import { handleApiError } from '@/shared/utils'
+import { useUploadAvatarMutation } from '@/entities/User'
 
 export const useUploadAvatar = () => {
 	const t = useTranslations()
-	const queryClient = useQueryClient()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
-	const { mutate, isPending } = useMutation({
-		mutationKey: ['upload avatar'],
-		mutationFn: uploadAvatar,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.success(t('profile.settings.security.avatarChanged'))
-		},
-		onError: err => handleApiError(err, t)
-	})
+	const { uploadAvatar, uploadAvatarPending } = useUploadAvatarMutation()
 
 	const handleChangeAvatarClick = () => {
 		fileInputRef.current?.click()
@@ -31,12 +19,16 @@ export const useUploadAvatar = () => {
 		const file = e.target.files?.[0]
 		if (!file) return
 
-		mutate(file)
+		uploadAvatar(file, {
+			onSuccess: () => {
+				toast.success(t('profile.settings.security.avatarChanged'))
+			}
+		})
 	}
 
 	return {
 		fileInputRef,
-		isPending,
+		uploadAvatarPending,
 		handleChangeAvatarClick,
 		handleFileChange
 	}

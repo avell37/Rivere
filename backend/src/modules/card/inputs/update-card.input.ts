@@ -32,6 +32,6 @@ export class UpdateCardInput {
     deadline?: string;
 
     @IsOptional()
-    @IsBoolean()
+    @IsBoolean({ message: 'Значение должно быть булево' })
     done?: boolean;
 }

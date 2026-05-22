@@ -2,22 +2,20 @@
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { memo } from 'react'
 
-import { BoardSkeleton, useBoard } from '@/entities/Board'
-import { useBoardItem } from '@/entities/Board/model/hooks/useBoardItem'
+import { BoardSkeleton, useBoard, useBoardItem } from '@/entities/Board'
 
-import { DndProvider } from '@/features/drag-and-drop/ui/DndProvider'
+import { DndProvider } from '@/features/drag-and-drop'
 
-import { ColumnList } from '@/widgets/Kanban-board/ui/column/ColumnList'
-
+import { ColumnList } from '../column/ColumnList'
 import { BoardDragOverlay } from '../overlay/BoardDragOverlay'
 
 import { BoardHeaderActions } from './BoardHeaderActions'
 
 const BoardComponent = ({ boardId }: { boardId: string }) => {
-	const { board, isLoading } = useBoard(boardId)
+	const { board, boardPending } = useBoard(boardId)
 	const { backgroundStyle } = useBoardItem(board?.background)
 
-	if (!board && isLoading) return <BoardSkeleton />
+	if (!board && boardPending) return <BoardSkeleton />
 
 	return (
 		<div
@@ -35,7 +33,7 @@ const BoardComponent = ({ boardId }: { boardId: string }) => {
 					<div className='flex gap-6 p-4 h-full'>
 						<DndProvider key={boardId} boardId={boardId}>
 							<ColumnList boardId={boardId} />
-							<BoardDragOverlay boardId={boardId} />
+							<BoardDragOverlay />
 						</DndProvider>
 					</div>
 				</ScrollArea.Viewport>

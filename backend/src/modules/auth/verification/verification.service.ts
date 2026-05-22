@@ -47,7 +47,12 @@ export class VerificationService {
 
         const metadata = getSessionMetadata(req, userAgent, this.configService);
 
-        return saveSession(req, updatedUser, metadata);
+        await saveSession(req, updatedUser, metadata);
+
+        return {
+            success: true,
+            message: 'Успешно',
+        };
     }
 
     public async sendVerificationToken(user: User) {
@@ -61,6 +66,9 @@ export class VerificationService {
             verificationToken.token,
         );
 
-        return true;
+        return {
+            success: true,
+            message: 'Токен успешно отправлен на почту',
+        };
     }
 }

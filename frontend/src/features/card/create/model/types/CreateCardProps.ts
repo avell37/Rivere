@@ -3,7 +3,7 @@ import { UseFormReturn } from 'react-hook-form'
 
 import { Priority } from '@/entities/Card'
 
-import { IBoardColumnIdentifiers } from '@/shared/types/IBoardColumnIdentifiers'
+import { IBoardColumnIdentifiers } from '@/shared/types'
 
 export interface CreateCardProps extends IBoardColumnIdentifiers {
 	onSuccess: (open: boolean) => void

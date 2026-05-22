@@ -1,10 +1,15 @@
 export * from './model/api/columnApi'
+
 export * from './model/hooks/useColumn'
 export * from './model/hooks/useColumnEvents'
+export * from './model/hooks/useColumnQueries'
+
 export * from './model/types/ColumnPayload'
 export * from './model/types/ColumnProps'
 export * from './model/types/IColumn'
+
 export * from './model/validation/create-column.z.validation'
 export * from './model/validation/edit-column.z.validation'
+
 export * from './ui/ColumnOverlay'
 export * from './ui/ColumnSkeleton'

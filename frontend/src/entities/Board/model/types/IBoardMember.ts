@@ -1,8 +1,10 @@
 import { IUser } from '@/entities/User'
 
+import { BoardRole } from '@/shared/utils'
+
 export interface IBoardMember {
 	id: string
-	role: 'OWNER' | 'ADMIN' | 'MEMBER'
+	role: BoardRole
 	joinedAt: Date
 	boardId: string
 	userId: string

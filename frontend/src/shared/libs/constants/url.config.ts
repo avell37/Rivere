@@ -9,21 +9,23 @@ export const PUBLIC_URL = {
 	verifyEmail: () => PUBLIC_URL.root('/auth/verify-email'),
 	recoveryPassword: () => PUBLIC_URL.root('/auth/recovery-password'),
 	banned: () => PUBLIC_URL.root('/banned'),
-
-	achievements: () => PUBLIC_URL.root('/achievements'),
-	statistics: () => PUBLIC_URL.root('/statistics'),
-	boards: () => PUBLIC_URL.root('/boards'),
-	profile: () => PUBLIC_URL.root('/profile'),
-	userSettings: () => PUBLIC_URL.root('/profile/settings'),
 	privacy: () => PUBLIC_URL.root('/privacy')
 }
 
 export const PRIVATE_URL = {
 	root: (url = '') => `${url ? url : ''}`,
 
-	admin: () => PRIVATE_URL.root('/admin'),
+	achievements: () => PRIVATE_URL.root('/achievements'),
+	statistics: () => PRIVATE_URL.root('/statistics'),
+	boards: () => PRIVATE_URL.root('/boards'),
+	profile: () => PRIVATE_URL.root('/profile'),
+	userSettings: () => PRIVATE_URL.root('/profile/settings')
+}
+
+export const ADMIN_URL = {
+	root: (url = '') => `${url ? url : ''}`,
+
+	admin: () => ADMIN_URL.root('/admin'),
 	adminUsers: (page: number, limit = 10) =>
-		PRIVATE_URL.root(
-			`${PRIVATE_URL.admin()}/users?page=${page}&limit=${limit}`
-		)
+		ADMIN_URL.root(`${ADMIN_URL.admin()}/users?page=${page}&limit=${limit}`)
 }

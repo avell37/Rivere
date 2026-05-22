@@ -10,12 +10,12 @@ import { Separator } from '@/shared/ui/external'
 
 export const Boards = () => {
 	const t = useTranslations('boards')
-	const { favoriteBoards, otherBoards, isPending } = useGetBoards()
+	const { favoriteBoards, otherBoards, boardsPending } = useGetBoards()
 
 	return (
 		<div className='container mx-auto py-8 px-4'>
 			<div className={`mx-auto flex flex-col gap-4 transition-all`}>
-				{isPending ? (
+				{boardsPending ? (
 					<BoardListSkeleton />
 				) : (
 					<div className='flex flex-col gap-8'>

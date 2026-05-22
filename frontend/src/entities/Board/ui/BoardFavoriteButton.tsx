@@ -3,22 +3,17 @@ import { Star } from 'lucide-react'
 
 import { Button } from '@/shared/ui/external'
 
-import { useToggleFavoriteBoard } from '../model/hooks/useToggleFavoriteBoard'
-
-interface FavoriteButtonProps {
-	boardId: string
-	isFavorite?: boolean
-	isBoardPage?: boolean
-	buttonClassname?: string
-}
+import { useToggleFavoriteMutation } from '../model/hooks/useBoardQueries'
+import { BoardFavoriteButtonProps } from '../model/types/BoardProps'
 
 export const BoardFavoriteButton = ({
 	boardId,
 	isFavorite,
 	isBoardPage,
 	buttonClassname
-}: FavoriteButtonProps) => {
-	const { handleToggleFavorite } = useToggleFavoriteBoard(boardId, isFavorite)
+}: BoardFavoriteButtonProps) => {
+	const { handleToggleFavorite, toggleFavoritePending } =
+		useToggleFavoriteMutation(boardId, isFavorite)
 
 	const baseColor = isBoardPage ? 'text-black dark:text-white' : 'text-white'
 	const fillColor = isBoardPage ? 'fill-black dark:fill-white' : 'fill-white'
@@ -30,6 +25,7 @@ export const BoardFavoriteButton = ({
 			className={`${buttonClassname}
                 ${isFavorite ? 'opacity-100' : ''}`}
 			onClick={handleToggleFavorite}
+			disabled={toggleFavoritePending}
 		>
 			<Star
 				size={18}

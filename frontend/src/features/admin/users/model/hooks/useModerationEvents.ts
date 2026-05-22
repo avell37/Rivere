@@ -1,14 +1,18 @@
 'use client'
 import { useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
-import { PUBLIC_URL } from '@/shared/libs'
+import { userKeys } from '@/entities/User'
+
+import { PRIVATE_URL, PUBLIC_URL } from '@/shared/libs'
 
 import { getEventsSocket } from '../utils/events.socket'
 
 export const useModerationEvents = (userId?: string | null) => {
+	const t = useTranslations('events.moderation')
 	const router = useRouter()
 	const queryClient = useQueryClient()
 
@@ -17,16 +21,19 @@ export const useModerationEvents = (userId?: string | null) => {
 
 		const socket = getEventsSocket(userId)
 
-		const onBanned = (data: { reason: string; bannedUntil: string }) => {
-			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.error(`Вы забанены: ${data.reason}`)
+		const onBanned = async (data: {
+			reason: string
+			bannedUntil: string
+		}) => {
+			await queryClient.invalidateQueries({ queryKey: userKeys.user })
+			toast.error(t('banned', { reason: data.reason }))
 			router.replace(PUBLIC_URL.banned())
 		}
 
-		const onUnbanned = () => {
-			queryClient.invalidateQueries({ queryKey: ['get user data'] })
-			toast.error(`Вы были разбанены`)
-			router.replace(PUBLIC_URL.boards())
+		const onUnbanned = async () => {
+			await queryClient.invalidateQueries({ queryKey: userKeys.user })
+			toast.error(t('unbanned'))
+			router.replace(PRIVATE_URL.boards())
 		}
 
 		socket.on('user:banned', onBanned)
@@ -36,5 +43,5 @@ export const useModerationEvents = (userId?: string | null) => {
 			socket.off('user:banned', onBanned)
 			socket.off('user:unbanned', onUnbanned)
 		}
-	}, [userId, queryClient, router])
+	}, [userId, queryClient, router, t])
 }

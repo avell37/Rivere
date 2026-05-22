@@ -1,6 +1,6 @@
 'use client'
 
-import { useIsMobile } from '@/shared/config/useMobile'
+import { useIsMobile } from '@/shared/config'
 
 export default function BoardLayout({
 	children

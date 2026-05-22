@@ -1,24 +1,10 @@
 'use client'
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useTranslations } from 'next-intl'
-import { Dispatch, SetStateAction } from 'react'
 
-import { boardKeys } from '@/entities/Board'
-import { IColumn } from '@/entities/Column'
+import { ColumnDndProps } from '../types/DragAndDrop'
 
-import { handleApiError } from '@/shared/utils/handleApiError'
-
-import { fetchReorderColumns } from '../api/reorderApi'
-import { ReorderColumns } from '../types/ReorderPayload'
-
-interface ColumnDndProps {
-	columns: IColumn[]
-	setActiveColumn: (column: IColumn | null) => void
-	setColumns: Dispatch<SetStateAction<IColumn[]>>
-	boardId: string
-}
+import { useReorderColumnsMutation } from './useDndQueries'
 
 export const useColumnDnd = ({
 	columns,
@@ -26,20 +12,7 @@ export const useColumnDnd = ({
 	setColumns,
 	boardId
 }: ColumnDndProps) => {
-	const t = useTranslations()
-	const queryClient = useQueryClient()
-
-	const { mutate: reorderColumns } = useMutation({
-		mutationKey: ['reorder columns', boardId],
-		mutationFn: ({ boardId, columns }: ReorderColumns) =>
-			fetchReorderColumns({ boardId, columns }),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: boardKeys.single(boardId)
-			})
-		},
-		onError: err => handleApiError(err, t)
-	})
+	const { reorderColumns } = useReorderColumnsMutation(boardId)
 
 	const onColumnDragStart = ({ active }: DragStartEvent) => {
 		if (!active || active.data.current?.type !== 'column') return

@@ -145,7 +145,7 @@ export class AdminService {
     }
 
     async banUser(input: BanUserInput) {
-        const { userId, reason, durationInHours } = input;
+        const { userId, reason, duration, unit } = input;
 
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
@@ -158,9 +158,16 @@ export class AdminService {
             });
         }
 
-        const bannedUntil = new Date(
-            Date.now() + durationInHours * 60 * 60 * 1000,
-        );
+        const multipliers = {
+            seconds: 1000,
+            minutes: 60 * 1000,
+            hours: 60 * 60 * 1000,
+            days: 24 * 60 * 60 * 1000,
+        };
+
+        const durationMs = duration * multipliers[unit];
+
+        const bannedUntil = new Date(Date.now() + durationMs);
 
         const now = new Date();
 
@@ -178,7 +185,11 @@ export class AdminService {
             bannedUntil,
         });
 
-        return true;
+        return {
+            success: true,
+            code: 'admin.users.actions.userBanned',
+            message: 'Пользователь успешно заблокирован',
+        };
     }
 
     async unbanUser(userId: string) {
@@ -204,7 +215,11 @@ export class AdminService {
 
         this.gateway.emitToUser(userId, 'user:unbanned', {});
 
-        return true;
+        return {
+            success: true,
+            code: 'admin.users.actions.userUnbanned',
+            message: 'Пользователь успешно разблокирован',
+        };
     }
 
     async setUserRole(userId: string, role: UserRole) {
@@ -213,7 +228,7 @@ export class AdminService {
         if (!allowedRoles.includes(role)) {
             throw new BadRequestException({
                 code: 'errors.admin.unknownRole',
-                message: 'Unknown role',
+                message: 'Неизвестная роль',
             });
         }
 
@@ -239,6 +254,10 @@ export class AdminService {
 
         this.gateway.emitToUser(userId, 'user:roleChanged', { role });
 
-        return true;
+        return {
+            success: true,
+            code: 'admin.users.actions.userChangeRole',
+            message: 'Роль пользователя успешно изменена',
+        };
     }
 }

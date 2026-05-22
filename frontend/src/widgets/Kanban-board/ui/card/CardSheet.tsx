@@ -7,7 +7,7 @@ import { ICard } from '@/entities/Card'
 import { EditCardForm } from '@/features/card'
 import { Chat } from '@/features/chat'
 
-import { useIsMobile } from '@/shared/config/useMobile'
+import { useIsMobile } from '@/shared/config'
 import {
 	Sheet,
 	SheetContent,

@@ -8,7 +8,3 @@ export interface INotification {
 	createdAt: string
 	updatedAt: string
 }
-
-export interface INotificationActionResponse {
-	success: boolean
-}

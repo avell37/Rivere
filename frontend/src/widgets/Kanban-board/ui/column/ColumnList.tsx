@@ -5,14 +5,14 @@ import {
 } from '@dnd-kit/sortable'
 import { memo, useMemo } from 'react'
 
-import { ColumnListProps, IColumn } from '@/entities/Column'
+import { IColumn } from '@/entities/Column'
 
 import { CreateColumnModal } from '@/features/column'
-import { useDragAndDrop } from '@/features/drag-and-drop/ui/DndProvider'
+import { useDragAndDrop } from '@/features/drag-and-drop'
 
 import { Column } from './Column'
 
-const ColumnListComponent = ({ boardId }: ColumnListProps) => {
+const ColumnListComponent = ({ boardId }: { boardId: string }) => {
 	const { columns } = useDragAndDrop()
 
 	const columnIds = useMemo(() => columns?.map(col => col.id), [columns])

@@ -22,6 +22,7 @@ import { Authorization } from '@/shared/decorators/authorization.decorator';
 import { SkipBanCheck } from '@/shared/decorators/skip-ban.decorator';
 import { SessionUser } from '@/shared/decorators/session-user.decorator';
 import { UserAgent } from '@/shared/decorators/user-agent.decorator';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('account')
 export class AccountController {
@@ -38,6 +39,12 @@ export class AccountController {
         return this.accountService.me(id);
     }
 
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 10,
+            limit: 3,
+        },
+    })
     @ApiOperation({
         summary: 'Создание пользователя',
         description: 'Создает нового пользователя',

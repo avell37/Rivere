@@ -7,11 +7,16 @@ export class FilesService {
 
     async upload(file: Express.Multer.File) {
         const uploaded = await this.storage.upload(file);
+
         return uploaded;
     }
 
     async delete(file: string) {
         await this.storage.delete(file);
-        return true;
+
+        return {
+            success: true,
+            message: 'Файл успешно удален',
+        };
     }
 }

@@ -1,8 +1,6 @@
 'use client'
 import { useTranslations } from 'next-intl'
 
-import { IUser } from '@/entities/User'
-
 import { customAvatar } from '@/shared/config'
 import { S3_URL } from '@/shared/libs'
 import {
@@ -12,13 +10,7 @@ import {
 	Input
 } from '@/shared/ui/external'
 
-interface UserSettingsAvatarProps {
-	user: IUser
-	fileInputRef: React.RefObject<HTMLInputElement | null>
-	isPending: boolean
-	handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-	handleChangeAvatarClick: () => void
-}
+import { UserSettingsAvatarProps } from '../model/types/SettingsProps'
 
 export const UserSettingsAvatar = ({
 	user,

@@ -1,13 +1,20 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
+import { ActionResponse } from '@/shared/types'
 import { handleApiError } from '@/shared/utils'
 
-import { banUser, getAllUsers, setUserRole, unbanUser } from '../api/adminApi'
-import { BanUserInput } from '../types/AdminUserTypes'
+import {
+	banUser,
+	getAllUsers,
+	setUserRole,
+	unbanUser
+} from '../api/admin-users.api'
+import { BanUserInput, UsersResponse } from '../types/AdminUserTypes'
 
 export const adminKeys = {
 	allUsers: () => ['get-all-users'],
@@ -18,7 +25,7 @@ export const adminKeys = {
 }
 
 export const useGetAllUsers = (page: number) => {
-	const { data, isLoading, error } = useQuery({
+	const { data, isLoading, error } = useQuery<UsersResponse, AxiosError>({
 		queryKey: adminKeys.allUsersPage(page),
 		queryFn: () => getAllUsers(Number(page)),
 		placeholderData: prev => prev
@@ -39,11 +46,10 @@ export const useSetBanUser = (userId: string) => {
 		mutate: banUserWithReason,
 		isPending,
 		isError
-	} = useMutation({
+	} = useMutation<ActionResponse, AxiosError, BanUserInput>({
 		mutationKey: adminKeys.banUser(userId),
 		mutationFn: (data: BanUserInput) => banUser(data),
 		onSuccess: () => {
-			toast.success(t('admin.users.actions.userBanned'))
 			queryClient.invalidateQueries({ queryKey: adminKeys.allUsers() })
 		},
 		onError: err => handleApiError(err, t)
@@ -64,7 +70,7 @@ export const useUnbanUser = (userId: string) => {
 		mutate: removeBan,
 		isPending,
 		isError
-	} = useMutation({
+	} = useMutation<ActionResponse, AxiosError, void>({
 		mutationKey: adminKeys.unbanUser(userId),
 		mutationFn: () => unbanUser(userId),
 		onSuccess: () => {
@@ -89,7 +95,7 @@ export const useSetUserRole = (userId: string) => {
 		mutate: changeRole,
 		isPending,
 		isError
-	} = useMutation({
+	} = useMutation<ActionResponse, AxiosError, string>({
 		mutationKey: adminKeys.changeRole(userId),
 		mutationFn: (role: string) => setUserRole(userId, role),
 		onSuccess: () => {

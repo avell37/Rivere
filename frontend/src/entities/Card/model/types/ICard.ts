@@ -1,6 +1,10 @@
 import { IChat } from '@/entities/Chat'
 
-import { Priority } from './CardPriority'
+export enum Priority {
+	LOW = 'LOW',
+	MEDIUM = 'MEDIUM',
+	HIGH = 'HIGH'
+}
 
 export interface ICard {
 	id: string

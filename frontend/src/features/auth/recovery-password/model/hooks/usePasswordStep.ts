@@ -1,19 +1,18 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { PUBLIC_URL } from '@/shared/libs'
-import { handleApiError } from '@/shared/utils'
 
-import { createNewPassword } from '../api/recoveryApi'
 import {
 	PasswordRequest,
 	PasswordSchema
 } from '../validation/password.z.validation'
+
+import { useSetNewPassword } from './useRecoveryPasswordQueries'
 
 export const usePasswordStep = (token: string) => {
 	const t = useTranslations()
@@ -24,27 +23,26 @@ export const usePasswordStep = (token: string) => {
 		defaultValues: { newPassword: '', confirmPassword: '' }
 	})
 
-	const { mutate, isPending } = useMutation({
-		mutationKey: ['set new password'],
-		mutationFn: (data: PasswordRequest) =>
-			createNewPassword({
-				token,
-				newPassword: data.newPassword
-			}),
-		onSuccess: () => {
-			toast.success(t('auth.recoveryPassword.passwordChanged'))
-			router.push(PUBLIC_URL.login())
-		},
-		onError: err => handleApiError(err, t)
-	})
+	const { setPassword, setPasswordPending } = useSetNewPassword()
 
 	const onSubmit = (data: PasswordRequest) => {
-		mutate(data)
+		setPassword(
+			{
+				token,
+				newPassword: data.newPassword
+			},
+			{
+				onSuccess: () => {
+					toast.success(t('auth.recoveryPassword.passwordChanged'))
+					router.push(PUBLIC_URL.login())
+				}
+			}
+		)
 	}
 
 	return {
 		form,
-		isPending,
+		setPasswordPending,
 		onSubmit
 	}
 }

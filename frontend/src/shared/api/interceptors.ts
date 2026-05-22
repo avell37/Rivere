@@ -11,7 +11,9 @@ const options: CreateAxiosDefaults = {
 }
 
 export const baseAxios = axios.create(options)
-baseAxios.interceptors.response.use(
+
+export const authAxios = axios.create(options)
+authAxios.interceptors.response.use(
 	res => res,
 	err => {
 		if (err.response?.status === 401) {

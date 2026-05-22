@@ -14,3 +14,9 @@ export interface EditBoardFormProps {
 	onSubmit: (data: EditBoardFormData) => void
 	t: (key: string) => string
 }
+
+export interface EditBoardModalProps {
+	open: boolean
+	onOpenChange: (open: boolean) => void
+	boardId: string
+}
