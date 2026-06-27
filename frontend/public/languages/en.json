@@ -234,7 +234,31 @@
 		"settings": {
 			"heading": "Board settings",
 			"sidebar": {
-				"members": "Members"
+				"members": "Members",
+				"activity": "Activity"
+			}
+		},
+		"activityLog": {
+			"title": "Activity log:",
+			"empty": "No activity yet.",
+			"at": "at",
+			"actions": {
+				"created": "created {entity} «{title}»",
+				"updated": "updated {entity} «{title}»",
+				"deleted": "deleted {entity} «{title}»",
+				"moved": "moved card «{title}» from «{fromColumn}» to «{toColumn}»",
+				"completed": "completed card «{title}»",
+				"reopened": "reopened card «{title}»",
+				"member_joined": "joined the board",
+				"member_left": "removed member {entityTitle}",
+				"member_role_changed": "changed role of {entityTitle} to {newRole}",
+				"board_updated": "updated board settings"
+			},
+			"entities": {
+				"board": "board",
+				"column": "column",
+				"card": "card",
+				"member": "member"
 			}
 		}
 	},

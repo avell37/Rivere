@@ -235,7 +235,31 @@
 		"settings": {
 			"heading": "Настройки доски",
 			"sidebar": {
-				"members": "Участники"
+				"members": "Участники",
+				"activity": "Активность"
+			}
+		},
+		"activityLog": {
+			"title": "Журнал активности:",
+			"empty": "Активности пока нет.",
+			"at": "в",
+			"actions": {
+				"created": "создал(а) {entity} «{title}»",
+				"updated": "обновил(а) {entity} «{title}»",
+				"deleted": "удалил(а) {entity} «{title}»",
+				"moved": "переместил(а) карточку «{title}» из «{fromColumn}» в «{toColumn}»",
+				"completed": "завершил(а) карточку «{title}»",
+				"reopened": "переоткрыл(а) карточку «{title}»",
+				"member_joined": "присоединился(ась) к доске",
+				"member_left": "удалил(а) участника {entityTitle}",
+				"member_role_changed": "изменил(а) роль {entityTitle} на {newRole}",
+				"board_updated": "обновил(а) настройки доски"
+			},
+			"entities": {
+				"board": "доску",
+				"column": "колонку",
+				"card": "карточку",
+				"member": "участника"
 			}
 		}
 	},

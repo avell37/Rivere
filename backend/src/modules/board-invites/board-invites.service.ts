@@ -11,6 +11,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
+import { ActivityLogService } from '../activity-log/activity-log.service';
 
 @Injectable()
 export class BoardInvitesService {
@@ -18,6 +19,7 @@ export class BoardInvitesService {
         private readonly prisma: PrismaService,
         private readonly config: ConfigService,
         private readonly notificationsService: NotificationsService,
+        private readonly activityLog: ActivityLogService,
     ) {}
 
     async createInvite(userId: string, boardId: string) {
@@ -179,6 +181,15 @@ export class BoardInvitesService {
             type: 'board',
             message: `${acceptedUser?.nickname} принял приглашение в доску: ${invite.board.title}`,
             entityId: invite.boardId,
+        });
+
+        await this.activityLog.log({
+            boardId: invite.boardId,
+            userId,
+            action: 'MEMBER_JOINED',
+            entityType: 'MEMBER',
+            entityId: userId,
+            entityTitle: acceptedUser?.nickname,
         });
 
         return {

@@ -1,5 +1,5 @@
 'use client'
-import { SortableContext } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useTranslations } from 'next-intl'
 import { memo, useCallback, useMemo, useState } from 'react'
 
@@ -24,8 +24,11 @@ const CardListComponent = ({
 
 	return (
 		<div className='flex flex-col'>
-			<ul className='flex flex-col gap-2'>
-				<SortableContext items={cardsIds || []}>
+			<ul className='flex flex-col items-start gap-2'>
+				<SortableContext
+					strategy={verticalListSortingStrategy}
+					items={cardsIds || []}
+				>
 					{cards.map(card => (
 						<Card
 							key={card.id}
