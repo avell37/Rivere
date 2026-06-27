@@ -8,7 +8,7 @@ export const AchievementList = ({
 	achievements: IAchievement[]
 }) => {
 	return (
-		<div className='flex flex-wrap gap-4'>
+		<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3'>
 			{achievements?.map(item => (
 				<AchievementItem key={item.id} {...item} />
 			))}

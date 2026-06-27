@@ -40,7 +40,7 @@ const CardListComponent = ({
 				</SortableContext>
 				{cards?.length === 0 && (
 					<div
-						className='h-20 border-2 border-dashed dark:text-white border-black dark:border-gray-300 
+						className='h-20 w-full border-2 border-dashed dark:text-white border-black dark:border-gray-300 
 					rounded-lg flex items-center justify-center font-bold text-sm'
 					>
 						{t('dragCard')}

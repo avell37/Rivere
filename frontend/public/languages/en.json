@@ -140,13 +140,65 @@
 			"title": "School again?",
 			"description": "Create your first board"
 		},
+		"boardBuilder": {
+			"title": "Architect",
+			"description": "Create 5 boards"
+		},
+		"boardCollector": {
+			"title": "Collector",
+			"description": "Create 15 boards"
+		},
+		"firstColumn": {
+			"title": "First column",
+			"description": "Create your first column"
+		},
+		"organizer": {
+			"title": "Systematizer",
+			"description": "Create 10 columns"
+		},
+		"firstCard": {
+			"title": "First step",
+			"description": "Create your first task"
+		},
 		"firstMessage": {
 			"title": "Socialization",
 			"description": "Write your first message in the chat"
 		},
+		"chatty": {
+			"title": "Chatterbox",
+			"description": "Write 50 messages"
+		},
 		"tenTasksCompleted": {
-			"title": "I'm not rookie anymore",
+			"title": "I'm not a rookie anymore",
 			"description": "Complete the first 10 tasks"
+		},
+		"fiftyTasksCompleted": {
+			"title": "Halfway there",
+			"description": "Complete 50 tasks"
+		},
+		"hundredTasksCompleted": {
+			"title": "A hundred behind",
+			"description": "Complete 100 tasks"
+		},
+		"fiveHundredTasksCompleted": {
+			"title": "Legend of productivity",
+			"description": "Complete 500 tasks"
+		},
+		"weekStreak": {
+			"title": "Week without gaps",
+			"description": "Complete tasks 7 days in a row"
+		},
+		"monthStreak": {
+			"title": "Iron will",
+			"description": "Complete tasks 30 days in a row"
+		},
+		"firstInvite": {
+			"title": "Team player",
+			"description": "Invite the first member to a board"
+		},
+		"teamBuilder": {
+			"title": "Team builder",
+			"description": "Invite 10 members to your boards"
 		}
 	},
 	"statistics": {

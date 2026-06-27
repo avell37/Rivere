@@ -7,6 +7,7 @@ import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
 import { ActivityLogService } from '../activity-log/activity-log.service';
+import { AchievementsService } from '../achievements/achievements.service';
 
 @Injectable()
 export class ColumnService {
@@ -14,6 +15,7 @@ export class ColumnService {
         private readonly prisma: PrismaService,
         private readonly gateway: BoardGateway,
         private readonly activityLog: ActivityLogService,
+        private readonly achievements: AchievementsService,
     ) {}
 
     async create(userId: string, input: CreateColumnInput) {
@@ -48,6 +50,17 @@ export class ColumnService {
             entityId: column.id,
             entityTitle: column.title,
         });
+
+        await this.achievements.updateAchievementProgress(
+            userId,
+            'firstColumn',
+            1,
+        );
+        await this.achievements.updateAchievementProgress(
+            userId,
+            'organizer',
+            1,
+        );
 
         return column;
     }

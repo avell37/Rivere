@@ -12,6 +12,7 @@ import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
 import { ActivityLogService } from '../activity-log/activity-log.service';
+import { AchievementsService } from '../achievements/achievements.service';
 
 @Injectable()
 export class BoardInvitesService {
@@ -20,6 +21,7 @@ export class BoardInvitesService {
         private readonly config: ConfigService,
         private readonly notificationsService: NotificationsService,
         private readonly activityLog: ActivityLogService,
+        private readonly achievements: AchievementsService,
     ) {}
 
     async createInvite(userId: string, boardId: string) {
@@ -176,6 +178,17 @@ export class BoardInvitesService {
                 usersInvited: { increment: 1 },
             },
         });
+
+        await this.achievements.updateAchievementProgress(
+            invite.creator.id,
+            'firstInvite',
+            1,
+        );
+        await this.achievements.updateAchievementProgress(
+            invite.creator.id,
+            'teamBuilder',
+            1,
+        );
 
         await this.notificationsService.createNotification(invite.creator.id, {
             type: 'board',

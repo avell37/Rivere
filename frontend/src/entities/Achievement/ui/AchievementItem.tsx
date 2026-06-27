@@ -1,5 +1,5 @@
 'use client'
-import { Trophy } from 'lucide-react'
+import { Check, Lock, Trophy } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 
 import { Modal } from '@/shared/ui/custom'
@@ -26,60 +26,112 @@ export const AchievementItem = ({
 			trigger={
 				<div
 					className={cn(
-						'relative w-full rounded-xl border p-4 flex flex-col items-center gap-2 transition-all',
-						'hover:scale-[1.05] hover:shadow-md cursor-pointer flex-1 min-w-[140px] max-w-[220px]',
+						'group relative rounded-2xl border p-4 flex flex-col gap-3 cursor-pointer',
+						'transition-all duration-200 hover:-translate-y-0.5',
 						isEarned
-							? 'border-yellow-500/40'
-							: 'opacity-80 hover:opacity-100'
+							? 'border-amber-500/30 bg-amber-500/5 shadow-sm shadow-amber-500/10 hover:border-amber-500/50 hover:shadow-amber-500/20 hover:shadow-md'
+							: 'border-white/8 bg-white/2 hover:border-white/15 hover:bg-white/4'
+					)}
+				>
+					{isEarned && (
+						<div className='absolute top-3 right-3 w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center shadow-sm shadow-amber-500/50'>
+							<Check className='size-2.5 text-black stroke-3' />
+						</div>
+					)}
+
+					<div
+						className={cn(
+							'w-11 h-11 rounded-xl flex items-center justify-center shrink-0',
+							isEarned
+								? 'bg-amber-500/15 ring-1 ring-amber-500/25'
+								: 'bg-white/5 ring-1 ring-white/8'
+						)}
+					>
+						{isEarned ? (
+							<Trophy className='size-5 text-amber-400' />
+						) : (
+							<Lock className='size-4 text-zinc-500' />
+						)}
+					</div>
+
+					<div className='flex flex-col gap-1 flex-1 min-w-0'>
+						<p
+							className={cn(
+								'text-sm font-semibold leading-tight',
+								isEarned ? 'text-foreground' : 'text-zinc-500'
+							)}
+						>
+							{t(`${code}.title`)}
+						</p>
+						<p className='text-xs text-zinc-600 dark:text-zinc-500 leading-snug line-clamp-2'>
+							{t(`${code}.description`)}
+						</p>
+					</div>
+
+					<div className='flex flex-col gap-1.5 mt-auto'>
+						<Progress
+							value={percent}
+							className={cn(
+								'h-1.5',
+								isEarned && '[&>div]:bg-amber-400'
+							)}
+						/>
+						<span className='text-xs text-zinc-500'>
+							{progress}/{goal}
+						</span>
+					</div>
+				</div>
+			}
+			contentClassname='max-w-sm'
+		>
+			<div className='flex flex-col items-center gap-5 py-2'>
+				<div
+					className={cn(
+						'w-20 h-20 rounded-2xl flex items-center justify-center',
+						isEarned
+							? 'bg-amber-500/15 ring-2 ring-amber-500/30 shadow-lg shadow-amber-500/20'
+							: 'bg-white/5 ring-2 ring-white/10'
 					)}
 				>
 					<Trophy
 						className={cn(
-							'size-14',
-							isEarned
-								? 'stroke-yellow-500'
-								: 'dark:stroke-gray-400 opacity-40'
+							'size-9',
+							isEarned ? 'text-amber-400' : 'text-zinc-500'
 						)}
 					/>
-					<p className={`${!isEarned && 'opacity-40'}`}>
-						{t(`${code}.title`)}
-					</p>
-					<div className='w-full'>
-						<Progress value={percent} className='h-1' />
-					</div>
-					{isEarned && (
-						<span className='absolute top-1 right-2'>✓</span>
-					)}
 				</div>
-			}
-			contentClassname='max-w-md'
-		>
-			<div className='flex flex-col items-center justify-center gap-4'>
-				<Trophy
-					className={cn(
-						'size-20',
-						isEarned
-							? 'stroke-yellow-500'
-							: 'stroke-gray-400 opacity-40'
-					)}
-				/>
-				<p className='text-lg font-medium'>{t(`${code}.title`)}</p>
-				<span className='text-black/90 dark:text-gray-400 text-sm'>
-					{t(`${code}.description`)}
-				</span>
+
+				<div className='text-center flex flex-col gap-1.5'>
+					<p className='text-lg font-bold'>{t(`${code}.title`)}</p>
+					<p className='text-sm text-zinc-400'>
+						{t(`${code}.description`)}
+					</p>
+				</div>
+
 				{achievedAt && (
-					<span className='text-black/80 dark:text-gray-400 text-xs'>
+					<div className='flex items-center gap-1.5 text-xs text-amber-400/80 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1'>
+						<Check className='size-3' />
 						{t('issuedAt', {
 							date: formatDate(achievedAt, locale),
 							time: formatTime(achievedAt, locale)
 						})}
-					</span>
+					</div>
 				)}
-				<div className='max-w-sm w-full text-center flex flex-col gap-4'>
-					<Progress value={percent} />
-					<span className='text-black/80 dark:text-gray-400 text-sm'>
-						{progress}/{goal} ({percent}%)
-					</span>
+
+				<div className='w-full flex flex-col gap-2'>
+					<Progress
+						value={percent}
+						className={cn(
+							'h-2',
+							isEarned && '[&>div]:bg-amber-400'
+						)}
+					/>
+					<div className='flex justify-between text-xs text-zinc-500'>
+						<span>
+							{progress}/{goal}
+						</span>
+						<span>{percent}%</span>
+					</div>
 				</div>
 			</div>
 		</Modal>

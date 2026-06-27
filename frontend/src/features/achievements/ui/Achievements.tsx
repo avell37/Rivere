@@ -25,22 +25,20 @@ export const Achievements = () => {
 		return (
 			<div className='container mx-auto flex flex-col gap-4 p-8 px-0'>
 				<h1 className='text-2xl font-bold'>{t('loading')}</h1>
-				<div className='flex flex-wrap gap-4 p-4'>
-					<AchievementListSkeleton />
-				</div>
+				<AchievementListSkeleton />
 			</div>
 		)
 	}
 
 	return (
-		<div className='container mx-auto flex flex-col gap-5 p-8 px-0'>
+		<div className='container mx-auto flex flex-col gap-5 p-8 px-1'>
 			<h1 className='text-xl sm:text-2xl font-bold'>
 				{t('title', {
 					current: earnedCount,
 					total: achievements.length
 				})}
 			</h1>
-			<div className='flex gap-2'>
+			<div className='flex flex-wrap gap-2'>
 				<Button
 					variant='outline'
 					className={`${filter === 'all' ? 'font-bold scale-105' : ''} cursor-pointer`}

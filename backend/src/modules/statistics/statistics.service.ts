@@ -1,10 +1,14 @@
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { formatDay, getYesterday } from '@/shared/utils/date.util';
 import { Injectable } from '@nestjs/common';
+import { AchievementsService } from '../achievements/achievements.service';
 
 @Injectable()
 export class StatisticsService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly achievements: AchievementsService,
+    ) {}
 
     async getOrCreate(userId: string) {
         return this.prisma.userStats.upsert({
@@ -51,5 +55,23 @@ export class StatisticsService {
                 lastActiveDate: new Date(),
             },
         });
+
+        const prevStreak = stats.currentStreakDays || 0;
+
+        if (prevStreak < 7 && currentStreak >= 7) {
+            await this.achievements.updateAchievementProgress(
+                userId,
+                'weekStreak',
+                7,
+            );
+        }
+
+        if (prevStreak < 30 && currentStreak >= 30) {
+            await this.achievements.updateAchievementProgress(
+                userId,
+                'monthStreak',
+                30,
+            );
+        }
     }
 }

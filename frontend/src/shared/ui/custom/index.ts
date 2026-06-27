@@ -1,4 +1,5 @@
 export * from './Alert/Alert'
+export * from './Animate/Animate'
 
 export * from './AuthComponents/AuthFields'
 export * from './AuthComponents/AuthWrapper'
