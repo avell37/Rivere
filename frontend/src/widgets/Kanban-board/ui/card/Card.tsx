@@ -31,9 +31,8 @@ const CardComponent = ({ card, boardId, onClick }: CardComponentProps) => {
 			style={style}
 			{...attributes}
 			{...listeners}
-			className={`relative bg-white dark:bg-neutral-900 border rounded-lg shadow list-none
-			${isDragging ? 'opacity-0' : null} transition-all duration-200 cursor-grab active:cursor-grabbing
-			${card.done && 'opacity-80'}`}
+			className={`relative bg-white dark:bg-neutral-900 border rounded-lg shadow list-none w-full shrink-0 box-border
+			${isDragging ? 'opacity-0 pointer-events-none' : card.done ? 'opacity-80' : ''} transition-all duration-200 cursor-grab active:cursor-grabbing`}
 		>
 			<div className='p-4' onClick={onClick}>
 				<div className='relative flex flex-col gap-2 dark:text-white wrap-break-word'>

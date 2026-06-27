@@ -38,6 +38,7 @@ model User {
   messages              Message[]
   boardInvites          BoardInvite[]
   notifications         Notification[]
+  activityLogs          ActivityLog[]
   userAchievements      UserAchievements[]
   achievementProgresses AchievementProgress[]
 
@@ -112,6 +113,7 @@ model Board {
   columns      Column[]
   members      BoardMember[]
   boardInvites BoardInvite[]
+  activityLogs ActivityLog[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -242,6 +244,26 @@ model Message {
   @@map("messages")
 }
 
+model ActivityLog {
+  id String @id @default(uuid())
+
+  action   ActivityAction
+  entityType ActivityEntity
+  entityId   String?        @map("entity_id")
+  entityTitle String?       @map("entity_title")
+  meta        Json?
+
+  boardId String @map("board_id")
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("activity_logs")
+}
+
 model Notification {
   id String @id @default(uuid())
 
@@ -321,4 +343,24 @@ enum TokenType {
   PASSWORD_RESET
 
   @@map("tokens_types")
+}
+
+enum ActivityAction {
+  CREATED
+  UPDATED
+  DELETED
+  MOVED
+  COMPLETED
+  REOPENED
+  MEMBER_JOINED
+  MEMBER_LEFT
+  MEMBER_ROLE_CHANGED
+  BOARD_UPDATED
+}
+
+enum ActivityEntity {
+  BOARD
+  COLUMN
+  CARD
+  MEMBER
 }

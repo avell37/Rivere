@@ -5,9 +5,15 @@ import { ChatService } from '../chat/chat.service';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { AchievementsModule } from '../achievements/achievements.module';
 import { BoardModule } from '../board/board.module';
+import { ActivityLogModule } from '../activity-log/activity-log.module';
 
 @Module({
-    imports: [StatisticsModule, AchievementsModule, BoardModule],
+    imports: [
+        StatisticsModule,
+        AchievementsModule,
+        BoardModule,
+        ActivityLogModule,
+    ],
     controllers: [CardController],
     providers: [CardService, ChatService],
 })

@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
+import { ActivityLogList } from '@/entities/ActivityLog'
 import {
 	BoardMembersList,
 	IBoard,
@@ -30,7 +31,7 @@ export const BoardSettings = ({ board }: { board: IBoard }) => {
 							onClick={() => setTab(item.value)}
 							variant='none'
 							size='none'
-							className={`justify-start rounded-md px-3 py-2 text-left transition 
+							className={`justify-start rounded-md p-4 text-left transition 
 								hover:bg-muted whitespace-nowrap 
 								${tab === item.value && 'bg-muted font-medium'}`}
 						>
@@ -48,6 +49,7 @@ export const BoardSettings = ({ board }: { board: IBoard }) => {
 						boardId={board.id}
 					/>
 				)}
+				{tab === 'activity' && <ActivityLogList boardId={board.id} />}
 			</div>
 		</div>
 	)

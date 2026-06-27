@@ -1,15 +1,17 @@
 'use client'
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
-import { arrayMove } from '@dnd-kit/sortable'
 import { useCallback } from 'react'
 
+import { useBoardStore } from '@/entities/Board'
+
+import { resolveCardDrag } from '../lib/resolveCardDrag'
 import { CardDndProps } from '../types/DragAndDrop'
 
 import { useMoveCardsMutation, useReorderCardsMutation } from './useDndQueries'
 
-export const useCardDnd = ({ setActiveCard, setColumns }: CardDndProps) => {
-	const { reorderCards } = useReorderCardsMutation()
-	const { moveCards } = useMoveCardsMutation()
+export const useCardDnd = ({ boardId, setActiveCard, setColumns }: CardDndProps) => {
+	const { reorderCards } = useReorderCardsMutation(boardId)
+	const { moveCards } = useMoveCardsMutation(boardId)
 
 	const onCardDragStart = useCallback(
 		({ active }: DragStartEvent) => {
@@ -25,110 +27,28 @@ export const useCardDnd = ({ setActiveCard, setColumns }: CardDndProps) => {
 
 			if (!over) return
 			if (active.data.current?.type !== 'card') return
+			if (active.id === over.id) return
 
 			const activeId = active.id as string
+			const columns = useBoardStore.getState().columns
+			const result = resolveCardDrag(columns, activeId, over)
 
-			setColumns(prev => {
-				const fromIndex = prev.findIndex(col =>
-					col.cards.some(c => c.id === activeId)
-				)
-				if (fromIndex === -1) return prev
+			if (!result) return
 
-				let toColumnId: string
-				let toIndex: number
+			setColumns(result.next)
 
-				const overData = over.data.current
-
-				if (overData?.type === 'card') {
-					toColumnId = overData.card.columnId
-					const toColIndex = prev.findIndex(
-						col => col.id === toColumnId
-					)
-					if (toColIndex === -1) return prev
-
-					const overCardIndex = prev[toColIndex].cards.findIndex(
-						c => c.id === over.id
-					)
-					if (overCardIndex === -1) return prev
-
-					toIndex = overCardIndex
-				} else if (overData?.type === 'column') {
-					toColumnId = over.id as string
-					const toColIndex = prev.findIndex(
-						col => col.id === toColumnId
-					)
-					if (toColIndex === -1) return prev
-
-					toIndex = prev[toColIndex].cards.length
-				} else {
-					return prev
-				}
-
-				const toColIndex = prev.findIndex(col => col.id === toColumnId)
-				if (toColIndex === -1) return prev
-
-				const next = [...prev]
-
-				const fromColumn = next[fromIndex]
-				const toColumn = next[toColIndex]
-
-				const oldIndex = prev[fromIndex].cards.findIndex(
-					c => c.id === activeId
-				)
-				if (oldIndex === -1) return prev
-
-				if (fromIndex === toColIndex) {
-					if (oldIndex === toIndex) return prev
-
-					const newCards = arrayMove(
-						fromColumn.cards,
-						oldIndex,
-						toIndex
-					)
-
-					next[fromIndex] = {
-						...fromColumn,
-						cards: newCards
-					}
-
-					moveCards({
-						cardId: activeId,
-						newColumnId: fromColumn.id,
-						position: toIndex
-					})
-
-					return next
-				}
-
-				const movedCard = fromColumn.cards[oldIndex]
-				if (!movedCard) return prev
-
-				const newFromCards = fromColumn.cards.filter(
-					c => c.id !== activeId
-				)
-
-				const newToCards = [...toColumn.cards]
-				newToCards.splice(toIndex, 0, {
-					...movedCard,
-					columnId: toColumn.id
-				})
-
-				next[fromIndex] = {
-					...fromColumn,
-					cards: newFromCards
-				}
-
-				next[toColIndex] = {
-					...toColumn,
-					cards: newToCards
-				}
-
+			if (result.action.type === 'reorder') {
 				reorderCards({
-					columnId: toColumn.id,
-					ids: newToCards.map(c => c.id)
+					columnId: result.action.columnId,
+					ids: result.action.ids
 				})
+				return
+			}
 
-				return next
+			moveCards({
+				cardId: result.action.cardId,
+				newColumnId: result.action.newColumnId,
+				position: result.action.position
 			})
 		},
 		[setColumns, reorderCards, setActiveCard, moveCards]

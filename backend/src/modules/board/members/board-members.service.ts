@@ -9,12 +9,14 @@ import {
 } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
 import { validateMemberManagement } from '@/shared/utils/validate-member-management';
+import { ActivityLogService } from '../../activity-log/activity-log.service';
 
 @Injectable()
 export class BoardMembersService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly boardGateway: BoardGateway,
+        private readonly activityLog: ActivityLogService,
     ) {}
 
     async getAllMembers(boardId: string) {
@@ -95,9 +97,24 @@ export class BoardMembersService {
             });
         }
 
+        const targetUser = await this.prisma.user.findUnique({
+            where: { id: targetUserId },
+            select: { nickname: true, username: true },
+        });
+
         await this.prisma.boardMember.update({
             where: { id: targetMember.id },
             data: { role },
+        });
+
+        await this.activityLog.log({
+            boardId,
+            userId: currentUserId,
+            action: 'MEMBER_ROLE_CHANGED',
+            entityType: 'MEMBER',
+            entityId: targetUserId,
+            entityTitle: targetUser?.nickname ?? targetUser?.username,
+            meta: { newRole: role },
         });
 
         return {
@@ -136,6 +153,11 @@ export class BoardMembersService {
             targetRole: targetMember.role,
         });
 
+        const targetUser = await this.prisma.user.findUnique({
+            where: { id: targetUserId },
+            select: { nickname: true, username: true },
+        });
+
         await this.prisma.boardMember.delete({
             where: {
                 id: targetMember.id,
@@ -143,6 +165,15 @@ export class BoardMembersService {
         });
 
         this.boardGateway.kickUser(targetUserId, boardId);
+
+        await this.activityLog.log({
+            boardId,
+            userId: currentUserId,
+            action: 'MEMBER_LEFT',
+            entityType: 'MEMBER',
+            entityId: targetUserId,
+            entityTitle: targetUser?.nickname ?? targetUser?.username,
+        });
 
         return {
             success: true,

@@ -22,8 +22,8 @@ export const useVerifyEmail = (options?: { onSuccess?: () => void }) => {
 			}
 		})
 
-	const handleVerifyEmail = () =>
-		verifyEmail(code, {
+	const handleVerifyEmail = (otpCode: string) =>
+		verifyEmail(otpCode, {
 			onSuccess: () => {
 				toast.success(t('auth.verifyEmail.successVerified'))
 				if (options?.onSuccess) {

@@ -6,12 +6,14 @@ import { BoardGateway } from '../board/board.gateway';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
+import { ActivityLogService } from '../activity-log/activity-log.service';
 
 @Injectable()
 export class ColumnService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly gateway: BoardGateway,
+        private readonly activityLog: ActivityLogService,
     ) {}
 
     async create(userId: string, input: CreateColumnInput) {
@@ -37,6 +39,15 @@ export class ColumnService {
         });
 
         this.gateway.columnCreated(boardId, column);
+
+        await this.activityLog.log({
+            boardId,
+            userId,
+            action: 'CREATED',
+            entityType: 'COLUMN',
+            entityId: column.id,
+            entityTitle: column.title,
+        });
 
         return column;
     }
@@ -68,6 +79,15 @@ export class ColumnService {
         });
 
         this.gateway.columnUpdated(column.boardId, updated);
+
+        await this.activityLog.log({
+            boardId: column.boardId,
+            userId,
+            action: 'UPDATED',
+            entityType: 'COLUMN',
+            entityId: column.id,
+            entityTitle: updated.title,
+        });
 
         return updated;
     }
@@ -136,6 +156,15 @@ export class ColumnService {
         });
 
         this.gateway.columnDeleted(column.boardId, columnId);
+
+        await this.activityLog.log({
+            boardId: column.boardId,
+            userId,
+            action: 'DELETED',
+            entityType: 'COLUMN',
+            entityId: columnId,
+            entityTitle: column.title,
+        });
 
         return {
             success: true,

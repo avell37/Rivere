@@ -1,7 +1,6 @@
 export * from './Alert/Alert'
 
 export * from './AuthComponents/AuthFields'
-export * from './AuthComponents/AuthSocials'
 export * from './AuthComponents/AuthWrapper'
 
 export * from './BoardBackgroundChanger/BackgroundPicker'

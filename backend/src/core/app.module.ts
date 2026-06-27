@@ -19,9 +19,11 @@ import { TokenModule } from '@/modules/auth/token/token.module';
 import { AdminModule } from '@/modules/admin/admin.module';
 import { SessionActivityMiddleware } from './middlewares/session-activity.middleware';
 import { CronModule } from '@/modules/cron/cron.module';
+import { ActivityLogModule } from '@/modules/activity-log/activity-log.module';
 
 @Module({
     imports: [
+        ActivityLogModule,
         AdminModule,
         AccountModule,
         AchievementsModule,

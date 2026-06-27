@@ -5,7 +5,6 @@ import {
 	DragStartEvent,
 	MouseSensor,
 	TouchSensor,
-	rectIntersection,
 	useSensor,
 	useSensors
 } from '@dnd-kit/core'
@@ -15,6 +14,7 @@ import { useBoardStore } from '@/entities/Board'
 
 import { useCardDnd } from '../model/hooks/useCardDnd'
 import { useColumnDnd } from '../model/hooks/useColumnDnd'
+import { kanbanCollisionDetection } from '../model/lib/kanbanCollisionDetection'
 import {
 	DndProviderProps,
 	DragAndDropContextProps
@@ -33,12 +33,12 @@ const DndProviderComponent = ({ boardId, children }: DndProviderProps) => {
 	} = useBoardStore()
 
 	const cardDragHandlers = useCardDnd({
+		boardId,
 		setColumns,
 		setActiveCard
 	})
 
 	const columnDragHandlers = useColumnDnd({
-		columns,
 		setActiveColumn,
 		setColumns,
 		boardId
@@ -80,7 +80,7 @@ const DndProviderComponent = ({ boardId, children }: DndProviderProps) => {
 		<DragAndDropContext value={value}>
 			<DndContext
 				sensors={sensors}
-				collisionDetection={rectIntersection}
+				collisionDetection={kanbanCollisionDetection}
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
 			>
