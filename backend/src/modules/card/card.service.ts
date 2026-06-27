@@ -78,6 +78,12 @@ export class CardService {
             entityTitle: card.title,
         });
 
+        await this.achievements.updateAchievementProgress(
+            userId,
+            'firstCard',
+            1,
+        );
+
         return card;
     }
 
@@ -114,6 +120,21 @@ export class CardService {
             await this.achievements.updateAchievementProgress(
                 userId,
                 'tenTasksCompleted',
+                1,
+            );
+            await this.achievements.updateAchievementProgress(
+                userId,
+                'fiftyTasksCompleted',
+                1,
+            );
+            await this.achievements.updateAchievementProgress(
+                userId,
+                'hundredTasksCompleted',
+                1,
+            );
+            await this.achievements.updateAchievementProgress(
+                userId,
+                'fiveHundredTasksCompleted',
                 1,
             );
             await this.activityLog.log({

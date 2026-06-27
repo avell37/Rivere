@@ -84,6 +84,16 @@ export class BoardService {
             'firstBoard',
             1,
         );
+        await this.achievementsService.updateAchievementProgress(
+            userId,
+            'boardBuilder',
+            1,
+        );
+        await this.achievementsService.updateAchievementProgress(
+            userId,
+            'boardCollector',
+            1,
+        );
 
         await this.activityLog.log({
             boardId: board.id,

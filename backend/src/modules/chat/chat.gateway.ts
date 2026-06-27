@@ -57,6 +57,12 @@ export class ChatGateway {
                 1,
             );
 
+            await this.achievementsService.updateAchievementProgress(
+                message.userId,
+                'chatty',
+                1,
+            );
+
             if (!message.chat) {
                 console.warn('Сообщение не связано с чатом:', message.id);
                 return;

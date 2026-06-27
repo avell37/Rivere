@@ -3,9 +3,10 @@ import { ColumnService } from './column.service';
 import { ColumnController } from './column.controller';
 import { BoardModule } from '../board/board.module';
 import { ActivityLogModule } from '../activity-log/activity-log.module';
+import { AchievementsModule } from '../achievements/achievements.module';
 
 @Module({
-    imports: [BoardModule, ActivityLogModule],
+    imports: [BoardModule, ActivityLogModule, AchievementsModule],
     controllers: [ColumnController],
     providers: [ColumnService],
 })
