@@ -11,6 +11,7 @@ import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
+import { ActivityLogService } from '../activity-log/activity-log.service';
 
 @Injectable()
 export class CardService {
@@ -20,6 +21,7 @@ export class CardService {
         private readonly statistics: StatisticsService,
         private readonly achievements: AchievementsService,
         private readonly gateway: BoardGateway,
+        private readonly activityLog: ActivityLogService,
     ) {}
 
     async create(userId: string, input: CreateCardInput) {
@@ -67,6 +69,15 @@ export class CardService {
 
         this.gateway.cardCreated(card.column.boardId, card);
 
+        await this.activityLog.log({
+            boardId: card.column.boardId,
+            userId,
+            action: 'CREATED',
+            entityType: 'CARD',
+            entityId: card.id,
+            entityTitle: card.title,
+        });
+
         return card;
     }
 
@@ -105,6 +116,32 @@ export class CardService {
                 'tenTasksCompleted',
                 1,
             );
+            await this.activityLog.log({
+                boardId: card.column.boardId,
+                userId,
+                action: 'COMPLETED',
+                entityType: 'CARD',
+                entityId: card.id,
+                entityTitle: updatedCard.title,
+            });
+        } else if (card.done && !updatedCard.done) {
+            await this.activityLog.log({
+                boardId: card.column.boardId,
+                userId,
+                action: 'REOPENED',
+                entityType: 'CARD',
+                entityId: card.id,
+                entityTitle: updatedCard.title,
+            });
+        } else {
+            await this.activityLog.log({
+                boardId: card.column.boardId,
+                userId,
+                action: 'UPDATED',
+                entityType: 'CARD',
+                entityId: card.id,
+                entityTitle: updatedCard.title,
+            });
         }
 
         return updatedCard;
@@ -242,6 +279,30 @@ export class CardService {
             position: safePosition,
         });
 
+        const [fromColumn, toColumn] = await Promise.all([
+            this.prisma.column.findUnique({
+                where: { id: card.columnId },
+                select: { title: true },
+            }),
+            this.prisma.column.findUnique({
+                where: { id: newColumnId },
+                select: { title: true },
+            }),
+        ]);
+
+        await this.activityLog.log({
+            boardId: card.column.boardId,
+            userId,
+            action: 'MOVED',
+            entityType: 'CARD',
+            entityId: cardId,
+            entityTitle: card.title,
+            meta: {
+                fromColumn: fromColumn?.title ?? card.columnId,
+                toColumn: toColumn?.title ?? newColumnId,
+            },
+        });
+
         return updatedCard;
     }
 
@@ -271,6 +332,15 @@ export class CardService {
         });
 
         this.gateway.cardDeleted(card.column.boardId, cardId);
+
+        await this.activityLog.log({
+            boardId: card.column.boardId,
+            userId,
+            action: 'DELETED',
+            entityType: 'CARD',
+            entityId: cardId,
+            entityTitle: card.title,
+        });
 
         return {
             success: true,

@@ -13,6 +13,7 @@ import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 import { BoardEventPayload } from './types/board-events.types';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
+import { ActivityLogService } from '../activity-log/activity-log.service';
 
 @Injectable()
 export class BoardService {
@@ -20,6 +21,7 @@ export class BoardService {
         private readonly prisma: PrismaService,
         private readonly achievementsService: AchievementsService,
         private readonly boardGateway: BoardGateway,
+        private readonly activityLog: ActivityLogService,
     ) {}
 
     async create(userId: string, input: CreateBoardInput) {
@@ -82,6 +84,15 @@ export class BoardService {
             'firstBoard',
             1,
         );
+
+        await this.activityLog.log({
+            boardId: board.id,
+            userId,
+            action: 'CREATED',
+            entityType: 'BOARD',
+            entityId: board.id,
+            entityTitle: board.title,
+        });
 
         return board;
     }
@@ -242,6 +253,15 @@ export class BoardService {
         };
 
         this.boardGateway.boardEdited(boardId, payload);
+
+        await this.activityLog.log({
+            boardId,
+            userId,
+            action: 'BOARD_UPDATED',
+            entityType: 'BOARD',
+            entityId: boardId,
+            entityTitle: updated.title,
+        });
 
         return updated;
     }

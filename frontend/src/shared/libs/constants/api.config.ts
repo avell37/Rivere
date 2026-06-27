@@ -19,5 +19,6 @@ export const API_URL = {
 	verification: (url = '') => API_URL.root(`/verification/${url}`),
 	statistics: (url = '') => API_URL.root(`/statistics/${url}`),
 
-	admin: (url = '') => API_URL.root(`/admin/${url}`)
+	admin: (url = '') => API_URL.root(`/admin/${url}`),
+	activityLog: (url = '') => API_URL.root(`/activity-log/${url}`)
 }

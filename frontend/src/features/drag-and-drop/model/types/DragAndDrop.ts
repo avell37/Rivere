@@ -15,13 +15,13 @@ export interface DragAndDropContextProps {
 }
 
 export interface ColumnDndProps {
-	columns: IColumn[]
 	setActiveColumn: (column: IColumn | null) => void
 	setColumns: Dispatch<SetStateAction<IColumn[]>>
 	boardId: string
 }
 
 export interface CardDndProps {
+	boardId: string
 	setActiveCard: (card: ICard | null) => void
 	setColumns: (columns: IColumn[] | ((prev: IColumn[]) => IColumn[])) => void
 }

@@ -19,13 +19,19 @@ export const dndKeys = {
 	reorderColumns: (boardId: string) => ['reorder-columns', boardId]
 }
 
-export const useReorderCardsMutation = () => {
+export const useReorderCardsMutation = (boardId: string) => {
+	const queryClient = useQueryClient()
 	const t = useTranslations()
 
 	const { mutate: reorderCards, isPending: reorderCardsPending } =
 		useMutation({
 			mutationKey: dndKeys.reorderCards,
 			mutationFn: fetchReorderCards,
+			onSuccess: () => {
+				queryClient.invalidateQueries({
+					queryKey: boardKeys.single(boardId)
+				})
+			},
 			onError: err => handleApiError(err, t)
 		})
 
@@ -35,12 +41,18 @@ export const useReorderCardsMutation = () => {
 	}
 }
 
-export const useMoveCardsMutation = () => {
+export const useMoveCardsMutation = (boardId: string) => {
+	const queryClient = useQueryClient()
 	const t = useTranslations()
 
 	const { mutate: moveCards, isPending: moveCardsPending } = useMutation({
 		mutationKey: dndKeys.moveCards,
 		mutationFn: fetchMoveCardToColumn,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
+		},
 		onError: err => handleApiError(err, t)
 	})
 

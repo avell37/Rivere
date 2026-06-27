@@ -7,6 +7,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { extname } from 'node:path';
 import { randomBytes } from 'node:crypto';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
 
 @Injectable()
 export class S3Service {
@@ -25,6 +26,10 @@ export class S3Service {
                 ),
             },
             region: this.configService.getOrThrow<string>('S3_REGION'),
+            requestHandler: new NodeHttpHandler({
+                requestTimeout: 5000,
+                connectionTimeout: 5000,
+            }),
         });
 
         this.bucket = this.configService.getOrThrow<string>('S3_BUCKET_NAME');
