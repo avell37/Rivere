@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { CronService } from './cron.service';
 import { ScheduleModule } from '@nestjs/schedule';
 
+import { NotificationsModule } from '../notifications/notifications.module';
+
+import { CronService } from './cron.service';
+
 @Module({
-    imports: [ScheduleModule.forRoot()],
+    imports: [ScheduleModule.forRoot(), NotificationsModule],
     providers: [CronService],
 })
 export class CronModule {}

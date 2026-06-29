@@ -7,8 +7,9 @@ import { useBoardPermissions } from '@/entities/Board'
 import { IColumn, useColumn } from '@/entities/Column'
 
 import { CreateCardModal } from '@/features/card'
+import { useFiltered } from '@/features/filters/board-filters/model/hooks/useFiltered'
 
-import { BoardPermission } from '@/shared/utils'
+import { BoardPermission, cn } from '@/shared/utils'
 
 import { CardList } from '../card/CardList'
 
@@ -19,18 +20,22 @@ const ColumnComponent = ({ column }: { column: IColumn }) => {
 		id: column.id
 	})
 	const { can } = useBoardPermissions(column.boardId)
+
 	const columnCards = useMemo(
 		() => column.cards.filter(c => c && c.columnId === column.id),
 		[column.cards, column.id]
 	)
+	const { filteredCards, isFiltered } = useFiltered(columnCards)
 
 	return (
 		<div className='flex flex-col justify-between space-y-6 gap-4'>
 			<li
 				ref={setNodeRef}
 				style={style}
-				className={`relative w-78 flex p-2 flex-col gap-1 break-all bg-white/70 dark:bg-neutral-900 rounded-md
-				${isDragging ? 'opacity-70 border border-rose-500' : null}`}
+				className={cn(
+					'relative w-78 flex p-2 flex-col gap-1 break-all bg-white/70 dark:bg-neutral-900 rounded-md',
+					isDragging && 'opacity-70 border border-rose-500'
+				)}
 			>
 				<div
 					{...attributes}
@@ -42,7 +47,18 @@ const ColumnComponent = ({ column }: { column: IColumn }) => {
 							{column.title}
 						</h2>
 						<span className='text-sm text-gray-500'>
-							{column.cards?.length ?? 0}
+							{isFiltered ? (
+								<>
+									<span className='text-foreground font-medium'>
+										{filteredCards.length}
+									</span>
+									<span className='text-muted-foreground'>
+										/{columnCards.length}
+									</span>
+								</>
+							) : (
+								columnCards.length
+							)}
 						</span>
 					</div>
 					<div className='absolute right-2 top-3'>
@@ -56,7 +72,7 @@ const ColumnComponent = ({ column }: { column: IColumn }) => {
 					<ScrollArea.Viewport className='flex flex-col gap-2 max-h-150 h-full overflow-y-auto'>
 						<div className='flex flex-col gap-2 rounded-lg'>
 							<CardList
-								cards={columnCards}
+								cards={filteredCards}
 								boardId={column.boardId}
 							/>
 						</div>

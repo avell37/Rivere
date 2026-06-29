@@ -6,6 +6,12 @@ export enum Priority {
 	HIGH = 'HIGH'
 }
 
+export interface ICardAssignee {
+	id: string
+	nickname: string
+	avatar: string | null
+}
+
 export interface ICard {
 	id: string
 	title: string
@@ -17,6 +23,8 @@ export interface ICard {
 	chatId: string
 	chat: IChat
 	done: boolean
+	assigneeId?: string | null
+	assignee?: ICardAssignee | null
 	createdAt?: Date
 	updatedAt?: Date
 }

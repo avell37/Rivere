@@ -34,4 +34,8 @@ export class UpdateCardInput {
     @IsOptional()
     @IsBoolean({ message: 'Значение должно быть булево' })
     done?: boolean;
+
+    @IsOptional()
+    @IsString({ message: 'ID исполнителя должен быть строкой' })
+    assigneeId?: string | null;
 }

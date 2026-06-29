@@ -6,6 +6,6 @@ export interface EditableProps {
 	t: (key: string) => string
 }
 
-export type EditableKey = 'title' | 'description' | 'priority' | 'deadline'
+export type EditableKey = 'title' | 'description' | 'priority' | 'deadline' | 'assigneeId'
 
 export type EditableValue = UpdateCardPayload[EditableKey]
