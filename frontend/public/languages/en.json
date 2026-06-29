@@ -290,6 +290,22 @@
 				"activity": "Activity"
 			}
 		},
+		"filters": {
+			"search": "Search cards...",
+			"priority": "Priority",
+			"status": "Status",
+			"deadline": "Deadline",
+			"assignee": "Assignee",
+			"all": "All",
+			"active": "Active",
+			"done": "Done",
+			"overdue": "Overdue",
+			"dueSoon": "Due today",
+			"hasDeadline": "Has deadline",
+			"noDeadline": "No deadline",
+			"noMembers": "No members found",
+			"clear": "Clear"
+		},
 		"activityLog": {
 			"title": "Activity log:",
 			"empty": "No activity yet.",
@@ -372,6 +388,8 @@
 			"editPriorityPlaceholder": "Select priority",
 			"editDeadlineLabel": "Deadline",
 			"editDeadlinePlaceholder": "Select deadline",
+			"editAssigneeLabel": "Assignee",
+			"editAssigneePlaceholder": "Assign to...",
 			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
@@ -386,6 +404,7 @@
 		},
 		"doneSuccess": "Successfully",
 		"expiresAt": "expires at: {date}",
+		"overdue": "overdue",
 		"dragCard": "Drag the card here"
 	},
 	"notifications": {

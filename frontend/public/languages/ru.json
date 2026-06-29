@@ -291,6 +291,22 @@
 				"activity": "Активность"
 			}
 		},
+		"filters": {
+			"search": "Поиск по карточкам...",
+			"priority": "Приоритет",
+			"status": "Статус",
+			"deadline": "Дедлайн",
+			"assignee": "Исполнитель",
+			"all": "Все",
+			"active": "Активные",
+			"done": "Выполненные",
+			"overdue": "Просроченные",
+			"dueSoon": "Сегодня",
+			"hasDeadline": "С дедлайном",
+			"noDeadline": "Без дедлайна",
+			"noMembers": "Участники не найдены",
+			"clear": "Сбросить"
+		},
 		"activityLog": {
 			"title": "Журнал активности:",
 			"empty": "Активности пока нет.",
@@ -374,6 +390,8 @@
 			"editPriorityPlaceholder": "Выберите приоритет задачи",
 			"editDeadlineLabel": "Дедлайн",
 			"editDeadlinePlaceholder": "Выберите дедлайн",
+			"editAssigneeLabel": "Исполнитель",
+			"editAssigneePlaceholder": "Назначить...",
 			"editSuccess": "Изменения успешно применены"
 		},
 		"delete": {
@@ -388,6 +406,7 @@
 		},
 		"doneSuccess": "Успешно",
 		"expiresAt": "до: {date}",
+		"overdue": "просрочено",
 		"dragCard": "Перетащите карточку сюда"
 	},
 	"notifications": {

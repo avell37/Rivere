@@ -4,14 +4,22 @@ import { useLocale } from 'next-intl'
 
 import { cn, formatDate } from '@/shared/utils'
 
+import { iconConfig } from '../model/lib/notificationIconConfig'
 import { NotificationItemProps } from '../model/types/NotificationProps'
 
 export const NotificationItem = ({
+	type,
 	message,
 	read,
 	createdAt
 }: NotificationItemProps) => {
 	const locale = useLocale()
+	const config = iconConfig[type] ?? {
+		icon: Bell,
+		bg: 'bg-primary/10',
+		color: 'text-primary'
+	}
+	const Icon = config.icon
 
 	return (
 		<div
@@ -22,11 +30,16 @@ export const NotificationItem = ({
 		>
 			<div
 				className={cn(
-					'flex h-9 w-9 items-center justify-center rounded-full',
-					read ? 'bg-muted' : 'bg-primary/10'
+					'flex h-9 w-9 shrink-0 items-center justify-center rounded-full',
+					read ? 'bg-muted' : config.bg
 				)}
 			>
-				<Bell className='h-4 w-4 text-primary' />
+				<Icon
+					className={cn(
+						'h-4 w-4',
+						read ? 'text-muted-foreground' : config.color
+					)}
+				/>
 			</div>
 			<div className='flex flex-col gap-1 flex-1'>
 				<p

@@ -10,7 +10,8 @@ export const EditCardSchema = z.object({
 		.max(128, { message: 'validation.card.descriptionMax' })
 		.optional(),
 	priority: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
-	deadline: z.string().optional()
+	deadline: z.string().optional(),
+	assigneeId: z.string().nullable().optional()
 })
 
 export type EditCardRequest = z.infer<typeof EditCardSchema>

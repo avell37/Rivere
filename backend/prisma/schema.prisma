@@ -39,6 +39,7 @@ model User {
   boardInvites          BoardInvite[]
   notifications         Notification[]
   activityLogs          ActivityLog[]
+  assignedCards         Card[]          @relation("CardAssignee")
   userAchievements      UserAchievements[]
   achievementProgresses AchievementProgress[]
 
@@ -184,6 +185,11 @@ model Card {
   priority    Priority
   deadline    DateTime?
   done        Boolean   @default(false)
+
+  deadlineNotifiedAt DateTime? @map("deadline_notified_at")
+
+  assigneeId String? @map("assignee_id")
+  assignee   User?   @relation("CardAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
 
   tags Tag[]
 

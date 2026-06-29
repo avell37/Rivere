@@ -1,20 +1,29 @@
 'use client'
-import { Check, Clock, MessageSquareMore, X } from 'lucide-react'
+import { AlertCircle, Check, Clock, MessageSquareMore, X } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 
 import { priorityColors } from '@/shared/config'
 import { cn, formatDate, formatPriority } from '@/shared/utils'
 
+import { getDeadlineState } from '../model/lib/getDeadlineState'
 import { ICard } from '../model/types/ICard'
 
 export const CardOverlayItem = ({ card }: { card: ICard }) => {
 	const t = useTranslations()
 	const locale = useLocale()
 
+	const deadlineState = getDeadlineState(card.deadline, card.done)
+
 	return (
 		<div
-			className={`relative bg-background dark:bg-neutral-900 border rounded-lg shadow list-none}
-			transition-all duration-200 cursor-grab active:cursor-grabbing`}
+			className={cn(
+				'relative bg-background dark:bg-neutral-900 border rounded-lg shadow list-none',
+				'transition-all duration-200 cursor-grab active:cursor-grabbing',
+				deadlineState === 'overdue' &&
+					'border-red-500/50 dark:border-red-500/40',
+				deadlineState === 'due-soon' &&
+					'border-orange-400/50 dark:border-orange-400/40'
+			)}
 		>
 			<div className='p-4'>
 				<div className='relative flex flex-col gap-2 dark:text-white wrap-break-word'>
@@ -47,11 +56,25 @@ export const CardOverlayItem = ({ card }: { card: ICard }) => {
 						</div>
 					</div>
 					{card.deadline && (
-						<span className='absolute bottom-0 right-0 flex items-center gap-1 text-[10px]'>
-							<Clock size={14} />
-							{t('card.expiresAt', {
-								date: formatDate(card.deadline, locale)
-							})}
+						<span
+							className={cn(
+								'absolute bottom-0 right-0 flex items-center gap-1 text-[10px]',
+								deadlineState === 'overdue' &&
+									'text-red-500 font-medium',
+								deadlineState === 'due-soon' &&
+									'text-orange-400'
+							)}
+						>
+							{deadlineState === 'overdue' ? (
+								<AlertCircle size={12} />
+							) : (
+								<Clock size={12} />
+							)}
+							{deadlineState === 'overdue'
+								? t('card.overdue')
+								: t('card.expiresAt', {
+										date: formatDate(card.deadline, locale)
+									})}
 						</span>
 					)}
 				</div>

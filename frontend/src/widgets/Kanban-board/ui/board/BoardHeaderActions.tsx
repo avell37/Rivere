@@ -10,6 +10,7 @@ import {
 } from '@/entities/Board'
 
 import { CreateInviteModal } from '@/features/board-invite'
+import { BoardFiltersDropdown } from '@/features/filters/board-filters'
 
 import { Modal } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
@@ -47,6 +48,7 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 			>
 				<CreateInviteModal boardId={board.id} />
 			</Modal>
+			<BoardFiltersDropdown boardId={board.id} />
 			<Modal
 				trigger={
 					<Button

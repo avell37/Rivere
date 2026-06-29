@@ -76,7 +76,6 @@ export const uploadAvatarApi = async (file: File): Promise<IUploadedAvatar> => {
 
 export const logoutApi = async (): Promise<ActionResponse> => {
 	const response = await authAxios.post(`${API_URL.session()}`)
-	console.log(response)
 	return response.data
 }
 

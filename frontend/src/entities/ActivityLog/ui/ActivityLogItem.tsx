@@ -13,7 +13,7 @@ interface ActivityLogItemProps {
 
 export const ActivityLogItem = ({ log, locale }: ActivityLogItemProps) => {
 	const t = useTranslations('board.activityLog')
-	console.log(log)
+
 	const actionKey = log.action.toLowerCase() as Lowercase<typeof log.action>
 	const entityKey = log.entityType.toLowerCase() as Lowercase<
 		typeof log.entityType

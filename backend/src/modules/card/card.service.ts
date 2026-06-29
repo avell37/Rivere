@@ -7,6 +7,7 @@ import { ReorderToNewColumn } from './inputs/reorder-to-new-column.input';
 import { StatisticsService } from '../statistics/statistics.service';
 import { AchievementsService } from '../achievements/achievements.service';
 import { BoardGateway } from '../board/board.gateway';
+import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
@@ -22,6 +23,7 @@ export class CardService {
         private readonly achievements: AchievementsService,
         private readonly gateway: BoardGateway,
         private readonly activityLog: ActivityLogService,
+        private readonly notifications: NotificationsService,
     ) {}
 
     async create(userId: string, input: CreateCardInput) {
@@ -62,6 +64,9 @@ export class CardService {
             },
             include: {
                 column: true,
+                assignee: {
+                    select: { id: true, nickname: true, avatar: true },
+                },
             },
         });
 
@@ -110,10 +115,35 @@ export class CardService {
 
         const updatedCard = await this.prisma.card.update({
             where: { id: cardId },
-            data: input,
+            data: {
+                ...input,
+                ...(input.deadline !== undefined && {
+                    deadlineNotifiedAt: null,
+                }),
+            },
+            include: {
+                assignee: {
+                    select: { id: true, nickname: true, avatar: true },
+                },
+            },
         });
 
         this.gateway.cardUpdated(card.column.boardId, updatedCard);
+
+        const assigneeChanged =
+            input.assigneeId !== undefined &&
+            input.assigneeId !== card.assigneeId;
+        if (
+            assigneeChanged &&
+            input.assigneeId &&
+            input.assigneeId !== userId
+        ) {
+            await this.notifications.createNotification(input.assigneeId, {
+                type: 'assignment',
+                message: `Вас назначили исполнителем карточки: «${updatedCard.title}»`,
+                entityId: card.id,
+            });
+        }
 
         if (!card.done && updatedCard.done) {
             await this.statistics.onCardCompleted(userId);

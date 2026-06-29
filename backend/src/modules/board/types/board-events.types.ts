@@ -29,6 +29,8 @@ export interface CardEventPayload {
     deadline: Date | null;
     done: boolean;
     columnId: string;
+    assigneeId: string | null;
+    assignee: { id: string; nickname: string; avatar: string | null } | null;
     createdAt: string | Date;
     updatedAt: string | Date;
 }

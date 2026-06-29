@@ -6,6 +6,7 @@ import { StatisticsModule } from '../statistics/statistics.module';
 import { AchievementsModule } from '../achievements/achievements.module';
 import { BoardModule } from '../board/board.module';
 import { ActivityLogModule } from '../activity-log/activity-log.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { ActivityLogModule } from '../activity-log/activity-log.module';
         AchievementsModule,
         BoardModule,
         ActivityLogModule,
+        NotificationsModule,
     ],
     controllers: [CardController],
     providers: [CardService, ChatService],

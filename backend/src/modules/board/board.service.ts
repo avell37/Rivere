@@ -144,6 +144,12 @@ export class BoardService {
                                         },
                                     },
                                 },
+                                assignee: {
+                                    select: {
+                                        avatar: true,
+                                        nickname: true,
+                                    },
+                                },
                             },
                         },
                     },

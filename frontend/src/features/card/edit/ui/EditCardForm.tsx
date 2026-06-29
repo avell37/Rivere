@@ -13,6 +13,7 @@ import {
 
 import { Form } from '@/shared/ui/external'
 
+import { EditableAssignee } from './EditableAssignee'
 import { EditableDeadline } from './EditableDeadline'
 import { EditableDescription } from './EditableDescription'
 import { EditablePriority } from './EditablePriority'
@@ -26,7 +27,8 @@ export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
 			title: card.title,
 			description: card.description,
 			priority: card.priority,
-			deadline: card.deadline
+			deadline: card.deadline,
+			assigneeId: card.assigneeId ?? null
 		}
 	})
 
@@ -45,6 +47,13 @@ export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
 				<div className='flex items-end gap-4 max-[470px]:flex-col max-sm:items-start'>
 					<EditablePriority cardId={card.id} t={t} />
 					<EditableDeadline cardId={card.id} t={t} />
+				</div>
+				<div className='flex items-end gap-4 max-[470px]:flex-col max-sm:items-start'>
+					<EditableAssignee
+						cardId={card.id}
+						boardId={boardId}
+						t={t}
+					/>
 				</div>
 				<div className='flex flex-col gap-4 mb-8'>
 					<div className='flex items-center gap-2'>
