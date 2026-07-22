@@ -177,11 +177,18 @@ export class AchievementsService {
 
         if (exists) return;
 
-        const granted = await this.prisma.userAchievements.create({
-            data: { userId, achievementId },
-            include: {
-                achievements: true,
+        const granted = await this.prisma.userAchievements.upsert({
+            where: {
+                userId_achievementId: {
+                    userId,
+                    achievementId,
+                },
             },
+            create: {
+                userId,
+                achievementId,
+            },
+            update: {},
         });
 
         this.achievementsGateway.sendAchievement(userId, granted);

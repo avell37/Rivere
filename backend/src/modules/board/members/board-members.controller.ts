@@ -25,8 +25,11 @@ export class BoardMembersController {
     })
     @Authorization()
     @Get(':boardId')
-    async getAllMembers(@Param('boardId') boardId: string) {
-        return this.boardMembersService.getAllMembers(boardId);
+    async getAllMembers(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+    ) {
+        return this.boardMembersService.getAllMembers(userId, boardId);
     }
 
     @ApiOperation({
@@ -52,8 +55,22 @@ export class BoardMembersController {
     }
 
     @ApiOperation({
-        summary: 'Принять инвайт',
-        description: 'При вызове метода принимается приглашение в доску.',
+        summary: 'Покинуть доску',
+        description: 'Текущий пользователь покидает доску добровольно.',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Delete(':boardId/leave')
+    async leaveBoard(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+    ) {
+        return this.boardMembersService.leaveBoard(userId, boardId);
+    }
+
+    @ApiOperation({
+        summary: 'Исключить участника',
+        description: 'Исключает участника из доски.',
     })
     @HttpCode(200)
     @Authorization()

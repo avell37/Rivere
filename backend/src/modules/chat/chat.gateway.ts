@@ -9,9 +9,17 @@ import { Server, Socket } from 'socket.io';
 import { MessagesService } from '../messages/messages.service';
 import { CreateMessageDto } from '../messages/dto/create-message.dto';
 import { AchievementsService } from '../achievements/achievements.service';
+import { WsSessionService } from '@/shared/services/ws-session.service';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
+import { wsCorsOptions } from '@/shared/utils/ws-cors.util';
+import {
+    getSocketUserId,
+    setSocketUserId,
+} from '@/shared/utils/ws-socket.util';
 
 @WebSocketGateway({
-    cors: { origin: '*' },
+    cors: wsCorsOptions(),
     namespace: '/api/chat',
 })
 export class ChatGateway {
@@ -21,18 +29,48 @@ export class ChatGateway {
     constructor(
         private readonly messagesService: MessagesService,
         private readonly achievementsService: AchievementsService,
+        private readonly wsSession: WsSessionService,
+        private readonly prisma: PrismaService,
     ) {}
 
-    handleConnection(client: Socket) {
+    async handleConnection(client: Socket) {
+        const userId = await this.wsSession.getUserIdFromSocket(client);
+
+        if (!userId) {
+            client.disconnect();
+            return;
+        }
+
+        setSocketUserId(client, userId);
         client.emit('connected', client.id);
     }
 
     @SubscribeMessage('join')
-    handleJoin(
+    async handleJoin(
         @MessageBody() { chatId }: { chatId: string },
         @ConnectedSocket() client: Socket,
     ) {
-        void client.join(`chat_${chatId}`);
+        const userId = getSocketUserId(client);
+
+        if (!userId) {
+            client.disconnect();
+            return;
+        }
+
+        try {
+            await checkBoardAccess({
+                prisma: this.prisma,
+                userId,
+                chatId,
+            });
+
+            await client.join(`chat_${chatId}`);
+        } catch {
+            client.emit('join:error', {
+                code: 'errors.board.members.forbidden',
+                message: 'Нет доступа к данной доске.',
+            });
+        }
     }
 
     @SubscribeMessage('leave')
@@ -48,17 +86,30 @@ export class ChatGateway {
         @MessageBody() dto: CreateMessageDto,
         @ConnectedSocket() client: Socket,
     ) {
+        const userId = getSocketUserId(client);
+
+        if (!userId) {
+            client.disconnect();
+            return;
+        }
+
         try {
-            const message = await this.messagesService.create(dto);
+            await checkBoardAccess({
+                prisma: this.prisma,
+                userId,
+                chatId: dto.chatId,
+            });
+
+            const message = await this.messagesService.create(userId, dto);
 
             await this.achievementsService.updateAchievementProgress(
-                message.userId,
+                userId,
                 'firstMessage',
                 1,
             );
 
             await this.achievementsService.updateAchievementProgress(
-                message.userId,
+                userId,
                 'chatty',
                 1,
             );
@@ -73,7 +124,6 @@ export class ChatGateway {
             console.error('Error creating message:', err);
             client.emit('message:error', {
                 error: 'Failed to create message',
-                details: err instanceof Error ? err.message : 'Unknown error',
             });
         }
     }

@@ -1,29 +1,35 @@
-import { AuthPayload } from '@/shared/types/AuthPayload';
 import {
     OnGatewayConnection,
+    OnGatewayDisconnect,
     WebSocketGateway,
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { WsSessionService } from '@/shared/services/ws-session.service';
+import { wsCorsOptions } from '@/shared/utils/ws-cors.util';
+import { setSocketUserId } from '@/shared/utils/ws-socket.util';
 
 @WebSocketGateway({
-    cors: { origin: '*' },
+    cors: wsCorsOptions(),
     namespace: '/api/events',
 })
-export class EventsGateway implements OnGatewayConnection {
+export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer()
     server!: Server;
 
     private connections = new Map<string, Set<string>>();
 
-    handleConnection(client: Socket) {
-        const auth = client.handshake.auth as AuthPayload;
-        const userId = auth?.userId;
+    constructor(private readonly wsSession: WsSessionService) {}
+
+    async handleConnection(client: Socket) {
+        const userId = await this.wsSession.getUserIdFromSocket(client);
 
         if (!userId) {
             client.disconnect();
             return;
         }
+
+        setSocketUserId(client, userId);
 
         const sockets = this.connections.get(userId) ?? new Set();
         sockets.add(client.id);
@@ -44,7 +50,7 @@ export class EventsGateway implements OnGatewayConnection {
         }
     }
 
-    emitToUser(userId: string, event: string, payload: any) {
+    emitToUser(userId: string, event: string, payload: unknown) {
         const sockets = this.connections.get(userId);
 
         if (!sockets) return;

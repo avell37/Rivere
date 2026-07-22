@@ -7,9 +7,7 @@ const sockets = new Map<string, Socket>()
 
 export const getNotificationsSocket = (userId: string) => {
 	if (!sockets.has(userId)) {
-		const socket = createSocket(`${SERVER_URL}/notifications`, {
-			auth: { userId }
-		})
+		const socket = createSocket(`${SERVER_URL}/notifications`)
 		sockets.set(userId, socket)
 	}
 	return sockets.get(userId)!

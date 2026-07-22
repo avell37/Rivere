@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import type { TokenType, User } from '@prisma/client';
 
+import { randomInt } from 'node:crypto';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -22,9 +23,7 @@ export class TokenService {
         if (isUUID) {
             token = uuidv4();
         } else {
-            token = Math.floor(
-                Math.random() * (1000000 - 100000) + 100000,
-            ).toString();
+            token = randomInt(100000, 1000000).toString();
         }
 
         const expiresIn = new Date(new Date().getTime() + 900000);

@@ -7,9 +7,7 @@ const sockets = new Map<string, Socket>()
 
 export const getEventsSocket = (userId: string) => {
 	if (!sockets.has(userId)) {
-		const socket = createSocket(`${SERVER_URL}/events`, {
-			auth: { userId }
-		})
+		const socket = createSocket(`${SERVER_URL}/events`)
 		sockets.set(userId, socket)
 	}
 	return sockets.get(userId)!

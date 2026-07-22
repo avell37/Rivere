@@ -150,6 +150,11 @@ export class BoardService {
                                         nickname: true,
                                     },
                                 },
+                                tags: {
+                                    orderBy: {
+                                        createdAt: 'asc',
+                                    },
+                                },
                             },
                         },
                     },

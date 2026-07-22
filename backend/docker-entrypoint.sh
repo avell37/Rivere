@@ -1,8 +1,11 @@
-echo "--- Running prisma push"
-npx prisma db push
+#!/bin/sh
+set -e
 
-echo "--- Running prisma seed"
-npx prisma db seed
+echo "--- Running migrations"
+npx prisma migrate deploy --config prisma.config.ts
+
+echo "--- Running seed"
+npx prisma db seed --config prisma.config.ts
 
 echo "--- Starting server"
 node dist/src/main.js

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
-import { Privacy } from '@/widgets/Privacy/Privacy'
+import { Privacy } from '@/widgets/Privacy/ui/Privacy'
 
 import { MainHeader } from '@/widgets'
 

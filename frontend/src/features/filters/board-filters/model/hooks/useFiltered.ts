@@ -5,7 +5,8 @@ import { ICard } from '@/entities/Card'
 import { useBoardFiltersStore } from '../store/useBoardFiltersStore'
 
 export const useFiltered = (columnCards: ICard[]) => {
-	const { search, priorities, status, deadline } = useBoardFiltersStore()
+	const { search, priorities, status, deadline, assigneeId } =
+		useBoardFiltersStore()
 
 	const filteredCards = useMemo(() => {
 		let result = columnCards
@@ -25,6 +26,10 @@ export const useFiltered = (columnCards: ICard[]) => {
 
 		if (status === 'active') result = result.filter(c => !c.done)
 		if (status === 'done') result = result.filter(c => c.done)
+
+		if (assigneeId) {
+			result = result.filter(c => c.assigneeId === assigneeId)
+		}
 
 		if (deadline !== 'all') {
 			const now = new Date()
@@ -49,13 +54,14 @@ export const useFiltered = (columnCards: ICard[]) => {
 		}
 
 		return result
-	}, [columnCards, search, priorities, status, deadline])
+	}, [columnCards, search, priorities, status, deadline, assigneeId])
 
 	const isFiltered =
 		search !== '' ||
 		priorities.length > 0 ||
 		status !== 'all' ||
-		deadline !== 'all'
+		deadline !== 'all' ||
+		assigneeId !== null
 
 	return {
 		filteredCards,

@@ -13,6 +13,7 @@ import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
 import { ActivityLogService } from '../activity-log/activity-log.service';
+import { cardRelationsInclude } from './card.include';
 
 @Injectable()
 export class CardService {
@@ -64,9 +65,7 @@ export class CardService {
             },
             include: {
                 column: true,
-                assignee: {
-                    select: { id: true, nickname: true, avatar: true },
-                },
+                ...cardRelationsInclude,
             },
         });
 
@@ -113,19 +112,33 @@ export class CardService {
             permission: BoardPermission.UPDATE_CARD,
         });
 
-        const updatedCard = await this.prisma.card.update({
-            where: { id: cardId },
-            data: {
-                ...input,
-                ...(input.deadline !== undefined && {
-                    deadlineNotifiedAt: null,
-                }),
-            },
-            include: {
-                assignee: {
-                    select: { id: true, nickname: true, avatar: true },
+        const { tags, ...cardData } = input;
+
+        const updatedCard = await this.prisma.$transaction(async (tx) => {
+            if (tags !== undefined) {
+                await tx.tag.deleteMany({ where: { cardId } });
+
+                if (tags.length > 0) {
+                    await tx.tag.createMany({
+                        data: tags.map((tag) => ({
+                            title: tag.title,
+                            background: tag.background,
+                            cardId,
+                        })),
+                    });
+                }
+            }
+
+            return tx.card.update({
+                where: { id: cardId },
+                data: {
+                    ...cardData,
+                    ...(cardData.deadline !== undefined && {
+                        deadlineNotifiedAt: null,
+                    }),
                 },
-            },
+                include: cardRelationsInclude,
+            });
         });
 
         this.gateway.cardUpdated(card.column.boardId, updatedCard);
@@ -399,7 +412,13 @@ export class CardService {
         };
     }
 
-    async getChatByCard(cardId: string) {
+    async getChatByCard(userId: string, cardId: string) {
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            cardId,
+        });
+
         return this.prisma.chat.findUnique({
             where: { cardId },
             include: {

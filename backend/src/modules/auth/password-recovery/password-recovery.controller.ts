@@ -39,6 +39,12 @@ export class PasswordRecoveryController {
         );
     }
 
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 15,
+            limit: 5,
+        },
+    })
     @ApiOperation({
         summary: 'Проверка токена сброса пароля',
         description: 'Проверяет действительность токена сброса пароля.',
@@ -49,6 +55,12 @@ export class PasswordRecoveryController {
         return this.passwordRecoveryService.verifyResetToken(input);
     }
 
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 15,
+            limit: 5,
+        },
+    })
     @ApiOperation({
         summary: 'Создание нового пароля',
         description:

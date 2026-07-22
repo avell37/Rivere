@@ -9,6 +9,7 @@ import {
 } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
 import { validateMemberManagement } from '@/shared/utils/validate-member-management';
+import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 import { ActivityLogService } from '../../activity-log/activity-log.service';
 
 @Injectable()
@@ -19,7 +20,13 @@ export class BoardMembersService {
         private readonly activityLog: ActivityLogService,
     ) {}
 
-    async getAllMembers(boardId: string) {
+    async getAllMembers(userId: string, boardId: string) {
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
         const members = await this.prisma.boardMember.findMany({
             where: {
                 boardId,
@@ -178,6 +185,57 @@ export class BoardMembersService {
         return {
             success: true,
             message: 'Участник успешно исключен из доски',
+        };
+    }
+
+    async leaveBoard(userId: string, boardId: string) {
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
+        const member = await this.prisma.boardMember.findFirst({
+            where: { boardId, userId },
+        });
+
+        if (!member) {
+            throw new ForbiddenException({
+                code: 'errors.board.invite.notMember',
+                message: 'Вы не являетесь участником этой доски',
+            });
+        }
+
+        if (member.role === 'OWNER') {
+            throw new ForbiddenException({
+                code: 'errors.board.member.ownerCannotLeave',
+                message:
+                    'Владелец не может покинуть доску. Сначала передайте права или удалите доску.',
+            });
+        }
+
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { nickname: true, username: true },
+        });
+
+        await this.prisma.boardMember.delete({
+            where: { id: member.id },
+        });
+
+        await this.activityLog.log({
+            boardId,
+            userId,
+            action: 'MEMBER_LEFT',
+            entityType: 'MEMBER',
+            entityId: userId,
+            entityTitle: user?.nickname ?? user?.username,
+            meta: { self: true },
+        });
+
+        return {
+            success: true,
+            message: 'Вы покинули доску',
         };
     }
 }

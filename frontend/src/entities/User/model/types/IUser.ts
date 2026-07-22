@@ -47,6 +47,7 @@ export interface IAdminUser {
 	}
 	bannedUntil: Date | null
 	banReason: string | null
+	bannedAt: Date | null
 	createdAt: Date
 	updatedAt?: Date
 }

@@ -1,4 +1,4 @@
-import { UpdateCardPayload } from '@/entities/Card'
+import { ICardTag, UpdateCardPayload } from '@/entities/Card'
 
 export interface EditableProps {
 	cardId: string
@@ -6,6 +6,17 @@ export interface EditableProps {
 	t: (key: string) => string
 }
 
-export type EditableKey = 'title' | 'description' | 'priority' | 'deadline' | 'assigneeId'
+export type EditableKey =
+	| 'title'
+	| 'description'
+	| 'priority'
+	| 'deadline'
+	| 'assigneeId'
 
 export type EditableValue = UpdateCardPayload[EditableKey]
+
+export interface EditableTagsProps {
+	cardId: string
+	tags: ICardTag[]
+	t: (key: string) => string
+}

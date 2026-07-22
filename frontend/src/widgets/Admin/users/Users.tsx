@@ -1,7 +1,12 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
 
-import { UserAdminListSkeleton, useGetAllUsers } from '@/features/admin'
+import {
+	UserAdminFilters,
+	UserAdminListSkeleton,
+	parseAdminUsersFilters,
+	useGetAllUsers
+} from '@/features/admin'
 
 import { NavBar } from '@/shared/ui/custom'
 
@@ -9,13 +14,14 @@ import { UserAdminList } from './UserAdminList'
 
 export const Users = () => {
 	const searchParams = useSearchParams()
-	const page = Number(searchParams.get('page')) || 1
-	const { data, isLoading } = useGetAllUsers(page)
+	const filters = parseAdminUsersFilters(searchParams)
+	const { data, isLoading } = useGetAllUsers(filters)
 
 	if (isLoading || !data) {
 		return (
 			<div className='container mx-auto flex flex-col gap-6 pb-10'>
 				<NavBar />
+				<UserAdminFilters filters={filters} />
 				<UserAdminListSkeleton />
 			</div>
 		)
@@ -24,7 +30,8 @@ export const Users = () => {
 	return (
 		<div className='container mx-auto flex flex-col gap-6 pb-10'>
 			<NavBar />
-			<UserAdminList data={data} />
+			<UserAdminFilters filters={filters} />
+			<UserAdminList data={data} filters={filters} />
 		</div>
 	)
 }

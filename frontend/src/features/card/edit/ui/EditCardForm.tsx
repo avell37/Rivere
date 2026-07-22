@@ -17,6 +17,7 @@ import { EditableAssignee } from './EditableAssignee'
 import { EditableDeadline } from './EditableDeadline'
 import { EditableDescription } from './EditableDescription'
 import { EditablePriority } from './EditablePriority'
+import { EditableTags } from './EditableTags'
 import { EditableTitle } from './EditableTitle'
 
 export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
@@ -55,6 +56,7 @@ export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
 						t={t}
 					/>
 				</div>
+				<EditableTags cardId={card.id} tags={card.tags ?? []} t={t} />
 				<div className='flex flex-col gap-4 mb-8'>
 					<div className='flex items-center gap-2'>
 						<TextAlignJustify size='16' />

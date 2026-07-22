@@ -1,4 +1,3 @@
-import { AuthPayload } from '@/shared/types/AuthPayload';
 import {
     OnGatewayConnection,
     OnGatewayDisconnect,
@@ -6,9 +5,12 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { WsSessionService } from '@/shared/services/ws-session.service';
+import { wsCorsOptions } from '@/shared/utils/ws-cors.util';
+import { setSocketUserId } from '@/shared/utils/ws-socket.util';
 
 @WebSocketGateway({
-    cors: { origin: '*' },
+    cors: wsCorsOptions(),
     namespace: '/api/notifications',
 })
 export class NotificationsGateway
@@ -18,14 +20,17 @@ export class NotificationsGateway
     private server!: Server;
     private connections = new Map<string, Set<string>>();
 
-    handleConnection(client: Socket) {
-        const auth = client.handshake.auth as AuthPayload;
-        const userId = auth?.userId;
+    constructor(private readonly wsSession: WsSessionService) {}
 
-        if (!userId || typeof userId !== 'string') {
+    async handleConnection(client: Socket) {
+        const userId = await this.wsSession.getUserIdFromSocket(client);
+
+        if (!userId) {
             client.disconnect();
             return;
         }
+
+        setSocketUserId(client, userId);
 
         const sockets = this.connections.get(userId) ?? new Set();
         sockets.add(client.id);
@@ -47,7 +52,7 @@ export class NotificationsGateway
         }
     }
 
-    sendNotification(userId: string, payload: any) {
+    sendNotification(userId: string, payload: unknown) {
         const sockets = this.connections.get(userId);
         if (!sockets) return;
 

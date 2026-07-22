@@ -71,7 +71,16 @@ const CardComponent = ({ card, boardId, onClick }: CardComponentProps) => {
 					<span className='text-xs wrap-break-word whitespace-pre-wrap'>
 						{card.description?.trim()}
 					</span>
-					<div className='flex items-center gap-2'>
+					<div className='flex flex-wrap items-center gap-2'>
+						{card.tags?.map(tag => (
+							<span
+								key={tag.id}
+								className='inline-flex items-center rounded px-2 py-0.5 text-[10px] font-medium text-white'
+								style={{ backgroundColor: tag.background }}
+							>
+								{tag.title}
+							</span>
+						))}
 						<div
 							className={`${priorityColors[card.priority]} inline-flex items-center w-fit 
 						px-2 py-0.5 rounded text-[10px] font-medium`}

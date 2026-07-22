@@ -1,4 +1,3 @@
-import { AuthPayload } from '@/shared/types/AuthPayload';
 import {
     ConnectedSocket,
     MessageBody,
@@ -14,9 +13,17 @@ import {
     CardEventPayload,
     ColumnEventPayload,
 } from './types/board-events.types';
+import { WsSessionService } from '@/shared/services/ws-session.service';
+import { PrismaService } from '@/core/prisma/prisma.service';
+import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
+import { wsCorsOptions } from '@/shared/utils/ws-cors.util';
+import {
+    getSocketUserId,
+    setSocketUserId,
+} from '@/shared/utils/ws-socket.util';
 
 @WebSocketGateway({
-    cors: { origin: '*' },
+    cors: wsCorsOptions(),
     namespace: '/api/boards',
 })
 export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -25,11 +32,20 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     private connections = new Map<string, Set<string>>();
 
-    handleConnection(client: Socket) {
-        const auth = client.handshake.auth as AuthPayload;
-        const userId = auth?.userId;
+    constructor(
+        private readonly wsSession: WsSessionService,
+        private readonly prisma: PrismaService,
+    ) {}
 
-        if (!userId || typeof userId !== 'string') return client.disconnect();
+    async handleConnection(client: Socket) {
+        const userId = await this.wsSession.getUserIdFromSocket(client);
+
+        if (!userId) {
+            client.disconnect();
+            return;
+        }
+
+        setSocketUserId(client, userId);
 
         const sockets = this.connections.get(userId) ?? new Set();
         sockets.add(client.id);
@@ -47,11 +63,31 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     @SubscribeMessage('board:join')
-    handleJoin(
+    async handleJoin(
         @ConnectedSocket() client: Socket,
         @MessageBody() { boardId }: { boardId: string },
     ) {
-        void client.join(`board_${boardId}`);
+        const userId = getSocketUserId(client);
+
+        if (!userId) {
+            client.disconnect();
+            return;
+        }
+
+        try {
+            await checkBoardAccess({
+                prisma: this.prisma,
+                userId,
+                boardId,
+            });
+
+            await client.join(`board_${boardId}`);
+        } catch {
+            client.emit('board:join:error', {
+                code: 'errors.board.members.forbidden',
+                message: 'Нет доступа к данной доске.',
+            });
+        }
     }
 
     @SubscribeMessage('board:leave')

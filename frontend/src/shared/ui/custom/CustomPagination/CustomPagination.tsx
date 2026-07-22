@@ -12,15 +12,17 @@ import {
 
 export const CustomPagination = ({
 	page,
-	totalPages
+	totalPages,
+	buildPageHref
 }: {
 	page: number
 	totalPages: number
+	buildPageHref?: (page: number) => string
 }) => {
 	const router = useRouter()
 
 	const handlePageChange = (newPage: number) => {
-		router.push(`?page=${newPage}`)
+		router.push(buildPageHref?.(newPage) ?? `?page=${newPage}`)
 	}
 
 	return (

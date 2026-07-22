@@ -51,6 +51,15 @@ export const deleteBoardApi = async (id: string): Promise<ActionResponse> => {
 	return response.data
 }
 
+export const leaveBoardApi = async (
+	boardId: string
+): Promise<ActionResponse> => {
+	const response = await authAxios.delete(
+		`${API_URL.members()}${boardId}/leave`
+	)
+	return response.data
+}
+
 export const deleteMemberApi = async (
 	boardId: string,
 	userId: string

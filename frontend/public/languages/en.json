@@ -269,7 +269,16 @@
 			"deleteMemberTitle": "Are you sure you want to kick {name}?",
 			"deleteMemberDescription": "This action cannot be undone. The user will be kicked from the board.",
 			"deleteMemberActionText": "Kick out",
-			"deleteMemberCancelText": "Cancel"
+			"deleteMemberCancelText": "Cancel",
+			"leave": {
+				"title": "Leave board",
+				"description": "You will no longer see this board and its cards.",
+				"action": "Leave board",
+				"confirmTitle": "Leave board?",
+				"confirmDescription": "You will lose access to this board. A new invite will be required to rejoin.",
+				"cancel": "Cancel",
+				"success": "You left the board"
+			}
 		},
 		"colors": {
 			"heading": "Gradients"
@@ -390,6 +399,12 @@
 			"editDeadlinePlaceholder": "Select deadline",
 			"editAssigneeLabel": "Assignee",
 			"editAssigneePlaceholder": "Assign to...",
+			"editTagsLabel": "Tags",
+			"editTagsPlaceholder": "Tag name",
+			"addTag": "Add",
+			"removeTag": "Remove tag",
+			"tagsMax": "Maximum 5 tags per card",
+			"tagsDuplicate": "This tag already exists",
 			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
@@ -567,7 +582,7 @@
 			},
 			"banned": {
 				"description": "total banned users",
-				"bottomContent": "Statistics are updated automatically"
+				"bottomContent": "View banned users"
 			}
 		},
 		"users": {
@@ -579,9 +594,28 @@
 			"table": {
 				"user": "User",
 				"role": "Role",
+				"status": "Status",
 				"boards": "Boards",
 				"cards": "Cards",
-				"actions": "Actions"
+				"actions": "Actions",
+				"statusBanned": "Banned",
+				"statusActive": "Active",
+				"empty": "No users found"
+			},
+			"filters": {
+				"searchPlaceholder": "Search by email or username",
+				"rolePlaceholder": "Role",
+				"statusPlaceholder": "Status",
+				"roles": {
+					"all": "All roles",
+					"USER": "User",
+					"ADMIN": "Admin",
+					"CREATOR": "Creator"
+				},
+				"status": {
+					"all": "All",
+					"banned": "Banned"
+				}
 			},
 			"card": {
 				"changeRole": "Change role",
@@ -597,6 +631,14 @@
 				"lastActive": "Last active:",
 				"unknown": "Unknown",
 				"usersInvited": "Users invited:",
+				"banStatus": {
+					"title": "Moderation",
+					"status": "Status:",
+					"banned": "Banned",
+					"active": "Active",
+					"until": "Banned until:",
+					"reason": "Reason:"
+				},
 				"roles": {
 					"select": "Select role",
 					"ADMIN": "Admin",
@@ -630,46 +672,153 @@
 		"checkbox": {
 			"label": "I agree to the <link>Privacy Policy</link>"
 		},
-		"first": {
+		"meta": {
+			"effectiveDate": "Effective date: July 22, 2026",
+			"lastUpdated": "Last updated: July 22, 2026"
+		},
+		"intro": "This Privacy Policy (the \"Policy\") describes how the Rivere online service (the \"Service\"), available at https://rivere.ru, processes and protects personal data of its users. This Policy is prepared in accordance with applicable data protection laws, including Federal Law No. 152-FZ of July 27, 2006 \"On Personal Data\" (Russian Federation), where applicable.",
+		"general": {
 			"heading": "1. General Provisions",
-			"description": "This website is a task and project management service. By using this website, the user agrees to this personal data processing policy."
+			"paragraphs": [
+				"1.1. By using the Service, registering an account, or continuing to use the Service after an updated version of this Policy is published, you confirm that you have read this Policy and consent to the processing of your personal data as described herein.",
+				"1.2. If you do not agree with this Policy, you must stop using the Service and delete your account.",
+				"1.3. This Policy applies to all personal data that the Operator receives from users when they use the Service or contact support."
+			]
 		},
-		"second": {
-			"heading": "2. What data we collect",
-			"firstData": "Email",
-			"secondData": "Username / nickname",
-			"thirdData": "Password (encrypted)",
-			"fourthData": "User content (boards, lists, cards, comments)",
-			"fifthData": "Technical data (IP address, browser, cookies)"
+		"operator": {
+			"heading": "2. Data Controller",
+			"paragraphs": [
+				"2.1. The data controller is the administration of the Rivere online service (the \"Operator\", \"we\").",
+				"2.2. For questions regarding personal data processing, exercising data subject rights, or withdrawing consent, contact us at help@rivere.ru.",
+				"2.3. Personal data is processed within the Russian Federation unless otherwise required by applicable law or a separate agreement with the user."
+			]
 		},
-		"third": {
-			"heading": "3. Purposes of data processing",
-			"firstData": "User registration and authorization",
-			"secondData": "Providing access to service functionality",
-			"thirdData": "Storing and displaying user data",
-			"fourthData": "Improving the quality of the service"
+		"definitions": {
+			"heading": "3. Key Terms",
+			"items": [
+				"\"Personal data\" means any information relating to an identified or identifiable natural person (data subject).",
+				"\"Processing of personal data\" means any action or set of actions performed on personal data, including collection, recording, organization, storage, adaptation, retrieval, use, disclosure, anonymization, blocking, deletion, and destruction.",
+				"\"User\" means a natural person using the Service.",
+				"\"User content\" means boards, columns, cards, descriptions, comments, chat messages, files, and other materials created or uploaded by the user within the Service."
+			]
 		},
-		"fourth": {
-			"heading": "4. Cookies and authorization",
-			"description": "The site uses cookies to ensure proper operation, including user authorization. Cookies allow you to save user session and ensure secure access to the account."
+		"dataCollected": {
+			"heading": "4. Data We Process",
+			"paragraphs": [
+				"4.1. Depending on the features you use, we may process the following categories of data:"
+			],
+			"items": [
+				"registration data: email address, username, display name (nickname), password hash;",
+				"profile data: avatar, system role, activity statistics;",
+				"user content: board and card titles and descriptions, comments, chat messages, uploaded files;",
+				"technical data: IP address, browser and device information, session identifiers, cookies, date and time of access;",
+				"moderation data: information about account restrictions, reasons for access limitations, and administrator actions where required by the Service rules."
+			]
 		},
-		"fifth": {
-			"heading": "5. Data Storage and Protection",
-			"description": "User data is stored on secure servers. Passwords are stored in encrypted form. We take reasonable measures to protect information from unauthorized access."
+		"purposes": {
+			"heading": "5. Purposes of Processing",
+			"items": [
+				"user registration, identification, and authentication;",
+				"providing access to task management and collaboration features;",
+				"storing, synchronizing, and displaying user content;",
+				"sending service and transactional notifications (email verification, password recovery);",
+				"ensuring security, preventing abuse, moderation, and handling user reports;",
+				"improving the quality, stability, and performance of the Service;",
+				"complying with legal requirements and requests from authorized public authorities."
+			]
 		},
-		"sixth": {
-			"heading": "6. Transfer of Data to Third Parties",
-			"description": "We do not transfer personal data to third parties, except as required by law."
+		"legalBasis": {
+			"heading": "6. Legal Basis for Processing",
+			"paragraphs": [
+				"6.1. Personal data is processed on the following legal grounds:",
+				"6.2. User consent is provided during registration, acceptance of this Policy, and use of relevant Service features.",
+				"6.3. The Operator may process personal data without separate consent where expressly permitted by applicable law."
+			],
+			"items": [
+				"user consent to personal data processing;",
+				"performance of the user agreement and provision of Service functionality;",
+				"compliance with legal obligations of the Operator;",
+				"protection of the rights and legitimate interests of the Operator, users, and third parties, provided that the data subject's rights are not infringed."
+			]
 		},
-		"seventh": {
-			"heading": "7. User Rights",
-			"firstData": "Editing Your Data",
-			"secondData": "Deleting Your Account",
-			"thirdData": "Revocation of Consent to Data Processing"
+		"cookies": {
+			"heading": "7. Cookies and Similar Technologies",
+			"paragraphs": [
+				"7.1. The Service uses cookies and similar technologies to enable authentication, maintain user sessions, support security, and ensure proper operation of the interface.",
+				"7.2. Some cookies are necessary for the Service to function. Disabling cookies in your browser settings may limit access to certain features, including sign-in.",
+				"7.3. We do not use cookies for third-party targeted advertising."
+			]
 		},
-		"eighth": {
-			"heading": "8. Contact Us",
-			"description": "For any questions regarding data processing, you can contact us by email:"
+		"storage": {
+			"heading": "8. Data Storage and Localization",
+			"paragraphs": [
+				"8.1. Personal data is stored in a form that allows identification of the data subject for no longer than required by the processing purposes, unless a longer retention period is required by law.",
+				"8.2. User passwords are stored as cryptographic hashes and are not kept in plain text.",
+				"8.3. User content and files may be stored on servers and cloud storage used by the Operator to operate the Service."
+			]
+		},
+		"thirdParties": {
+			"heading": "9. Disclosure to Third Parties",
+			"paragraphs": [
+				"9.1. The Operator does not sell users' personal data and does not disclose it to third parties for marketing purposes.",
+				"9.2. Personal data may be disclosed in the following cases:"
+			],
+			"items": [
+				"to infrastructure and technical service providers (hosting, cloud file storage, email services) acting on behalf of the Operator and bound by confidentiality obligations;",
+				"to authorized public authorities where required by law;",
+				"to other parties where the user has provided separate consent or another legal basis applies."
+			]
+		},
+		"moderation": {
+			"heading": "10. Moderation and Access to User Content",
+			"paragraphs": [
+				"10.1. To ensure user safety, prevent abuse, and comply with applicable law, the Operator may review user content (including boards, cards, comments, and chat messages) to the extent necessary to handle reports, detect violations of the Service rules, respond to user inquiries, and comply with requests from authorized authorities.",
+				"10.2. Access to content is limited to authorized Service administrators. Moderation actions may be recorded in internal logs.",
+				"10.3. The Operator may restrict or terminate a user's access to the Service, or remove or hide user content if violations of the Service rules or applicable law are identified, or upon receipt of substantiated reports."
+			]
+		},
+		"rights": {
+			"heading": "11. Data Subject Rights",
+			"paragraphs": [
+				"11.1. Users have the right to:"
+			],
+			"items": [
+				"receive information about the processing of their personal data;",
+				"request rectification, blocking, or deletion of personal data if it is incomplete, outdated, inaccurate, or unlawfully processed;",
+				"withdraw consent to personal data processing by contacting help@rivere.ru;",
+				"edit profile data within the functionality provided by the Service;",
+				"delete their account and related data, unless retention is required to fulfill legal obligations of the Operator;",
+				"file a complaint with a competent data protection authority or seek judicial protection."
+			]
+		},
+		"retention": {
+			"heading": "12. Data Retention",
+			"paragraphs": [
+				"12.1. Account data is stored until the user deletes the account or stops using the Service, unless a longer period is required by law.",
+				"12.2. Technical logs and data related to security and moderation may be retained for a limited period necessary to investigate incidents and protect the Operator's rights.",
+				"12.3. After account deletion, personal data is deleted or anonymized, except for data that the Operator is legally required to retain."
+			]
+		},
+		"security": {
+			"heading": "13. Data Security Measures",
+			"paragraphs": [
+				"13.1. The Operator implements necessary legal, organizational, and technical measures to protect personal data against unauthorized or accidental access, destruction, modification, blocking, copying, disclosure, distribution, and other unlawful actions.",
+				"13.2. Such measures include, among others: access control, user authentication, password hashing, backups, and security incident monitoring."
+			]
+		},
+		"changes": {
+			"heading": "14. Changes to This Policy",
+			"paragraphs": [
+				"14.1. The Operator may amend this Policy. The current version is published at https://rivere.ru/privacy.",
+				"14.2. In case of material changes, the Operator may additionally notify users through the Service interface or by email.",
+				"14.3. Continued use of the Service after changes take effect constitutes acceptance of the updated Policy, unless otherwise required by applicable law."
+			]
+		},
+		"contacts": {
+			"heading": "15. Contact Information",
+			"paragraphs": [
+				"For any questions regarding personal data processing, exercising data subject rights, or this Policy, contact us at:"
+			]
 		}
 	},
 	"banned": {
@@ -781,7 +930,8 @@
 			"accessDenied": "Access denied"
 		},
 		"admin": {
-			"unknownRole": "Unknown role"
+			"unknownRole": "Unknown role",
+			"cannotBanProtectedRole": "Cannot ban an administrator or creator"
 		},
 		"token": {
 			"notFound": "Token not found",

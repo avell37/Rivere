@@ -13,6 +13,12 @@ import { Throttle } from '@nestjs/throttler';
 export class VerificationController {
     constructor(private readonly verificationService: VerificationService) {}
 
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 15,
+            limit: 5,
+        },
+    })
     @ApiOperation({
         summary: 'Верификация аккаунта',
         description: 'Подтверждает почту пользователя по токену верификации.',

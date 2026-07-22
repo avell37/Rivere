@@ -6,10 +6,10 @@ import { PrismaService } from '@/core/prisma/prisma.service';
 export class MessagesService {
     constructor(private readonly prisma: PrismaService) {}
 
-    async create(dto: CreateMessageDto) {
-        const { chatId, userId, text } = dto;
+    async create(userId: string, dto: CreateMessageDto) {
+        const { chatId, text } = dto;
 
-        if (!chatId || !userId || !text) {
+        if (!chatId || !text) {
             throw new BadRequestException({
                 code: 'errors.messages.missingFields',
                 message: 'Переданы не все данные.',

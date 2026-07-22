@@ -236,7 +236,7 @@ export class AccountService {
         });
 
         if (existingUser?.avatar) {
-            await this.filesService.delete(existingUser.avatar);
+            await this.filesService.delete(user.id, existingUser.avatar);
         }
 
         const uploaded = await this.filesService.upload(file);

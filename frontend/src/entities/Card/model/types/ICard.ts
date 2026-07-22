@@ -12,6 +12,12 @@ export interface ICardAssignee {
 	avatar: string | null
 }
 
+export interface ICardTag {
+	id: string
+	title: string
+	background: string
+}
+
 export interface ICard {
 	id: string
 	title: string
@@ -25,6 +31,7 @@ export interface ICard {
 	done: boolean
 	assigneeId?: string | null
 	assignee?: ICardAssignee | null
+	tags?: ICardTag[]
 	createdAt?: Date
 	updatedAt?: Date
 }

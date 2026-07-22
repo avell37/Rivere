@@ -4,21 +4,30 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { AuthPayload } from '../../shared/types/AuthPayload';
+import { WsSessionService } from '@/shared/services/ws-session.service';
+import { wsCorsOptions } from '@/shared/utils/ws-cors.util';
+import { setSocketUserId } from '@/shared/utils/ws-socket.util';
 
 @WebSocketGateway({
-    cors: { origin: '*' },
+    cors: wsCorsOptions(),
     namespace: '/api/achievements',
 })
 export class AchievementsGateway implements OnGatewayConnection {
     @WebSocketServer()
     server!: Server;
 
-    handleConnection(client: Socket) {
-        const auth = client.handshake.auth as AuthPayload;
-        const userId = auth?.userId;
+    constructor(private readonly wsSession: WsSessionService) {}
 
-        void client.join(`user_${userId}`);
+    async handleConnection(client: Socket) {
+        const userId = await this.wsSession.getUserIdFromSocket(client);
+
+        if (!userId) {
+            client.disconnect();
+            return;
+        }
+
+        setSocketUserId(client, userId);
+        await client.join(`user_${userId}`);
     }
 
     sendProgress(userId: string, payload: unknown) {

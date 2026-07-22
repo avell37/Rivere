@@ -89,9 +89,13 @@ export const mapStatistics = (
 			valueClassname: 'text-fuchsia-400',
 			trend: formatTrend(data.banned.today, t),
 			bottomContent: (
-				<span className='text-xs text-muted-foreground font-medium hover:text-foreground transition'>
-					{t('admin.statistics.banned.bottomContent')}
-				</span>
+				<Link
+					href={ADMIN_URL.adminUsers(1, { status: 'banned' })}
+					className='flex items-end gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition mt-1'
+				>
+					{t('admin.statistics.banned.bottomContent')}{' '}
+					<ChevronRight size={14} />
+				</Link>
 			)
 		}
 	]

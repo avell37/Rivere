@@ -8,6 +8,7 @@ import {
 	Shield,
 	TrendingUp,
 	User2,
+	UserX,
 	Users
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -25,8 +26,10 @@ import {
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
-	SelectValue
+	SelectValue,
+	Separator
 } from '@/shared/ui/external'
+import { isUserBanned } from '@/shared/utils'
 
 export const UserAdminCard = ({
 	currentUser,
@@ -42,6 +45,8 @@ export const UserAdminCard = ({
 	const t = useTranslations('admin.users.card')
 
 	if (!user) return null
+
+	const isBanned = isUserBanned(user)
 
 	const handleChangeRole = (role: UserRole) => {
 		changeRole(role)
@@ -101,6 +106,7 @@ export const UserAdminCard = ({
 					</div>
 				)}
 			</div>
+			<Separator />
 			<div className='grid grid-cols-2 gap-3 text-sm'>
 				<div>
 					<span className='text-muted-foreground flex items-center gap-1'>
@@ -151,6 +157,7 @@ export const UserAdminCard = ({
 					)}
 				</div>
 			</div>
+			<Separator />
 			<div className='font-bold'>{t('statistics')}</div>
 			<div className='grid grid-cols-2 gap-3 text-sm'>
 				<div>
@@ -184,6 +191,41 @@ export const UserAdminCard = ({
 						{t('usersInvited')}
 					</span>
 					<p>{user?.userStats?.usersInvited || 0}</p>
+				</div>
+			</div>
+			<Separator />
+			<div className='text-sm'>
+				<p className='mb-2 font-semibold flex items-center gap-2'>
+					<UserX size={16} />
+					{t('banStatus.title')}
+				</p>
+				<div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
+					<div>
+						<span className='text-muted-foreground'>
+							{t('banStatus.status')}
+						</span>
+						<p>
+							{isBanned
+								? t('banStatus.banned')
+								: t('banStatus.active')}
+						</p>
+					</div>
+					{isBanned && user.bannedUntil && (
+						<div>
+							<span className='text-muted-foreground'>
+								{t('banStatus.until')}
+							</span>
+							<p>{new Date(user.bannedUntil).toLocaleString()}</p>
+						</div>
+					)}
+					{user.banReason && (
+						<div className='sm:col-span-2'>
+							<span className='text-muted-foreground'>
+								{t('banStatus.reason')}
+							</span>
+							<p>{user.banReason}</p>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
