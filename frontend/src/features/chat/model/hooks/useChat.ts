@@ -77,7 +77,6 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 
 		socketRef.current.emit('message', {
 			chatId,
-			userId: user.id,
 			text: message
 		})
 		setMessage('')

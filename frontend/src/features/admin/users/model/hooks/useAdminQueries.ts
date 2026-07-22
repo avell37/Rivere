@@ -14,20 +14,26 @@ import {
 	setUserRole,
 	unbanUser
 } from '../api/admin-users.api'
-import { BanUserInput, UsersResponse } from '../types/AdminUserTypes'
+import { AdminUsersFilters, BanUserInput, UsersResponse } from '../types/AdminUserTypes'
 
 export const adminKeys = {
 	allUsers: () => ['get-all-users'],
-	allUsersPage: (page: number) => ['get-all-users', page],
+	allUsersPage: (filters: AdminUsersFilters) => [
+		'get-all-users',
+		filters.page,
+		filters.search ?? '',
+		filters.role ?? 'all',
+		filters.status ?? 'all'
+	],
 	banUser: (userId: string) => ['ban-user', userId],
 	unbanUser: (userId: string) => ['unban-user', userId],
 	changeRole: (userId: string) => ['change-role-user', userId]
 }
 
-export const useGetAllUsers = (page: number) => {
+export const useGetAllUsers = (filters: AdminUsersFilters) => {
 	const { data, isLoading, error } = useQuery<UsersResponse, AxiosError>({
-		queryKey: adminKeys.allUsersPage(page),
-		queryFn: () => getAllUsers(Number(page)),
+		queryKey: adminKeys.allUsersPage(filters),
+		queryFn: () => getAllUsers(filters),
 		placeholderData: prev => prev
 	})
 

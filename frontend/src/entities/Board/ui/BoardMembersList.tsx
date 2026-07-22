@@ -9,6 +9,7 @@ import { BoardMembersListProps } from '../model/types/BoardProps'
 import { canManageMember } from '../model/utils/member-permissions'
 
 import { BoardMemberItem } from './BoardMemberItem'
+import { LeaveBoardButton } from './LeaveBoardButton'
 
 export const BoardMembersList = ({
 	members,
@@ -95,6 +96,10 @@ export const BoardMembersList = ({
 					<ScrollArea.Thumb className='block w-full bg-white/60 rounded-full' />
 				</ScrollArea.Scrollbar>
 			</ScrollArea.Root>
+			<LeaveBoardButton
+				boardId={boardId}
+				currentUserRole={currentUserRole}
+			/>
 		</section>
 	)
 }

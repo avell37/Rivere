@@ -15,7 +15,13 @@ async function bootstrap() {
     const redis = app.get(RedisService);
     app.set('trust proxy', true);
 
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            forbidNonWhitelisted: true,
+            transform: true,
+        }),
+    );
     app.use(cookieParser());
 
     app.setGlobalPrefix('api');

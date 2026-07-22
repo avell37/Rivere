@@ -2,12 +2,14 @@
 
 import { useTranslations } from 'next-intl'
 
-import { UsersResponse } from '@/features/admin'
+import { AdminUsersFilters, UsersResponse } from '@/features/admin'
+import { buildAdminUsersQuery } from '@/features/admin/users/model/lib/admin-users-query'
 
 import { CustomPagination } from '@/shared/ui/custom'
 import {
 	Table,
 	TableBody,
+	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow
@@ -15,7 +17,13 @@ import {
 
 import { UserAdminItem } from './UserAdminItem'
 
-export const UserAdminList = ({ data }: { data: UsersResponse }) => {
+export const UserAdminList = ({
+	data,
+	filters
+}: {
+	data: UsersResponse
+	filters: AdminUsersFilters
+}) => {
 	const t = useTranslations('admin.users.table')
 
 	return (
@@ -29,6 +37,9 @@ export const UserAdminList = ({ data }: { data: UsersResponse }) => {
 								{t('role')}
 							</TableHead>
 							<TableHead className='text-center'>
+								{t('status')}
+							</TableHead>
+							<TableHead className='text-center'>
 								{t('boards')}
 							</TableHead>
 							<TableHead className='text-center'>
@@ -40,13 +51,30 @@ export const UserAdminList = ({ data }: { data: UsersResponse }) => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{data.users.map(user => (
-							<UserAdminItem key={user.id} user={user} />
-						))}
+						{data.users.length === 0 ? (
+							<TableRow>
+								<TableCell
+									colSpan={6}
+									className='p-6 text-center text-sm text-muted-foreground'
+								>
+									{t('empty')}
+								</TableCell>
+							</TableRow>
+						) : (
+							data.users.map(user => (
+								<UserAdminItem key={user.id} user={user} />
+							))
+						)}
 					</TableBody>
 				</Table>
 			</div>
-			<CustomPagination page={data.page} totalPages={data.totalPages} />
+			<CustomPagination
+				page={data.page}
+				totalPages={data.totalPages}
+				buildPageHref={page =>
+					`?${buildAdminUsersQuery({ ...filters, page })}`
+				}
+			/>
 		</div>
 	)
 }

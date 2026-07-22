@@ -19,6 +19,8 @@ export * from './users/model/hooks/useModerationEvents'
 
 export * from './users/model/lib/banOptionts'
 
+export * from './users/model/lib/admin-users-query'
+
 export * from './users/model/types/AdminUserTypes'
 export * from './users/model/types/UsenBanProps'
 
@@ -28,5 +30,6 @@ export * from './users/model/validation/ban-user.z.validation'
 
 export * from './users/ui/UserAdminBanForm'
 export * from './users/ui/UserAdminCard'
+export * from './users/ui/UserAdminFilters'
 export * from './users/ui/UserAdminItemSkeleton'
 export * from './users/ui/UserAdminListSkeleton'

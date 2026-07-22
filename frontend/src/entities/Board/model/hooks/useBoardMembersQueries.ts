@@ -5,19 +5,17 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import {
-	BoardUpdateMemberRoleRequest,
-	IBoardMember,
-	deleteMemberApi
-} from '@/entities/Board'
-
 import { ActionResponse } from '@/shared/types'
 import { BoardRole, handleApiError } from '@/shared/utils'
 
+import { IBoardMember } from '../types/IBoardMember'
+import { BoardUpdateMemberRoleRequest } from '../types/BoardProps'
 import {
 	getAllBoardMembersApi,
 	updateMemberRoleApi
 } from '../api/boardMemberApi'
+import { deleteMemberApi, leaveBoardApi } from '../api/boardApi'
+import { boardKeys } from './useBoardQueries'
 
 export const boardMembersKeys = {
 	getAll: (boardId: string) => ['get-all-board-members', boardId],
@@ -108,6 +106,31 @@ export const useDeleteMember = (boardId: string) => {
 	return {
 		removeMember,
 		removeMemberPending,
+		isError
+	}
+}
+
+export const useLeaveBoard = (boardId: string) => {
+	const queryClient = useQueryClient()
+	const t = useTranslations()
+
+	const {
+		mutate: leaveBoard,
+		isPending: leaveBoardPending,
+		isError
+	} = useMutation<ActionResponse, AxiosError>({
+		mutationKey: ['leave-board', boardId],
+		mutationFn: () => leaveBoardApi(boardId),
+		onSuccess: () => {
+			toast.success(t('board.membersList.leave.success'))
+			queryClient.invalidateQueries({ queryKey: boardKeys.all })
+		},
+		onError: err => handleApiError(err, t)
+	})
+
+	return {
+		leaveBoard,
+		leaveBoardPending,
 		isError
 	}
 }

@@ -32,6 +32,7 @@ import { isUserBanned, roleStyles } from '@/shared/utils'
 export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 	const [open, setOpen] = useState(false)
 	const t = useTranslations('admin.users.banModal')
+	const tTable = useTranslations('admin.users.table')
 
 	const { data: currentUser } = useGetUser()
 	const { form, banPending, onSubmit } = useBanUser(user.id)
@@ -74,6 +75,13 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 					>
 						{user.role}
 					</Badge>
+				</TableCell>
+				<TableCell className='text-center'>
+					{isBanned ? (
+						<Badge variant='destructive'>{tTable('statusBanned')}</Badge>
+					) : (
+						<Badge variant='outline'>{tTable('statusActive')}</Badge>
+					)}
 				</TableCell>
 				<TableCell className='text-center'>
 					{user._count?.boards || 0}
@@ -130,7 +138,11 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 							</DropdownMenuItem>
 						</AppDropdown>
 					</TableCell>
-				) : null}
+				) : (
+					<TableCell className='text-right text-muted-foreground'>
+						—
+					</TableCell>
+				)}
 			</TableRow>
 			{currentUser && (
 				<Modal

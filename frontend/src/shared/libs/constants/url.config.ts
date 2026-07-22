@@ -26,6 +26,18 @@ export const ADMIN_URL = {
 	root: (url = '') => `${url ? url : ''}`,
 
 	admin: () => ADMIN_URL.root('/admin'),
-	adminUsers: (page: number, limit = 10) =>
-		ADMIN_URL.root(`${ADMIN_URL.admin()}/users?page=${page}&limit=${limit}`)
+	adminUsers: (page: number, options?: {
+		search?: string
+		role?: string
+		status?: string
+		limit?: number
+	}) => {
+		const params = new URLSearchParams()
+		params.set('page', String(page))
+		params.set('limit', String(options?.limit ?? 10))
+		if (options?.search) params.set('search', options.search)
+		if (options?.role) params.set('role', options.role)
+		if (options?.status) params.set('status', options.status)
+		return ADMIN_URL.root(`${ADMIN_URL.admin()}/users?${params.toString()}`)
+	}
 }

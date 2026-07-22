@@ -6,13 +6,61 @@ export async function checkBoardAccess({
     userId,
     boardId,
     columnId,
+    cardId,
+    chatId,
 }: {
     prisma: PrismaService;
     userId: string;
     boardId?: string;
     columnId?: string;
+    cardId?: string;
+    chatId?: string;
 }) {
     let resolvedBoardId = boardId;
+
+    if (!resolvedBoardId && chatId) {
+        const chat = await prisma.chat.findUnique({
+            where: { id: chatId },
+            select: {
+                card: {
+                    select: {
+                        column: {
+                            select: { boardId: true },
+                        },
+                    },
+                },
+            },
+        });
+
+        if (!chat?.card?.column) {
+            throw new ForbiddenException({
+                code: 'errors.chat.notFound',
+                message: 'Чат не найден',
+            });
+        }
+
+        resolvedBoardId = chat.card.column.boardId;
+    }
+
+    if (!resolvedBoardId && cardId) {
+        const card = await prisma.card.findUnique({
+            where: { id: cardId },
+            select: {
+                column: {
+                    select: { boardId: true },
+                },
+            },
+        });
+
+        if (!card?.column) {
+            throw new ForbiddenException({
+                code: 'errors.card.notFound',
+                message: 'Карточка не найдена',
+            });
+        }
+
+        resolvedBoardId = card.column.boardId;
+    }
 
     if (!resolvedBoardId && columnId) {
         const column = await prisma.column.findUnique({

@@ -1,4 +1,12 @@
 services:
+    migrate:
+        build: ./backend
+        env_file:
+            - ./backend/.env.production
+        command: npx prisma migrate deploy --config prisma.config.ts
+        depends_on:
+            - db
+
     backend:
         build: ./backend
         read_only: true
@@ -7,8 +15,12 @@ services:
         env_file:
             - ./backend/.env.production
         depends_on:
-            - db
-            - redis
+            db:
+                condition: service_started
+            redis:
+                condition: service_started
+            migrate:
+                condition: service_completed_successfully
 
     frontend:
         build:
@@ -35,15 +47,6 @@ services:
         command: sh -c 'redis-server --requirepass "$$REDIS_PASSWORD" --appendonly yes'
         env_file:
             - ./backend/.env.production
-
-    migrate:
-        image: node:20-alpine
-        working_dir: /app
-        volumes:
-            - ./backend:/app
-        command: npx prisma db push --config prisma.config.ts
-        depends_on:
-            - db
 
     nginx:
         image: nginx:alpine

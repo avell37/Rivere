@@ -8,6 +8,7 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
+import { AdminUsersQueryInput } from './input/admin-users-query.input';
 import { BanUserInput } from './input/ban-user.input';
 import { UserRole } from '@prisma/client';
 import { SessionAuthGuard } from '@/shared/guards/session-auth.guard';
@@ -41,14 +42,8 @@ export class AdminController {
     @Authorization()
     @Roles(UserRole.ADMIN, UserRole.CREATOR)
     @Get('admin-users')
-    async getAllUsers(
-        @Query('page') page: string,
-        @Query('limit') limit: string,
-    ) {
-        return this.adminService.getAllUsers(
-            Number(page) || 1,
-            Number(limit) || 10,
-        );
+    async getAllUsers(@Query() query: AdminUsersQueryInput) {
+        return this.adminService.getAllUsers(query);
     }
 
     @ApiOperation({

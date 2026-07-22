@@ -14,17 +14,30 @@ services:
     networks:
       - backend
 
-  redis:
-    image: redis:7
-    container_name: rivere_redis
-    restart: always
-    ports:
-      - "6379:6379"
-    command: redis-server --requirepass ${REDIS_PASSWORD}
-    volumes: 
-      - redis_data:/data
-    networks:
-      - backend
+    redis:
+        image: redis:7
+        container_name: rivere_redis
+        restart: always
+        ports:
+            - "6379:6379"
+        command: redis-server --requirepass ${REDIS_PASSWORD}
+        volumes: 
+            - redis_data:/data
+        networks:
+            - backend
+
+    migrate:
+        image: node:20-alpine
+        working_dir: /app
+        volumes:
+            - ./:/app
+        env_file:
+            - ./.env
+        command: npx prisma migrate deploy --config prisma.config.ts
+        depends_on:
+            - postgres
+        networks:
+            - backend
   
 volumes:
   postgres_data:

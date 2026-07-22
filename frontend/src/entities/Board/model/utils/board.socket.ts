@@ -9,9 +9,7 @@ export const getBoardSocket = (userId: string, boardId: string) => {
 	const key = `${userId}:${boardId}`
 
 	if (!sockets.has(key)) {
-		const socket = createSocket(`${SERVER_URL}/boards`, {
-			auth: { userId }
-		})
+		const socket = createSocket(`${SERVER_URL}/boards`)
 		sockets.set(key, socket)
 	}
 	return sockets.get(key)!

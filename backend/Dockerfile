@@ -23,7 +23,6 @@ ENV NODE_ENV=production
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY prisma.config.ts ./
-COPY .env ./
 COPY docker-entrypoint.sh .
 
 RUN npx prisma generate

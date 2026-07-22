@@ -1,11 +1,16 @@
 import type { Priority } from '@prisma/client';
 import {
+    ArrayMaxSize,
+    IsArray,
     IsBoolean,
     IsOptional,
     IsString,
     MaxLength,
     MinLength,
+    ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+import { TagInput } from './tag.input';
 
 export class UpdateCardInput {
     @IsOptional()
@@ -38,4 +43,11 @@ export class UpdateCardInput {
     @IsOptional()
     @IsString({ message: 'ID исполнителя должен быть строкой' })
     assigneeId?: string | null;
+
+    @IsOptional()
+    @IsArray({ message: 'Теги должны быть массивом' })
+    @ArrayMaxSize(5, { message: 'Не более 5 тегов на карточку' })
+    @ValidateNested({ each: true })
+    @Type(() => TagInput)
+    tags?: TagInput[];
 }

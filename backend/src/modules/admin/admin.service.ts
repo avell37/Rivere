@@ -1,10 +1,15 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
 import { BanUserInput } from './input/ban-user.input';
-import { UserRole } from '@prisma/client';
+import {
+    AdminUsersQueryInput,
+    AdminUsersStatusFilter,
+} from './input/admin-users-query.input';
+import { Prisma, UserRole } from '@prisma/client';
 import { EventsGateway } from '@/core/events.gateway';
 import { PrismaService } from '@/core/prisma/prisma.service';
 
@@ -99,11 +104,41 @@ export class AdminService {
         };
     }
 
-    async getAllUsers(page: number, limit: number) {
+    async getAllUsers(query: AdminUsersQueryInput) {
+        const page = query.page ?? 1;
+        const limit = query.limit ?? 10;
         const skip = (page - 1) * limit;
+
+        const where: Prisma.UserWhereInput = {};
+
+        if (query.search) {
+            where.OR = [
+                {
+                    email: {
+                        contains: query.search,
+                        mode: 'insensitive',
+                    },
+                },
+                {
+                    username: {
+                        contains: query.search,
+                        mode: 'insensitive',
+                    },
+                },
+            ];
+        }
+
+        if (query.role) {
+            where.role = query.role;
+        }
+
+        if (query.status === AdminUsersStatusFilter.BANNED) {
+            where.bannedUntil = { gt: new Date() };
+        }
 
         const [users, total] = await Promise.all([
             this.prisma.user.findMany({
+                where,
                 skip,
                 take: limit,
                 orderBy: {
@@ -120,6 +155,7 @@ export class AdminService {
                     userStats: true,
                     bannedUntil: true,
                     banReason: true,
+                    bannedAt: true,
                     createdAt: true,
                     updatedAt: true,
 
@@ -131,7 +167,7 @@ export class AdminService {
                 },
             }),
 
-            this.prisma.user.count(),
+            this.prisma.user.count({ where }),
         ]);
 
         const totalPages = Math.ceil(total / limit);
@@ -155,6 +191,13 @@ export class AdminService {
             throw new NotFoundException({
                 code: 'errors.account.userNotFound',
                 message: 'Пользователь не найден',
+            });
+        }
+
+        if (user.role === UserRole.ADMIN || user.role === UserRole.CREATOR) {
+            throw new ForbiddenException({
+                code: 'errors.admin.cannotBanProtectedRole',
+                message: 'Нельзя заблокировать администратора или создателя',
             });
         }
 

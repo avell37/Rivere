@@ -98,7 +98,10 @@ export class CardController {
     })
     @Authorization()
     @Get(':cardId/chat')
-    async getChatByCard(@Param('cardId') cardId: string) {
-        return this.cardService.getChatByCard(cardId);
+    async getChatByCard(
+        @SessionUser('id') userId: string,
+        @Param('cardId') cardId: string,
+    ) {
+        return this.cardService.getChatByCard(userId, cardId);
     }
 }

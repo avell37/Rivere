@@ -20,6 +20,12 @@ export interface ColumnEventPayload {
     updatedAt: string | Date;
 }
 
+export interface CardTagPayload {
+    id: string;
+    title: string;
+    background: string;
+}
+
 export interface CardEventPayload {
     id: string;
     title: string;
@@ -31,6 +37,7 @@ export interface CardEventPayload {
     columnId: string;
     assigneeId: string | null;
     assignee: { id: string; nickname: string; avatar: string | null } | null;
+    tags?: CardTagPayload[];
     createdAt: string | Date;
     updatedAt: string | Date;
 }
