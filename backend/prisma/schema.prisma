@@ -43,6 +43,10 @@ model User {
   userAchievements      UserAchievements[]
   achievementProgresses AchievementProgress[]
 
+  reportsCreated  Report[] @relation("ReportsCreated")
+  reportsReceived Report[] @relation("ReportsReceived")
+  reportsResolved Report[] @relation("ReportsResolved")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -244,6 +248,8 @@ model Message {
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId String
 
+  deletedAt DateTime? @map("deleted_at")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -319,6 +325,56 @@ model AchievementProgress {
 
   @@unique([userId, achievementId])
   @@map("achievement_progress")
+}
+
+enum ReportTargetType {
+  MESSAGE
+  USER
+  CARD
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+enum ReportResolutionAction {
+  NONE
+  BAN_USER
+  DELETE_MESSAGE
+}
+
+model Report {
+  id String @id @default(uuid())
+
+  targetType ReportTargetType @map("target_type")
+  targetId   String           @map("target_id")
+  reason     String
+  details    String?
+
+  snapshot Json?
+
+  status ReportStatus @default(OPEN)
+
+  reporterId String @map("reporter_id")
+  reporter   User   @relation("ReportsCreated", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  reportedUserId String? @map("reported_user_id")
+  reportedUser   User?   @relation("ReportsReceived", fields: [reportedUserId], references: [id], onDelete: SetNull)
+
+  resolvedById String? @map("resolved_by_id")
+  resolvedBy   User?   @relation("ReportsResolved", fields: [resolvedById], references: [id], onDelete: SetNull)
+  resolvedAt   DateTime? @map("resolved_at")
+  resolutionNote String? @map("resolution_note")
+  resolutionAction ReportResolutionAction? @map("resolution_action")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status, createdAt])
+  @@index([reporterId, targetType, targetId])
+  @@map("reports")
 }
 
 enum UserRole {

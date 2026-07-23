@@ -38,3 +38,8 @@ export interface ToggleDoneProps {
 	cardId: string
 	boardId: string
 }
+
+export interface CardPreviewContentProps {
+	card: ICard
+	boardId?: string
+}

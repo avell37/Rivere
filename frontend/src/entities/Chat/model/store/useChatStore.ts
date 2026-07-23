@@ -6,6 +6,7 @@ interface ChatStore {
 	messages: IMessage[]
 	setMessages: (newMessages: IMessage[]) => void
 	addMessage: (msg: IMessage) => void
+	markMessageDeleted: (messageId: string, deletedAt: string) => void
 }
 
 export const useChatStore = create<ChatStore>(set => ({
@@ -14,5 +15,13 @@ export const useChatStore = create<ChatStore>(set => ({
 	addMessage: msg =>
 		set(state => ({
 			messages: [...state.messages, msg]
+		})),
+	markMessageDeleted: (messageId, deletedAt) =>
+		set(state => ({
+			messages: state.messages.map(message =>
+				message.id === messageId
+					? { ...message, deletedAt }
+					: message
+			)
 		}))
 }))

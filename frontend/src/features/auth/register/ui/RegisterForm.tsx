@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 import {
 	FormAuthWrapper,
 	FormInputController,
-	PrivacyCheckbox,
+	LegalAgreementsCheckbox,
 	RegistrationFields
 } from '@/shared/ui/custom'
 
@@ -39,8 +39,8 @@ export const RegisterForm = () => {
 				/>
 			))}
 
-			<PrivacyCheckbox
-				name='privacy'
+			<LegalAgreementsCheckbox
+				name='legalAccepted'
 				control={form.control}
 				isPending={isPending}
 			/>

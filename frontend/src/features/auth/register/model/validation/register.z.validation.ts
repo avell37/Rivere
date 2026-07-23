@@ -10,8 +10,8 @@ export const registerSchema = z.object({
 		.string()
 		.min(6, { message: 'validation.password.min' })
 		.max(64, { message: 'validation.password.max' }),
-	privacy: z.boolean().refine(val => val === true, {
-		message: 'validation.privacy.required'
+	legalAccepted: z.boolean().refine(val => val === true, {
+		message: 'validation.legal.required'
 	})
 })
 

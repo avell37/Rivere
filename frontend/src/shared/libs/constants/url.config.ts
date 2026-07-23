@@ -9,7 +9,8 @@ export const PUBLIC_URL = {
 	verifyEmail: () => PUBLIC_URL.root('/auth/verify-email'),
 	recoveryPassword: () => PUBLIC_URL.root('/auth/recovery-password'),
 	banned: () => PUBLIC_URL.root('/banned'),
-	privacy: () => PUBLIC_URL.root('/privacy')
+	privacy: () => PUBLIC_URL.root('/privacy'),
+	terms: () => PUBLIC_URL.root('/terms')
 }
 
 export const PRIVATE_URL = {
@@ -39,5 +40,11 @@ export const ADMIN_URL = {
 		if (options?.role) params.set('role', options.role)
 		if (options?.status) params.set('status', options.status)
 		return ADMIN_URL.root(`${ADMIN_URL.admin()}/users?${params.toString()}`)
+	},
+	adminReports: (page = 1, status?: string) => {
+		const params = new URLSearchParams()
+		params.set('page', String(page))
+		if (status) params.set('status', status)
+		return ADMIN_URL.root(`${ADMIN_URL.admin()}/reports?${params.toString()}`)
 	}
 }

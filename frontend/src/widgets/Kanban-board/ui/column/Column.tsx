@@ -33,20 +33,20 @@ const ColumnComponent = ({ column }: { column: IColumn }) => {
 				ref={setNodeRef}
 				style={style}
 				className={cn(
-					'relative w-78 flex p-2 flex-col gap-1 break-all bg-white/70 dark:bg-neutral-900 rounded-md',
+					'relative w-78 flex p-2 flex-col gap-1 break-all bg-card/90 backdrop-blur-sm border border-border rounded-md shadow-sm',
 					isDragging && 'opacity-70 border border-rose-500'
 				)}
 			>
 				<div
 					{...attributes}
 					{...listeners}
-					className='relative p-2 flex justify-center gap-2 dark:text-white cursor-grab'
+					className='relative p-2 flex justify-center gap-2 text-foreground cursor-grab'
 				>
 					<div className='flex justify-center items-center gap-2'>
 						<h2 className='text-lg font-semibold'>
 							{column.title}
 						</h2>
-						<span className='text-sm text-gray-500'>
+						<span className='text-sm text-muted-foreground'>
 							{isFiltered ? (
 								<>
 									<span className='text-foreground font-medium'>
@@ -81,7 +81,7 @@ const ColumnComponent = ({ column }: { column: IColumn }) => {
 						orientation='vertical'
 						className='absolute right-20 top-0 bottom-0 w-2 translate-x-full'
 					>
-						<ScrollArea.Thumb className='block w-full bg-white/60 rounded-full' />
+						<ScrollArea.Thumb className='block w-full bg-border rounded-full' />
 					</ScrollArea.Scrollbar>
 				</ScrollArea.Root>
 				{can(BoardPermission.CREATE_CARD) && (

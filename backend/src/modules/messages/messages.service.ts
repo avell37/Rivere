@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { PrismaService } from '@/core/prisma/prisma.service';
 
@@ -43,5 +47,43 @@ export class MessagesService {
                 },
             },
         });
+    }
+
+    async softDelete(messageId: string) {
+        const message = await this.prisma.message.findUnique({
+            where: { id: messageId },
+            select: {
+                id: true,
+                chatId: true,
+                deletedAt: true,
+            },
+        });
+
+        if (!message) {
+            throw new NotFoundException({
+                code: 'errors.messages.notFound',
+                message: 'Сообщение не найдено',
+            });
+        }
+
+        if (message.deletedAt) {
+            throw new BadRequestException({
+                code: 'errors.messages.alreadyDeleted',
+                message: 'Сообщение уже удалено',
+            });
+        }
+
+        const deletedAt = new Date();
+
+        await this.prisma.message.update({
+            where: { id: messageId },
+            data: { deletedAt },
+        });
+
+        return {
+            id: message.id,
+            chatId: message.chatId,
+            deletedAt,
+        };
     }
 }

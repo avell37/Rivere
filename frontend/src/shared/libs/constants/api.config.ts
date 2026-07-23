@@ -20,5 +20,6 @@ export const API_URL = {
 	statistics: (url = '') => API_URL.root(`/statistics/${url}`),
 
 	admin: (url = '') => API_URL.root(`/admin/${url}`),
+	reports: (url = '') => API_URL.root(`/reports/${url}`),
 	activityLog: (url = '') => API_URL.root(`/activity-log/${url}`)
 }

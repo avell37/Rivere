@@ -15,7 +15,9 @@ const BoardDragOverlayComponent = () => {
 
 	return createPortal(
 		<DragOverlay>
-			{activeCard && <CardOverlayItem card={activeCard} />}
+			{activeCard && (
+				<CardOverlayItem card={activeCard} className='w-72' />
+			)}
 			{activeColumn && <ColumnOverlay column={activeColumn} />}
 		</DragOverlay>,
 		document.body

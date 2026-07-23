@@ -21,9 +21,9 @@ const CreateColumnModalComponent = ({ boardId }: { boardId: string }) => {
 		<Modal
 			trigger={
 				<div className='flex flex-col relative rounded-t-md cursor-pointer transition-all group w-74'>
-					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 bg-background dark:bg-neutral-900'>
+					<div className='flex justify-center items-center gap-2 rounded-md p-4.5 bg-card border border-border shadow-sm'>
 						<Plus />
-						<h3 className='font-semibold text-base dark:text-white'>
+						<h3 className='font-semibold text-base'>
 							{t('heading')}
 						</h3>
 					</div>

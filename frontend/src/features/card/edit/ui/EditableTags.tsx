@@ -75,7 +75,8 @@ export const EditableTags = ({ cardId, tags, t }: EditableTagsProps) => {
 					{tags.map(tag => (
 						<Badge
 							key={tag.id}
-							className='gap-1 border-0 text-white'
+							variant='secondary'
+							className='gap-1 border-0 shadow-none text-white'
 							style={{ backgroundColor: tag.background }}
 						>
 							{tag.title}
@@ -103,8 +104,8 @@ export const EditableTags = ({ cardId, tags, t }: EditableTagsProps) => {
 								className={cn(
 									'size-5 rounded-full border-2 transition',
 									selectedColor === color
-										? 'border-foreground scale-110'
-										: 'border-transparent'
+										? 'border-muted-foreground scale-110'
+										: 'border-border'
 								)}
 								style={{ backgroundColor: color }}
 								onClick={() => setSelectedColor(color)}

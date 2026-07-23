@@ -20,7 +20,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 	const socketRef = useRef<Socket | null>(null)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 
-	const { messages, setMessages, addMessage } = useChatStore()
+	const { messages, setMessages, addMessage, markMessageDeleted } = useChatStore()
 
 	const t = useTranslations('card.chat')
 	const locale = useLocale()
@@ -63,14 +63,20 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		socket.emit('join', { chatId })
 
 		const handleMessage = (msg: IMessage) => addMessage(msg)
+		const handleMessageDeleted = (payload: {
+			id: string
+			deletedAt: string
+		}) => markMessageDeleted(payload.id, payload.deletedAt)
 
 		socket.on('message:new', handleMessage)
+		socket.on('message:deleted', handleMessageDeleted)
 
 		return () => {
 			socket.emit('leave', { chatId })
 			socket.off('message:new', handleMessage)
+			socket.off('message:deleted', handleMessageDeleted)
 		}
-	}, [chatId, addMessage])
+	}, [chatId, addMessage, markMessageDeleted])
 
 	const handleSubmitMessage = useCallback(() => {
 		if (!socketRef.current || !user || !chatId || !message?.trim()) return

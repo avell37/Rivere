@@ -8,6 +8,6 @@ import { AchievementsModule } from '../achievements/achievements.module';
 @Module({
     imports: [NotificationsModule, AchievementsModule],
     providers: [ChatGateway, ChatService, MessagesService],
-    exports: [ChatService],
+    exports: [ChatService, ChatGateway],
 })
 export class ChatModule {}

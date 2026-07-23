@@ -7,6 +7,7 @@ import { SignUpRequest } from '../validation/register.z.validation'
 export const register = async (
 	data: SignUpRequest
 ): Promise<ActionResponse> => {
-	const response = await baseAxios.post(`${API_URL.auth()}create`, data)
+	const { ...payload } = data
+	const response = await baseAxios.post(`${API_URL.auth()}create`, payload)
 	return response.data
 }

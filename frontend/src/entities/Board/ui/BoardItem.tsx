@@ -30,11 +30,11 @@ export const BoardItem = ({
 				buttonClassname='absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition'
 			/>
 			<div className='rounded-t-md h-full' style={backgroundStyle} />
-			<div className='p-2 text-white flex flex-col items-start group rounded-b-md bg-zinc-800/30 dark:bg-zinc-800/80'>
+			<div className='p-2 flex flex-col items-start rounded-b-md border-t border-border bg-card/95 text-foreground backdrop-blur-sm'>
 				<h3 className='font-semibold text-base truncate max-w-[180px]'>
 					{title}
 				</h3>
-				<span className='text-xs'>
+				<span className='text-xs text-muted-foreground'>
 					{t('members', { count: members })}
 				</span>
 			</div>

@@ -44,7 +44,7 @@ export const Boards = () => {
 							) : (
 								<div className='flex flex-col items-center justify-center py-16 text-center'>
 									<div className='mb-4 rounded-full bg-slate-300 dark:bg-gray-100 p-4'>
-										<LayoutDashboard className='w-8 h-8 dark:text-gray-400' />
+										<LayoutDashboard className='w-8 h-8 text-muted-foreground' />
 									</div>
 									<h3 className='text-lg font-semibold mb-2'>
 										{t('noBoardsTitle')}

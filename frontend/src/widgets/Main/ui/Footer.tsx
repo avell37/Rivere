@@ -14,6 +14,12 @@ export const Footer = () => {
 				</div>
 				<div className='flex gap-6'>
 					<Link
+						href='/terms'
+						className='text-zinc-500 hover:text-zinc-300 transition-colors'
+					>
+						{t('terms')}
+					</Link>
+					<Link
 						href='/privacy'
 						className='text-zinc-500 hover:text-zinc-300 transition-colors'
 					>

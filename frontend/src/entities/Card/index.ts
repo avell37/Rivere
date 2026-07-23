@@ -12,6 +12,7 @@ export * from './model/validation/create-card.z.validation'
 export * from './model/validation/edit-card.z.validation'
 
 export * from './ui/CardDoneButton'
+export * from './ui/CardPreviewContent'
 export * from './ui/CardOverlayItem'
 export * from './ui/CardOverlayList'
 export * from './ui/CardSkeleton'

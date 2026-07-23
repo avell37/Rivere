@@ -19,7 +19,7 @@ authAxios.interceptors.response.use(
 		if (err.response?.status === 401) {
 			if (typeof window !== 'undefined') {
 				const pathname = window.location.pathname
-				const publicRoutes = ['/', '/privacy', '/auth']
+				const publicRoutes = ['/', '/privacy', '/terms', '/auth']
 
 				const isPublicRoute = publicRoutes.some(
 					route => pathname === route || pathname.startsWith(route)

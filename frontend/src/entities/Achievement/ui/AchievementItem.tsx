@@ -29,8 +29,8 @@ export const AchievementItem = ({
 						'group relative rounded-2xl border p-4 flex flex-col gap-3 cursor-pointer',
 						'transition-all duration-200 hover:-translate-y-0.5',
 						isEarned
-							? 'border-amber-500/30 bg-amber-500/5 shadow-sm shadow-amber-500/10 hover:border-amber-500/50 hover:shadow-amber-500/20 hover:shadow-md'
-							: 'border-white/8 bg-white/2 hover:border-white/15 hover:bg-white/4'
+							? 'border-amber-500/40 bg-amber-500/5 shadow-sm shadow-amber-500/10 hover:border-amber-500/60 hover:shadow-amber-500/20 hover:shadow-md'
+							: 'border-border bg-card shadow-sm hover:border-muted-foreground/30 hover:bg-muted/40'
 					)}
 				>
 					{isEarned && (
@@ -44,7 +44,7 @@ export const AchievementItem = ({
 							'w-11 h-11 rounded-xl flex items-center justify-center shrink-0',
 							isEarned
 								? 'bg-amber-500/15 ring-1 ring-amber-500/25'
-								: 'bg-white/5 ring-1 ring-white/8'
+								: 'bg-muted ring-1 ring-border'
 						)}
 					>
 						{isEarned ? (
@@ -63,7 +63,7 @@ export const AchievementItem = ({
 						>
 							{t(`${code}.title`)}
 						</p>
-						<p className='text-xs text-zinc-600 dark:text-zinc-500 leading-snug line-clamp-2'>
+						<p className='text-xs text-muted-foreground leading-snug line-clamp-2'>
 							{t(`${code}.description`)}
 						</p>
 					</div>
@@ -90,7 +90,7 @@ export const AchievementItem = ({
 						'w-20 h-20 rounded-2xl flex items-center justify-center',
 						isEarned
 							? 'bg-amber-500/15 ring-2 ring-amber-500/30 shadow-lg shadow-amber-500/20'
-							: 'bg-white/5 ring-2 ring-white/10'
+							: 'bg-muted ring-2 ring-border'
 					)}
 				>
 					<Trophy
@@ -103,7 +103,7 @@ export const AchievementItem = ({
 
 				<div className='text-center flex flex-col gap-1.5'>
 					<p className='text-lg font-bold'>{t(`${code}.title`)}</p>
-					<p className='text-sm text-zinc-400'>
+					<p className='text-sm text-muted-foreground'>
 						{t(`${code}.description`)}
 					</p>
 				</div>

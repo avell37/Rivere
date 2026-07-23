@@ -24,7 +24,7 @@ export const BoardActions = ({ boardId }: { boardId: string }) => {
 					<Button
 						variant='none'
 						size='none'
-						className='p-2 rounded-md hover:bg-white/70 dark:hover:bg-zinc-500 transition'
+						className='p-2 rounded-md hover:bg-accent/80 dark:hover:bg-zinc-500 transition'
 					>
 						<MoreHorizontal />
 					</Button>

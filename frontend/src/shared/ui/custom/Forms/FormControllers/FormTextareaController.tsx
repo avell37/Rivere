@@ -47,11 +47,11 @@ export const FormTextareaController = <T extends FieldValues>({
 					<FormControl>
 						<Textarea
 							{...field}
-							className={`border text-start rounded-lg dark:text-white outline-none break-all transition-all resize-none bg-transparent
+							className={`border text-start rounded-lg outline-none break-all transition-all resize-none bg-card dark:bg-transparent
                                 ${
 									fieldState.error
 										? 'border-red-600 hover:border-red-800'
-										: 'border-primary-900/30 hover:border-primary-900'
+										: 'border-input hover:border-ring'
 								}`}
 							placeholder={placeholder}
 							autoFocus={autoFocus}

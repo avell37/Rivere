@@ -1,6 +1,7 @@
 export interface IMessage {
 	id: string
 	text: string
+	deletedAt?: string | null
 	user: {
 		avatar: string | null
 		nickname: string

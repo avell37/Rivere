@@ -23,7 +23,7 @@ export const CookieBanner = () => {
 
 	return (
 		<div className='fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] max-w-3xl z-50'>
-			<div className='flex items-center justify-between gap-4 rounded-2xl border bg-background p-4 shadow-lg'>
+			<div className='flex items-center justify-between gap-4 rounded-2xl border border-border bg-card p-4 shadow-lg'>
 				<p className='text-sm text-muted-foreground'>
 					Мы используем cookies для авторизации и корректной работы
 					сайта.
