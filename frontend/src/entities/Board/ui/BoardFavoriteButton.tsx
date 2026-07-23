@@ -15,8 +15,12 @@ export const BoardFavoriteButton = ({
 	const { handleToggleFavorite, toggleFavoritePending } =
 		useToggleFavoriteMutation(boardId, isFavorite)
 
-	const baseColor = isBoardPage ? 'text-black dark:text-white' : 'text-white'
-	const fillColor = isBoardPage ? 'fill-black dark:fill-white' : 'fill-white'
+	const baseColor = isBoardPage
+		? 'text-foreground'
+		: 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]'
+	const fillColor = isBoardPage
+		? 'fill-foreground'
+		: 'fill-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]'
 
 	return (
 		<Button

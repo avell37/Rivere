@@ -3,6 +3,7 @@
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { SendHorizonal, Smile } from 'lucide-react'
+import { useTheme } from 'next-themes'
 
 import {
 	ChatSkeleton,
@@ -11,7 +12,7 @@ import {
 	useChatStore
 } from '@/entities/Chat'
 
-import { Button, ScrollArea, Textarea } from '@/shared/ui/external'
+import { Button, Textarea } from '@/shared/ui/external'
 
 import { useChat } from '../model/hooks/useChat'
 
@@ -32,6 +33,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 	} = useChat({
 		cardId
 	})
+	const { resolvedTheme } = useTheme()
 	const { messages } = useChatStore()
 
 	if (chatPending) return <ChatSkeleton />
@@ -39,9 +41,9 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 	if (!userId) return null
 
 	return (
-		<div className='flex flex-col w-full max-h-86'>
-			<ScrollArea className='flex-1 px-4 py-3 max-h-90'>
-				<div className='flex flex-col gap-3 max-h-86'>
+		<div className='flex w-full min-w-0 max-h-86 flex-col overflow-hidden'>
+			<div className='max-h-90 min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-4 py-3'>
+				<div className='flex w-full min-w-0 flex-col gap-3'>
 					{messages.map((message: IMessage, i) => (
 						<ChatUserMessage
 							key={message.id}
@@ -55,7 +57,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 					))}
 					<div ref={messagesEndRef} />
 				</div>
-			</ScrollArea>
+			</div>
 			<div className='relative mt-2 flex items-center gap-2'>
 				<Textarea
 					className='border-b flex-1 w-full focus:rounded-md px-4 pr-16 py-2 resize-none min-h-10 max-h-[120px] focus-visible:ring-1 focus-visible:ring-blue-400'
@@ -83,6 +85,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 						>
 							<Picker
 								data={data}
+								theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
 								onEmojiSelect={handleEmojiClick}
 							/>
 						</div>

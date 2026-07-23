@@ -29,7 +29,7 @@ export const InviteView = () => {
 
 	return (
 		<div className='h-screen flex items-center justify-center bg-linear-to-br from-white to-gray-300 dark:from-black/40 dark:to-zinc-800 px-4'>
-			<div className='relative flex flex-col gap-4 bg-white dark:bg-zinc-800 p-6 rounded-md max-w-lg w-full'>
+			<div className='relative flex flex-col gap-4 bg-card border border-border p-6 rounded-md max-w-lg w-full shadow-sm'>
 				<div className='flex flex-col items-center gap-1'>
 					<div className='flex flex-col items-center gap-2'>
 						<UserAvatar

@@ -25,7 +25,7 @@ export const NotificationItem = ({
 		<div
 			className={cn(
 				'flex gap-3 rounded-lg border p-4 transition-colors',
-				read ? 'bg-muted/50' : 'bg-background hover:bg-muted'
+				read ? 'bg-muted/60 border-border' : 'bg-card hover:bg-muted/80'
 			)}
 		>
 			<div

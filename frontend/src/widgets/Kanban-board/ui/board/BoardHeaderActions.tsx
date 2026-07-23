@@ -29,7 +29,7 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 				boardId={board.id}
 				isFavorite={board.isFavorite}
 				isBoardPage={true}
-				buttonClassname='p-2 rounded-md hover:bg-white/70 dark:hover:bg-zinc-500 transition'
+				buttonClassname='p-2 rounded-md hover:bg-accent/80 dark:hover:bg-zinc-500 transition'
 			/>
 			<Modal
 				trigger={
@@ -37,7 +37,7 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 						type='button'
 						variant='none'
 						size='none'
-						className='p-2 rounded-md hover:bg-white/70 dark:hover:bg-zinc-500 transition'
+						className='p-2 rounded-md hover:bg-accent/80 dark:hover:bg-zinc-500 transition'
 					>
 						<Link size={18} />
 					</Button>
@@ -55,7 +55,7 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 						type='button'
 						variant='none'
 						size='none'
-						className='p-2 rounded-md hover:bg-white/70 dark:hover:bg-zinc-500 transition'
+						className='p-2 rounded-md hover:bg-accent/80 dark:hover:bg-zinc-500 transition'
 					>
 						<Settings size={18} />
 					</Button>

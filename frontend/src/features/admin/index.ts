@@ -1,3 +1,13 @@
+export * from './reports/model/api/admin-reports.api'
+export * from './reports/model/hooks/useAdminReportsQueries'
+export * from './reports/model/hooks/useResolveReport'
+export * from './reports/model/types/AdminReportTypes'
+export * from './reports/model/utils/parseAdminFilters'
+export * from './reports/model/utils/statusVariants'
+export * from './reports/model/validation/resolve-report.z.validation'
+export * from './reports/ui/ResolveReportForm'
+export * from './reports/ui/ResolveReportModal'
+
 export * from './statistics/model/api/admin-statistics.api'
 
 export * from './statistics/model/hooks/useAdminStatisticsQueries'

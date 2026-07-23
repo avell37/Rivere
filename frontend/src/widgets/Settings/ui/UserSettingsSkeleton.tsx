@@ -14,7 +14,7 @@ export const UserSettingsSkeleton = () => {
 							{[1, 2].map(i => (
 								<div
 									key={i}
-									className='flex items-end gap-2 w-full p-2 bg-background rounded-lg'
+									className='flex items-end gap-2 w-full p-2 bg-card border border-border rounded-lg'
 								>
 									<div className='flex gap-4 w-full'>
 										<Skeleton className='w-12 h-12 rounded-lg' />

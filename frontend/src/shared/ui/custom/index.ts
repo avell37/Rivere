@@ -33,6 +33,7 @@ export * from './OtpStep/OtpStep'
 
 export * from './Popover/Popover'
 
+export * from './LegalAgreementsCheckbox/LegalAgreementsCheckbox'
 export * from './PrivacyCheckbox/PrivacyCheckbox'
 
 export * from './StatisticCard/StatisticCard'

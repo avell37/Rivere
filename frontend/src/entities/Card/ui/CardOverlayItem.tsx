@@ -1,86 +1,36 @@
 'use client'
-import { AlertCircle, Check, Clock, MessageSquareMore, X } from 'lucide-react'
-import { useLocale, useTranslations } from 'next-intl'
 
-import { priorityColors } from '@/shared/config'
-import { cn, formatDate, formatPriority } from '@/shared/utils'
+import { cn } from '@/shared/utils'
 
 import { getDeadlineState } from '../model/lib/getDeadlineState'
 import { ICard } from '../model/types/ICard'
 
-export const CardOverlayItem = ({ card }: { card: ICard }) => {
-	const t = useTranslations()
-	const locale = useLocale()
+import { CardPreviewContent } from './CardPreviewContent'
 
+export const CardOverlayItem = ({
+	card,
+	className
+}: {
+	card: ICard
+	className?: string
+}) => {
 	const deadlineState = getDeadlineState(card.deadline, card.done)
 
 	return (
 		<div
 			className={cn(
-				'relative bg-background dark:bg-neutral-900 border rounded-lg shadow list-none',
-				'transition-all duration-200 cursor-grab active:cursor-grabbing',
+				'relative bg-card text-card-foreground border border-border rounded-lg shadow-md list-none w-full shrink-0 box-border',
+				'cursor-grabbing',
+				card.done && 'opacity-80',
 				deadlineState === 'overdue' &&
 					'border-red-500/50 dark:border-red-500/40',
 				deadlineState === 'due-soon' &&
-					'border-orange-400/50 dark:border-orange-400/40'
+					'border-orange-400/50 dark:border-orange-400/40',
+				className
 			)}
 		>
 			<div className='p-4'>
-				<div className='relative flex flex-col gap-2 dark:text-white wrap-break-word'>
-					<div className='flex items-center gap-1.5'>
-						<div
-							className={cn(
-								'flex justify-center items-center rounded-full w-4 h-4',
-								card.done
-									? 'bg-green-500'
-									: 'border border-gray-600'
-							)}
-						>
-							{card.done && <Check className='size-3' />}
-						</div>
-						<h3 className='text-xs'>{card.title}</h3>
-					</div>
-					<span className='text-xs wrap-break-word whitespace-pre-wrap'>
-						{card.description}
-					</span>
-					<div className='flex items-center gap-2'>
-						<div
-							className={`${priorityColors[card.priority]} inline-flex items-center w-fit 
-						px-2 py-0.5 rounded text-[10px] font-medium`}
-						>
-							{formatPriority(card.priority)}
-						</div>
-						<div className='flex items-center gap-1 text-[10px]'>
-							<MessageSquareMore className='size-3' />
-							{card?.chat?._count?.messages}
-						</div>
-					</div>
-					{card.deadline && (
-						<span
-							className={cn(
-								'absolute bottom-0 right-0 flex items-center gap-1 text-[10px]',
-								deadlineState === 'overdue' &&
-									'text-red-500 font-medium',
-								deadlineState === 'due-soon' &&
-									'text-orange-400'
-							)}
-						>
-							{deadlineState === 'overdue' ? (
-								<AlertCircle size={12} />
-							) : (
-								<Clock size={12} />
-							)}
-							{deadlineState === 'overdue'
-								? t('card.overdue')
-								: t('card.expiresAt', {
-										date: formatDate(card.deadline, locale)
-									})}
-						</span>
-					)}
-				</div>
-			</div>
-			<div className='absolute top-4 right-4 cursor-pointer'>
-				<X size={16} />
+				<CardPreviewContent card={card} />
 			</div>
 		</div>
 	)

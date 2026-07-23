@@ -49,7 +49,7 @@ export const UserSettings = () => {
 						<div className='flex flex-col md:flex-row gap-4'>
 							<div
 								className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full 
-							rounded-lg p-3 bg-background hover:bg-black/10 transition-all'
+							rounded-lg p-3 bg-card border border-border hover:bg-accent/60 transition-all'
 							>
 								<div className='flex gap-3 sm:gap-4 w-full'>
 									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
@@ -59,7 +59,7 @@ export const UserSettings = () => {
 										/>
 									</div>
 									<div>
-										<Label className='text-sm text-black/90 dark:text-gray-300'>
+										<Label className='text-sm text-muted-foreground'>
 											{t(
 												'personalInformation.usernameLabel'
 											)}
@@ -93,7 +93,7 @@ export const UserSettings = () => {
 							</div>
 							<div
 								className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full rounded-lg 
-							p-3 bg-background hover:bg-black/10 transition-all'
+							p-3 bg-card border border-border hover:bg-accent/60 transition-all'
 							>
 								<div className='flex gap-3 sm:gap-4 w-full'>
 									<div className='bg-linear-to-br from-cyan-300 to-cyan-700 p-2 rounded-lg'>
@@ -103,7 +103,7 @@ export const UserSettings = () => {
 										/>
 									</div>
 									<div>
-										<Label className='text-sm text-black/90 dark:text-gray-300'>
+										<Label className='text-sm text-muted-foreground'>
 											{t(
 												'personalInformation.nicknameLabel'
 											)}

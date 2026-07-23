@@ -68,7 +68,7 @@ export const AuthWrapper = ({
 			</div>
 			<div className='min-h-screen flex justify-center items-center w-1/2 z-10 max-lg:w-full'>
 				<div className='text-card-foreground w-full h-full'>
-					<Card className='bg-muted dark:bg-card border-none shadow-none h-full rounded-none flex flex-col px-10 justify-center'>
+					<Card className='bg-card border border-border shadow-sm dark:border-none dark:shadow-none h-full rounded-none flex flex-col px-10 justify-center'>
 						{showHeader && (
 							<>
 								<CardHeader className='text-start  pt-6'>

@@ -17,12 +17,14 @@ import { VerificationModule } from '@/modules/auth/verification/verification.mod
 import { PasswordRecoveryModule } from '@/modules/auth/password-recovery/password-recovery.module';
 import { TokenModule } from '@/modules/auth/token/token.module';
 import { AdminModule } from '@/modules/admin/admin.module';
+import { ReportsModule } from '@/modules/reports/reports.module';
 import { SessionActivityMiddleware } from './middlewares/session-activity.middleware';
 import { CronModule } from '@/modules/cron/cron.module';
 import { ActivityLogModule } from '@/modules/activity-log/activity-log.module';
 
 @Module({
     imports: [
+        ReportsModule,
         ActivityLogModule,
         AdminModule,
         AccountModule,

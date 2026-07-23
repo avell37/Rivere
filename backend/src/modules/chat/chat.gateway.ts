@@ -127,4 +127,11 @@ export class ChatGateway {
             });
         }
     }
+
+    emitMessageDeleted(
+        chatId: string,
+        payload: { id: string; deletedAt: string },
+    ) {
+        this.server.to(`chat_${chatId}`).emit('message:deleted', payload);
+    }
 }

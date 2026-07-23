@@ -47,7 +47,7 @@ export const CardSheet = ({
 			>
 				<div className='p-8 mb-10'>
 					<EditCardForm card={card} boardId={boardId} />
-					<div>
+					<div className='min-w-0 overflow-x-hidden'>
 						<span className='text-xs text-muted-foreground ml-1'>
 							{t('card.edit.comments')}
 						</span>

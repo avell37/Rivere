@@ -29,7 +29,7 @@ const CreateCardModalComponent = ({
 				<Button
 					variant='none'
 					size='none'
-					className='p-2 mt-2 border cursor-pointer bg-white dark:bg-black hover:bg-background'
+					className='p-2 mt-2 border border-border cursor-pointer bg-card hover:bg-accent'
 				>
 					<Plus />
 					{t('heading')}

@@ -26,7 +26,7 @@ const CardDoneButtonComponent = ({
 			onClick={e => toggleDone(e, done)}
 			className={cn(
 				'rounded-full',
-				done ? 'bg-green-500' : 'border border-gray-600',
+				done ? 'bg-green-500' : 'border border-border',
 				className ? className : null
 			)}
 			disabled={togglePending}

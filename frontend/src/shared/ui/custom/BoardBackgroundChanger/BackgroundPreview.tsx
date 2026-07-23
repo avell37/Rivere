@@ -12,7 +12,7 @@ export const BackgroundPreview = ({
 
 	return (
 		<div
-			className='w-full h-40 rounded-lg border border-gray-600 overflow-hidden transition-all'
+			className='w-full h-40 rounded-lg border border-border overflow-hidden transition-all'
 			style={{
 				backgroundColor: isColorOrGradient
 					? background.color!
@@ -29,17 +29,17 @@ export const BackgroundPreview = ({
 		>
 			<div className='flex h-full p-3 gap-3 text-xs'>
 				<div className='flex flex-col gap-2 w-1/3'>
-					<div className='bg-background dark:bg-neutral-900/20 rounded-md p-2 backdrop-blur-sm'>
+					<div className='bg-card/90 border border-border/60 rounded-md p-2 backdrop-blur-sm shadow-sm'>
 						{t('firstColumnHeading')}
 					</div>
 				</div>
 				<div className='flex flex-col gap-2 w-1/3'>
-					<div className='bg-background dark:bg-neutral-900/20 rounded-md p-2 backdrop-blur-sm'>
+					<div className='bg-card/90 border border-border/60 rounded-md p-2 backdrop-blur-sm shadow-sm'>
 						{t('secondColumnHeading')}
 					</div>
 				</div>
 				<div className='flex flex-col gap-2 w-1/3'>
-					<div className='bg-background dark:bg-neutral-900/20 rounded-md p-2 backdrop-blur-sm'>
+					<div className='bg-card/90 border border-border/60 rounded-md p-2 backdrop-blur-sm shadow-sm'>
 						{t('thirdColumnHeading')}
 					</div>
 				</div>
