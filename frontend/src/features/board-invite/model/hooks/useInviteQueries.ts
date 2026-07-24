@@ -13,13 +13,16 @@ import {
 	acceptInvite,
 	createInvite,
 	declineInvite,
-	getInviteData
+	getInviteData,
+	inviteUser,
+	searchInviteUsers
 } from '../api/inviteApi'
 import { CreateInviteResponse, GetInviteResponse } from '../types/InviteProps'
 
 export const inviteKeys = {
 	getInviteData: (token?: string) => ['get-invite-data', token],
 	createInvite: ['create-invite'],
+	inviteUser: ['invite-user'],
 	acceptInvite: ['accept-invite'],
 	declineInvite: ['decline-invite']
 }
@@ -64,6 +67,26 @@ export const useCreateInvite = () => {
 	}
 }
 
+export const useInviteUser = () => {
+	const t = useTranslations()
+
+	const { mutate: inviteUserToBoard, isPending: inviteUserPending } =
+		useMutation<
+			ActionResponse,
+			AxiosError,
+			{ boardId: string; userId: string }
+		>({
+			mutationKey: inviteKeys.inviteUser,
+			mutationFn: inviteUser,
+			onError: err => handleApiError(err, t)
+		})
+
+	return {
+		inviteUserToBoard,
+		inviteUserPending
+	}
+}
+
 export const useAcceptInviteToBoard = () => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
@@ -105,5 +128,24 @@ export const useDeclineInviteToBoard = () => {
 		declineInviteToBoard,
 		declinePending,
 		declineError
+	}
+}
+
+export const useInviteUserBySearch = ({
+	boardId,
+	debouncedQuery
+}: {
+	boardId: string
+	debouncedQuery: string
+}) => {
+	const { data, isFetching } = useQuery({
+		queryKey: ['invite-user-search', boardId, debouncedQuery],
+		queryFn: () => searchInviteUsers(boardId, debouncedQuery),
+		enabled: debouncedQuery.trim().length >= 2
+	})
+
+	return {
+		data,
+		isFetching
 	}
 }

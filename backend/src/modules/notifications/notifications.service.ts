@@ -1,6 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { NotificationsGateway } from './notifications.gateway';
 import { PrismaService } from '@/core/prisma/prisma.service';
+import { CreateNotificationPayload } from './notification.types';
 
 @Injectable()
 export class NotificationsService {
@@ -11,11 +16,7 @@ export class NotificationsService {
 
     async createNotification(
         userId: string,
-        payload: {
-            type: string;
-            message: string;
-            entityId?: string;
-        },
+        payload: CreateNotificationPayload,
     ) {
         if (!userId) {
             throw new UnauthorizedException({
@@ -28,7 +29,8 @@ export class NotificationsService {
             data: {
                 userId,
                 type: payload.type,
-                message: payload.message,
+                messageKey: payload.messageKey,
+                messageParams: payload.messageParams ?? undefined,
                 entityId: payload.entityId || null,
             },
         });
@@ -61,6 +63,32 @@ export class NotificationsService {
         return {
             success: true,
             message: 'Уведомления прочитаны',
+        };
+    }
+
+    async readNotification(userId: string, notificationId: string) {
+        const notification = await this.prisma.notification.findFirst({
+            where: {
+                id: notificationId,
+                userId,
+            },
+        });
+
+        if (!notification) {
+            throw new NotFoundException({
+                code: 'errors.notifications.notFound',
+                message: 'Уведомление не найдено',
+            });
+        }
+
+        await this.prisma.notification.update({
+            where: { id: notificationId },
+            data: { read: true },
+        });
+
+        return {
+            success: true,
+            message: 'Уведомление прочитано',
         };
     }
 

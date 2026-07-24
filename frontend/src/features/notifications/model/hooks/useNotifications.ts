@@ -8,7 +8,8 @@ import {
 	notificationKeys,
 	useClearNotifications,
 	useGetNotifications,
-	useMarkAllRead
+	useMarkAllRead,
+	useMarkNotificationRead
 } from '@/entities/Notification'
 
 import { getNotificationsSocket } from '../utils/notification.socket'
@@ -19,6 +20,7 @@ export const useNotifications = (userId?: string | null) => {
 	const { notifications } = useGetNotifications()
 	const { markAllRead, markAllReadPending } = useMarkAllRead()
 	const { clearAll, clearAllPending } = useClearNotifications()
+	const { markRead } = useMarkNotificationRead()
 
 	useEffect(() => {
 		if (!userId) return
@@ -56,6 +58,7 @@ export const useNotifications = (userId?: string | null) => {
 		handleMarkAllRead,
 		markAllReadPending,
 		handleClearAll,
-		clearAllPending
+		clearAllPending,
+		handleMarkRead: (id: string) => markRead(id)
 	}
 }

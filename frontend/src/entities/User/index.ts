@@ -15,6 +15,7 @@ export * from './model/validation/change-email.z.validation'
 export * from './model/validation/change-nickname.z.validation'
 export * from './model/validation/change-password.z.validation'
 export * from './model/validation/change-username.z.validation'
+export * from './model/validation/delete-account.z.validation'
 
 export * from './ui/UserAvatar'
 

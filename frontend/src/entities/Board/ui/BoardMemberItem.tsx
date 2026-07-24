@@ -2,6 +2,8 @@ import { MoreHorizontal } from 'lucide-react'
 
 import { UserAvatar } from '@/entities/User'
 
+import { ReportButton } from '@/features/reports'
+
 import { Alert, AppDropdown, DropdownActionItem } from '@/shared/ui/custom'
 import {
 	Badge,
@@ -23,12 +25,14 @@ export const BoardMemberItem = ({
 	changeRolePending,
 	canRemove,
 	canManageRoles,
+	currentUserId,
 	t,
 	onRemove,
 	changeRole,
 	setIsDeleteOpen
 }: BoardMemberItemProps) => {
 	const hasActions = canManageRoles || canRemove
+	const canReport = currentUserId && member.userId !== currentUserId
 
 	return (
 		<div
@@ -58,58 +62,71 @@ export const BoardMemberItem = ({
 				</div>
 			</div>
 
-			{hasActions && (
-				<AppDropdown
-					trigger={
-						<Button variant='ghost' size='none'>
-							<MoreHorizontal />
-						</Button>
-					}
-				>
-					{canManageRoles && (
-						<>
-							<DropdownMenuLabel>
-								{t('changeRole.heading')}
-							</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuSub>
-								<DropdownMenuSubTrigger>
-									{t('changeRole.title')}
-								</DropdownMenuSubTrigger>
-								<DropdownMenuSubContent>
-									{member.role !== 'ADMIN' && (
-										<DropdownActionItem
-											onClick={() =>
-												changeRole(BoardRole.ADMIN)
-											}
-											disabled={changeRolePending}
-										>
-											{t('roles.ADMIN')}
-										</DropdownActionItem>
-									)}
-									{member.role !== 'MEMBER' && (
-										<DropdownActionItem
-											onClick={() =>
-												changeRole(BoardRole.MEMBER)
-											}
-											disabled={changeRolePending}
-										>
-											{t('roles.MEMBER')}
-										</DropdownActionItem>
-									)}
-								</DropdownMenuSubContent>
-							</DropdownMenuSub>
-						</>
-					)}
-					{canRemove && (
-						<DropdownActionItem
-							onClick={() => setIsDeleteOpen(true)}
-						>
-							{t('changeRole.kick')}
-						</DropdownActionItem>
-					)}
-				</AppDropdown>
-			)}
+			<div className='flex items-center gap-1'>
+				{canReport && (
+					<ReportButton
+						targetType='USER'
+						targetId={member.userId}
+						formNamespace='user'
+						description={t('reportDescription', {
+							name: member.user.nickname
+						})}
+					/>
+				)}
+
+				{hasActions && (
+					<AppDropdown
+						trigger={
+							<Button variant='ghost' size='none'>
+								<MoreHorizontal />
+							</Button>
+						}
+					>
+						{canManageRoles && (
+							<>
+								<DropdownMenuLabel>
+									{t('changeRole.heading')}
+								</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+								<DropdownMenuSub>
+									<DropdownMenuSubTrigger>
+										{t('changeRole.title')}
+									</DropdownMenuSubTrigger>
+									<DropdownMenuSubContent>
+										{member.role !== 'ADMIN' && (
+											<DropdownActionItem
+												onClick={() =>
+													changeRole(BoardRole.ADMIN)
+												}
+												disabled={changeRolePending}
+											>
+												{t('roles.ADMIN')}
+											</DropdownActionItem>
+										)}
+										{member.role !== 'MEMBER' && (
+											<DropdownActionItem
+												onClick={() =>
+													changeRole(BoardRole.MEMBER)
+												}
+												disabled={changeRolePending}
+											>
+												{t('roles.MEMBER')}
+											</DropdownActionItem>
+										)}
+									</DropdownMenuSubContent>
+								</DropdownMenuSub>
+							</>
+						)}
+						{canRemove && (
+							<DropdownActionItem
+								onClick={() => setIsDeleteOpen(true)}
+							>
+								{t('changeRole.kick')}
+							</DropdownActionItem>
+						)}
+					</AppDropdown>
+				)}
+			</div>
 			{isDeleteOpen && (
 				<Alert
 					open={isDeleteOpen}

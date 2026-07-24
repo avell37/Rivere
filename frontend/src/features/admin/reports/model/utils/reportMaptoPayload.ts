@@ -30,5 +30,11 @@ export const mapToPayload = (
 				action: 'DELETE_MESSAGE',
 				resolutionNote
 			}
+		case 'DELETE_CARD':
+			return {
+				status: 'RESOLVED',
+				action: 'DELETE_CARD',
+				resolutionNote
+			}
 	}
 }

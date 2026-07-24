@@ -42,6 +42,7 @@ export class VerificationService {
             },
             data: {
                 isEmailVerified: true,
+                emailVerificationReminderAt: null,
             },
         });
 

@@ -15,6 +15,7 @@ import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { ApiOperation } from '@nestjs/swagger';
 import { ChangeNicknameInput } from './inputs/change-nickname';
+import { DeleteAccountInput } from './inputs/delete-account.input';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
 import type { User } from '@prisma/client';
@@ -128,5 +129,20 @@ export class AccountController {
         @SessionUser() user: User,
     ) {
         return this.accountService.changeAvatar(file, user);
+    }
+
+    @ApiOperation({
+        summary: 'Удаление аккаунта',
+        description: 'Безвозвратно удаляет аккаунт пользователя',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Post('delete')
+    async deleteAccount(
+        @Req() req: Request,
+        @Body() input: DeleteAccountInput,
+        @SessionUser() user: User,
+    ) {
+        return this.accountService.deleteAccount(req, input, user);
     }
 }

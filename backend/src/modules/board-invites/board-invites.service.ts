@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'crypto';
 import { addDays } from 'date-fns';
 import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationMessageKey } from '../notifications/notification-message.keys';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
@@ -59,6 +60,171 @@ export class BoardInvitesService {
         };
     }
 
+    async searchUsers(userId: string, boardId: string, query: string) {
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId,
+            boardId,
+            permission: BoardPermission.INVITE_USERS,
+        });
+
+        const trimmedQuery = query.trim();
+
+        if (trimmedQuery.length < 2) {
+            return { users: [] };
+        }
+
+        const members = await this.prisma.boardMember.findMany({
+            where: { boardId },
+            select: { userId: true },
+        });
+
+        const excludedIds = [...members.map((member) => member.userId), userId];
+
+        const users = await this.prisma.user.findMany({
+            where: {
+                id: { notIn: excludedIds },
+                OR: [
+                    {
+                        email: {
+                            contains: trimmedQuery,
+                            mode: 'insensitive',
+                        },
+                    },
+                    {
+                        username: {
+                            contains: trimmedQuery,
+                            mode: 'insensitive',
+                        },
+                    },
+                    {
+                        nickname: {
+                            contains: trimmedQuery,
+                            mode: 'insensitive',
+                        },
+                    },
+                ],
+            },
+            take: 10,
+            orderBy: { username: 'asc' },
+            select: {
+                id: true,
+                username: true,
+                nickname: true,
+                avatar: true,
+            },
+        });
+
+        return { users };
+    }
+
+    async inviteUser(creatorId: string, boardId: string, targetUserId: string) {
+        if (creatorId === targetUserId) {
+            throw new ForbiddenException({
+                code: 'errors.board.invite.selfInvite',
+                message: 'Нельзя пригласить самого себя',
+            });
+        }
+
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId: creatorId,
+            boardId,
+            permission: BoardPermission.INVITE_USERS,
+        });
+
+        const targetUser = await this.prisma.user.findUnique({
+            where: { id: targetUserId },
+            select: {
+                id: true,
+                nickname: true,
+            },
+        });
+
+        if (!targetUser) {
+            throw new NotFoundException({
+                code: 'errors.account.userNotFound',
+                message: 'Пользователь не найден',
+            });
+        }
+
+        const isAlreadyMember = await this.prisma.boardMember.findFirst({
+            where: {
+                boardId,
+                userId: targetUserId,
+            },
+        });
+
+        if (isAlreadyMember) {
+            throw new ConflictException({
+                code: 'errors.board.invite.alreadyMember',
+                message: 'Пользователь уже является участником этой доски',
+            });
+        }
+
+        const existingInvite = await this.prisma.boardInvite.findFirst({
+            where: {
+                boardId,
+                invitedUserId: targetUserId,
+                expiresAt: { gt: new Date() },
+            },
+        });
+
+        if (existingInvite) {
+            throw new ConflictException({
+                code: 'errors.board.invite.alreadySent',
+                message: 'Приглашение этому пользователю уже отправлено',
+            });
+        }
+
+        const board = await this.prisma.board.findUnique({
+            where: { id: boardId },
+            select: { title: true },
+        });
+
+        if (!board) {
+            throw new NotFoundException({
+                code: 'errors.board.notFound',
+                message: 'Доска не найдена',
+            });
+        }
+
+        const creator = await this.prisma.user.findUnique({
+            where: { id: creatorId },
+            select: { nickname: true },
+        });
+
+        const token = randomBytes(16).toString('hex');
+        const invite = await this.prisma.boardInvite.create({
+            data: {
+                token,
+                boardId,
+                createdBy: creatorId,
+                invitedUserId: targetUserId,
+                expiresAt: addDays(new Date(), 1),
+            },
+        });
+
+        const link = `${this.config.getOrThrow<string>('ALLOWED_ORIGIN')}/invite/${invite.token}`;
+
+        await this.notificationsService.createNotification(targetUserId, {
+            type: 'board_invite',
+            messageKey: NotificationMessageKey.BOARD_INVITE,
+            messageParams: {
+                inviterName: creator?.nickname ?? '',
+                boardTitle: board.title,
+            },
+            entityId: invite.token,
+        });
+
+        return {
+            success: true,
+            message: 'Приглашение отправлено',
+            link,
+            expiresAt: invite.expiresAt,
+        };
+    }
+
     async getInvite(token: string, userId: string) {
         const invite = await this.prisma.boardInvite.findUnique({
             where: { token },
@@ -94,6 +260,14 @@ export class BoardInvitesService {
             throw new ForbiddenException({
                 code: 'errors.board.invite.notValid',
                 message: 'Приглашение истекло',
+            });
+        }
+
+        if (invite.invitedUserId && invite.invitedUserId !== userId) {
+            throw new ForbiddenException({
+                code: 'errors.board.invite.notForYou',
+                message:
+                    'Это приглашение предназначено для другого пользователя',
             });
         }
 
@@ -137,6 +311,14 @@ export class BoardInvitesService {
             throw new ForbiddenException({
                 code: 'errors.board.invite.notValid',
                 message: 'Приглашение истекло',
+            });
+        }
+
+        if (invite.invitedUserId && invite.invitedUserId !== userId) {
+            throw new ForbiddenException({
+                code: 'errors.board.invite.notForYou',
+                message:
+                    'Это приглашение предназначено для другого пользователя',
             });
         }
 
@@ -192,7 +374,11 @@ export class BoardInvitesService {
 
         await this.notificationsService.createNotification(invite.creator.id, {
             type: 'board',
-            message: `${acceptedUser?.nickname} принял приглашение в доску: ${invite.board.title}`,
+            messageKey: NotificationMessageKey.BOARD_INVITE_ACCEPTED,
+            messageParams: {
+                nickname: acceptedUser?.nickname ?? '',
+                boardTitle: invite.board.title,
+            },
             entityId: invite.boardId,
         });
 
@@ -238,6 +424,14 @@ export class BoardInvitesService {
             });
         }
 
+        if (invite.invitedUserId && invite.invitedUserId !== userId) {
+            throw new ForbiddenException({
+                code: 'errors.board.invite.notForYou',
+                message:
+                    'Это приглашение предназначено для другого пользователя',
+            });
+        }
+
         const acceptedUser = await this.prisma.user.findUnique({
             where: { id: userId },
             select: { nickname: true },
@@ -249,7 +443,11 @@ export class BoardInvitesService {
 
         await this.notificationsService.createNotification(invite.creator.id, {
             type: 'board',
-            message: `${acceptedUser?.nickname} отклонил приглашение в доску: ${invite.board.title}`,
+            messageKey: NotificationMessageKey.BOARD_INVITE_DECLINED,
+            messageParams: {
+                nickname: acceptedUser?.nickname ?? '',
+                boardTitle: invite.board.title,
+            },
             entityId: invite.boardId,
         });
 

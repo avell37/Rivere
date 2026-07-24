@@ -6,7 +6,8 @@ export const resolveReportDecisions = [
 	'DISMISS',
 	'RESOLVE_NONE',
 	'BAN_USER',
-	'DELETE_MESSAGE'
+	'DELETE_MESSAGE',
+	'DELETE_CARD'
 ] as const
 
 export type ResolveReportDecision = (typeof resolveReportDecisions)[number]
@@ -52,7 +53,7 @@ export type ResolveReportFormOutput = z.infer<typeof ResolveReportFormSchema>
 
 export interface ResolveReportPayload {
 	status: 'RESOLVED' | 'DISMISSED'
-	action?: 'NONE' | 'BAN_USER' | 'DELETE_MESSAGE'
+	action?: 'NONE' | 'BAN_USER' | 'DELETE_MESSAGE' | 'DELETE_CARD'
 	resolutionNote?: string
 	ban?: {
 		reason: string

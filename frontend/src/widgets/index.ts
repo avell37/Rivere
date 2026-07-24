@@ -1,4 +1,4 @@
-export * from './Boards/Boards'
+export * from './Boards/ui/Boards'
 export * from './Header/Header'
 export * from './Main'
 export * from './Statistics'

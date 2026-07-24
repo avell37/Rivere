@@ -17,3 +17,10 @@ export interface InviteEffectsProps {
 	inviteDataIsError: boolean
 	inviteDataError: unknown
 }
+
+export type InviteSearchUser = {
+	id: string
+	username: string
+	nickname: string
+	avatar?: string | null
+}

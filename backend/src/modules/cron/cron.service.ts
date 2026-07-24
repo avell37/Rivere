@@ -1,7 +1,9 @@
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
+import { NotificationMessageKey } from '@/modules/notifications/notification-message.keys';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { subDays } from 'date-fns';
 
 @Injectable()
 export class CronService {
@@ -113,8 +115,9 @@ export class CronService {
                     memberIds.map((userId) =>
                         this.notifications.createNotification(userId, {
                             type: 'deadline',
-                            message: `Истёк дедлайн задачи: «${card.title}»`,
-                            entityId: card.id,
+                            messageKey: NotificationMessageKey.DEADLINE,
+                            messageParams: { cardTitle: card.title },
+                            entityId: `${card.column.boardId}|${card.id}`,
                         }),
                     ),
                 );
@@ -130,6 +133,53 @@ export class CronService {
             );
         } catch (err) {
             this.logger.error('notifyOverdueCards error:', err);
+        }
+    }
+
+    @Cron(CronExpression.EVERY_DAY_AT_10AM)
+    public async remindEmailVerification() {
+        try {
+            const sevenDaysAgo = subDays(new Date(), 7);
+
+            const users = await this.prisma.user.findMany({
+                where: {
+                    isEmailVerified: false,
+                    OR: [
+                        {
+                            emailVerificationReminderAt: null,
+                            createdAt: { lte: sevenDaysAgo },
+                        },
+                        {
+                            emailVerificationReminderAt: {
+                                lte: sevenDaysAgo,
+                            },
+                        },
+                    ],
+                },
+                select: { id: true },
+            });
+
+            if (users.length === 0) return;
+
+            const now = new Date();
+
+            for (const user of users) {
+                await this.notifications.createNotification(user.id, {
+                    type: 'email_verification',
+                    messageKey: NotificationMessageKey.EMAIL_VERIFICATION,
+                });
+
+                await this.prisma.user.update({
+                    where: { id: user.id },
+                    data: { emailVerificationReminderAt: now },
+                });
+            }
+
+            this.logger.log(
+                `Отправлено напоминаний о верификации почты: ${users.length}`,
+            );
+        } catch (err) {
+            this.logger.error('remindEmailVerification error:', err);
         }
     }
 }

@@ -40,3 +40,14 @@ export interface ReportsResponse {
 	page: number
 	totalPages: number
 }
+
+export type ReportFormNamespace = 'message' | 'user' | 'card'
+
+export interface ReportButtonProps {
+	targetType: ReportTargetType
+	targetId: string
+	description: string
+	formNamespace: ReportFormNamespace
+	triggerClassName?: string
+	hidden?: boolean
+}

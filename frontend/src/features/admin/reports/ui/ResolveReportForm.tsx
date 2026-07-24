@@ -54,6 +54,13 @@ export const ResolveReportForm = ({
 			})
 		}
 
+		if (report.targetType === 'CARD') {
+			options.push({
+				value: 'DELETE_CARD',
+				label: t('decisions.deleteCard')
+			})
+		}
+
 		return options
 	}, [report, t])
 
@@ -117,6 +124,12 @@ export const ResolveReportForm = ({
 				{decision === 'DELETE_MESSAGE' && (
 					<p className='rounded-md bg-muted/40 p-3 text-sm text-muted-foreground'>
 						{t('deleteMessageHint')}
+					</p>
+				)}
+
+				{decision === 'DELETE_CARD' && (
+					<p className='rounded-md bg-muted/40 p-3 text-sm text-muted-foreground'>
+						{t('deleteCardHint')}
 					</p>
 				)}
 

@@ -8,6 +8,7 @@ import { StatisticsService } from '../statistics/statistics.service';
 import { AchievementsService } from '../achievements/achievements.service';
 import { BoardGateway } from '../board/board.gateway';
 import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationMessageKey } from '../notifications/notification-message.keys';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 import { checkBoardPermission } from '@/shared/utils/board-permissions';
@@ -153,8 +154,9 @@ export class CardService {
         ) {
             await this.notifications.createNotification(input.assigneeId, {
                 type: 'assignment',
-                message: `Вас назначили исполнителем карточки: «${updatedCard.title}»`,
-                entityId: card.id,
+                messageKey: NotificationMessageKey.ASSIGNMENT,
+                messageParams: { cardTitle: updatedCard.title },
+                entityId: `${card.column.boardId}|${card.id}`,
             });
         }
 

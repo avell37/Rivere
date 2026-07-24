@@ -33,6 +33,7 @@ export interface BoardMemberItemProps {
 	joinedAtText: string
 	canRemove: boolean
 	canManageRoles: boolean
+	currentUserId?: string
 	isLoading?: boolean
 	changeRolePending?: boolean
 	t: ReturnType<typeof useTranslations>

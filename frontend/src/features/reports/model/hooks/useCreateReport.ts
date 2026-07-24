@@ -8,19 +8,23 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import type { IMessage } from '@/entities/Chat'
-
 import { ActionResponse } from '@/shared/types'
 import { handleApiError } from '@/shared/utils'
 
 import { createReport } from '../api/reports.api'
-import { CreateReportInput } from '../types/ReportTypes'
+import { CreateReportInput, ReportTargetType } from '../types/ReportTypes'
 import {
 	CreateReportFormSchema,
 	CreateReportFormValues
 } from '../validation/create-report.z.validation'
 
-export const useCreateReport = ({ message }: { message: IMessage }) => {
+export const useCreateReport = ({
+	targetType,
+	targetId
+}: {
+	targetType: ReportTargetType
+	targetId: string
+}) => {
 	const t = useTranslations()
 	const [open, setOpen] = useState(false)
 
@@ -37,7 +41,7 @@ export const useCreateReport = ({ message }: { message: IMessage }) => {
 		AxiosError,
 		CreateReportInput
 	>({
-		mutationKey: ['create-report'],
+		mutationKey: ['create-report', targetType, targetId],
 		mutationFn: createReport,
 		onSuccess: () => {
 			toast.success(t('reports.actions.created'))
@@ -48,8 +52,8 @@ export const useCreateReport = ({ message }: { message: IMessage }) => {
 	const onSubmit: SubmitHandler<CreateReportFormValues> = data =>
 		mutate(
 			{
-				targetType: 'MESSAGE',
-				targetId: message.id,
+				targetType,
+				targetId,
 				reason: data.reason.trim(),
 				details: data.details.trim() || undefined
 			},

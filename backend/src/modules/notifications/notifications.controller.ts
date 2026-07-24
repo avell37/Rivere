@@ -1,4 +1,11 @@
-import { Controller, Delete, Get, HttpCode, Patch } from '@nestjs/common';
+import {
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    Param,
+    Patch,
+} from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { Authorization } from '@/shared/decorators/authorization.decorator';
@@ -27,6 +34,23 @@ export class NotificationsController {
     @Patch('readAll')
     async readAllNotifications(@SessionUser('id') userId: string) {
         return this.notificationsService.readAllNotifications(userId);
+    }
+
+    @ApiOperation({
+        summary: 'Прочитать одно уведомление',
+        description: 'Отмечает одно уведомление как прочитанное',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Patch(':id/read')
+    async readNotification(
+        @SessionUser('id') userId: string,
+        @Param('id') notificationId: string,
+    ) {
+        return this.notificationsService.readNotification(
+            userId,
+            notificationId,
+        );
     }
 
     @ApiOperation({

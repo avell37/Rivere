@@ -1,8 +1,18 @@
-import { Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
-import { BoardInvitesService } from './board-invites.service';
-import { ApiOperation } from '@nestjs/swagger';
 import { Authorization } from '@/shared/decorators/authorization.decorator';
 import { SessionUser } from '@/shared/decorators/session-user.decorator';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    Param,
+    Post,
+    Query,
+} from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
+import { InviteUserInput } from './input/invite-user.input';
+import { BoardInvitesService } from './board-invites.service';
 
 @Controller('boardInvites')
 export class BoardInvitesController {
@@ -20,6 +30,39 @@ export class BoardInvitesController {
         @Param('boardId') boardId: string,
     ) {
         return this.boardInvitesService.createInvite(userId, boardId);
+    }
+
+    @ApiOperation({
+        summary: 'Поиск пользователей для приглашения',
+        description: 'Ищет пользователей по username, nickname или email',
+    })
+    @Authorization()
+    @Get(':boardId/users/search')
+    async searchUsers(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+        @Query('q') query: string,
+    ) {
+        return this.boardInvitesService.searchUsers(userId, boardId, query);
+    }
+
+    @ApiOperation({
+        summary: 'Пригласить пользователя',
+        description: 'Отправляет персональное приглашение пользователю',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Post(':boardId/invite-user')
+    async inviteUser(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+        @Body() input: InviteUserInput,
+    ) {
+        return this.boardInvitesService.inviteUser(
+            userId,
+            boardId,
+            input.userId,
+        );
     }
 
     @ApiOperation({

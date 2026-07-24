@@ -7,6 +7,7 @@ import { AchievementsGateway } from './achievements.gateway';
 import { CreateAchievementInput } from './inputs/create-achievement.input';
 import { UpdateAchievementInput } from './inputs/update-achievement.input';
 import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationMessageKey } from '../notifications/notification-message.keys';
 import { PrismaService } from '@/core/prisma/prisma.service';
 
 @Injectable()
@@ -145,7 +146,8 @@ export class AchievementsService {
             if (granted) {
                 await this.notificationsService.createNotification(userId, {
                     type: 'achievement',
-                    message: `Вы получили достижение: ${achievement.title}`,
+                    messageKey: NotificationMessageKey.ACHIEVEMENT,
+                    messageParams: { achievementCode: achievement.code },
                     entityId: achievement.id,
                 });
             }
