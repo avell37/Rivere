@@ -100,7 +100,8 @@
 			"sendToken": "Resend code",
 			"submit": "Confirm",
 			"sendCode": "Code sent successfully!",
-			"successVerified": "Email verified successfully!"
+			"successVerified": "Email verified successfully!",
+			"skipLater": "Confirm email later"
 		},
 		"recoveryPassword": {
 			"heading": "Recovery password",
@@ -218,7 +219,16 @@
 		"title": "Your boards:",
 		"favorites": "Your favorite boards:",
 		"noBoardsTitle": "No boards yet.",
-		"noBoardsDescription": "Create your first board to start organizing tasks and projects"
+		"noBoardsDescription": "Create your first board to start organizing tasks and projects",
+		"searchPlaceholder": "Search boards...",
+		"sortPlaceholder": "Sort boards",
+		"noSearchResultsTitle": "No boards found",
+		"noSearchResultsDescription": "Try a different search query",
+		"sort": {
+			"updatedDesc": "Recently updated",
+			"titleAsc": "Title A-Z",
+			"titleDesc": "Title Z-A"
+		}
 	},
 	"board": {
 		"heading": "{name}",
@@ -270,6 +280,7 @@
 			"deleteMemberDescription": "This action cannot be undone. The user will be kicked from the board.",
 			"deleteMemberActionText": "Kick out",
 			"deleteMemberCancelText": "Cancel",
+			"reportDescription": "Report user {name}",
 			"leave": {
 				"title": "Leave board",
 				"description": "You will no longer see this board and its cards.",
@@ -429,6 +440,15 @@
 		"clearAllNotifications": "Clear all",
 		"successReaded": "All notifications have been marked as read.",
 		"successCleared": "Notifications cleared",
+		"messages": {
+			"assignment": "You were assigned to card: «{cardTitle}»",
+			"deadline": "Deadline expired for task: «{cardTitle}»",
+			"achievement": "You earned the achievement: {title}",
+			"boardInvite": "{inviterName, select, empty {Someone} other {{inviterName}}} invited you to board «{boardTitle}»",
+			"boardInviteAccepted": "{nickname, select, empty {A user} other {{nickname}}} accepted the invite to board: {boardTitle}",
+			"boardInviteDeclined": "{nickname, select, empty {A user} other {{nickname}}} declined the invite to board: {boardTitle}",
+			"emailVerification": "Please verify your email to secure your account"
+		},
 		"achievements": {
 			"earned": "You earned the achievement: {title}"
 		}
@@ -506,6 +526,20 @@
 				"clearSessionsActionText": "End",
 				"clearSessionsCancelText": "Cancel",
 				"lastActive": "{date} in {time}"
+			},
+			"dangerZone": {
+				"heading": "Danger zone",
+				"summary": "Deleting your account permanently removes your boards, messages, and profile data.",
+				"deleteButton": "Delete account",
+				"title": "Delete account?",
+				"description": "This action is permanent and cannot be undone.",
+				"warning": "All boards you own will be deleted. You will be removed from shared boards.",
+				"passwordLabel": "Current password",
+				"passwordPlaceholder": "Enter your password to confirm",
+				"confirmAction": "Delete account",
+				"cancel": "Cancel",
+				"submitting": "Deleting...",
+				"success": "Your account has been deleted"
 			}
 		}
 	},
@@ -548,6 +582,17 @@
 		"acceptedInvite": "You have successfully joined the board!",
 		"canceledInvite": "You have declined the invitation to the board.",
 		"alreadyMember": "You are already a member of this board",
+		"tabs": {
+			"user": "By user",
+			"link": "By link"
+		},
+		"user": {
+			"searchPlaceholder": "Username, nickname or email",
+			"searchButton": "Search",
+			"empty": "No users found",
+			"inviteButton": "Invite",
+			"invited": "Invitation sent to {name}"
+		},
 		"page": {
 			"title": "invites you to the board: {boardName}",
 			"members": "{count, plural, one {# member} few {# members} many {# members} other {# members}}",
@@ -699,7 +744,8 @@
 			"resolutionAction": {
 				"NONE": "No sanctions",
 				"BAN_USER": "User banned",
-				"DELETE_MESSAGE": "Message deleted"
+				"DELETE_MESSAGE": "Message deleted",
+				"DELETE_CARD": "Card deleted"
 			},
 			"resolve": {
 				"trigger": "Review",
@@ -710,6 +756,7 @@
 				"notePlaceholder": "Comment for history (optional)",
 				"banSection": "Ban user {username}",
 				"deleteMessageHint": "The message will be hidden for everyone in the chat. The report will be marked as resolved.",
+				"deleteCardHint": "The card will be permanently deleted from the board. The report will be marked as resolved.",
 				"cancel": "Cancel",
 				"submit": "Apply",
 				"submitting": "Applying...",
@@ -717,7 +764,8 @@
 					"resolveNone": "Close without sanctions",
 					"dismiss": "Dismiss report",
 					"banUser": "Ban user",
-					"deleteMessage": "Delete message"
+					"deleteMessage": "Delete message",
+					"deleteCard": "Delete card"
 				}
 			},
 			"actions": {
@@ -1004,6 +1052,28 @@
 			"cancel": "Cancel",
 			"submit": "Submit",
 			"submitting": "Submitting..."
+		},
+		"user": {
+			"title": "Report user",
+			"description": "Report user {name}",
+			"reasonLabel": "Reason",
+			"reasonPlaceholder": "Describe what violates the rules",
+			"detailsLabel": "Additional details (optional)",
+			"detailsPlaceholder": "Any context for moderators",
+			"cancel": "Cancel",
+			"submit": "Submit",
+			"submitting": "Submitting..."
+		},
+		"card": {
+			"title": "Report card",
+			"description": "Report card \"{title}\"",
+			"reasonLabel": "Reason",
+			"reasonPlaceholder": "Describe what violates the rules",
+			"detailsLabel": "Additional details (optional)",
+			"detailsPlaceholder": "Any context for moderators",
+			"cancel": "Cancel",
+			"submit": "Submit",
+			"submitting": "Submitting..."
 		}
 	},
 	"validation": {
@@ -1074,7 +1144,9 @@
 			"emailExists": "Email is already taken",
 			"userNotFound": "User not found",
 			"notValidCurrentPassword": "Invalid current password",
-			"passwordSameAsCurrent": "New password is the same as old password"
+			"invalidCurrentPassword": "Invalid current password",
+			"passwordSameAsCurrent": "New password is the same as old password",
+			"cannotDeleteProtectedRole": "Administrators cannot delete their account"
 		},
 		"board": {
 			"exists": "You already have a board with this name",
@@ -1084,7 +1156,10 @@
 				"notMember": "You are not a member of this board",
 				"notFound": "Invite not found",
 				"notValid": "Invite expired",
-				"alreadyMember": "You are already a member of this board"
+				"alreadyMember": "You are already a member of this board",
+				"alreadySent": "An invitation has already been sent to this user",
+				"notForYou": "This invitation is intended for another user",
+				"selfInvite": "You cannot invite yourself"
 			},
 			"members": {
 				"forbidden": "You cannot access this board."
@@ -1117,7 +1192,8 @@
 			"invalidTarget": "Unsupported report target"
 		},
 		"notifications": {
-			"unauthorized": "You are not authorized"
+			"unauthorized": "You are not authorized",
+			"notFound": "Notification not found"
 		},
 		"session": {
 			"notFound": "Session not found",

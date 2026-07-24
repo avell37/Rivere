@@ -9,12 +9,14 @@ import { handleApiError } from '@/shared/utils'
 import {
 	clearNotificationsApi,
 	getUserNotifications,
-	markAllReadApi
+	markAllReadApi,
+	markReadApi
 } from '../api/notificationApi'
 import { INotification } from '../types/INotification'
 
 export const notificationKeys = {
 	all: ['notifications'],
+	markRead: (id: string) => ['notifications-mark-read', id],
 	markAllRead: ['notifications-mark-all-read'],
 	clearNotifications: ['notifications-clear']
 }
@@ -34,6 +36,28 @@ export const useGetNotifications = () => {
 		notificationsPending,
 		notificationsError
 	}
+}
+
+export const useMarkNotificationRead = () => {
+	const queryClient = useQueryClient()
+	const t = useTranslations()
+
+	const { mutate: markRead } = useMutation<
+		ActionResponse,
+		AxiosError,
+		string
+	>({
+		mutationKey: notificationKeys.markRead(''),
+		mutationFn: markReadApi,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: notificationKeys.all
+			})
+		},
+		onError: err => handleApiError(err, t)
+	})
+
+	return { markRead }
 }
 
 export const useMarkAllRead = () => {

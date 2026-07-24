@@ -83,3 +83,12 @@ export const findCurrentSession = async (): Promise<ISession> => {
 	const response = await authAxios.get(`${API_URL.session()}`)
 	return response.data
 }
+
+export const deleteAccountApi = async (
+	currentPassword: string
+): Promise<ActionResponse> => {
+	const response = await authAxios.post(`${API_URL.account()}delete`, {
+		currentPassword
+	})
+	return response.data
+}

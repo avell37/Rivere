@@ -4,9 +4,10 @@ import { ReportsController } from './reports.controller';
 import { AdminReportsController } from './admin-reports.controller';
 import { CoreModule } from '@/core/core.module';
 import { ChatModule } from '@/modules/chat/chat.module';
+import { BoardModule } from '@/modules/board/board.module';
 
 @Module({
-    imports: [CoreModule, ChatModule],
+    imports: [CoreModule, ChatModule, BoardModule],
     controllers: [ReportsController, AdminReportsController],
     providers: [ReportsService],
 })

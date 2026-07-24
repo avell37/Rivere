@@ -26,6 +26,7 @@ model User {
   isVerified Boolean @default(false) @map("is_verified")
 
   isEmailVerified Boolean @default(false) @map("is_email_verified")
+  emailVerificationReminderAt DateTime? @map("email_verification_reminder_at")
   isTotpEnabled   Boolean @default(false) @map("is_totp_enabled")
   totpSecret      String? @map("totp_secret")
 
@@ -36,7 +37,8 @@ model User {
   userStats             UserStats?
   boards                BoardMember[]
   messages              Message[]
-  boardInvites          BoardInvite[]
+  boardInvitesCreated   BoardInvite[] @relation("BoardInvitesCreated")
+  boardInvitesReceived  BoardInvite[] @relation("BoardInvitesReceived")
   notifications         Notification[]
   activityLogs          ActivityLog[]
   assignedCards         Card[]          @relation("CardAssignee")
@@ -153,7 +155,10 @@ model BoardInvite {
   board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
 
   createdBy String @map("created_by")
-  creator   User   @relation(fields: [createdBy], references: [id])
+  creator   User   @relation("BoardInvitesCreated", fields: [createdBy], references: [id], onDelete: Cascade)
+
+  invitedUserId String? @map("invited_user_id")
+  invitedUser   User?   @relation("BoardInvitesReceived", fields: [invitedUserId], references: [id], onDelete: Cascade)
 
   expiresAt DateTime @map("expires_at")
 
@@ -281,7 +286,9 @@ model Notification {
 
   userId   String
   type     String
-  message  String
+  message  String?
+  messageKey String? @map("message_key")
+  messageParams Json? @map("message_params")
   entityId String?
   read     Boolean @default(false)
 
@@ -343,6 +350,7 @@ enum ReportResolutionAction {
   NONE
   BAN_USER
   DELETE_MESSAGE
+  DELETE_CARD
 }
 
 model Report {

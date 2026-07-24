@@ -14,7 +14,8 @@ export const Notifications = () => {
 		handleMarkAllRead,
 		markAllReadPending,
 		handleClearAll,
-		clearAllPending
+		clearAllPending,
+		handleMarkRead
 	} = useNotifications()
 	const t = useTranslations('notifications')
 
@@ -53,7 +54,10 @@ export const Notifications = () => {
 					<p className='text-sm'>{t('noNotifications')}</p>
 				</div>
 			) : (
-				<NotificationsList notifications={notifications} />
+				<NotificationsList
+					notifications={notifications}
+					onMarkRead={handleMarkRead}
+				/>
 			)}
 		</div>
 	)

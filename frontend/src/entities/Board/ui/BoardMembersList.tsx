@@ -52,6 +52,7 @@ export const BoardMembersList = ({
 							return (
 								<BoardMemberItem
 									key={member.id}
+									currentUserId={user?.id}
 									isDeleteOpen={
 										deleteMemberId === member.userId
 									}

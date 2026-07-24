@@ -1,6 +1,7 @@
 import {
     BadRequestException,
     ConflictException,
+    ForbiddenException,
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
@@ -10,15 +11,16 @@ import { ChangeUsernameInput } from './inputs/change-username.input';
 import { ChangeEmailInput } from './inputs/change-email.input';
 import { ChangePasswordInput } from './inputs/change-password.input';
 import { ChangeNicknameInput } from './inputs/change-nickname';
+import { DeleteAccountInput } from './inputs/delete-account.input';
 import { VerificationService } from '../verification/verification.service';
 import type { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { User } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { FilesService } from '@/modules/files/files.service';
 import { StatisticsService } from '@/modules/statistics/statistics.service';
 import { getSessionMetadata } from '@/shared/utils/session-metadata.util';
-import { saveSession } from '@/shared/utils/session.util';
+import { destroySession, saveSession } from '@/shared/utils/session.util';
 
 @Injectable()
 export class AccountService {
@@ -247,5 +249,83 @@ export class AccountService {
         });
 
         return uploaded;
+    }
+
+    async deleteAccount(req: Request, input: DeleteAccountInput, user: User) {
+        if (user.role === UserRole.ADMIN || user.role === UserRole.CREATOR) {
+            throw new ForbiddenException({
+                code: 'errors.account.cannotDeleteProtectedRole',
+                message: 'Администратор не может удалить свой аккаунт',
+            });
+        }
+
+        const currentUser = await this.prisma.user.findUnique({
+            where: { id: user.id },
+            select: {
+                password: true,
+                avatar: true,
+            },
+        });
+
+        if (!currentUser) {
+            throw new NotFoundException({
+                code: 'errors.account.userNotFound',
+                message: 'Пользователь не найден',
+            });
+        }
+
+        const isValidPassword = await verify(
+            currentUser.password,
+            input.currentPassword,
+        );
+
+        if (!isValidPassword) {
+            throw new BadRequestException({
+                code: 'errors.account.invalidCurrentPassword',
+                message: 'Неверный текущий пароль',
+            });
+        }
+
+        const ownedBoards = await this.prisma.boardMember.findMany({
+            where: {
+                userId: user.id,
+                role: 'OWNER',
+            },
+            select: { boardId: true },
+        });
+
+        await this.prisma.$transaction(async (tx) => {
+            if (ownedBoards.length > 0) {
+                await tx.board.deleteMany({
+                    where: {
+                        id: {
+                            in: ownedBoards.map((board) => board.boardId),
+                        },
+                    },
+                });
+            }
+
+            await tx.boardInvite.deleteMany({
+                where: {
+                    OR: [{ createdBy: user.id }, { invitedUserId: user.id }],
+                },
+            });
+
+            await tx.user.delete({
+                where: { id: user.id },
+            });
+        });
+
+        if (currentUser.avatar) {
+            await this.filesService.delete(user.id, currentUser.avatar);
+        }
+
+        await destroySession(req, this.config);
+
+        return {
+            success: true,
+            code: 'account.deleted',
+            message: 'Аккаунт успешно удалён',
+        };
     }
 }

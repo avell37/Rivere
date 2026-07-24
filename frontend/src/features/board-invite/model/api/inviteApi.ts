@@ -35,3 +35,35 @@ export const declineInvite = async (token: string): Promise<ActionResponse> => {
 	)
 	return response.data
 }
+
+export const searchInviteUsers = async (
+	boardId: string,
+	query: string
+): Promise<{
+	users: Array<{
+		id: string
+		username: string
+		nickname: string
+		avatar?: string | null
+	}>
+}> => {
+	const response = await authAxios.get(
+		`${API_URL.boardInvites()}${boardId}/users/search`,
+		{ params: { q: query } }
+	)
+	return response.data
+}
+
+export const inviteUser = async ({
+	boardId,
+	userId
+}: {
+	boardId: string
+	userId: string
+}): Promise<ActionResponse> => {
+	const response = await authAxios.post(
+		`${API_URL.boardInvites()}${boardId}/invite-user`,
+		{ userId }
+	)
+	return response.data
+}

@@ -1,13 +1,22 @@
 'use client'
 import { MailCheck } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
+import { PRIVATE_URL } from '@/shared/libs'
 import { OtpStep } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 
 import { useVerifyEmail } from '../model/hooks/useVerifyEmail'
 
-export const VerifyEmailForm = ({ onSuccess }: { onSuccess?: () => void }) => {
+export const VerifyEmailForm = ({
+	onSuccess,
+	showSkipLater = false
+}: {
+	onSuccess?: () => void
+	showSkipLater?: boolean
+}) => {
+	const router = useRouter()
 	const {
 		code,
 		setCode,
@@ -46,9 +55,19 @@ export const VerifyEmailForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 						{t('sendToken')}
 					</Button>
 				</p>
-				<span className='text-xs text-muted-foreground my-6'>
+				<span className='text-xs text-muted-foreground'>
 					{t('span')}
 				</span>
+				{showSkipLater && (
+					<Button
+						type='button'
+						variant='link'
+						className='mt-6 text-muted-foreground'
+						onClick={() => router.push(PRIVATE_URL.boards())}
+					>
+						{t('skipLater')}
+					</Button>
+				)}
 			</div>
 		</div>
 	)

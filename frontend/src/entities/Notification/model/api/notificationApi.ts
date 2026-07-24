@@ -9,6 +9,11 @@ export const getUserNotifications = async (): Promise<INotification[]> => {
 	return response.data
 }
 
+export const markReadApi = async (id: string): Promise<ActionResponse> => {
+	const response = await authAxios.patch(`${API_URL.notifications()}${id}/read`)
+	return response.data
+}
+
 export const markAllReadApi = async (): Promise<ActionResponse> => {
 	const response = await authAxios.patch(`${API_URL.notifications()}readAll`)
 	return response.data

@@ -1,6 +1,7 @@
 export * from './model/api/notificationApi'
 
 export * from './model/hooks/useNotificationQueries'
+export * from './model/hooks/useNotificationMessage'
 
 export * from './model/types/INotification'
 export * from './model/types/NotificationProps'

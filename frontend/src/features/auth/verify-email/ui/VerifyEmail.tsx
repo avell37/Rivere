@@ -13,6 +13,7 @@ export const VerifyEmail = () => {
 	return (
 		<AuthWrapper showHeader={false}>
 			<VerifyEmailForm
+				showSkipLater
 				onSuccess={() => router.push(PRIVATE_URL.boards())}
 			/>
 		</AuthWrapper>

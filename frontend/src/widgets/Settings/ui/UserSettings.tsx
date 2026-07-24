@@ -9,6 +9,7 @@ import { Sessions } from '@/features/sessions'
 import {
 	ChangeNicknameForm,
 	ChangeUsernameForm,
+	DeleteAccountForm,
 	useUploadAvatar
 } from '@/features/settings'
 
@@ -145,6 +146,17 @@ export const UserSettings = () => {
 					<div className='flex flex-col gap-4'>
 						<UserSettingsSecurity t={t} user={user} />
 						<Sessions />
+					</div>
+				</div>
+				<div className='flex flex-col gap-4'>
+					<h3 className='text-2xl font-bold text-destructive'>
+						{t('dangerZone.heading')}
+					</h3>
+					<div className='rounded-lg border border-destructive/30 bg-card p-6'>
+						<p className='mb-4 text-sm text-muted-foreground'>
+							{t('dangerZone.summary')}
+						</p>
+						<DeleteAccountForm />
 					</div>
 				</div>
 			</div>

@@ -1,6 +1,6 @@
 'use client'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
-import { memo } from 'react'
+import { memo, Suspense } from 'react'
 
 import { BoardSkeleton, useBoard, useBoardItem } from '@/entities/Board'
 
@@ -9,6 +9,7 @@ import { DndProvider } from '@/features/drag-and-drop'
 import { ColumnList } from '../column/ColumnList'
 import { BoardDragOverlay } from '../overlay/BoardDragOverlay'
 
+import { BoardCardDeepLink } from './BoardCardDeepLink'
 import { BoardHeaderActions } from './BoardHeaderActions'
 
 const BoardComponent = ({ boardId }: { boardId: string }) => {
@@ -34,6 +35,9 @@ const BoardComponent = ({ boardId }: { boardId: string }) => {
 						<DndProvider key={boardId} boardId={boardId}>
 							<ColumnList boardId={boardId} />
 							<BoardDragOverlay />
+							<Suspense fallback={null}>
+								<BoardCardDeepLink boardId={boardId} />
+							</Suspense>
 						</DndProvider>
 					</div>
 				</ScrollArea.Viewport>

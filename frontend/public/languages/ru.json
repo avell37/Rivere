@@ -100,7 +100,8 @@
 			"sendToken": "Отправить код повторно",
 			"submit": "Подтвердить",
 			"sendCode": "Код успешно отправлен!",
-			"successVerified": "Почта успешно подтверждена!"
+			"successVerified": "Почта успешно подтверждена!",
+			"skipLater": "Подтвердить почту позже"
 		},
 		"recoveryPassword": {
 			"heading": "Восстановление пароля",
@@ -218,7 +219,16 @@
 		"title": "Ваши доски:",
 		"favorites": "Ваши избранные доски:",
 		"noBoardsTitle": "Пока нет досок",
-		"noBoardsDescription": "Создай свою первую доску, чтобы начать организовывать задачи и проекты"
+		"noBoardsDescription": "Создай свою первую доску, чтобы начать организовывать задачи и проекты",
+		"searchPlaceholder": "Поиск досок...",
+		"sortPlaceholder": "Сортировка",
+		"noSearchResultsTitle": "Доски не найдены",
+		"noSearchResultsDescription": "Попробуйте другой запрос",
+		"sort": {
+			"updatedDesc": "Недавно обновлённые",
+			"titleAsc": "Название А-Я",
+			"titleDesc": "Название Я-А"
+		}
 	},
 	"board": {
 		"heading": "{name}",
@@ -271,6 +281,7 @@
 			"deleteMemberDescription": "Это действие нельзя отменить, пользователь будет исключен из доски.",
 			"deleteMemberActionText": "Исключить",
 			"deleteMemberCancelText": "Отменить",
+			"reportDescription": "Пожаловаться на пользователя {name}",
 			"leave": {
 				"title": "Покинуть доску",
 				"description": "Вы перестанете видеть эту доску и все её карточки.",
@@ -431,6 +442,15 @@
 		"clearAllNotifications": "Очистить все",
 		"successReaded": "Все уведомления отмечены как прочитанные.",
 		"successCleared": "Уведомления очищены",
+		"messages": {
+			"assignment": "Вас назначили исполнителем карточки: «{cardTitle}»",
+			"deadline": "Истёк дедлайн задачи: «{cardTitle}»",
+			"achievement": "Вы получили достижение: {title}",
+			"boardInvite": "{inviterName, select, empty {Пользователь} other {{inviterName}}} пригласил вас на доску «{boardTitle}»",
+			"boardInviteAccepted": "{nickname, select, empty {Пользователь} other {{nickname}}} принял приглашение в доску: {boardTitle}",
+			"boardInviteDeclined": "{nickname, select, empty {Пользователь} other {{nickname}}} отклонил приглашение в доску: {boardTitle}",
+			"emailVerification": "Подтвердите почту, чтобы защитить аккаунт"
+		},
 		"achievements": {
 			"earned": "Вы получили достижение: {title}"
 		}
@@ -508,6 +528,20 @@
 				"clearSessionsActionText": "Завершить",
 				"clearSessionsCancelText": "Отмена",
 				"lastActive": "{date} в {time}"
+			},
+			"dangerZone": {
+				"heading": "Опасная зона",
+				"summary": "Удаление аккаунта навсегда удалит ваши доски, сообщения и данные профиля.",
+				"deleteButton": "Удалить аккаунт",
+				"title": "Удалить аккаунт?",
+				"description": "Это действие необратимо.",
+				"warning": "Все доски, которыми вы владеете, будут удалены. Вы будете исключены из общих досок.",
+				"passwordLabel": "Текущий пароль",
+				"passwordPlaceholder": "Введите пароль для подтверждения",
+				"confirmAction": "Удалить аккаунт",
+				"cancel": "Отмена",
+				"submitting": "Удаление...",
+				"success": "Аккаунт удалён"
 			}
 		}
 	},
@@ -550,6 +584,17 @@
 		"acceptedInvite": "Вы успешно присоединились к доске!",
 		"canceledInvite": "Вы отклонили приглашение в доску.",
 		"alreadyMember": "Вы уже являетесь участником этой доски",
+		"tabs": {
+			"user": "По пользователю",
+			"link": "По ссылке"
+		},
+		"user": {
+			"searchPlaceholder": "Username, nickname или email",
+			"searchButton": "Найти",
+			"empty": "Пользователи не найдены",
+			"inviteButton": "Пригласить",
+			"invited": "Приглашение отправлено {name}"
+		},
 		"page": {
 			"title": "приглашает вас в доску: {boardName}",
 			"members": "{count, plural, one {# участник} few {# участника} many {# участников} other {# участников}}",
@@ -701,7 +746,8 @@
 			"resolutionAction": {
 				"NONE": "Без санкций",
 				"BAN_USER": "Пользователь заблокирован",
-				"DELETE_MESSAGE": "Сообщение удалено"
+				"DELETE_MESSAGE": "Сообщение удалено",
+				"DELETE_CARD": "Карточка удалена"
 			},
 			"resolve": {
 				"trigger": "Обработать",
@@ -712,6 +758,7 @@
 				"notePlaceholder": "Комментарий для истории (необязательно)",
 				"banSection": "Заблокировать пользователя {username}",
 				"deleteMessageHint": "Сообщение будет скрыто для всех участников чата. Жалоба будет помечена как решённая.",
+				"deleteCardHint": "Карточка будет безвозвратно удалена с доски. Жалоба будет помечена как решённая.",
 				"cancel": "Отмена",
 				"submit": "Применить",
 				"submitting": "Применение...",
@@ -719,7 +766,8 @@
 					"resolveNone": "Закрыть без санкций",
 					"dismiss": "Отклонить жалобу",
 					"banUser": "Заблокировать пользователя",
-					"deleteMessage": "Удалить сообщение"
+					"deleteMessage": "Удалить сообщение",
+					"deleteCard": "Удалить карточку"
 				}
 			},
 			"actions": {
@@ -1006,6 +1054,28 @@
 			"cancel": "Отмена",
 			"submit": "Отправить",
 			"submitting": "Отправка..."
+		},
+		"user": {
+			"title": "Пожаловаться на пользователя",
+			"description": "Жалоба на пользователя {name}",
+			"reasonLabel": "Причина",
+			"reasonPlaceholder": "Опишите, что именно нарушает правила",
+			"detailsLabel": "Дополнительно (необязательно)",
+			"detailsPlaceholder": "Любые детали для модератора",
+			"cancel": "Отмена",
+			"submit": "Отправить",
+			"submitting": "Отправка..."
+		},
+		"card": {
+			"title": "Пожаловаться на карточку",
+			"description": "Жалоба на карточку «{title}»",
+			"reasonLabel": "Причина",
+			"reasonPlaceholder": "Опишите, что именно нарушает правила",
+			"detailsLabel": "Дополнительно (необязательно)",
+			"detailsPlaceholder": "Любые детали для модератора",
+			"cancel": "Отмена",
+			"submit": "Отправить",
+			"submitting": "Отправка..."
 		}
 	},
 	"validation": {
@@ -1076,7 +1146,9 @@
 			"emailExists": "Электронная почта уже занята",
 			"userNotFound": "Пользователь не найден",
 			"notValidCurrentPassword": "Неверный текущий пароль",
-			"passwordSameAsCurrent": "Новый пароль совпадает со старым."
+			"invalidCurrentPassword": "Неверный текущий пароль",
+			"passwordSameAsCurrent": "Новый пароль совпадает со старым.",
+			"cannotDeleteProtectedRole": "Администратор не может удалить свой аккаунт"
 		},
 		"board": {
 			"exists": "У вас уже есть доска с таким названием",
@@ -1086,7 +1158,10 @@
 				"notMember": "Вы не являетесь участником этой доски",
 				"notFound": "Приглашение не найдено",
 				"notValid": "Приглашение истекло",
-				"alreadyMember": "Вы уже являетесь участником этой доски"
+				"alreadyMember": "Вы уже являетесь участником этой доски",
+				"alreadySent": "Приглашение этому пользователю уже отправлено",
+				"notForYou": "Это приглашение предназначено для другого пользователя",
+				"selfInvite": "Нельзя пригласить самого себя"
 			},
 			"members": {
 				"forbidden": "Нет доступа к данной доске."
@@ -1119,7 +1194,8 @@
 			"invalidTarget": "Неподдерживаемый тип жалобы"
 		},
 		"notifications": {
-			"unauthorized": "Вы не авторизованы"
+			"unauthorized": "Вы не авторизованы",
+			"notFound": "Уведомление не найдено"
 		},
 		"session": {
 			"notFound": "Сессия не найдена",

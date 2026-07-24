@@ -19,6 +19,7 @@ import { ResolveReportInput } from './input/resolve-report.input';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { EventsGateway } from '@/core/events.gateway';
 import { ChatGateway } from '@/modules/chat/chat.gateway';
+import { BoardGateway } from '@/modules/board/board.gateway';
 import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 
 @Injectable()
@@ -27,6 +28,7 @@ export class ReportsService {
         private readonly prisma: PrismaService,
         private readonly gateway: EventsGateway,
         private readonly chatGateway: ChatGateway,
+        private readonly boardGateway: BoardGateway,
     ) {}
 
     async createReport(reporterId: string, input: CreateReportInput) {
@@ -229,9 +231,26 @@ export class ReportsService {
             }
         }
 
+        if (action === ReportResolutionAction.DELETE_CARD) {
+            if (input.status !== ReportStatus.RESOLVED) {
+                throw new BadRequestException({
+                    code: 'errors.reports.invalidAction',
+                    message: 'Удаление доступно только при решении жалобы',
+                });
+            }
+
+            if (report.targetType !== ReportTargetType.CARD) {
+                throw new BadRequestException({
+                    code: 'errors.reports.invalidAction',
+                    message: 'Удаление доступно только для жалоб на карточку',
+                });
+            }
+        }
+
         const {
             report: updatedReport,
             deletedMessage,
+            deletedCard,
             bannedUserId,
             banPayload,
         } = await this.prisma.$transaction(async (tx) => {
@@ -239,6 +258,10 @@ export class ReportsService {
                 chatId: string;
                 id: string;
                 deletedAt: Date;
+            } | null = null;
+            let deletedCardResult: {
+                boardId: string;
+                id: string;
             } | null = null;
             let bannedUserIdResult: string | null = null;
             let banPayloadResult: { reason: string; bannedUntil: Date } | null =
@@ -305,6 +328,32 @@ export class ReportsService {
                 };
             }
 
+            if (action === ReportResolutionAction.DELETE_CARD) {
+                const card = await tx.card.findUnique({
+                    where: { id: report.targetId },
+                    select: {
+                        id: true,
+                        column: { select: { boardId: true } },
+                    },
+                });
+
+                if (!card) {
+                    throw new NotFoundException({
+                        code: 'errors.card.notFound',
+                        message: 'Карточка не найдена',
+                    });
+                }
+
+                await tx.card.delete({
+                    where: { id: card.id },
+                });
+
+                deletedCardResult = {
+                    id: card.id,
+                    boardId: card.column.boardId,
+                };
+            }
+
             const updatedReport = await tx.report.update({
                 where: { id: reportId },
                 data: {
@@ -335,6 +384,7 @@ export class ReportsService {
             return {
                 report: updatedReport,
                 deletedMessage: deletedMessageResult,
+                deletedCard: deletedCardResult,
                 bannedUserId: bannedUserIdResult,
                 banPayload: banPayloadResult,
             };
@@ -349,6 +399,10 @@ export class ReportsService {
                 id: deletedMessage.id,
                 deletedAt: deletedMessage.deletedAt.toISOString(),
             });
+        }
+
+        if (deletedCard) {
+            this.boardGateway.cardDeleted(deletedCard.boardId, deletedCard.id);
         }
 
         return updatedReport;
