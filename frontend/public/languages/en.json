@@ -316,6 +316,7 @@
 			"status": "Status",
 			"deadline": "Deadline",
 			"assignee": "Assignee",
+			"tags": "Tags",
 			"all": "All",
 			"active": "Active",
 			"done": "Done",
@@ -326,9 +327,15 @@
 			"noMembers": "No members found",
 			"clear": "Clear"
 		},
+		"search": {
+			"placeholder": "Search cards...",
+			"empty": "No cards found"
+		},
 		"activityLog": {
 			"title": "Activity log:",
 			"empty": "No activity yet.",
+			"loadMore": "Show more",
+			"loadingMore": "Loading...",
 			"at": "at",
 			"actions": {
 				"created": "created {entity} «{title}»",
@@ -427,7 +434,12 @@
 		},
 		"chat": {
 			"inputPlaceholder": "Write a message...",
-			"deletedMessage": "Message removed by a moderator"
+			"deleteMessage": "Delete message",
+			"deleteConfirmTitle": "Delete this message?",
+			"deleteConfirmDescription": "The message will be hidden for everyone in this chat.",
+			"deleteConfirmAction": "Delete",
+			"deleteCancel": "Cancel",
+			"deletedMessage": "Message deleted"
 		},
 		"doneSuccess": "Successfully",
 		"expiresAt": "expires at: {date}",
@@ -440,6 +452,8 @@
 		"clearAllNotifications": "Clear all",
 		"successReaded": "All notifications have been marked as read.",
 		"successCleared": "Notifications cleared",
+		"loadMore": "Show more",
+		"loadingMore": "Loading...",
 		"messages": {
 			"assignment": "You were assigned to card: «{cardTitle}»",
 			"deadline": "Deadline expired for task: «{cardTitle}»",
@@ -509,7 +523,7 @@
 				"confirmPasswordPlaceholder": "Confirm your new password",
 				"passwordModalSubmit": "Change",
 				"passwordModalClose": "Close",
-				"emailChanged": "Email successfully changed!",
+				"emailChanged": "Email changed. A verification code has been sent to your new address.",
 				"nicknameChanged": "Nickname successfully changed!",
 				"passwordChanged": "Password successfully changed!",
 				"usernameChanged": "Username successfully changed!",
@@ -606,7 +620,8 @@
 		"navigationBar": {
 			"statistics": "Statistics",
 			"users": "Users",
-			"reports": "Reports"
+			"reports": "Reports",
+			"audit": "Audit log"
 		},
 		"trendWithPlus": "+{count} for today",
 		"trendWithoutPlus": "{count} for today",
@@ -633,6 +648,7 @@
 			}
 		},
 		"users": {
+			"heading": "Users",
 			"actions": {
 				"userBanned": "User successfully banned!",
 				"userUnbanned": "User successfully unbanned!",
@@ -670,6 +686,8 @@
 				"role": "Role:",
 				"boards": "Total boards:",
 				"emailVerified": "Verified email:",
+				"yes": "Yes",
+				"no": "No",
 				"created": "Created:",
 				"updated": "Last updated:",
 				"statistics": "Statistics:",
@@ -770,6 +788,27 @@
 			},
 			"actions": {
 				"resolved": "Report updated"
+			}
+		},
+		"audit": {
+			"heading": "Admin audit log",
+			"loading": "Loading...",
+			"empty": "No audit entries yet",
+			"adminLabel": "{nickname} (@{username})",
+			"target": "Target: {type} · {id}",
+			"filters": {
+				"action": "Action",
+				"all": "All actions"
+			},
+			"actions": {
+				"BAN_USER": "User banned",
+				"UNBAN_USER": "User unbanned",
+				"ROLE_CHANGE": "Role changed",
+				"REPORT_RESOLVED": "Report resolved",
+				"REPORT_DISMISSED": "Report dismissed",
+				"REPORT_BAN_USER": "User banned via report",
+				"REPORT_DELETE_MESSAGE": "Message deleted via report",
+				"REPORT_DELETE_CARD": "Card deleted via report"
 			}
 		}
 	},
@@ -978,9 +1017,7 @@
 		},
 		"rights": {
 			"heading": "11. Data Subject Rights",
-			"paragraphs": [
-				"11.1. Users have the right to:"
-			],
+			"paragraphs": ["11.1. Users have the right to:"],
 			"items": [
 				"receive information about the processing of their personal data;",
 				"request rectification, blocking, or deletion of personal data if it is incomplete, outdated, inaccurate, or unlawfully processed;",
@@ -1177,7 +1214,9 @@
 		"messages": {
 			"missingFields": "Not all data was provided.",
 			"notFound": "Message not found",
-			"alreadyDeleted": "Message has already been deleted"
+			"alreadyDeleted": "Message has already been deleted",
+			"forbidden": "You cannot delete this message",
+			"invalidChat": "Message does not belong to this chat"
 		},
 		"reports": {
 			"alreadyExists": "You have already reported this item",

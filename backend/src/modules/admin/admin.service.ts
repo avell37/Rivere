@@ -12,12 +12,15 @@ import {
 import { Prisma, UserRole } from '@prisma/client';
 import { EventsGateway } from '@/core/events.gateway';
 import { PrismaService } from '@/core/prisma/prisma.service';
+import { AdminAuditService } from './admin-audit.service';
+import { AdminAuditAction } from '@prisma/client';
 
 @Injectable()
 export class AdminService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly gateway: EventsGateway,
+        private readonly adminAudit: AdminAuditService,
     ) {}
 
     async getAdminStats() {
@@ -180,7 +183,7 @@ export class AdminService {
         };
     }
 
-    async banUser(input: BanUserInput) {
+    async banUser(adminId: string, input: BanUserInput) {
         const { userId, reason, duration, unit } = input;
 
         const user = await this.prisma.user.findUnique({
@@ -228,6 +231,19 @@ export class AdminService {
             bannedUntil,
         });
 
+        await this.adminAudit.log({
+            adminId,
+            action: AdminAuditAction.BAN_USER,
+            targetType: 'USER',
+            targetId: userId,
+            metadata: {
+                reason,
+                duration,
+                unit,
+                bannedUntil: bannedUntil.toISOString(),
+            },
+        });
+
         return {
             success: true,
             code: 'admin.users.actions.userBanned',
@@ -235,7 +251,7 @@ export class AdminService {
         };
     }
 
-    async unbanUser(userId: string) {
+    async unbanUser(adminId: string, userId: string) {
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
         });
@@ -258,6 +274,13 @@ export class AdminService {
 
         this.gateway.emitToUser(userId, 'user:unbanned', {});
 
+        await this.adminAudit.log({
+            adminId,
+            action: AdminAuditAction.UNBAN_USER,
+            targetType: 'USER',
+            targetId: userId,
+        });
+
         return {
             success: true,
             code: 'admin.users.actions.userUnbanned',
@@ -265,7 +288,7 @@ export class AdminService {
         };
     }
 
-    async setUserRole(userId: string, role: UserRole) {
+    async setUserRole(adminId: string, userId: string, role: UserRole) {
         const allowedRoles: UserRole[] = [UserRole.ADMIN, UserRole.USER];
 
         if (!allowedRoles.includes(role)) {
@@ -290,12 +313,25 @@ export class AdminService {
             return true;
         }
 
+        const oldRole = user.role;
+
         await this.prisma.user.update({
             where: { id: userId },
             data: { role },
         });
 
         this.gateway.emitToUser(userId, 'user:roleChanged', { role });
+
+        await this.adminAudit.log({
+            adminId,
+            action: AdminAuditAction.ROLE_CHANGE,
+            targetType: 'USER',
+            targetId: userId,
+            metadata: {
+                oldRole,
+                newRole: role,
+            },
+        });
 
         return {
             success: true,

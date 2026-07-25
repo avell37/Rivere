@@ -162,15 +162,18 @@ export class AccountService {
             });
         }
 
-        await this.prisma.user.update({
+        const updatedUser = await this.prisma.user.update({
             where: {
                 id: user.id,
             },
             data: {
                 email,
                 isEmailVerified: false,
+                emailVerificationReminderAt: null,
             },
         });
+
+        await this.verificationService.sendVerificationToken(updatedUser);
 
         return {
             success: true,

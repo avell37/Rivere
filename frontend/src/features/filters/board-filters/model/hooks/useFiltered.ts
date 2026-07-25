@@ -1,27 +1,30 @@
+'use client'
 import { useMemo } from 'react'
 
 import { ICard } from '@/entities/Card'
 
+import { cardMatchesSearch } from '../lib/cardMatchesSearch'
 import { useBoardFiltersStore } from '../store/useBoardFiltersStore'
 
 export const useFiltered = (columnCards: ICard[]) => {
-	const { search, priorities, status, deadline, assigneeId } =
+	const { search, priorities, tagIds, status, deadline, assigneeId } =
 		useBoardFiltersStore()
 
 	const filteredCards = useMemo(() => {
 		let result = columnCards
 
 		if (search) {
-			const q = search.toLowerCase()
-			result = result.filter(
-				c =>
-					c.title.toLowerCase().includes(q) ||
-					c.description?.toLowerCase().includes(q)
-			)
+			result = result.filter(card => cardMatchesSearch(card, search))
 		}
 
 		if (priorities.length > 0) {
 			result = result.filter(c => priorities.includes(c.priority))
+		}
+
+		if (tagIds.length > 0) {
+			result = result.filter(c =>
+				c.tags?.some(tag => tagIds.includes(tag.id))
+			)
 		}
 
 		if (status === 'active') result = result.filter(c => !c.done)
@@ -54,11 +57,12 @@ export const useFiltered = (columnCards: ICard[]) => {
 		}
 
 		return result
-	}, [columnCards, search, priorities, status, deadline, assigneeId])
+	}, [columnCards, search, priorities, tagIds, status, deadline, assigneeId])
 
 	const isFiltered =
 		search !== '' ||
 		priorities.length > 0 ||
+		tagIds.length > 0 ||
 		status !== 'all' ||
 		deadline !== 'all' ||
 		assigneeId !== null

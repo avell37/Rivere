@@ -16,7 +16,7 @@ import {
 	SelectValue
 } from '@/shared/ui/external'
 
-import { buildAdminUsersQuery } from '../model/lib/admin-users-query'
+import { toAdminUsersUrl } from '../model/lib/admin-users-query'
 import { AdminUsersFilters } from '../model/types/AdminUserTypes'
 
 export const UserAdminFilters = ({
@@ -30,11 +30,11 @@ export const UserAdminFilters = ({
 
 	const pushFilters = (patch: Partial<AdminUsersFilters>) => {
 		router.push(
-			`?${buildAdminUsersQuery({
+			toAdminUsersUrl({
 				...filters,
 				page: 1,
 				...patch
-			})}`
+			})
 		)
 	}
 

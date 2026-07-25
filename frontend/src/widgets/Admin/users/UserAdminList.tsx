@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 
 import { AdminUsersFilters, UsersResponse } from '@/features/admin'
-import { buildAdminUsersQuery } from '@/features/admin/users/model/lib/admin-users-query'
+import { toAdminUsersUrl } from '@/features/admin/users/model/lib/admin-users-query'
 
 import { CustomPagination } from '@/shared/ui/custom'
 import {
@@ -72,7 +72,7 @@ export const UserAdminList = ({
 				page={data.page}
 				totalPages={data.totalPages}
 				buildPageHref={page =>
-					`?${buildAdminUsersQuery({ ...filters, page })}`
+					toAdminUsersUrl({ ...filters, page })
 				}
 			/>
 		</div>

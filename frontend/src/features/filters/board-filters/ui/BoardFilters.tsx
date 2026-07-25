@@ -1,17 +1,20 @@
 'use client'
 import { Search, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useMemo } from 'react'
 
-import { useGetAllBoardMembers } from '@/entities/Board'
+import { useBoardStore, useGetAllBoardMembers } from '@/entities/Board'
+import { ICardTag } from '@/entities/Card'
 
 import { S3_URL } from '@/shared/libs'
 import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
+	Button,
+	Input,
 	Separator
 } from '@/shared/ui/external'
-import { Button, Input } from '@/shared/ui/external'
 import { cn } from '@/shared/utils'
 
 import {
@@ -25,25 +28,41 @@ import {
 	useHasActiveFilters
 } from '../model/store/useBoardFiltersStore'
 
-interface BoardFiltersProps {
-	boardId: string
-}
-
-export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
+export const BoardFilters = ({ boardId }: { boardId: string }) => {
 	const t = useTranslations()
 	const {
 		search,
 		priorities,
+		tagIds,
 		status,
 		deadline,
 		assigneeId,
 		setSearch,
 		togglePriority,
+		toggleTagId,
 		setStatus,
 		setDeadline,
 		setAssigneeId,
 		reset
 	} = useBoardFiltersStore()
+
+	const columns = useBoardStore(state => state.columns)
+
+	const boardTags = useMemo(() => {
+		const tags = new Map<string, ICardTag>()
+
+		for (const column of columns) {
+			for (const card of column.cards) {
+				for (const tag of card.tags ?? []) {
+					tags.set(tag.id, tag)
+				}
+			}
+		}
+
+		return Array.from(tags.values()).sort((a, b) =>
+			a.title.localeCompare(b.title)
+		)
+	}, [columns])
 
 	const hasActive = useHasActiveFilters()
 	const activeCount = useActiveFiltersCount()
@@ -69,8 +88,11 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 				<div className='flex gap-1.5'>
 					{PRIORITIES.map(
 						({ value, labelKey, baseClass, activeClass }) => (
-							<button
+							<Button
 								key={value}
+								type='button'
+								variant='none'
+								size='none'
 								onClick={() => togglePriority(value)}
 								className={cn(
 									'flex-1 px-2 py-1 rounded-md border text-xs font-medium transition-all',
@@ -81,11 +103,41 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 								)}
 							>
 								{t(labelKey)}
-							</button>
+							</Button>
 						)
 					)}
 				</div>
 			</div>
+			{boardTags.length > 0 && (
+				<>
+					<Separator />
+					<div className='flex flex-col gap-1.5'>
+						<p className='text-xs font-medium text-muted-foreground uppercase tracking-wide'>
+							{t('board.filters.tags')}
+						</p>
+						<div className='flex flex-wrap gap-1.5'>
+							{boardTags.map(tag => (
+								<Button
+									key={tag.id}
+									type='button'
+									variant='none'
+									size='none'
+									onClick={() => toggleTagId(tag.id)}
+									className={cn(
+										'rounded-md px-2 py-1 text-xs font-medium transition-all border',
+										tagIds.includes(tag.id)
+											? 'border-primary/40 ring-1 ring-primary/30'
+											: 'border-transparent opacity-80 hover:opacity-100'
+									)}
+									style={{ backgroundColor: tag.background }}
+								>
+									{tag.title}
+								</Button>
+							))}
+						</div>
+					</div>
+				</>
+			)}
 			<Separator />
 			<div className='flex flex-col gap-1.5'>
 				<p className='text-xs font-medium text-muted-foreground uppercase tracking-wide'>
@@ -93,8 +145,11 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 				</p>
 				<div className='flex rounded-md border overflow-hidden'>
 					{STATUS_OPTIONS.map(({ value, labelKey }) => (
-						<button
+						<Button
 							key={value}
+							type='button'
+							variant='none'
+							size='none'
 							onClick={() => setStatus(value)}
 							className={cn(
 								'flex-1 py-1 text-xs font-medium transition-colors',
@@ -104,7 +159,7 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 							)}
 						>
 							{t(labelKey)}
-						</button>
+						</Button>
 					))}
 				</div>
 			</div>
@@ -115,8 +170,11 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 				</p>
 				<div className='flex flex-col gap-0.5'>
 					{DEADLINE_OPTIONS.map(({ value, labelKey }) => (
-						<button
+						<Button
 							key={value}
+							type='button'
+							variant='none'
+							size='none'
 							onClick={() => setDeadline(value)}
 							className={cn(
 								'px-2 py-1.5 rounded-md text-xs text-left transition-colors',
@@ -126,7 +184,7 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 							)}
 						>
 							{t(labelKey)}
-						</button>
+						</Button>
 					))}
 				</div>
 			</div>
@@ -139,8 +197,11 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 						</p>
 						<div className='flex flex-wrap gap-1.5'>
 							{boardMembers.map(member => (
-								<button
+								<Button
 									key={member.userId}
+									type='button'
+									variant='none'
+									size='none'
 									onClick={() =>
 										setAssigneeId(
 											assigneeId === member.userId
@@ -167,7 +228,7 @@ export const BoardFilters = ({ boardId }: BoardFiltersProps) => {
 										</AvatarFallback>
 									</Avatar>
 									<span>{member.user.nickname}</span>
-								</button>
+								</Button>
 							))}
 						</div>
 					</div>

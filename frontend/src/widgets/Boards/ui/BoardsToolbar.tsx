@@ -12,8 +12,7 @@ import {
 	SelectValue
 } from '@/shared/ui/external'
 
-import { BoardsSortOption } from '../model/lib/filterAndSortBoards'
-import { BoardsToolbarProps } from '../model/types/BoardsProps'
+import { BoardsSortOption, BoardsToolbarProps } from '../model/types/BoardsProps'
 
 export const BoardsToolbar = ({
 	search,

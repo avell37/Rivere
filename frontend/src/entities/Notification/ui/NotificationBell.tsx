@@ -4,8 +4,7 @@ import { Bell } from 'lucide-react'
 import { useGetNotifications } from '../model/hooks/useNotificationQueries'
 
 export const NotificationBell = () => {
-	const { notifications } = useGetNotifications()
-	const unreadCount = notifications.filter(not => !not.read).length
+	const { unreadCount } = useGetNotifications()
 
 	return (
 		<div className='relative p-2 rounded hover:bg-muted transition'>

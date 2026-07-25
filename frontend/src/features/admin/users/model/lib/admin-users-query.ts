@@ -1,23 +1,15 @@
+import { ADMIN_URL } from '@/shared/libs'
+import { parsePageParam } from '@/shared/utils'
+
 import { AdminUsersFilters } from '@/features/admin/users/model/types/AdminUserTypes'
 
-export const buildAdminUsersQuery = (filters: AdminUsersFilters) => {
-	const params = new URLSearchParams()
-	params.set('page', String(filters.page))
-
-	if (filters.search?.trim()) {
-		params.set('search', filters.search.trim())
-	}
-
-	if (filters.role && filters.role !== 'all') {
-		params.set('role', filters.role)
-	}
-
-	if (filters.status && filters.status !== 'all') {
-		params.set('status', filters.status)
-	}
-
-	return params.toString()
-}
+export const toAdminUsersUrl = (filters: AdminUsersFilters) =>
+	ADMIN_URL.adminUsers({
+		page: filters.page,
+		search: filters.search,
+		role: filters.role,
+		status: filters.status
+	})
 
 export const parseAdminUsersFilters = (
 	searchParams: URLSearchParams
@@ -26,7 +18,7 @@ export const parseAdminUsersFilters = (
 	const status = searchParams.get('status')
 
 	return {
-		page: Number(searchParams.get('page')) || 1,
+		page: parsePageParam(searchParams),
 		search: searchParams.get('search') || undefined,
 		role:
 			role === 'USER' || role === 'ADMIN' || role === 'CREATOR'

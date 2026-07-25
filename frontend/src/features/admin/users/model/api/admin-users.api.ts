@@ -2,12 +2,12 @@ import { authAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
 import { ActionResponse } from '@/shared/types'
 
+import { toAdminUsersUrl } from '../lib/admin-users-query'
 import {
 	AdminUsersFilters,
 	BanUserInput,
 	UsersResponse
 } from '../types/AdminUserTypes'
-import { buildAdminUsersQuery } from '../lib/admin-users-query'
 
 export const getAllUsers = async (
 	filters: AdminUsersFilters
@@ -29,7 +29,7 @@ export const getAllUsers = async (
 }
 
 export const getAdminUsersPath = (filters: AdminUsersFilters) =>
-	`/admin/users?${buildAdminUsersQuery(filters)}`
+	toAdminUsersUrl(filters)
 
 export const banUser = async (data: BanUserInput): Promise<ActionResponse> => {
 	const response = await authAxios.post(`${API_URL.admin()}ban`, data)

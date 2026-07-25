@@ -1,6 +1,6 @@
 import z from 'zod'
 
-import { BanDurationUnit } from '../types/AdminUserTypes'
+import { BanDurationUnit } from '@/shared/ui/custom'
 
 export const BanUserSchema = z.object({
 	reason: z.string().min(1, { message: 'validation.admin.reason.min' }),

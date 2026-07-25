@@ -1,7 +1,7 @@
 'use client'
 import { Link, Settings } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { memo } from 'react'
+import { memo, Suspense } from 'react'
 
 import {
 	BoardFavoriteButton,
@@ -17,6 +17,7 @@ import { Button } from '@/shared/ui/external'
 import { BoardPermission } from '@/shared/utils'
 
 import { BoardActions } from './BoardActions'
+import { BoardCardSearch } from './BoardCardSearch'
 import { BoardSettings } from './BoardSettings'
 
 const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
@@ -25,6 +26,9 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 
 	return (
 		<div className='flex items-center gap-2'>
+			<Suspense fallback={null}>
+				<BoardCardSearch />
+			</Suspense>
 			<BoardFavoriteButton
 				boardId={board.id}
 				isFavorite={board.isFavorite}

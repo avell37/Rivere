@@ -1,11 +1,15 @@
 'use client'
 
+import { Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 
 import { UserAvatar } from '@/entities/User'
 
-import { ReportMessageButton } from '@/features/reports/ui/ReportMessageButton'
+import { ReportMessageButton } from '@/features/reports'
 
+import { Alert } from '@/shared/ui/custom'
+import { Button } from '@/shared/ui/external'
 import { formatTime } from '@/shared/utils'
 
 import { ChatUserMessageProps } from '../model/types/IChat'
@@ -13,11 +17,19 @@ import { ChatUserMessageProps } from '../model/types/IChat'
 export const ChatUserMessage = ({
 	message,
 	locale,
-	currentUserId
+	currentUserId,
+	onDelete
 }: ChatUserMessageProps) => {
 	const t = useTranslations('card.chat')
+	const [deleteOpen, setDeleteOpen] = useState(false)
 
 	const isDeleted = Boolean(message.deletedAt)
+	const isOwnMessage = message.userId === currentUserId
+
+	const handleDeleteConfirm = () => {
+		onDelete?.(message.id)
+		setDeleteOpen(false)
+	}
 
 	return (
 		<div className='group flex min-w-0 gap-3'>
@@ -38,11 +50,37 @@ export const ChatUserMessage = ({
 					</span>
 
 					{!isDeleted && (
-						<div className='ml-auto shrink-0 opacity-0 transition-opacity group-hover:opacity-100'>
-							<ReportMessageButton
-								message={message}
-								currentUserId={currentUserId}
-							/>
+						<div className='ml-auto flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100'>
+							{isOwnMessage ? (
+								<>
+									<Button
+										type='button'
+										variant='none'
+										size='none'
+										className='text-muted-foreground transition-colors hover:text-destructive'
+										title={t('deleteMessage')}
+										onClick={() => setDeleteOpen(true)}
+									>
+										<Trash2 className='size-3.5' />
+									</Button>
+									<Alert
+										open={deleteOpen}
+										onOpenChange={setDeleteOpen}
+										title={t('deleteConfirmTitle')}
+										description={t(
+											'deleteConfirmDescription'
+										)}
+										actionText={t('deleteConfirmAction')}
+										cancelText={t('deleteCancel')}
+										onSubmit={handleDeleteConfirm}
+									/>
+								</>
+							) : (
+								<ReportMessageButton
+									message={message}
+									currentUserId={currentUserId}
+								/>
+							)}
 						</div>
 					)}
 				</div>

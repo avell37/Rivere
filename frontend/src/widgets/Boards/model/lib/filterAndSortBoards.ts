@@ -1,12 +1,11 @@
-import { IBoard } from '@/entities/Board'
+'use client'
+import { BoardsSortOption, FilterableBoard } from '../types/BoardsProps'
 
-export type BoardsSortOption = 'updatedDesc' | 'titleAsc' | 'titleDesc'
-
-export const filterAndSortBoards = (
-	boards: IBoard[],
+export const filterAndSortBoards = <T extends FilterableBoard>(
+	boards: T[],
 	search: string,
 	sort: BoardsSortOption
-) => {
+): T[] => {
 	const normalizedSearch = search.trim().toLowerCase()
 
 	const filtered = normalizedSearch

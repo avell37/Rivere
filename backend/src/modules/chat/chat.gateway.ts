@@ -128,6 +128,44 @@ export class ChatGateway {
         }
     }
 
+    @SubscribeMessage('message:delete')
+    async handleDeleteMessage(
+        @MessageBody()
+        { messageId, chatId }: { messageId: string; chatId: string },
+        @ConnectedSocket() client: Socket,
+    ) {
+        const userId = getSocketUserId(client);
+
+        if (!userId) {
+            client.disconnect();
+            return;
+        }
+
+        try {
+            await checkBoardAccess({
+                prisma: this.prisma,
+                userId,
+                chatId,
+            });
+
+            const result = await this.messagesService.softDelete(
+                messageId,
+                userId,
+                chatId,
+            );
+
+            this.emitMessageDeleted(result.chatId, {
+                id: result.id,
+                deletedAt: result.deletedAt.toISOString(),
+            });
+        } catch (err) {
+            console.error('Error deleting message:', err);
+            client.emit('message:error', {
+                error: 'Failed to delete message',
+            });
+        }
+    }
+
     emitMessageDeleted(
         chatId: string,
         payload: { id: string; deletedAt: string },

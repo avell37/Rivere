@@ -36,3 +36,5 @@ export interface IActivityLogResponse {
 	items: IActivityLog[]
 	total: number
 }
+
+export const ACTIVITY_LOG_PAGE_SIZE = 20

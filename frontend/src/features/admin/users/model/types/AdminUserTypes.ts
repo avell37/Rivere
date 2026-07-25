@@ -1,11 +1,9 @@
 import { IAdminUser, UserRole } from '@/entities/User'
 
-export interface UsersResponse {
-	users: IAdminUser[]
-	total: number
-	page: number
-	totalPages: number
-}
+import { PaginatedResponse } from '@/shared/types'
+import { BanDurationUnit } from '@/shared/ui/custom'
+
+export type UsersResponse = PaginatedResponse<IAdminUser, 'users'>
 
 export type AdminUsersStatusFilter = 'all' | 'banned'
 
@@ -14,13 +12,6 @@ export interface AdminUsersFilters {
 	search?: string
 	role?: UserRole | 'all'
 	status?: AdminUsersStatusFilter
-}
-
-export enum BanDurationUnit {
-	SECONDS = 'seconds',
-	MINUTES = 'minutes',
-	HOURS = 'hours',
-	DAYS = 'days'
 }
 
 export interface BanUserInput {

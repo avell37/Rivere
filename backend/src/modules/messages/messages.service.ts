@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
@@ -49,12 +50,13 @@ export class MessagesService {
         });
     }
 
-    async softDelete(messageId: string) {
+    async softDelete(messageId: string, userId: string, chatId: string) {
         const message = await this.prisma.message.findUnique({
             where: { id: messageId },
             select: {
                 id: true,
                 chatId: true,
+                userId: true,
                 deletedAt: true,
             },
         });
@@ -63,6 +65,20 @@ export class MessagesService {
             throw new NotFoundException({
                 code: 'errors.messages.notFound',
                 message: 'Сообщение не найдено',
+            });
+        }
+
+        if (message.chatId !== chatId) {
+            throw new BadRequestException({
+                code: 'errors.messages.invalidChat',
+                message: 'Сообщение не принадлежит этому чату',
+            });
+        }
+
+        if (message.userId !== userId) {
+            throw new ForbiddenException({
+                code: 'errors.messages.forbidden',
+                message: 'Нельзя удалить чужое сообщение',
             });
         }
 

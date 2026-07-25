@@ -10,11 +10,11 @@ import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
+	Button,
 	PopoverContent,
 	PopoverMain,
 	PopoverTrigger
 } from '@/shared/ui/external'
-import { Button } from '@/shared/ui/external'
 import { cn } from '@/shared/utils'
 
 import { useUpdateCard } from '../model/hooks/useUpdateCard'
@@ -58,8 +58,10 @@ export const EditableAssignee = ({
 			<div className='flex items-center gap-2'>
 				<PopoverMain>
 					<PopoverTrigger asChild>
-						<button
+						<Button
 							type='button'
+							variant='none'
+							size='none'
 							disabled={isLoading || membersPending}
 							className={cn(
 								'flex items-center gap-2 px-3 py-1.5 rounded-md border text-sm transition-colors',
@@ -92,14 +94,16 @@ export const EditableAssignee = ({
 									</span>
 								</>
 							)}
-						</button>
+						</Button>
 					</PopoverTrigger>
 					<PopoverContent className='w-56 p-1' align='start'>
 						<div className='flex flex-col gap-0.5'>
 							{boardMembers.map(member => (
-								<button
+								<Button
 									key={member.userId}
 									type='button'
+									variant='none'
+									size='none'
 									onClick={() => handleSelect(member.userId)}
 									className={cn(
 										'flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors w-full text-left',
@@ -125,7 +129,7 @@ export const EditableAssignee = ({
 									{assigneeId === member.userId && (
 										<UserCheck className='ml-auto size-3.5 text-primary flex-shrink-0' />
 									)}
-								</button>
+								</Button>
 							))}
 							{boardMembers.length === 0 && (
 								<p className='px-2 py-1.5 text-xs text-muted-foreground'>

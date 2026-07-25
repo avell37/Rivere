@@ -317,6 +317,7 @@
 			"status": "Статус",
 			"deadline": "Дедлайн",
 			"assignee": "Исполнитель",
+			"tags": "Теги",
 			"all": "Все",
 			"active": "Активные",
 			"done": "Выполненные",
@@ -327,9 +328,15 @@
 			"noMembers": "Участники не найдены",
 			"clear": "Сбросить"
 		},
+		"search": {
+			"placeholder": "Поиск карточек...",
+			"empty": "Карточки не найдены"
+		},
 		"activityLog": {
 			"title": "Журнал активности:",
 			"empty": "Активности пока нет.",
+			"loadMore": "Показать ещё",
+			"loadingMore": "Загрузка...",
 			"at": "в",
 			"actions": {
 				"created": "создал(а) {entity} «{title}»",
@@ -429,7 +436,12 @@
 		},
 		"chat": {
 			"inputPlaceholder": "Написать сообщение...",
-			"deletedMessage": "Сообщение удалено модератором"
+			"deleteMessage": "Удалить сообщение",
+			"deleteConfirmTitle": "Удалить сообщение?",
+			"deleteConfirmDescription": "Сообщение будет скрыто для всех участников этого чата.",
+			"deleteConfirmAction": "Удалить",
+			"deleteCancel": "Отмена",
+			"deletedMessage": "Сообщение удалено"
 		},
 		"doneSuccess": "Успешно",
 		"expiresAt": "до: {date}",
@@ -442,6 +454,8 @@
 		"clearAllNotifications": "Очистить все",
 		"successReaded": "Все уведомления отмечены как прочитанные.",
 		"successCleared": "Уведомления очищены",
+		"loadMore": "Показать ещё",
+		"loadingMore": "Загрузка...",
 		"messages": {
 			"assignment": "Вас назначили исполнителем карточки: «{cardTitle}»",
 			"deadline": "Истёк дедлайн задачи: «{cardTitle}»",
@@ -511,7 +525,7 @@
 				"confirmPasswordPlaceholder": "Подтвердите новый пароль",
 				"passwordModalSubmit": "Изменить",
 				"passwordModalClose": "Закрыть",
-				"emailChanged": "Почта успешно изменена!",
+				"emailChanged": "Почта изменена. Код подтверждения отправлен на новый адрес.",
 				"nicknameChanged": "Никнейм успешно изменен!",
 				"passwordChanged": "Пароль успешно изменен!",
 				"usernameChanged": "Имя пользователя успешно изменено!",
@@ -608,7 +622,8 @@
 		"navigationBar": {
 			"statistics": "Статистика",
 			"users": "Пользователи",
-			"reports": "Жалобы"
+			"reports": "Жалобы",
+			"audit": "Журнал действий"
 		},
 		"trendWithPlus": "+{count} за сегодня",
 		"trendWithoutPlus": "{count} за сегодня",
@@ -635,6 +650,7 @@
 			}
 		},
 		"users": {
+			"heading": "Пользователи",
 			"actions": {
 				"userBanned": "Пользователь успешно заблокирован!",
 				"userUnbanned": "Пользователь успешно разблокирован!",
@@ -672,6 +688,8 @@
 				"role": "Роль:",
 				"boards": "Всего досок:",
 				"emailVerified": "Подтвержденная почта:",
+				"yes": "Да",
+				"no": "Нет",
 				"created": "Создан:",
 				"updated": "Последнее обновление:",
 				"statistics": "Статистика:",
@@ -772,6 +790,27 @@
 			},
 			"actions": {
 				"resolved": "Жалоба обработана"
+			}
+		},
+		"audit": {
+			"heading": "Журнал действий админов",
+			"loading": "Загрузка...",
+			"empty": "Записей пока нет",
+			"adminLabel": "{nickname} (@{username})",
+			"target": "Цель: {type} · {id}",
+			"filters": {
+				"action": "Действие",
+				"all": "Все действия"
+			},
+			"actions": {
+				"BAN_USER": "Пользователь заблокирован",
+				"UNBAN_USER": "Пользователь разблокирован",
+				"ROLE_CHANGE": "Роль изменена",
+				"REPORT_RESOLVED": "Жалоба решена",
+				"REPORT_DISMISSED": "Жалоба отклонена",
+				"REPORT_BAN_USER": "Бан через жалобу",
+				"REPORT_DELETE_MESSAGE": "Удаление сообщения через жалобу",
+				"REPORT_DELETE_CARD": "Удаление карточки через жалобу"
 			}
 		}
 	},
@@ -980,9 +1019,7 @@
 		},
 		"rights": {
 			"heading": "11. Права субъекта персональных данных",
-			"paragraphs": [
-				"11.1. Пользователь имеет право:"
-			],
+			"paragraphs": ["11.1. Пользователь имеет право:"],
 			"items": [
 				"получать информацию об обработке своих персональных данных;",
 				"требовать уточнения, блокирования или уничтожения персональных данных, если они являются неполными, устаревшими, неточными или обрабатываются незаконно;",
@@ -1179,7 +1216,9 @@
 		"messages": {
 			"missingFields": "Не все данные были предоставлены.",
 			"notFound": "Сообщение не найдено",
-			"alreadyDeleted": "Сообщение уже удалено"
+			"alreadyDeleted": "Сообщение уже удалено",
+			"forbidden": "Нельзя удалить это сообщение",
+			"invalidChat": "Сообщение не принадлежит этому чату"
 		},
 		"reports": {
 			"alreadyExists": "Вы уже отправили жалобу на этот объект",

@@ -4,7 +4,8 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { BanDurationUnit } from '../types/AdminUserTypes'
+import { BanDurationUnit } from '@/shared/ui/custom'
+
 import {
 	BanUserFormValues,
 	BanUserSchema

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
@@ -8,13 +8,18 @@ import { toast } from 'sonner'
 import { ActionResponse } from '@/shared/types'
 import { handleApiError } from '@/shared/utils'
 
+import { createAdminListQuery } from '../../../model/hooks/createAdminListQuery'
 import {
 	banUser,
 	getAllUsers,
 	setUserRole,
 	unbanUser
 } from '../api/admin-users.api'
-import { AdminUsersFilters, BanUserInput, UsersResponse } from '../types/AdminUserTypes'
+import {
+	AdminUsersFilters,
+	BanUserInput,
+	UsersResponse
+} from '../types/AdminUserTypes'
 
 export const adminKeys = {
 	allUsers: () => ['get-all-users'],
@@ -30,19 +35,13 @@ export const adminKeys = {
 	changeRole: (userId: string) => ['change-role-user', userId]
 }
 
-export const useGetAllUsers = (filters: AdminUsersFilters) => {
-	const { data, isLoading, error } = useQuery<UsersResponse, AxiosError>({
-		queryKey: adminKeys.allUsersPage(filters),
-		queryFn: () => getAllUsers(filters),
-		placeholderData: prev => prev
-	})
-
-	return {
-		data,
-		isLoading,
-		error
-	}
-}
+export const useGetAllUsers = createAdminListQuery<
+	UsersResponse,
+	AdminUsersFilters
+>({
+	queryKey: adminKeys.allUsersPage,
+	queryFn: getAllUsers
+})
 
 export const useSetBanUser = (userId: string) => {
 	const t = useTranslations()

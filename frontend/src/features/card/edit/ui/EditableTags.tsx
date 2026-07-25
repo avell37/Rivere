@@ -80,15 +80,17 @@ export const EditableTags = ({ cardId, tags, t }: EditableTagsProps) => {
 							style={{ backgroundColor: tag.background }}
 						>
 							{tag.title}
-							<button
+							<Button
 								type='button'
+								variant='none'
+								size='none'
 								className='ml-1 opacity-80 hover:opacity-100'
 								onClick={() => handleRemoveTag(tag.id)}
 								disabled={updateCardPending}
 								aria-label={t('removeTag')}
 							>
 								×
-							</button>
+							</Button>
 						</Badge>
 					))}
 				</div>
@@ -98,9 +100,11 @@ export const EditableTags = ({ cardId, tags, t }: EditableTagsProps) => {
 				<div className='flex flex-col gap-2'>
 					<div className='flex gap-2'>
 						{TAG_COLORS.map(color => (
-							<button
+							<Button
 								key={color}
 								type='button'
+								variant='none'
+								size='none'
 								className={cn(
 									'size-5 rounded-full border-2 transition',
 									selectedColor === color

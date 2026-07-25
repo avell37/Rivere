@@ -2,10 +2,18 @@ import { authAxios } from '@/shared/api/interceptors'
 import { API_URL } from '@/shared/libs'
 import { ActionResponse } from '@/shared/types'
 
-import { INotification } from '../types/INotification'
+import {
+	INotificationsResponse,
+	NOTIFICATIONS_PAGE_SIZE
+} from '../types/INotification'
 
-export const getUserNotifications = async (): Promise<INotification[]> => {
-	const response = await authAxios.get(`${API_URL.notifications()}`)
+export const getUserNotifications = async (
+	limit = NOTIFICATIONS_PAGE_SIZE,
+	offset = 0
+): Promise<INotificationsResponse> => {
+	const response = await authAxios.get(
+		`${API_URL.notifications()}?limit=${limit}&offset=${offset}`
+	)
 	return response.data
 }
 

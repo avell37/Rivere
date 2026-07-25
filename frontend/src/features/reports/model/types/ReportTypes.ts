@@ -1,6 +1,12 @@
+import { PaginatedResponse } from '@/shared/types'
+
 export type ReportTargetType = 'MESSAGE' | 'USER' | 'CARD'
 export type ReportStatus = 'OPEN' | 'RESOLVED' | 'DISMISSED'
-export type ReportResolutionAction = 'NONE' | 'BAN_USER' | 'DELETE_MESSAGE'
+export type ReportResolutionAction =
+	| 'NONE'
+	| 'BAN_USER'
+	| 'DELETE_MESSAGE'
+	| 'DELETE_CARD'
 
 export interface CreateReportInput {
 	targetType: ReportTargetType
@@ -34,12 +40,7 @@ export interface IReport {
 	updatedAt: string
 }
 
-export interface ReportsResponse {
-	reports: IReport[]
-	total: number
-	page: number
-	totalPages: number
-}
+export type ReportsResponse = PaginatedResponse<IReport, 'reports'>
 
 export type ReportFormNamespace = 'message' | 'user' | 'card'
 

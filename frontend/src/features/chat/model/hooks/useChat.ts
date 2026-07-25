@@ -88,6 +88,18 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		setMessage('')
 	}, [user, chatId, message])
 
+	const handleDeleteMessage = useCallback(
+		(messageId: string) => {
+			if (!socketRef.current || !chatId) return
+
+			socketRef.current.emit('message:delete', {
+				messageId,
+				chatId
+			})
+		},
+		[chatId]
+	)
+
 	const handleEmojiClick = (emojiData: EmojiData) => {
 		setMessage(prev => (prev || '') + emojiData.native)
 	}
@@ -106,6 +118,7 @@ export const useChat = ({ cardId }: { cardId: string }) => {
 		showEmoji,
 		handleKeySubmitMessage,
 		handleSubmitMessage,
+		handleDeleteMessage,
 		handleEmojiClick,
 		setMessage,
 		setShowEmoji

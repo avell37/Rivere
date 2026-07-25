@@ -1,15 +1,8 @@
-import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { createPrivatePageMetadata } from '@/shared/libs'
 
 import { Boards } from '@/widgets'
 
-export async function generateMetadata(): Promise<Metadata> {
-	const t = await getTranslations('boards')
-
-	return {
-		title: t('heading')
-	}
-}
+export const generateMetadata = () => createPrivatePageMetadata('boards')
 
 export default function BoardsPage() {
 	return <Boards />

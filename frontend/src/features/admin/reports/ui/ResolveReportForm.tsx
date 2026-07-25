@@ -1,27 +1,16 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useMemo } from 'react'
-
-import { IReport } from '@/features/reports'
 
 import {
-	FormInputController,
+	BanDurationFields,
 	FormSelectController,
 	FormTextareaController
 } from '@/shared/ui/custom'
 import { Button, Form } from '@/shared/ui/external'
 
-import { banDurationOptions } from '../../users/model/lib/banOptionts'
+import { useResolveReportForm } from '../model/hooks/useResolveReportForm'
 import { ResolveReportFormProps } from '../model/types/ResolveReportProps'
-import { ResolveReportDecision } from '../model/validation/resolve-report.z.validation'
-
-const canBanUser = (report: IReport) =>
-	Boolean(
-		report.reportedUser &&
-		report.reportedUser.role !== 'ADMIN' &&
-		report.reportedUser.role !== 'CREATOR'
-	)
 
 export const ResolveReportForm = ({
 	report,
@@ -31,38 +20,10 @@ export const ResolveReportForm = ({
 	onCancel
 }: ResolveReportFormProps) => {
 	const t = useTranslations('admin.reports.resolve')
-	const tBan = useTranslations('admin.users.banModal')
-	const decision = form.watch('decision')
-
-	const decisionOptions = useMemo(() => {
-		const options: { value: ResolveReportDecision; label: string }[] = [
-			{ value: 'RESOLVE_NONE', label: t('decisions.resolveNone') },
-			{ value: 'DISMISS', label: t('decisions.dismiss') }
-		]
-
-		if (canBanUser(report)) {
-			options.push({
-				value: 'BAN_USER',
-				label: t('decisions.banUser')
-			})
-		}
-
-		if (report.targetType === 'MESSAGE') {
-			options.push({
-				value: 'DELETE_MESSAGE',
-				label: t('decisions.deleteMessage')
-			})
-		}
-
-		if (report.targetType === 'CARD') {
-			options.push({
-				value: 'DELETE_CARD',
-				label: t('decisions.deleteCard')
-			})
-		}
-
-		return options
-	}, [report, t])
+	const { tBan, decisionOptions, decision } = useResolveReportForm({
+		report,
+		form
+	})
 
 	return (
 		<Form {...form}>
@@ -94,30 +55,14 @@ export const ResolveReportForm = ({
 								username: report.reportedUser?.username ?? ''
 							})}
 						</p>
-						<FormInputController
-							name='banReason'
-							label={tBan('banReasonLabel')}
-							placeholder={tBan('banReasonPlaceholder')}
+						<BanDurationFields
 							control={form.control}
 							disabled={isPending}
+							t={tBan}
+							reasonName='banReason'
+							durationName='banDuration'
+							unitName='banUnit'
 						/>
-						<div className='flex items-end gap-2'>
-							<FormInputController
-								name='banDuration'
-								label={tBan('durationLabel')}
-								placeholder={tBan('durationPlaceholder')}
-								className='flex-1 w-full'
-								control={form.control}
-								disabled={isPending}
-							/>
-							<FormSelectController
-								name='banUnit'
-								className='flex-1 w-full'
-								control={form.control}
-								options={banDurationOptions(tBan)}
-								disabled={isPending}
-							/>
-						</div>
 					</div>
 				)}
 

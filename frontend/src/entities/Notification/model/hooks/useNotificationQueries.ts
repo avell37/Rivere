@@ -1,10 +1,14 @@
 'use client'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+	useInfiniteQuery,
+	useMutation,
+	useQueryClient
+} from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
 
 import { ActionResponse } from '@/shared/types'
-import { handleApiError } from '@/shared/utils'
+import { getOffsetNextPageParam, handleApiError } from '@/shared/utils'
 
 import {
 	clearNotificationsApi,
@@ -12,7 +16,7 @@ import {
 	markAllReadApi,
 	markReadApi
 } from '../api/notificationApi'
-import { INotification } from '../types/INotification'
+import { NOTIFICATIONS_PAGE_SIZE } from '../types/INotification'
 
 export const notificationKeys = {
 	all: ['notifications'],
@@ -23,18 +27,31 @@ export const notificationKeys = {
 
 export const useGetNotifications = () => {
 	const {
-		data: notifications = [],
+		data,
 		isPending: notificationsPending,
-		isError: notificationsError
-	} = useQuery<INotification[], AxiosError>({
+		isError: notificationsError,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage
+	} = useInfiniteQuery({
 		queryKey: notificationKeys.all,
-		queryFn: () => getUserNotifications()
+		queryFn: ({ pageParam = 0 }) =>
+			getUserNotifications(NOTIFICATIONS_PAGE_SIZE, pageParam),
+		initialPageParam: 0,
+		getNextPageParam: getOffsetNextPageParam,
 	})
+
+	const notifications = data?.pages.flatMap(page => page.items) ?? []
+	const unreadCount = data?.pages[0]?.unreadCount ?? 0
 
 	return {
 		notifications,
+		unreadCount,
 		notificationsPending,
-		notificationsError
+		notificationsError,
+		hasMore: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage
 	}
 }
 

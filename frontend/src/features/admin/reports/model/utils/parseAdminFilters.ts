@@ -1,15 +1,17 @@
+import {
+	parseEnumFilter,
+	parsePageParam
+} from '../../../model/lib/admin-query.utils'
 import { AdminReportsFilters, ReportStatus } from '../types/AdminReportTypes'
+
+const REPORT_STATUSES = ['OPEN', 'RESOLVED', 'DISMISSED'] as const
 
 export const parseFilters = (
 	searchParams: URLSearchParams
-): AdminReportsFilters => {
-	const status = searchParams.get('status')
-
-	return {
-		page: Number(searchParams.get('page')) || 1,
-		status:
-			status === 'OPEN' || status === 'RESOLVED' || status === 'DISMISSED'
-				? (status as ReportStatus)
-				: 'all'
-	}
-}
+): AdminReportsFilters => ({
+	page: parsePageParam(searchParams),
+	status: parseEnumFilter<ReportStatus>(
+		searchParams.get('status'),
+		REPORT_STATUSES
+	)
+})

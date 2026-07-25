@@ -27,6 +27,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 		showEmoji,
 		handleKeySubmitMessage,
 		handleSubmitMessage,
+		handleDeleteMessage,
 		handleEmojiClick,
 		setMessage,
 		setShowEmoji
@@ -53,6 +54,7 @@ export const Chat = ({ cardId }: { cardId: string }) => {
 								i > 0 ? messages[i - 1] : undefined
 							}
 							locale={locale}
+							onDelete={handleDeleteMessage}
 						/>
 					))}
 					<div ref={messagesEndRef} />

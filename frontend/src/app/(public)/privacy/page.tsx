@@ -1,17 +1,10 @@
-import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { createPageMetadata } from '@/shared/libs'
 
 import { Privacy } from '@/widgets/Privacy/ui/Privacy'
 
 import { MainHeader } from '@/widgets'
 
-export async function generateMetadata(): Promise<Metadata> {
-	const t = await getTranslations('privacy')
-
-	return {
-		title: t('heading')
-	}
-}
+export const generateMetadata = () => createPageMetadata('privacy')
 
 export default function PrivacyPage() {
 	return (

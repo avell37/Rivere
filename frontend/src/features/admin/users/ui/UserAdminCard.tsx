@@ -134,7 +134,7 @@ export const UserAdminCard = ({
 						<Mail size={14} />
 						{t('emailVerified')}
 					</span>
-					<p>{user.isEmailVerified ? 'Yes' : 'No'}</p>
+					<p>{user.isEmailVerified ? t('yes') : t('no')}</p>
 				</div>
 				<div className='flex gap-4 text-sm'>
 					<p>

@@ -1,4 +1,10 @@
-import { BoardsSortOption } from '../lib/filterAndSortBoards'
+export type BoardsSortOption = 'updatedDesc' | 'titleAsc' | 'titleDesc'
+
+export type FilterableBoard = {
+	id: string
+	title: string
+	updatedAt?: Date | string
+}
 
 export interface BoardsToolbarProps {
 	search: string

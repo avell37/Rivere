@@ -1,15 +1,8 @@
-import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { createPrivatePageMetadata } from '@/shared/libs'
 
 import { InviteView } from '@/features/board-invite'
 
-export async function generateMetadata(): Promise<Metadata> {
-	const t = await getTranslations('invite')
-
-	return {
-		title: t('heading')
-	}
-}
+export const generateMetadata = () => createPrivatePageMetadata('invite')
 
 export default function InvitePage() {
 	return <InviteView />
