@@ -5,9 +5,10 @@ import { AdminReportsController } from './admin-reports.controller';
 import { CoreModule } from '@/core/core.module';
 import { ChatModule } from '@/modules/chat/chat.module';
 import { BoardModule } from '@/modules/board/board.module';
+import { AdminModule } from '@/modules/admin/admin.module';
 
 @Module({
-    imports: [CoreModule, ChatModule, BoardModule],
+    imports: [CoreModule, ChatModule, BoardModule, AdminModule],
     controllers: [ReportsController, AdminReportsController],
     providers: [ReportsService],
 })

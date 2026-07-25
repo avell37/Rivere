@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 
 import { NotificationsList } from '@/entities/Notification'
 
+import { LoadMoreButton } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 
 import { useNotifications } from '../model/hooks/useNotifications'
@@ -11,11 +12,14 @@ import { useNotifications } from '../model/hooks/useNotifications'
 export const Notifications = () => {
 	const {
 		notifications,
-		handleMarkAllRead,
 		markAllReadPending,
-		handleClearAll,
 		clearAllPending,
-		handleMarkRead
+		hasMore,
+		isFetchingNextPage,
+		handleClearAll,
+		handleMarkRead,
+		fetchNextPage,
+		handleMarkAllRead
 	} = useNotifications()
 	const t = useTranslations('notifications')
 
@@ -54,10 +58,22 @@ export const Notifications = () => {
 					<p className='text-sm'>{t('noNotifications')}</p>
 				</div>
 			) : (
-				<NotificationsList
-					notifications={notifications}
-					onMarkRead={handleMarkRead}
-				/>
+				<>
+					<NotificationsList
+						notifications={notifications}
+						onMarkRead={handleMarkRead}
+					/>
+					{hasMore && (
+						<LoadMoreButton
+							isLoading={isFetchingNextPage}
+							onClick={() => fetchNextPage()}
+							loadMoreLabel={t('loadMore')}
+							loadingLabel={t('loadingMore')}
+							variant='ghost'
+							className='mt-2 w-full'
+						/>
+					)}
+				</>
 			)}
 		</div>
 	)

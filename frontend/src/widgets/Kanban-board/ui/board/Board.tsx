@@ -23,7 +23,7 @@ const BoardComponent = ({ boardId }: { boardId: string }) => {
 			className='relative w-full h-full flex flex-col'
 			style={backgroundStyle}
 		>
-			<div className='px-4 py-3 bg-gray-200/60 dark:bg-zinc-600/30 backdrop-blur-md'>
+			<div className='relative z-20 overflow-visible px-4 py-3 bg-gray-200/60 dark:bg-zinc-600/30 backdrop-blur-md'>
 				<div className='flex items-center justify-between'>
 					<h1 className='font-bold'>{board?.title}</h1>
 					{board && <BoardHeaderActions board={board} />}

@@ -1,3 +1,9 @@
+export * from './audit/model/api/admin-audit.api'
+export * from './audit/model/hooks/useAdminAuditQueries'
+export * from './audit/model/types/AdminAuditTypes'
+export * from './audit/model/utils/parseAuditFilters'
+export * from './audit/ui/AdminAuditItem'
+
 export * from './reports/model/api/admin-reports.api'
 export * from './reports/model/hooks/useAdminReportsQueries'
 export * from './reports/model/hooks/useResolveReport'
@@ -26,8 +32,6 @@ export * from './users/model/api/admin-users.api'
 export * from './users/model/hooks/useAdminQueries'
 export * from './users/model/hooks/useBanUser'
 export * from './users/model/hooks/useModerationEvents'
-
-export * from './users/model/lib/banOptionts'
 
 export * from './users/model/lib/admin-users-query'
 

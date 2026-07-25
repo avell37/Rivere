@@ -1,3 +1,5 @@
+import { buildQueryString } from '@/shared/utils/query.utils'
+
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL as string
 
 export const PUBLIC_URL = {
@@ -27,24 +29,37 @@ export const ADMIN_URL = {
 	root: (url = '') => `${url ? url : ''}`,
 
 	admin: () => ADMIN_URL.root('/admin'),
-	adminUsers: (page: number, options?: {
+	adminUsers: (options: {
+		page: number
+		limit?: number
 		search?: string
 		role?: string
 		status?: string
-		limit?: number
 	}) => {
-		const params = new URLSearchParams()
-		params.set('page', String(page))
-		params.set('limit', String(options?.limit ?? 10))
-		if (options?.search) params.set('search', options.search)
-		if (options?.role) params.set('role', options.role)
-		if (options?.status) params.set('status', options.status)
-		return ADMIN_URL.root(`${ADMIN_URL.admin()}/users?${params.toString()}`)
+		const query = buildQueryString({
+			page: options.page,
+			limit: options.limit ?? 10,
+			search: options.search?.trim(),
+			role: options.role,
+			status: options.status
+		})
+
+		return ADMIN_URL.root(`${ADMIN_URL.admin()}/users?${query}`)
 	},
 	adminReports: (page = 1, status?: string) => {
-		const params = new URLSearchParams()
-		params.set('page', String(page))
-		if (status) params.set('status', status)
-		return ADMIN_URL.root(`${ADMIN_URL.admin()}/reports?${params.toString()}`)
+		const query = buildQueryString({
+			page,
+			status
+		})
+
+		return ADMIN_URL.root(`${ADMIN_URL.admin()}/reports?${query}`)
+	},
+	adminAudit: (page = 1, action?: string) => {
+		const query = buildQueryString({
+			page,
+			action
+		})
+
+		return ADMIN_URL.root(`${ADMIN_URL.admin()}/audit?${query}`)
 	}
 }

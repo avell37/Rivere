@@ -2,24 +2,20 @@
 import { SlidersHorizontal } from 'lucide-react'
 
 import {
+	Button,
 	PopoverContent,
 	PopoverMain,
 	PopoverTrigger
 } from '@/shared/ui/external'
-import { Button } from '@/shared/ui/external'
 import { cn } from '@/shared/utils'
 
 import {
 	useActiveFiltersCount,
 	useHasActiveFilters
 } from '../model/store/useBoardFiltersStore'
+import { BoardFiltersDropdownProps } from '../model/types/BoardFiltersProps'
 
 import { BoardFilters } from './BoardFilters'
-
-interface BoardFiltersDropdownProps {
-	boardId: string
-	className?: string
-}
 
 export const BoardFiltersDropdown = ({
 	boardId,

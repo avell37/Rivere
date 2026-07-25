@@ -1,15 +1,8 @@
-import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { createPageMetadata } from '@/shared/libs'
 
 import { Main } from '@/widgets/Main'
 
-export async function generateMetadata(): Promise<Metadata> {
-	const t = await getTranslations('home')
-
-	return {
-		title: t('heading')
-	}
-}
+export const generateMetadata = () => createPageMetadata('home')
 
 export default function MainPage() {
 	return <Main />

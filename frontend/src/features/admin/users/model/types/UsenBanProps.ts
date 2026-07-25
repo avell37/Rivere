@@ -1,7 +1,7 @@
 'use client'
 import { UseFormReturn } from 'react-hook-form'
 
-import { BanDurationUnit } from './AdminUserTypes'
+import { BanDurationUnit } from '@/shared/ui/custom'
 
 export interface UserBanFormData {
 	reason: string

@@ -5,10 +5,9 @@ import { useState } from 'react'
 
 import { IReport } from '@/features/reports'
 
-import { Modal } from '@/shared/ui/custom'
+import { BanDurationUnit, Modal } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 
-import { BanDurationUnit } from '../../users/model/types/AdminUserTypes'
 import { useResolveReport } from '../model/hooks/useResolveReport'
 
 import { ResolveReportForm } from './ResolveReportForm'
@@ -23,7 +22,6 @@ export const ResolveReportModal = ({ report }: { report: IReport }) => {
 
 	const handleOpenChange = (nextOpen: boolean) => {
 		setOpen(nextOpen)
-
 		if (nextOpen) {
 			form.reset({
 				decision: 'RESOLVE_NONE',

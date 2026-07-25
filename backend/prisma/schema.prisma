@@ -48,6 +48,7 @@ model User {
   reportsCreated  Report[] @relation("ReportsCreated")
   reportsReceived Report[] @relation("ReportsReceived")
   reportsResolved Report[] @relation("ReportsResolved")
+  adminAuditLogs  AdminAuditLog[] @relation("AdminAuditLogs")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -433,4 +434,34 @@ enum ActivityEntity {
   COLUMN
   CARD
   MEMBER
+}
+
+enum AdminAuditAction {
+  BAN_USER
+  UNBAN_USER
+  ROLE_CHANGE
+  REPORT_RESOLVED
+  REPORT_DISMISSED
+  REPORT_BAN_USER
+  REPORT_DELETE_MESSAGE
+  REPORT_DELETE_CARD
+}
+
+model AdminAuditLog {
+  id String @id @default(uuid())
+
+  action     AdminAuditAction
+  targetType String? @map("target_type")
+  targetId   String? @map("target_id")
+  metadata   Json?
+
+  adminId String @map("admin_id")
+  admin   User   @relation("AdminAuditLogs", fields: [adminId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([adminId, createdAt])
+  @@index([action, createdAt])
+  @@map("admin_audit_logs")
 }

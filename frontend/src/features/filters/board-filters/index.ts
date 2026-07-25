@@ -1,3 +1,6 @@
+export * from './model/hooks/useFiltered'
+export * from './model/lib/cardMatchesSearch'
+export * from './model/lib/filtersOptions'
 export * from './model/store/useBoardFiltersStore'
 export * from './ui/BoardFilters'
 export * from './ui/BoardFiltersDropdown'

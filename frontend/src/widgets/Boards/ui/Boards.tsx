@@ -9,10 +9,8 @@ import { CreateBoardModal } from '@/features/board'
 
 import { Separator } from '@/shared/ui/external'
 
-import {
-	BoardsSortOption,
-	filterAndSortBoards
-} from '../model/lib/filterAndSortBoards'
+import { filterAndSortBoards } from '../model/lib/filterAndSortBoards'
+import { BoardsSortOption } from '../model/types/BoardsProps'
 
 import { BoardsToolbar } from './BoardsToolbar'
 

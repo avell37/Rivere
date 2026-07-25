@@ -25,7 +25,7 @@
             "@/*": ["./src/*"],
             "@prisma/*": ["./prisma/*"]
         },
-        "types": ["node", "express", "multer"]
+        "types": ["node", "express", "multer", "jest"]
     },
     "include": ["src", "prisma", "generated"]
 }

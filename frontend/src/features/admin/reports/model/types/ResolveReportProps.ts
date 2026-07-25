@@ -4,9 +4,12 @@ import { ResolveReportFormValues } from '../validation/resolve-report.z.validati
 
 import { IReport } from './AdminReportTypes'
 
-export interface ResolveReportFormProps {
+export interface UseResolveReportFormProps {
 	report: IReport
 	form: UseFormReturn<ResolveReportFormValues>
+}
+
+export interface ResolveReportFormProps extends UseResolveReportFormProps {
 	isPending?: boolean
 	onSubmit: (data: ResolveReportFormValues) => void
 	onCancel: () => void

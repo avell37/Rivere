@@ -40,7 +40,7 @@ export class NotificationsService {
         return notification;
     }
 
-    async getUserNotifications(userId: string) {
+    async getUserNotifications(userId: string, limit = 20, offset = 0) {
         if (!userId) {
             throw new UnauthorizedException({
                 code: 'errors.notifications.unauthorized',
@@ -48,10 +48,20 @@ export class NotificationsService {
             });
         }
 
-        return this.prisma.notification.findMany({
-            where: { userId },
-            orderBy: { createdAt: 'desc' },
-        });
+        const [items, total, unreadCount] = await Promise.all([
+            this.prisma.notification.findMany({
+                where: { userId },
+                orderBy: { createdAt: 'desc' },
+                take: limit,
+                skip: offset,
+            }),
+            this.prisma.notification.count({ where: { userId } }),
+            this.prisma.notification.count({
+                where: { userId, read: false },
+            }),
+        ]);
+
+        return { items, total, unreadCount };
     }
 
     async readAllNotifications(userId: string) {

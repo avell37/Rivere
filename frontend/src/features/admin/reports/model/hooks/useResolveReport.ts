@@ -7,8 +7,7 @@ import { useTranslations } from 'next-intl'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { BanDurationUnit } from '@/features/admin/users/model/types/AdminUserTypes'
-
+import { BanDurationUnit } from '@/shared/ui/custom'
 import { handleApiError } from '@/shared/utils'
 
 import { resolveAdminReport } from '../api/admin-reports.api'

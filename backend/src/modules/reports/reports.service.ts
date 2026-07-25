@@ -11,6 +11,7 @@ import {
     ReportStatus,
     ReportTargetType,
     UserRole,
+    AdminAuditAction,
 } from '@prisma/client';
 import { BanDurationUnit } from '@/modules/admin/input/ban-user.input';
 import { CreateReportInput } from './input/create-report.input';
@@ -20,6 +21,7 @@ import { PrismaService } from '@/core/prisma/prisma.service';
 import { EventsGateway } from '@/core/events.gateway';
 import { ChatGateway } from '@/modules/chat/chat.gateway';
 import { BoardGateway } from '@/modules/board/board.gateway';
+import { AdminAuditService } from '@/modules/admin/admin-audit.service';
 import { checkBoardAccess } from '@/shared/utils/check-board-access.util';
 
 @Injectable()
@@ -29,6 +31,7 @@ export class ReportsService {
         private readonly gateway: EventsGateway,
         private readonly chatGateway: ChatGateway,
         private readonly boardGateway: BoardGateway,
+        private readonly adminAudit: AdminAuditService,
     ) {}
 
     async createReport(reporterId: string, input: CreateReportInput) {
@@ -405,7 +408,42 @@ export class ReportsService {
             this.boardGateway.cardDeleted(deletedCard.boardId, deletedCard.id);
         }
 
+        await this.adminAudit.log({
+            adminId,
+            action: this.resolveAuditAction(input.status, action),
+            targetType: 'REPORT',
+            targetId: reportId,
+            metadata: {
+                status: input.status,
+                action,
+                targetType: updatedReport.targetType,
+                targetEntityId: updatedReport.targetId,
+                reportedUserId: updatedReport.reportedUserId,
+                resolutionNote: input.resolutionNote?.trim() || null,
+            },
+        });
+
         return updatedReport;
+    }
+
+    private resolveAuditAction(
+        status: ReportStatus,
+        action: ReportResolutionAction,
+    ): AdminAuditAction {
+        if (status === ReportStatus.DISMISSED) {
+            return AdminAuditAction.REPORT_DISMISSED;
+        }
+
+        switch (action) {
+            case ReportResolutionAction.BAN_USER:
+                return AdminAuditAction.REPORT_BAN_USER;
+            case ReportResolutionAction.DELETE_MESSAGE:
+                return AdminAuditAction.REPORT_DELETE_MESSAGE;
+            case ReportResolutionAction.DELETE_CARD:
+                return AdminAuditAction.REPORT_DELETE_CARD;
+            default:
+                return AdminAuditAction.REPORT_RESOLVED;
+        }
     }
 
     private resolveAction(input: ResolveReportInput): ReportResolutionAction {

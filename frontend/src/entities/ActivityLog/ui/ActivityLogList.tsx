@@ -1,20 +1,23 @@
 'use client'
 import { useLocale, useTranslations } from 'next-intl'
 
+import { LoadMoreButton } from '@/shared/ui/custom'
 import { Spinner } from '@/shared/ui/external'
 
 import { useActivityLog } from '../model/hooks/useActivityLog'
 
 import { ActivityLogItem } from './ActivityLogItem'
 
-interface ActivityLogListProps {
-	boardId: string
-}
-
-export const ActivityLogList = ({ boardId }: ActivityLogListProps) => {
+export const ActivityLogList = ({ boardId }: { boardId: string }) => {
 	const t = useTranslations('board.activityLog')
 	const locale = useLocale()
-	const { activityLog, isActivityLogPending } = useActivityLog(boardId)
+	const {
+		activityLog,
+		isActivityLogPending,
+		hasMore,
+		isFetchingNextPage,
+		fetchNextPage
+	} = useActivityLog(boardId)
 
 	if (isActivityLogPending) {
 		return <Spinner />
@@ -26,15 +29,26 @@ export const ActivityLogList = ({ boardId }: ActivityLogListProps) => {
 			{activityLog.length === 0 ? (
 				<p className='text-sm text-muted-foreground'>{t('empty')}</p>
 			) : (
-				<div className='flex flex-col'>
-					{activityLog.map(log => (
-						<ActivityLogItem
-							key={log.id}
-							log={log}
-							locale={locale}
+				<>
+					<div className='flex flex-col'>
+						{activityLog.map(log => (
+							<ActivityLogItem
+								key={log.id}
+								log={log}
+								locale={locale}
+							/>
+						))}
+					</div>
+					{hasMore && (
+						<LoadMoreButton
+							isLoading={isFetchingNextPage}
+							onClick={() => fetchNextPage()}
+							loadMoreLabel={t('loadMore')}
+							loadingLabel={t('loadingMore')}
+							className='self-start'
 						/>
-					))}
-				</div>
+					)}
+				</>
 			)}
 		</section>
 	)

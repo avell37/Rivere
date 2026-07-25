@@ -28,7 +28,7 @@ export const mapStatistics = (
 			trend: formatTrend(data.users.today, t),
 			bottomContent: (
 				<Link
-					href={ADMIN_URL.adminUsers(1)}
+					href={ADMIN_URL.adminUsers({ page: 1 })}
 					className='flex items-end gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition mt-1'
 				>
 					{t('admin.statistics.users.bottomContent')}{' '}
@@ -90,7 +90,7 @@ export const mapStatistics = (
 			trend: formatTrend(data.banned.today, t),
 			bottomContent: (
 				<Link
-					href={ADMIN_URL.adminUsers(1, { status: 'banned' })}
+					href={ADMIN_URL.adminUsers({ page: 1, status: 'banned' })}
 					className='flex items-end gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition mt-1'
 				>
 					{t('admin.statistics.banned.bottomContent')}{' '}

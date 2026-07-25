@@ -5,6 +5,7 @@ import {
     HttpCode,
     Param,
     Patch,
+    Query,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { ApiOperation } from '@nestjs/swagger';
@@ -21,8 +22,16 @@ export class NotificationsController {
     })
     @Authorization()
     @Get()
-    async getUserNotifications(@SessionUser('id') userId: string) {
-        return this.notificationsService.getUserNotifications(userId);
+    async getUserNotifications(
+        @SessionUser('id') userId: string,
+        @Query('limit') limit?: string,
+        @Query('offset') offset?: string,
+    ) {
+        return this.notificationsService.getUserNotifications(
+            userId,
+            limit ? parseInt(limit, 10) : 20,
+            offset ? parseInt(offset, 10) : 0,
+        );
     }
 
     @ApiOperation({

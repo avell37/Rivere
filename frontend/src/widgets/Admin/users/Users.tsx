@@ -1,4 +1,5 @@
 'use client'
+
 import { useSearchParams } from 'next/navigation'
 
 import {
@@ -8,7 +9,7 @@ import {
 	useGetAllUsers
 } from '@/features/admin'
 
-import { NavBar } from '@/shared/ui/custom'
+import { AdminPageShell } from '../ui/AdminPageShell'
 
 import { UserAdminList } from './UserAdminList'
 
@@ -17,21 +18,13 @@ export const Users = () => {
 	const filters = parseAdminUsersFilters(searchParams)
 	const { data, isLoading } = useGetAllUsers(filters)
 
-	if (isLoading || !data) {
-		return (
-			<div className='container mx-auto flex flex-col gap-6 pb-10'>
-				<NavBar />
-				<UserAdminFilters filters={filters} />
-				<UserAdminListSkeleton />
-			</div>
-		)
-	}
-
 	return (
-		<div className='container mx-auto flex flex-col gap-6 pb-10'>
-			<NavBar />
-			<UserAdminFilters filters={filters} />
-			<UserAdminList data={data} filters={filters} />
-		</div>
+		<AdminPageShell
+			isLoading={isLoading || !data}
+			loadingFallback={<UserAdminListSkeleton />}
+			beforeContent={<UserAdminFilters filters={filters} />}
+		>
+			<UserAdminList data={data!} filters={filters} />
+		</AdminPageShell>
 	)
 }

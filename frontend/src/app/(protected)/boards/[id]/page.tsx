@@ -3,6 +3,8 @@ import { getTranslations } from 'next-intl/server'
 
 import { fetchBoardByIdServer } from '@/entities/Board/model/api/boardApi.server'
 
+import { NO_INDEX_PAGE } from '@/shared/libs'
+
 import { Board } from '@/widgets/Kanban-board'
 
 interface Props {
@@ -17,12 +19,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		const t = await getTranslations('board')
 
 		return {
-			title: t('heading', { name: board.title })
+			title: t('heading', { name: board.title }),
+			...NO_INDEX_PAGE
 		}
 	} catch (err) {
 		console.warn('Failed to generate board metadata:', err)
 		return {
-			title: 'Board'
+			title: 'Board',
+			...NO_INDEX_PAGE
 		}
 	}
 }

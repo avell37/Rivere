@@ -1,29 +1,19 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
-
-import {
-	getAdminReports
-} from '../api/admin-reports.api'
-import {
-	AdminReportsFilters,
-	ReportsResponse
-} from '../types/AdminReportTypes'
+import { createAdminListQuery } from '../../../model/hooks/createAdminListQuery'
+import { getAdminReports } from '../api/admin-reports.api'
+import { AdminReportsFilters, ReportsResponse } from '../types/AdminReportTypes'
 
 export const adminReportsKeys = {
-	all: () => ['admin-reports'],
-	page: (filters: AdminReportsFilters) => [
-		'admin-reports',
-		filters.page,
-		filters.status ?? 'all'
-	]
+	all: () => ['admin-reports'] as const,
+	page: (filters: AdminReportsFilters) =>
+		['admin-reports', filters.page, filters.status ?? 'all'] as const
 }
 
-export const useGetAdminReports = (filters: AdminReportsFilters) => {
-	return useQuery<ReportsResponse, AxiosError>({
-		queryKey: adminReportsKeys.page(filters),
-		queryFn: () => getAdminReports(filters),
-		placeholderData: prev => prev
-	})
-}
+export const useGetAdminReports = createAdminListQuery<
+	ReportsResponse,
+	AdminReportsFilters
+>({
+	queryKey: adminReportsKeys.page,
+	queryFn: getAdminReports
+})

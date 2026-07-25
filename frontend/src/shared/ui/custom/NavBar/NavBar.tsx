@@ -1,5 +1,5 @@
 'use client'
-import { Flag, Moon, Users } from 'lucide-react'
+import { Flag, Moon, ScrollText, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
@@ -20,7 +20,7 @@ export const NavBar = () => {
 			</div>
 			<div
 				className='flex gap-2 text-sm hover:bg-muted p-2 rounded-xl cursor-pointer'
-				onClick={() => router.push(ADMIN_URL.adminUsers(1))}
+				onClick={() => router.push(ADMIN_URL.adminUsers({ page: 1 }))}
 			>
 				<Users size={20} />
 				{t('users')}
@@ -31,6 +31,13 @@ export const NavBar = () => {
 			>
 				<Flag size={20} />
 				{t('reports')}
+			</div>
+			<div
+				className='flex gap-2 text-sm hover:bg-muted p-2 rounded-xl cursor-pointer'
+				onClick={() => router.push(ADMIN_URL.adminAudit(1))}
+			>
+				<ScrollText size={20} />
+				{t('audit')}
 			</div>
 		</nav>
 	)

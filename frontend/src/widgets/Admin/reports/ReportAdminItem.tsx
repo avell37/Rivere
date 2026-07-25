@@ -74,7 +74,8 @@ export const ReportAdminItem = ({ report }: { report: IReport }) => {
 						</span>
 
 						<Link
-							href={ADMIN_URL.adminUsers(1, {
+							href={ADMIN_URL.adminUsers({
+								page: 1,
 								search: report.reportedUser.email
 							})}
 							className='underline underline-offset-4'

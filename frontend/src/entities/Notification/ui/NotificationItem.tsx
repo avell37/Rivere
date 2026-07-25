@@ -4,6 +4,7 @@ import { Bell } from 'lucide-react'
 import { useLocale } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
+import { Button } from '@/shared/ui/external'
 import { cn, formatDate } from '@/shared/utils'
 
 import { useNotificationMessage } from '../model/hooks/useNotificationMessage'
@@ -48,12 +49,14 @@ export const NotificationItem = ({
 	}
 
 	return (
-		<button
+		<Button
 			type='button'
+			variant='none'
+			size='none'
 			onClick={handleClick}
 			disabled={!href && read}
 			className={cn(
-				'flex w-full gap-3 rounded-lg border p-4 text-left transition-colors',
+				'flex w-full gap-3 rounded-lg border p-4 text-left transition-colors h-auto',
 				read
 					? 'bg-muted/60 border-border'
 					: 'bg-card hover:bg-muted/80',
@@ -87,6 +90,6 @@ export const NotificationItem = ({
 					{formatDate(new Date(createdAt), locale)}
 				</span>
 			</div>
-		</button>
+		</Button>
 	)
 }

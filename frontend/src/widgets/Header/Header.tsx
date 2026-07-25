@@ -10,7 +10,7 @@ import { useGetUser } from '@/entities/User'
 import { NotificationsVisible } from '@/features/notifications'
 
 import { PRIVATE_URL } from '@/shared/libs'
-import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/external'
+import { Button, Sheet, SheetContent, SheetTrigger } from '@/shared/ui/external'
 
 import { UserMenu } from '../UserMenu/ui/UserMenu'
 
@@ -67,9 +67,14 @@ export const BurgerMenu = () => {
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger asChild>
-				<button className='rounded-md hover:bg-muted transition md:hidden cursor-pointer'>
+				<Button
+					type='button'
+					variant='none'
+					size='none'
+					className='rounded-md hover:bg-muted transition md:hidden'
+				>
 					<Menu className='w-5 h-5' />
-				</button>
+				</Button>
 			</SheetTrigger>
 
 			<SheetContent side='left' className='w-[260px] p-4'>

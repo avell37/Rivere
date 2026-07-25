@@ -10,7 +10,6 @@ import {
 } from '@/features/admin'
 
 import { ADMIN_URL } from '@/shared/libs'
-import { CustomPagination } from '@/shared/ui/custom'
 import {
 	Select,
 	SelectContent,
@@ -18,6 +17,8 @@ import {
 	SelectTrigger,
 	SelectValue
 } from '@/shared/ui/external'
+
+import { AdminListLayout } from '../ui/AdminListLayout'
 
 import { ReportAdminItem } from './ReportAdminItem'
 
@@ -38,9 +39,19 @@ export const ReportAdminList = ({
 	}
 
 	return (
-		<div className='flex flex-col gap-4'>
-			<div className='flex items-center justify-between gap-3'>
-				<h1 className='text-xl font-semibold'>{t('heading')}</h1>
+		<AdminListLayout
+			heading={t('heading')}
+			isEmpty={data.reports.length === 0}
+			emptyText={t('empty')}
+			page={data.page}
+			totalPages={data.totalPages}
+			buildPageHref={page =>
+				ADMIN_URL.adminReports(
+					page,
+					filters.status === 'all' ? undefined : filters.status
+				)
+			}
+			filter={
 				<Select
 					value={filters.status ?? 'all'}
 					onValueChange={value =>
@@ -61,32 +72,11 @@ export const ReportAdminList = ({
 						</SelectItem>
 					</SelectContent>
 				</Select>
-			</div>
-
-			<div className='flex flex-col gap-3'>
-				{data.reports.length === 0 ? (
-					<div className='rounded-xl border bg-card p-6 text-center text-sm text-muted-foreground'>
-						{t('empty')}
-					</div>
-				) : (
-					data.reports.map(report => (
-						<ReportAdminItem key={report.id} report={report} />
-					))
-				)}
-			</div>
-
-			<CustomPagination
-				page={data.page}
-				totalPages={data.totalPages}
-				buildPageHref={page => {
-					const params = new URLSearchParams()
-					params.set('page', String(page))
-					if (filters.status && filters.status !== 'all') {
-						params.set('status', filters.status)
-					}
-					return `?${params.toString()}`
-				}}
-			/>
-		</div>
+			}
+		>
+			{data.reports.map(report => (
+				<ReportAdminItem key={report.id} report={report} />
+			))}
+		</AdminListLayout>
 	)
 }

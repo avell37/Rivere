@@ -17,7 +17,8 @@ import { getNotificationsSocket } from '../utils/notification.socket'
 export const useNotifications = (userId?: string | null) => {
 	const t = useTranslations()
 	const queryClient = useQueryClient()
-	const { notifications } = useGetNotifications()
+	const { notifications, hasMore, isFetchingNextPage, fetchNextPage } =
+		useGetNotifications()
 	const { markAllRead, markAllReadPending } = useMarkAllRead()
 	const { clearAll, clearAllPending } = useClearNotifications()
 	const { markRead } = useMarkNotificationRead()
@@ -55,10 +56,13 @@ export const useNotifications = (userId?: string | null) => {
 
 	return {
 		notifications,
-		handleMarkAllRead,
+		hasMore,
+		isFetchingNextPage,
 		markAllReadPending,
-		handleClearAll,
 		clearAllPending,
+		handleMarkAllRead,
+		handleClearAll,
+		fetchNextPage,
 		handleMarkRead: (id: string) => markRead(id)
 	}
 }

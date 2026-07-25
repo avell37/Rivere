@@ -14,4 +14,5 @@ export interface ChatUserMessageProps {
 	message: IMessage
 	previousMessage?: IMessage
 	locale: string
+	onDelete?: (messageId: string) => void
 }

@@ -1,6 +1,6 @@
 import z from 'zod'
 
-import { BanDurationUnit } from '@/features/admin/users/model/types/AdminUserTypes'
+import { BanDurationUnit } from '@/shared/ui/custom'
 
 export const resolveReportDecisions = [
 	'DISMISS',
