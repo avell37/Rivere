@@ -59,7 +59,9 @@ export const CreateCardForm = ({
 							name='deadline'
 							label={t('createDeadlineModalLabel')}
 							placeholder={t('createDeadlineModalPlaceholder')}
+							clearLabel={t('clearDeadline')}
 							control={form.control}
+							clearable
 							disabled={isPending}
 						/>
 					</div>

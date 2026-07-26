@@ -6,17 +6,25 @@ export const SessionItem = ({
 	title,
 	description,
 	span,
+	badge,
 	isCurrent,
 	icon,
 	currentSession,
 	onTerminate
 }: SessionProps) => {
 	return (
-		<div className='group relative flex justify-between gap-4 hover:bg-black/10 rounded-sm p-4 transition-all'>
+		<div className='group relative flex justify-between gap-4 rounded-lg border bg-card/40 p-4 transition-all hover:bg-muted/40'>
 			<div className='flex items-center gap-4'>
 				{icon}
-				<div className='flex flex-col'>
-					<p>{title}</p>
+				<div className='flex flex-col gap-1'>
+					<div className='flex flex-wrap items-center gap-2'>
+						<p className='text-sm font-medium'>{title}</p>
+						{badge && (
+							<span className='rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-600 dark:text-indigo-400'>
+								{badge}
+							</span>
+						)}
+					</div>
 					<span className='text-[11px] sm:text-xs text-black/90 dark:text-gray-400'>
 						{description}
 					</span>

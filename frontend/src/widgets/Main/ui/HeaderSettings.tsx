@@ -14,7 +14,7 @@ export const HeaderSettings = () => {
 		<AppDropdown
 			trigger={
 				<Button variant='ghost'>
-					<Settings className='text-white' />
+					<Settings className='text-zinc-700 dark:text-white' />
 				</Button>
 			}
 		>

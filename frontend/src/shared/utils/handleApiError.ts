@@ -10,14 +10,12 @@ export interface ApiError {
 
 export const handleApiError = (err: unknown, t: (key: string) => string) => {
 	if (err instanceof AxiosError) {
-		const data = err.response?.data as ApiError
+		const data = err.response?.data as ApiError | undefined
 
 		if (data?.code) {
 			const translated = t(data.code)
-			if (translated !== data.code) {
-				toast.error(translated !== data.code ? translated : data.code)
-				return
-			}
+			toast.error(translated !== data.code ? translated : data.code)
+			return
 		}
 
 		if (Array.isArray(data?.message)) {
@@ -34,4 +32,6 @@ export const handleApiError = (err: unknown, t: (key: string) => string) => {
 			return
 		}
 	}
+
+	toast.error(t('errors.unexpected'))
 }

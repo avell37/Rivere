@@ -6,6 +6,7 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { MessagesService } from './messages.service';
 import { PrismaService } from '@/core/prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 describe('MessagesService', () => {
     let service: MessagesService;
@@ -36,6 +37,10 @@ describe('MessagesService', () => {
                 {
                     provide: PrismaService,
                     useValue: prisma,
+                },
+                {
+                    provide: NotificationsService,
+                    useValue: { createNotification: jest.fn() },
                 },
             ],
         }).compile();

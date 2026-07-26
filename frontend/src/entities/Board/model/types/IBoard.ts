@@ -12,6 +12,7 @@ export interface IBoard {
 	isFavorite: boolean
 	currentUserRole: BoardRole
 	members: IBoardMember[]
+	archivedAt?: string | null
 	createdAt?: Date
 	updatedAt?: Date
 }

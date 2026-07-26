@@ -34,17 +34,16 @@ export const useBoardEvents = (
 			router.push(PRIVATE_URL.boards())
 		}
 
-		const onBoardDeleted = ({
-			boardId: deletedBoardId,
-			deletedBy
-		}: {
+		const onBoardArchived = (payload: {
 			boardId: string
-			deletedBy: string
+			archivedBy?: string
+			deletedBy?: string
 		}) => {
-			if (deletedBoardId !== boardId) return
-			if (deletedBy === user?.id) return
+			if (payload.boardId !== boardId) return
+			const actorId = payload.archivedBy ?? payload.deletedBy
+			if (actorId === user?.id) return
 
-			toast.error(t('boardDeleted'))
+			toast.error(t('boardArchived'))
 			router.push(PRIVATE_URL.boards())
 		}
 
@@ -55,14 +54,16 @@ export const useBoardEvents = (
 		}
 
 		socket.on('board:kicked', onKicked)
-		socket.on('board:deleted', onBoardDeleted)
+		socket.on('board:archived', onBoardArchived)
+		socket.on('board:deleted', onBoardArchived)
 		socket.on('board:edited', onBoardUpdated)
 
 		return () => {
 			socket.emit('board:leave', { boardId })
 
 			socket.off('board:kicked', onKicked)
-			socket.off('board:deleted', onBoardDeleted)
+			socket.off('board:archived', onBoardArchived)
+			socket.off('board:deleted', onBoardArchived)
 			socket.off('board:edited', onBoardUpdated)
 		}
 	}, [socketRef, boardId, queryClient, router, user?.id, t])

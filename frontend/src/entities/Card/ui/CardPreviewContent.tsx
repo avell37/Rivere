@@ -4,15 +4,6 @@ import { AlertCircle, Check, Clock, MessageSquareMore } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 
 import { priorityColors } from '@/shared/config'
-import { S3_URL } from '@/shared/libs'
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger
-} from '@/shared/ui/external'
 import { cn, formatDate, formatPriority } from '@/shared/utils'
 
 import { getDeadlineState } from '../model/lib/getDeadlineState'
@@ -68,52 +59,32 @@ export const CardPreviewContent = ({
 				>
 					{formatPriority(card.priority)}
 				</div>
-				<div className='flex items-center gap-1 text-[10px]'>
-					<MessageSquareMore className='size-3' />
-					{card?.chat?._count?.messages}
-				</div>
-				{card.assignee && (
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Avatar className='size-5 rounded-full cursor-default'>
-								<AvatarImage
-									src={`${S3_URL}${card.assignee.avatar}`}
-									alt={card.assignee.nickname}
-								/>
-								<AvatarFallback className='text-[9px]'>
-									{card.assignee.nickname
-										.slice(0, 2)
-										.toUpperCase()}
-								</AvatarFallback>
-							</Avatar>
-						</TooltipTrigger>
-						<TooltipContent side='top'>
-							{card.assignee.nickname}
-						</TooltipContent>
-					</Tooltip>
+			</div>
+			<div className='flex items-center gap-1 text-[10px]'>
+				<MessageSquareMore className='size-3' />
+				{card?.chat?._count?.messages}
+				{card.deadline && (
+					<span
+						className={cn(
+							'absolute bottom-0 right-0 flex items-center gap-1 text-[10px]',
+							deadlineState === 'overdue' &&
+								'text-red-500 font-medium',
+							deadlineState === 'due-soon' && 'text-orange-400'
+						)}
+					>
+						{deadlineState === 'overdue' ? (
+							<AlertCircle size={12} />
+						) : (
+							<Clock size={12} />
+						)}
+						{deadlineState === 'overdue'
+							? t('card.overdue')
+							: t('card.expiresAt', {
+									date: formatDate(card.deadline, locale)
+								})}
+					</span>
 				)}
 			</div>
-			{card.deadline && (
-				<span
-					className={cn(
-						'absolute bottom-0 right-0 flex items-center gap-1 text-[10px]',
-						deadlineState === 'overdue' &&
-							'text-red-500 font-medium',
-						deadlineState === 'due-soon' && 'text-orange-400'
-					)}
-				>
-					{deadlineState === 'overdue' ? (
-						<AlertCircle size={12} />
-					) : (
-						<Clock size={12} />
-					)}
-					{deadlineState === 'overdue'
-						? t('card.overdue')
-						: t('card.expiresAt', {
-								date: formatDate(card.deadline, locale)
-							})}
-				</span>
-			)}
 		</div>
 	)
 }

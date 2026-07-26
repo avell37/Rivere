@@ -102,6 +102,8 @@ export class ChatGateway {
 
             const message = await this.messagesService.create(userId, dto);
 
+            await this.messagesService.notifyMentions(userId, message);
+
             await this.achievementsService.updateAchievementProgress(
                 userId,
                 'firstMessage',

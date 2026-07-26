@@ -1,15 +1,17 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
 import { IReport, ResolveReportModal, statusVariant } from '@/features/admin'
 
 import { ADMIN_URL } from '@/shared/libs'
+import { formatDateTime } from '@/shared/utils'
 import { Badge } from '@/shared/ui/external'
 
 export const ReportAdminItem = ({ report }: { report: IReport }) => {
 	const t = useTranslations('admin.reports')
+	const locale = useLocale()
 
 	const snapshot = report.snapshot as {
 		messageText?: string
@@ -32,7 +34,7 @@ export const ReportAdminItem = ({ report }: { report: IReport }) => {
 					</div>
 
 					<p className='text-xs text-muted-foreground'>
-						{new Date(report.createdAt).toLocaleString()}
+						{formatDateTime(report.createdAt, locale)}
 					</p>
 				</div>
 
@@ -109,7 +111,7 @@ export const ReportAdminItem = ({ report }: { report: IReport }) => {
 
 						{' · '}
 
-						{new Date(report.resolvedAt).toLocaleString()}
+						{formatDateTime(report.resolvedAt, locale)}
 					</p>
 
 					{report.resolutionAction && (

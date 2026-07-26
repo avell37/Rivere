@@ -6,6 +6,7 @@ export const NotificationMessageKey = {
     BOARD_INVITE_ACCEPTED: 'boardInviteAccepted',
     BOARD_INVITE_DECLINED: 'boardInviteDeclined',
     EMAIL_VERIFICATION: 'emailVerification',
+    MENTION: 'mention',
 } as const;
 
 export type NotificationMessageKey =

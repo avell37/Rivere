@@ -8,13 +8,20 @@ import { UpdateCardPayload, useUpdateCardMutation } from '@/entities/Card'
 
 import { EditableKey, EditableValue } from '../types/EditableProps'
 
-export const useUpdateCard = (cardId: string, key: EditableKey) => {
+export const useUpdateCard = (
+	cardId: string,
+	boardId: string,
+	key: EditableKey
+) => {
 	const t = useTranslations()
 	const [isEditing, setIsEditing] = useState(false)
 	const { getValues } = useFormContext()
 	const previousValueRef = useRef<EditableValue | null>(null)
 
-	const { updateCard, updateCardPending } = useUpdateCardMutation(cardId)
+	const { updateCard, updateCardPending } = useUpdateCardMutation(
+		cardId,
+		boardId
+	)
 
 	useEffect(() => {
 		if (isEditing) {

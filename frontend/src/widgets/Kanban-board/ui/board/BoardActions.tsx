@@ -1,5 +1,5 @@
 'use client'
-import { Edit, MoreHorizontal, Trash2 } from 'lucide-react'
+import { Edit, Archive, MoreHorizontal } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
@@ -14,7 +14,7 @@ import { BoardPermission } from '@/shared/utils'
 export const BoardActions = ({ boardId }: { boardId: string }) => {
 	const { can } = useBoardPermissions(boardId)
 	const [editOpen, setEditOpen] = useState(false)
-	const [deleteOpen, setDeleteOpen] = useState(false)
+	const [archiveOpen, setArchiveOpen] = useState(false)
 	const t = useTranslations('board.actions')
 
 	return (
@@ -41,10 +41,10 @@ export const BoardActions = ({ boardId }: { boardId: string }) => {
 				)}
 				{can(BoardPermission.DELETE_BOARD) && (
 					<DropdownActionItem
-						icon={Trash2}
-						onClick={() => setDeleteOpen(true)}
+						icon={Archive}
+						onClick={() => setArchiveOpen(true)}
 					>
-						{t('delete')}
+						{t('archive')}
 					</DropdownActionItem>
 				)}
 			</AppDropdown>
@@ -59,8 +59,8 @@ export const BoardActions = ({ boardId }: { boardId: string }) => {
 
 			{can(BoardPermission.DELETE_BOARD) && (
 				<DeleteBoardModal
-					open={deleteOpen}
-					onOpenChange={setDeleteOpen}
+					open={archiveOpen}
+					onOpenChange={setArchiveOpen}
 					boardId={boardId}
 				/>
 			)}

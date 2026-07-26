@@ -11,8 +11,10 @@ import { handleApiError } from '@/shared/utils'
 import {
 	createBoardApi,
 	deleteBoardApi,
+	fetchArchivedBoards,
 	fetchBoardById,
 	fetchUserBoards,
+	restoreBoardApi,
 	toggleFavoriteApi,
 	updateBoardApi
 } from '../api/boardApi'
@@ -23,9 +25,11 @@ import { EditBoardRequest } from '../validation/edit-board.z.validation'
 export const boardKeys = {
 	create: ['create-board'],
 	all: ['get-boards'],
+	archived: ['get-archived-boards'],
 	single: (id: string) => ['get-board', id],
 	update: (id: string) => ['update-board', id],
 	delete: ['delete-board'],
+	restore: (id: string) => ['restore-board', id],
 	toggleFavorite: (id: string) => ['toggle-favorite', id]
 }
 
@@ -132,6 +136,7 @@ export const useDeleteBoardMutation = () => {
 		mutationFn: deleteBoardApi,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: boardKeys.all })
+			queryClient.invalidateQueries({ queryKey: boardKeys.archived })
 		},
 		onError: err => handleApiError(err, t)
 	})
@@ -139,6 +144,45 @@ export const useDeleteBoardMutation = () => {
 	return {
 		deleteBoard,
 		deleteBoardPending
+	}
+}
+
+export const useGetArchivedBoards = () => {
+	const {
+		data: archivedBoards,
+		isPending: archivedBoardsPending
+	} = useQuery<IBoard[], AxiosError>({
+		queryKey: boardKeys.archived,
+		queryFn: fetchArchivedBoards
+	})
+
+	return {
+		archivedBoards: archivedBoards ?? [],
+		archivedBoardsPending
+	}
+}
+
+export const useRestoreBoardMutation = () => {
+	const queryClient = useQueryClient()
+	const t = useTranslations()
+
+	const { mutate: restoreBoard, isPending: restoreBoardPending } = useMutation<
+		IBoard,
+		AxiosError,
+		string
+	>({
+		mutationKey: boardKeys.restore(''),
+		mutationFn: restoreBoardApi,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: boardKeys.all })
+			queryClient.invalidateQueries({ queryKey: boardKeys.archived })
+		},
+		onError: err => handleApiError(err, t)
+	})
+
+	return {
+		restoreBoard,
+		restoreBoardPending
 	}
 }
 

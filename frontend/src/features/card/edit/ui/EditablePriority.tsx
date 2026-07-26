@@ -9,9 +9,18 @@ import { FormSelectController } from '@/shared/ui/custom'
 import { useUpdateCard } from '../model/hooks/useUpdateCard'
 import { EditableProps } from '../model/types/EditableProps'
 
-export const EditablePriority = ({ cardId, t }: EditableProps) => {
+export const EditablePriority = ({
+	cardId,
+	boardId,
+	t,
+	className
+}: EditableProps) => {
 	const { control } = useFormContext()
-	const { handleBlur, isLoading } = useUpdateCard(cardId, 'priority')
+	const { handleBlur, isLoading } = useUpdateCard(
+		cardId,
+		boardId,
+		'priority'
+	)
 	const tPriority = useTranslations('priority')
 
 	return (
@@ -21,7 +30,7 @@ export const EditablePriority = ({ cardId, t }: EditableProps) => {
 				icon={<CircleDashed size={14} />}
 				label={t('editPriorityLabel')}
 				placeholder={t('editPriorityPlaceholder')}
-				className='w-48'
+				className={className ? className : 'w-48'}
 				control={control}
 				onChange={value => handleBlur(value)}
 				options={getPrioritySelectOptions(tPriority)}

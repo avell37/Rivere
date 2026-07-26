@@ -16,3 +16,12 @@ export interface ChatUserMessageProps {
 	locale: string
 	onDelete?: (messageId: string) => void
 }
+
+export type MentionMember = {
+	userId: string
+	user: {
+		username: string
+		nickname: string
+		avatar?: string | null
+	}
+}

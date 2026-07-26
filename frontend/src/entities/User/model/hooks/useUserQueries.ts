@@ -3,6 +3,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
+
+import { disconnectAllBoardSockets } from '@/entities/Board'
+
+import { disconnectChatSocket } from '@/features/chat/model/utils/chat.socket'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -197,6 +201,8 @@ export const useLogoutMutation = () => {
 		mutationKey: userKeys.logout,
 		mutationFn: logoutApi,
 		onSuccess: () => {
+			disconnectChatSocket()
+			disconnectAllBoardSockets()
 			toast.success(t('account.logout'))
 			router.push(`${PUBLIC_URL.login()}`)
 		},

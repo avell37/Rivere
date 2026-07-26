@@ -177,7 +177,7 @@ export const BoardFilters = ({ boardId }: { boardId: string }) => {
 							size='none'
 							onClick={() => setDeadline(value)}
 							className={cn(
-								'px-2 py-1.5 rounded-md text-xs text-left transition-colors',
+								'flex flex-col justify-start items-start px-2 py-1.5 rounded-md text-xs text-left transition-colors',
 								deadline === value
 									? 'bg-primary/10 text-primary font-medium'
 									: 'text-muted-foreground hover:bg-accent'

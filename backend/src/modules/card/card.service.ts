@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { CreateCardInput } from './inputs/create-card.input';
 import { UpdateCardInput } from './inputs/update-card.input';
 import { ChatService } from '../chat/chat.service';
@@ -15,6 +19,8 @@ import { checkBoardPermission } from '@/shared/utils/board-permissions';
 import { BoardPermission } from '@/shared/types/board-permissions.enum';
 import { ActivityLogService } from '../activity-log/activity-log.service';
 import { cardRelationsInclude } from './card.include';
+import { CardAttachmentService } from './card-attachment.service';
+import { assertBoardActive } from '@/shared/utils/assert-board-active.util';
 
 @Injectable()
 export class CardService {
@@ -26,6 +32,7 @@ export class CardService {
         private readonly gateway: BoardGateway,
         private readonly activityLog: ActivityLogService,
         private readonly notifications: NotificationsService,
+        private readonly attachments: CardAttachmentService,
     ) {}
 
     async create(userId: string, input: CreateCardInput) {
@@ -42,6 +49,13 @@ export class CardService {
             });
         }
 
+        if (column.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.column.archived',
+                message: 'Колонка находится в архиве',
+            });
+        }
+
         await checkBoardPermission({
             prisma: this.prisma,
             userId,
@@ -49,8 +63,10 @@ export class CardService {
             permission: BoardPermission.CREATE_CARD,
         });
 
+        await assertBoardActive(this.prisma, column.boardId);
+
         const lastCard = await this.prisma.card.findFirst({
-            where: { columnId },
+            where: { columnId, archivedAt: null },
             orderBy: { position: 'desc' },
         });
 
@@ -106,12 +122,21 @@ export class CardService {
                 message: 'Карточка не найдена',
             });
 
+        if (card.archivedAt) {
+            throw new NotFoundException({
+                code: 'errors.card.archived',
+                message: 'Карточка находится в архиве',
+            });
+        }
+
         await checkBoardPermission({
             prisma: this.prisma,
             userId,
             boardId: card.column.boardId,
             permission: BoardPermission.UPDATE_CARD,
         });
+
+        await assertBoardActive(this.prisma, card.column.boardId);
 
         const { tags, ...cardData } = input;
 
@@ -230,6 +255,42 @@ export class CardService {
             });
         }
 
+        if (column.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.column.archived',
+                message: 'Колонка находится в архиве',
+            });
+        }
+
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            columnId,
+        });
+
+        await assertBoardActive(this.prisma, column.board.id);
+
+        const activeCards = await this.prisma.card.findMany({
+            where: { columnId, archivedAt: null },
+            select: { id: true },
+        });
+
+        if (activeCards.length !== ids.length) {
+            throw new BadRequestException({
+                code: 'errors.card.reorderIncomplete',
+                message: 'Список карточек для сортировки неполный',
+            });
+        }
+
+        const activeIds = new Set(activeCards.map((item) => item.id));
+
+        if (ids.some((id) => !activeIds.has(id))) {
+            throw new BadRequestException({
+                code: 'errors.card.reorderInvalid',
+                message: 'Одна или несколько карточек не принадлежат колонке',
+            });
+        }
+
         const cards = await this.prisma.card.findMany({
             where: { id: { in: ids } },
             include: { column: true },
@@ -242,11 +303,19 @@ export class CardService {
             });
         }
 
-        await checkBoardAccess({
-            prisma: this.prisma,
-            userId,
-            columnId,
-        });
+        if (cards.some((item) => item.archivedAt)) {
+            throw new NotFoundException({
+                code: 'errors.card.archived',
+                message: 'Карточка находится в архиве',
+            });
+        }
+
+        if (cards.some((item) => item.columnId !== columnId)) {
+            throw new BadRequestException({
+                code: 'errors.card.reorderInvalid',
+                message: 'Одна или несколько карточек не принадлежат колонке',
+            });
+        }
 
         await this.prisma.$transaction(
             ids.map((id, index) =>
@@ -258,7 +327,7 @@ export class CardService {
         );
 
         const reordered = await this.prisma.card.findMany({
-            where: { columnId },
+            where: { columnId, archivedAt: null },
             orderBy: { position: 'asc' },
         });
 
@@ -284,6 +353,13 @@ export class CardService {
                 message: 'Карточка не найдена',
             });
 
+        if (card.archivedAt) {
+            throw new NotFoundException({
+                code: 'errors.card.archived',
+                message: 'Карточка находится в архиве',
+            });
+        }
+
         const newColumn = await this.prisma.column.findUnique({
             where: { id: newColumnId },
         });
@@ -294,20 +370,30 @@ export class CardService {
                 message: 'Одна или несколько карточек не найдены',
             });
 
+        if (newColumn.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.column.archived',
+                message: 'Колонка находится в архиве',
+            });
+        }
+
+        if (card.column.boardId !== newColumn.boardId) {
+            throw new BadRequestException({
+                code: 'errors.card.moveForbidden',
+                message: 'Нельзя перемещать карточку между досками',
+            });
+        }
+
         await checkBoardAccess({
             prisma: this.prisma,
             userId,
             boardId: card.column.boardId,
         });
 
-        await checkBoardAccess({
-            prisma: this.prisma,
-            userId,
-            boardId: newColumn.boardId,
-        });
+        await assertBoardActive(this.prisma, card.column.boardId);
 
         const cardsCount = await this.prisma.card.count({
-            where: { columnId: newColumnId },
+            where: { columnId: newColumnId, archivedAt: null },
         });
 
         const safePosition = Math.max(0, Math.min(position, cardsCount));
@@ -386,6 +472,13 @@ export class CardService {
                 message: 'Карточка не найдена',
             });
 
+        if (card.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.card.alreadyArchived',
+                message: 'Карточка уже в архиве',
+            });
+        }
+
         await checkBoardPermission({
             prisma: this.prisma,
             userId,
@@ -393,11 +486,133 @@ export class CardService {
             permission: BoardPermission.DELETE_CARD,
         });
 
+        await assertBoardActive(this.prisma, card.column.boardId);
+
+        await this.prisma.card.update({
+            where: { id: cardId },
+            data: { archivedAt: new Date() },
+        });
+
+        this.gateway.cardArchived(card.column.boardId, cardId);
+
+        await this.activityLog.log({
+            boardId: card.column.boardId,
+            userId,
+            action: 'ARCHIVED',
+            entityType: 'CARD',
+            entityId: cardId,
+            entityTitle: card.title,
+        });
+
+        return {
+            success: true,
+            message: 'Карточка перенесена в архив',
+        };
+    }
+
+    async restore(userId: string, cardId: string) {
+        const card = await this.prisma.card.findUnique({
+            where: { id: cardId },
+            include: {
+                column: true,
+            },
+        });
+
+        if (!card)
+            throw new NotFoundException({
+                code: 'card.notFound',
+                message: 'Карточка не найдена',
+            });
+
+        if (!card.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.card.notArchived',
+                message: 'Карточка не находится в архиве',
+            });
+        }
+
+        if (card.column.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.column.archived',
+                message: 'Колонка находится в архиве',
+            });
+        }
+
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId,
+            boardId: card.column.boardId,
+            permission: BoardPermission.DELETE_CARD,
+        });
+
+        await assertBoardActive(this.prisma, card.column.boardId);
+
+        const lastCard = await this.prisma.card.findFirst({
+            where: { columnId: card.columnId, archivedAt: null },
+            orderBy: { position: 'desc' },
+        });
+
+        const restored = await this.prisma.card.update({
+            where: { id: cardId },
+            data: {
+                archivedAt: null,
+                position: lastCard ? lastCard.position + 1 : 0,
+            },
+            include: {
+                column: true,
+                ...cardRelationsInclude,
+            },
+        });
+
+        this.gateway.cardRestored(card.column.boardId, restored);
+
+        await this.activityLog.log({
+            boardId: card.column.boardId,
+            userId,
+            action: 'RESTORED',
+            entityType: 'CARD',
+            entityId: cardId,
+            entityTitle: card.title,
+        });
+
+        return restored;
+    }
+
+    async permanentDelete(userId: string, cardId: string) {
+        const card = await this.prisma.card.findUnique({
+            where: { id: cardId },
+            include: {
+                column: true,
+            },
+        });
+
+        if (!card)
+            throw new NotFoundException({
+                code: 'card.notFound',
+                message: 'Карточка не найдена',
+            });
+
+        if (!card.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.card.notArchived',
+                message: 'Карточку можно удалить только из архива',
+            });
+        }
+
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId,
+            boardId: card.column.boardId,
+            permission: BoardPermission.DELETE_CARD,
+        });
+
+        await this.attachments.deleteAllForCard(cardId);
+
         await this.prisma.card.delete({
             where: { id: cardId },
         });
 
-        this.gateway.cardDeleted(card.column.boardId, cardId);
+        this.gateway.cardPermanentDeleted(card.column.boardId, cardId);
 
         await this.activityLog.log({
             boardId: card.column.boardId,
@@ -410,7 +625,7 @@ export class CardService {
 
         return {
             success: true,
-            message: 'Карточка успешно удалена',
+            message: 'Карточка удалена навсегда',
         };
     }
 

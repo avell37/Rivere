@@ -94,6 +94,12 @@ export class AccountController {
     })
     @HttpCode(200)
     @Authorization()
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 15,
+            limit: 5,
+        },
+    })
     @Post('changeEmail')
     async changeEmail(
         @Body() input: ChangeEmailInput,
@@ -108,6 +114,12 @@ export class AccountController {
     })
     @HttpCode(200)
     @Authorization()
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 15,
+            limit: 5,
+        },
+    })
     @Post('changePassword')
     async changePassword(
         @Body() input: ChangePasswordInput,
@@ -137,6 +149,12 @@ export class AccountController {
     })
     @HttpCode(200)
     @Authorization()
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 60,
+            limit: 3,
+        },
+    })
     @Post('delete')
     async deleteAccount(
         @Req() req: Request,

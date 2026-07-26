@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl'
 
-import { formatDate } from '@/shared/utils'
+import { formatDateTime } from '@/shared/utils'
 
 import { IAdminAuditLog } from '../model/types/AdminAuditTypes'
 
@@ -23,7 +23,7 @@ export const AdminAuditItem = ({ log }: { log: IAdminAuditLog }) => {
 					</p>
 				</div>
 				<span className='text-xs text-muted-foreground'>
-					{formatDate(new Date(log.createdAt), locale)}
+					{formatDateTime(log.createdAt, locale)}
 				</span>
 			</div>
 			{(log.targetType || log.targetId) && (

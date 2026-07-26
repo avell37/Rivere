@@ -3,6 +3,7 @@
 import { Search } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+import { EmptyState } from '@/shared/ui/custom'
 import {
 	Button,
 	Input,
@@ -56,9 +57,9 @@ export const BoardCardSearch = () => {
 				onOpenAutoFocus={event => event.preventDefault()}
 			>
 				{results.length === 0 ? (
-					<p className='px-3 py-2 text-sm text-muted-foreground'>
+					<EmptyState variant='inline' className='px-3 py-2'>
 						{t('empty')}
-					</p>
+					</EmptyState>
 				) : (
 					<ul>
 						{results.map(({ card, columnTitle }) => (

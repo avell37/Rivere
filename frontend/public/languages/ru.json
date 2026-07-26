@@ -228,6 +228,13 @@
 			"updatedDesc": "Недавно обновлённые",
 			"titleAsc": "Название А-Я",
 			"titleDesc": "Название Я-А"
+		},
+		"archive": {
+			"title": "Архив досок",
+			"description": "Архивные доски скрыты из основного списка. Их можно восстановить в любой момент.",
+			"archivedAt": "В архиве с {date}",
+			"restore": "Восстановить",
+			"restoreSuccess": "Доска восстановлена"
 		}
 	},
 	"board": {
@@ -257,11 +264,34 @@
 			"editSuccess": "Изменения успешно применены"
 		},
 		"delete": {
-			"deleteTitle": "Удалить доску?",
-			"deleteDescription": "Это действие нельзя отменить, ваша доска будет окончательно удалена.",
-			"deleteActionText": "Удалить",
+			"deleteTitle": "Архивировать доску?",
+			"deleteDescription": "Доска будет скрыта из списка, но её можно восстановить из архива на странице досок.",
+			"deleteActionText": "В архив",
 			"deleteCancelText": "Отмена",
-			"deleteSuccess": "Доска успешно удалена"
+			"deleteSuccess": "Доска перенесена в архив"
+		},
+		"archive": {
+			"title": "Архив",
+			"description": "Архивные элементы скрыты с доски. Восстановите их или удалите навсегда.",
+			"loading": "Загрузка архива...",
+			"cardsSection": "Карточки",
+			"columnsSection": "Колонки",
+			"column": "Колонка: {name}",
+			"cardsInColumn": "{count, plural, one {# карточка} few {# карточки} many {# карточек} other {# карточек}}",
+			"archivedAt": "с {date}",
+			"restore": "Восстановить",
+			"restoreCardSuccess": "Карточка восстановлена",
+			"restoreColumnSuccess": "Колонка восстановлена",
+			"permanentDelete": "Удалить навсегда",
+			"permanentDeleteAction": "Удалить навсегда",
+			"permanentDeleteCancel": "Отмена",
+			"permanentDeleteCardTitle": "Удалить карточку навсегда?",
+			"permanentDeleteCardDescription": "Карточка и все связанные данные будут удалены без возможности восстановления.",
+			"permanentDeleteColumnTitle": "Удалить колонку навсегда?",
+			"permanentDeleteColumnDescription": "Колонка и все {count} карточек внутри будут удалены без возможности восстановления.",
+			"permanentDeleteCardSuccess": "Карточка удалена навсегда",
+			"permanentDeleteColumnSuccess": "Колонка удалена навсегда",
+			"manageForbidden": "Недостаточно прав для управления архивом."
 		},
 		"membersList": {
 			"title": "Список участников доски:",
@@ -302,7 +332,8 @@
 		},
 		"actions": {
 			"edit": "Редактировать",
-			"delete": "Удалить"
+			"delete": "Удалить",
+			"archive": "В архив"
 		},
 		"settings": {
 			"heading": "Настройки доски",
@@ -342,6 +373,8 @@
 				"created": "создал(а) {entity} «{title}»",
 				"updated": "обновил(а) {entity} «{title}»",
 				"deleted": "удалил(а) {entity} «{title}»",
+				"archived": "архивировал(а) {entity} «{title}»",
+				"restored": "восстановил(а) {entity} «{title}»",
 				"moved": "переместил(а) карточку «{title}» из «{fromColumn}» в «{toColumn}»",
 				"completed": "завершил(а) карточку «{title}»",
 				"reopened": "переоткрыл(а) карточку «{title}»",
@@ -380,15 +413,15 @@
 			"editSuccess": "Изменения успешно применены"
 		},
 		"delete": {
-			"deleteTitle": "Удалить колонку?",
-			"deleteDescription": "Эта колонка и все её задачи будут окончательно удалены.",
-			"deleteActionText": "Удалить",
+			"deleteTitle": "Архивировать колонку?",
+			"deleteDescription": "Колонка будет скрыта с доски, но её можно восстановить из архива в шапке доски.",
+			"deleteActionText": "В архив",
 			"deleteCancelText": "Отмена",
-			"deleteSuccess": "Колонка успешно удалена"
+			"deleteSuccess": "Колонка перенесена в архив"
 		},
 		"actions": {
 			"edit": "Редактировать",
-			"delete": "Удалить"
+			"archive": "В архив"
 		}
 	},
 	"card": {
@@ -404,12 +437,12 @@
 			"createPriorityModalPlaceholder": "Выберите приоритет",
 			"createDeadlineModalLabel": "Дедлайн (опционально)",
 			"createDeadlineModalPlaceholder": "Выберите дедлайн",
+			"clearDeadline": "Убрать дедлайн",
 			"createModalSubmit": "Добавить",
 			"createModalClose": "Закрыть",
 			"createSuccess": "Карточка успешно создана"
 		},
 		"edit": {
-			"comments": "Комментарии",
 			"description": "Описание",
 			"addDeadline": "Добавить дедлайн",
 			"editDescription": "Пусто...",
@@ -417,6 +450,7 @@
 			"editPriorityPlaceholder": "Выберите приоритет задачи",
 			"editDeadlineLabel": "Дедлайн",
 			"editDeadlinePlaceholder": "Выберите дедлайн",
+			"clearDeadline": "Убрать дедлайн",
 			"editAssigneeLabel": "Исполнитель",
 			"editAssigneePlaceholder": "Назначить...",
 			"editTagsLabel": "Теги",
@@ -428,20 +462,31 @@
 			"editSuccess": "Изменения успешно применены"
 		},
 		"delete": {
-			"deleteTitle": "Удалить карточку?",
-			"deleteDescription": "Это действие нельзя отменить, ваша карточка будет окончательно удалена.",
-			"deleteActionText": "Удалить",
+			"deleteTitle": "Архивировать карточку?",
+			"deleteDescription": "Карточка будет скрыта с доски, но её можно восстановить из архива в шапке доски.",
+			"deleteActionText": "В архив",
 			"deleteCancelText": "Отмена",
-			"deleteSuccess": "Карточка успешно удалена"
+			"deleteSuccess": "Карточка перенесена в архив"
 		},
 		"chat": {
+			"heading": "Комментарии",
 			"inputPlaceholder": "Написать сообщение...",
+			"sendError": "Не удалось отправить сообщение",
 			"deleteMessage": "Удалить сообщение",
 			"deleteConfirmTitle": "Удалить сообщение?",
 			"deleteConfirmDescription": "Сообщение будет скрыто для всех участников этого чата.",
 			"deleteConfirmAction": "Удалить",
 			"deleteCancel": "Отмена",
 			"deletedMessage": "Сообщение удалено"
+		},
+		"attachments": {
+			"title": "Вложения",
+			"upload": "Загрузить файл",
+			"hint": "До 10 МБ: изображения, PDF или TXT. Не более 10 файлов на карточку.",
+			"loading": "Загрузка вложений...",
+			"empty": "Файлов пока нет",
+			"uploaded": "Файл прикреплён",
+			"deleted": "Вложение удалено"
 		},
 		"doneSuccess": "Успешно",
 		"expiresAt": "до: {date}",
@@ -470,9 +515,9 @@
 		}
 	},
 	"priority": {
-		"low": "Низкая",
-		"medium": "Средняя",
-		"high": "Высокая"
+		"low": "Низкий",
+		"medium": "Средний",
+		"high": "Высокий"
 	},
 	"profile": {
 		"settings": {
@@ -535,6 +580,11 @@
 				"heading": "Активные сессии",
 				"description": "Ваши сессии с разных устройств",
 				"browser": "Браузер",
+				"empty": "Нет активных сессий",
+				"unknownBrowser": "Неизвестный браузер",
+				"unknownOs": "Неизвестная ОС",
+				"createdAt": "Создана {date}",
+				"rememberedDevice": "Запомненное устройство",
 				"currentSession": "Текущая сессия",
 				"clearSessionsButton": "Завершить все, кроме текущей",
 				"clearSessionsTitle": "Вы уверены?",
@@ -562,7 +612,8 @@
 	"events": {
 		"board": {
 			"kicked": "Вы были кикнуты с доски",
-			"boardDeleted": "Доска удалена"
+			"boardDeleted": "Доска удалена",
+			"boardArchived": "Доска перенесена в архив"
 		},
 		"moderation": {
 			"banned": "Вы были забанены по причине: {reason}",
@@ -1115,6 +1166,21 @@
 			"submitting": "Отправка..."
 		}
 	},
+	"system": {
+		"loading": "Загрузка...",
+		"notFound": {
+			"title": "Страница не найдена",
+			"description": "Запрашиваемая страница не существует или была перемещена.",
+			"boards": "К доскам",
+			"home": "На главную"
+		},
+		"error": {
+			"title": "Что-то пошло не так",
+			"description": "Произошла ошибка при загрузке страницы. Попробуйте ещё раз.",
+			"retry": "Повторить",
+			"boards": "К доскам"
+		}
+	},
 	"validation": {
 		"username": {
 			"min": "Минимальная длина имени пользователя 4 символа",
@@ -1206,7 +1272,12 @@
 		},
 		"card": {
 			"notFound": "Карточка не найдена",
-			"notFoundMultiple": "Одна или несколько карточек не найдены"
+			"notFoundMultiple": "Одна или несколько карточек не найдены",
+			"attachments": {
+				"limit": "Достигнут лимит вложений на карточку",
+				"notFound": "Вложение не найдено",
+				"forbidden": "Нельзя удалить это вложение"
+			}
 		},
 		"column": {
 			"notFound": "Колонка не найдена",

@@ -31,11 +31,11 @@ export const Header = () => {
 					<BurgerMenu />
 					<Link
 						href={PRIVATE_URL.boards()}
-						className='text-xl sm:text-2xl md:text-3xl font-bold tracking-tight hover:opacity-80 transition truncate md:mb-2 max-md:mb-1'
+						className='text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight hover:opacity-80 transition truncate lg:mb-2 max-lg:mb-1'
 					>
 						Rivere
 					</Link>
-					<nav className='hidden md:flex items-center gap-4 max-xl:gap-2'>
+					<nav className='hidden lg:flex items-center gap-4 max-xl:gap-2'>
 						{headerNavFields.map(item => (
 							<Link
 								key={item.title}
@@ -71,7 +71,7 @@ export const BurgerMenu = () => {
 					type='button'
 					variant='none'
 					size='none'
-					className='rounded-md hover:bg-muted transition md:hidden'
+					className='rounded-md hover:bg-muted transition lg:hidden'
 				>
 					<Menu className='w-5 h-5' />
 				</Button>

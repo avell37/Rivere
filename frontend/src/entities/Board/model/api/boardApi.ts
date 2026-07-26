@@ -51,6 +51,18 @@ export const deleteBoardApi = async (id: string): Promise<ActionResponse> => {
 	return response.data
 }
 
+export const fetchArchivedBoards = async (): Promise<IBoard[]> => {
+	const response = await authAxios.get(`${API_URL.boards()}archived`)
+	return response.data
+}
+
+export const restoreBoardApi = async (boardId: string): Promise<IBoard> => {
+	const response = await authAxios.post(
+		`${API_URL.boards()}${boardId}/restore`
+	)
+	return response.data
+}
+
 export const leaveBoardApi = async (
 	boardId: string
 ): Promise<ActionResponse> => {

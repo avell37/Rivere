@@ -1,43 +1,27 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-import { useState } from 'react'
-import { toast } from 'sonner'
-
 import { UserAvatar } from '@/entities/User'
 
+import { EmptyState } from '@/shared/ui/custom'
 import { Button, Input, Spinner } from '@/shared/ui/external'
 
-import {
-	useInviteUser,
-	useInviteUserBySearch
-} from '../model/hooks/useInviteQueries'
-import { InviteSearchUser } from '../model/types/InviteProps'
+import { useInviteUserBySearch } from '../model/hooks/useInviteQueries'
+import { useInviteSearch } from '../model/hooks/useInviteSearch'
 
 export const InviteUserSearch = ({ boardId }: { boardId: string }) => {
-	const t = useTranslations('invite.user')
-	const [query, setQuery] = useState('')
-	const [debouncedQuery, setDebouncedQuery] = useState('')
-	const { inviteUserToBoard, inviteUserPending } = useInviteUser()
+	const {
+		t,
+		query,
+		debouncedQuery,
+		inviteUserPending,
+		setQuery,
+		handleSearch,
+		handleInvite
+	} = useInviteSearch(boardId)
 	const { data, isFetching } = useInviteUserBySearch({
 		boardId,
 		debouncedQuery
 	})
-
-	const handleSearch = () => {
-		setDebouncedQuery(query.trim())
-	}
-
-	const handleInvite = async (user: InviteSearchUser) => {
-		await inviteUserToBoard(
-			{ boardId, userId: user.id },
-			{
-				onSuccess: () => {
-					toast.success(t('invited', { name: user.nickname }))
-				}
-			}
-		)
-	}
 
 	const users = data?.users ?? []
 
@@ -73,9 +57,7 @@ export const InviteUserSearch = ({ boardId }: { boardId: string }) => {
 			{debouncedQuery.length >= 2 &&
 				!isFetching &&
 				users.length === 0 && (
-					<p className='text-sm text-muted-foreground'>
-						{t('empty')}
-					</p>
+					<EmptyState centered>{t('empty')}</EmptyState>
 				)}
 
 			<div className='flex flex-col gap-2'>

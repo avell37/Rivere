@@ -1,5 +1,5 @@
 'use client'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
@@ -9,9 +9,17 @@ import { boardKeys } from '@/entities/Board'
 import { ActionResponse } from '@/shared/types'
 import { handleApiError } from '@/shared/utils'
 
-import { createCardApi, deleteCardApi, updateCardApi } from '../api/cardApi'
+import {
+	createCardApi,
+	deleteCardApi,
+	fetchArchivedCardsApi,
+	permanentDeleteCardApi,
+	restoreCardApi,
+	updateCardApi
+} from '../api/cardApi'
 import { UpdateCardPayload } from '../types/CardPayloads'
 import { ToggleDoneProps } from '../types/CardProps'
+import { IArchivedCard } from '../types/IArchivedCard'
 import { ICard } from '../types/ICard'
 import { CreateCardRequest } from '../validation/create-card.z.validation'
 
@@ -19,6 +27,9 @@ export const cardKeys = {
 	create: ['create-card'],
 	update: (cardId: string) => ['update-card', cardId],
 	delete: ['delete-card'],
+	archived: (boardId: string) => ['archived-cards', boardId],
+	restore: (cardId: string) => ['restore-card', cardId],
+	permanentDelete: (cardId: string) => ['permanent-delete-card', cardId],
 	toggleDone: (cardId: string) => ['toggle-card-done', cardId]
 }
 
@@ -54,7 +65,7 @@ export const useCreateCardMutation = ({
 	}
 }
 
-export const useUpdateCardMutation = (cardId: string) => {
+export const useUpdateCardMutation = (cardId: string, boardId: string) => {
 	const queryClient = useQueryClient()
 	const t = useTranslations()
 
@@ -66,7 +77,9 @@ export const useUpdateCardMutation = (cardId: string) => {
 		mutationKey: cardKeys.update(cardId),
 		mutationFn: data => updateCardApi(cardId, data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['card'] })
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
 		},
 		onError: err => handleApiError(err, t)
 	})
@@ -92,6 +105,9 @@ export const useDeleteCardMutation = (boardId: string) => {
 			queryClient.invalidateQueries({
 				queryKey: boardKeys.single(boardId)
 			})
+			queryClient.invalidateQueries({
+				queryKey: cardKeys.archived(boardId)
+			})
 		},
 		onError: err => handleApiError(err, t)
 	})
@@ -99,6 +115,74 @@ export const useDeleteCardMutation = (boardId: string) => {
 	return {
 		deleteCard,
 		deleteCardPending
+	}
+}
+
+export const useGetArchivedCards = (boardId: string) => {
+	const {
+		data: archivedCards,
+		isPending: archivedCardsPending
+	} = useQuery<IArchivedCard[], AxiosError>({
+		queryKey: cardKeys.archived(boardId),
+		queryFn: () => fetchArchivedCardsApi(boardId),
+		enabled: !!boardId
+	})
+
+	return {
+		archivedCards: archivedCards ?? [],
+		archivedCardsPending
+	}
+}
+
+export const useRestoreCardMutation = (boardId: string) => {
+	const queryClient = useQueryClient()
+	const t = useTranslations()
+
+	const { mutate: restoreCard, isPending: restoreCardPending } = useMutation<
+		ICard,
+		AxiosError,
+		string
+	>({
+		mutationKey: cardKeys.restore(''),
+		mutationFn: restoreCardApi,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: boardKeys.single(boardId)
+			})
+			queryClient.invalidateQueries({
+				queryKey: cardKeys.archived(boardId)
+			})
+		},
+		onError: err => handleApiError(err, t)
+	})
+
+	return {
+		restoreCard,
+		restoreCardPending
+	}
+}
+
+export const usePermanentDeleteCardMutation = (boardId: string) => {
+	const queryClient = useQueryClient()
+	const t = useTranslations()
+
+	const {
+		mutate: permanentDeleteCard,
+		isPending: permanentDeleteCardPending
+	} = useMutation<ActionResponse, AxiosError, string>({
+		mutationKey: cardKeys.permanentDelete(''),
+		mutationFn: permanentDeleteCardApi,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: cardKeys.archived(boardId)
+			})
+		},
+		onError: err => handleApiError(err, t)
+	})
+
+	return {
+		permanentDeleteCard,
+		permanentDeleteCardPending
 	}
 }
 

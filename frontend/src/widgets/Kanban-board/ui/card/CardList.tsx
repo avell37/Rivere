@@ -22,6 +22,12 @@ const CardListComponent = ({
 		setOpenCardId(cardId)
 	}, [])
 
+	const openCard = useMemo(
+		() =>
+			openCardId ? cards.find(card => card.id === openCardId) : undefined,
+		[cards, openCardId]
+	)
+
 	return (
 		<div className='flex flex-col'>
 			<ul className='flex flex-col items-start gap-2'>
@@ -49,11 +55,11 @@ const CardListComponent = ({
 				<div className='rounded-md' />
 			</ul>
 
-			{openCardId && (
+			{openCard && (
 				<CardSheet
 					open
 					onOpenChange={() => setOpenCardId(null)}
-					card={cards.find(card => card.id === openCardId)}
+					card={openCard}
 					boardId={boardId}
 				/>
 			)}

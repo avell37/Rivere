@@ -15,13 +15,25 @@ export const getBoardSocket = (userId: string, boardId: string) => {
 	return sockets.get(key)!
 }
 
-export const disconnectNotificationsSocket = (
-	userId: string,
-	boardId: string
-) => {
+export const disconnectBoardSocket = (userId: string, boardId: string) => {
 	const key = `${userId}:${boardId}`
 	const socket = sockets.get(key)
 
 	socket?.disconnect()
 	sockets.delete(key)
+}
+
+export const disconnectAllBoardSockets = () => {
+	for (const socket of sockets.values()) {
+		socket.disconnect()
+	}
+
+	sockets.clear()
+}
+
+export const disconnectNotificationsSocket = (
+	userId: string,
+	boardId: string
+) => {
+	disconnectBoardSocket(userId, boardId)
 }

@@ -6,6 +6,7 @@ import {
 	AchievementListSkeleton
 } from '@/entities/Achievement'
 
+import { EmptyState } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 
 import { useAchievements } from '../model/hooks/useAchievements'
@@ -61,7 +62,11 @@ export const Achievements = () => {
 					{t('filters.locked')}
 				</Button>
 			</div>
-			<AchievementList achievements={filteredAchievements} />
+			{filteredAchievements.length === 0 ? (
+				<EmptyState centered>{t('emptyFiltered')}</EmptyState>
+			) : (
+				<AchievementList achievements={filteredAchievements} />
+			)}
 		</div>
 	)
 }

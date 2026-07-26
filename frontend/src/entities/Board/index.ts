@@ -23,6 +23,8 @@ export * from './model/utils/member-permissions'
 export * from './model/validation/create-board.z.validation'
 export * from './model/validation/edit-board.z.validation'
 
+export * from './ui/ArchivedBoardItem'
+export * from './ui/ArchivedBoardsSection'
 export * from './ui/BoardFavoriteButton'
 export * from './ui/BoardHeaderActionsSkeleton'
 export * from './ui/BoardItem'

@@ -101,10 +101,10 @@ export class AdminController {
     @ApiOperation({
         summary: 'Журнал действий администраторов',
         description:
-            'Возвращает audit log действий модерации. Доступен только для ADMIN или CREATOR',
+            'Возвращает audit log действий модерации. Доступен только для CREATOR',
     })
     @Authorization()
-    @Roles(UserRole.ADMIN, UserRole.CREATOR)
+    @Roles(UserRole.CREATOR)
     @Get('audit-logs')
     async getAuditLogs(@Query() query: AdminAuditQueryInput) {
         return this.adminAuditService.getLogs(query);

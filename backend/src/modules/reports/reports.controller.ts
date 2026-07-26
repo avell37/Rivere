@@ -1,5 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { ReportsService } from './reports.service';
 import { CreateReportInput } from './input/create-report.input';
 import { SessionAuthGuard } from '@/shared/guards/session-auth.guard';
@@ -13,6 +14,12 @@ export class ReportsController {
 
     @ApiOperation({ summary: 'Отправить жалобу' })
     @Authorization()
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 15,
+            limit: 5,
+        },
+    })
     @Post()
     async createReport(
         @SessionUser('id') userId: string,

@@ -5,7 +5,8 @@ export const loginSchema = z.object({
 	password: z
 		.string()
 		.min(6, { message: 'validation.password.min' })
-		.max(64, { message: 'validation.password.max' })
+		.max(64, { message: 'validation.password.max' }),
+	rememberMe: z.boolean().optional()
 })
 
 export type SignInRequest = z.infer<typeof loginSchema>

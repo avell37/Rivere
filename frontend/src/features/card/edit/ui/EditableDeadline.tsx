@@ -1,44 +1,33 @@
 'use client'
-import { Calendar, X } from 'lucide-react'
+import { Calendar } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 
 import { FormDatePickerController } from '@/shared/ui/custom'
-import { Button } from '@/shared/ui/external'
 
 import { useUpdateCard } from '../model/hooks/useUpdateCard'
 import { EditableProps } from '../model/types/EditableProps'
 
-export const EditableDeadline = ({ cardId, t }: EditableProps) => {
-	const { control, setValue, watch } = useFormContext()
-	const deadline = watch('deadline')
+export const EditableDeadline = ({ cardId, boardId, t }: EditableProps) => {
+	const { control } = useFormContext()
 
-	const { handleChange, isLoading } = useUpdateCard(cardId, 'deadline')
+	const { handleChange, isLoading } = useUpdateCard(
+		cardId,
+		boardId,
+		'deadline'
+	)
 
 	return (
-		<div className='flex items-center justify-center gap-2'>
-			<FormDatePickerController
-				name='deadline'
-				icon={<Calendar size={14} />}
-				label={t('editDeadlineLabel')}
-				placeholder={t('editDeadlinePlaceholder')}
-				control={control}
-				onChange={date => handleChange(date)}
-				disabled={isLoading}
-			/>
-			{deadline != null && (
-				<Button
-					variant='none'
-					size='none'
-					className='mt-6'
-					onClick={() => {
-						setValue('deadline', null)
-						handleChange(null)
-					}}
-					disabled={isLoading}
-				>
-					<X className='size-4' />
-				</Button>
-			)}
-		</div>
+		<FormDatePickerController
+			name='deadline'
+			icon={<Calendar size={14} />}
+			label={t('editDeadlineLabel')}
+			placeholder={t('editDeadlinePlaceholder')}
+			clearLabel={t('clearDeadline')}
+			className='w-44 justify-start text-left font-normal'
+			control={control}
+			clearable
+			onChange={date => handleChange(date)}
+			disabled={isLoading}
+		/>
 	)
 }

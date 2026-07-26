@@ -6,6 +6,7 @@ export * from './model/hooks/useCardQueries'
 
 export * from './model/types/CardPayloads'
 export * from './model/types/CardProps'
+export * from './model/types/IArchivedCard'
 export * from './model/types/ICard'
 
 export * from './model/validation/create-card.z.validation'
