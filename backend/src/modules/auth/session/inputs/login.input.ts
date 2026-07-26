@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+    IsBoolean,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    MaxLength,
+    MinLength,
+} from 'class-validator';
 
 export class LoginInput {
     @IsNotEmpty({ message: 'Поле обязательно к заполнению' })
@@ -10,4 +17,8 @@ export class LoginInput {
     @MinLength(6, { message: 'Минимальная длина пароля 6 символов' })
     @MaxLength(64, { message: 'Максимальная длина пароля 64 символа' })
     password!: string;
+
+    @IsOptional()
+    @IsBoolean()
+    rememberMe?: boolean;
 }

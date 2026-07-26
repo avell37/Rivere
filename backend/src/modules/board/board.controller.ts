@@ -45,6 +45,16 @@ export class BoardController {
     }
 
     @ApiOperation({
+        summary: 'Архивные доски пользователя',
+        description: 'Возвращает доски пользователя, перенесённые в архив.',
+    })
+    @Authorization()
+    @Get('archived')
+    async getArchivedBoards(@SessionUser('id') userId: string) {
+        return this.boardService.getArchivedBoards(userId);
+    }
+
+    @ApiOperation({
         summary: 'Получение доски',
         description: 'Отдает запрашиваемую доску по ID',
     })
@@ -87,8 +97,8 @@ export class BoardController {
     }
 
     @ApiOperation({
-        summary: 'Удаление доски',
-        description: 'Удаляет определенную доску по ID.',
+        summary: 'Архивирование доски',
+        description: 'Переносит доску в архив вместо безвозвратного удаления.',
     })
     @HttpCode(200)
     @Authorization()
@@ -98,5 +108,42 @@ export class BoardController {
         @Param('boardId') boardId: string,
     ) {
         return this.boardService.deleteBoard(userId, boardId);
+    }
+
+    @ApiOperation({
+        summary: 'Восстановление доски из архива',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Post(':boardId/restore')
+    async restoreBoard(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+    ) {
+        return this.boardService.restoreBoard(userId, boardId);
+    }
+
+    @ApiOperation({
+        summary: 'Архивные карточки доски',
+    })
+    @Authorization()
+    @Get(':boardId/archived-cards')
+    async getArchivedCards(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+    ) {
+        return this.boardService.getArchivedCards(userId, boardId);
+    }
+
+    @ApiOperation({
+        summary: 'Архивные колонки доски',
+    })
+    @Authorization()
+    @Get(':boardId/archived-columns')
+    async getArchivedColumns(
+        @SessionUser('id') userId: string,
+        @Param('boardId') boardId: string,
+    ) {
+        return this.boardService.getArchivedColumns(userId, boardId);
     }
 }

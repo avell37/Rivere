@@ -22,7 +22,7 @@ export const useLogin = () => {
 
 	const form = useForm<SignInRequest, unknown>({
 		resolver: zodResolver(loginSchema),
-		defaultValues: { login: '', password: '' }
+		defaultValues: { login: '', password: '', rememberMe: false }
 	})
 
 	const { mutate: login, isPending: loginPending } = useMutation<

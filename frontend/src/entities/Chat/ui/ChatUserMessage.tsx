@@ -8,6 +8,8 @@ import { UserAvatar } from '@/entities/User'
 
 import { ReportMessageButton } from '@/features/reports'
 
+import { ChatMessageText } from '@/features/chat/ui/ChatMessageText'
+
 import { Alert } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 import { formatTime } from '@/shared/utils'
@@ -92,7 +94,7 @@ export const ChatUserMessage = ({
 							: 'text-zinc-800 dark:text-zinc-200'
 					}`}
 				>
-					{isDeleted ? t('deletedMessage') : message.text}
+					{isDeleted ? t('deletedMessage') : <ChatMessageText text={message.text} />}
 				</p>
 			</div>
 		</div>

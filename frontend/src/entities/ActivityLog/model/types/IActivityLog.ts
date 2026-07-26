@@ -2,6 +2,8 @@ export type ActivityAction =
 	| 'CREATED'
 	| 'UPDATED'
 	| 'DELETED'
+	| 'ARCHIVED'
+	| 'RESTORED'
 	| 'MOVED'
 	| 'COMPLETED'
 	| 'REOPENED'

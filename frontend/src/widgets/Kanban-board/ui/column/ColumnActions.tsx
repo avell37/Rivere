@@ -1,5 +1,5 @@
 'use client'
-import { Edit, MoreHorizontal, Trash2 } from 'lucide-react'
+import { Archive, Edit, MoreHorizontal } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { memo, useState } from 'react'
 
@@ -44,10 +44,10 @@ export const ColumnActionsComponent = ({
 				</DropdownActionItem>
 				{can(BoardPermission.DELETE_COLUMN) && (
 					<DropdownActionItem
-						icon={Trash2}
+						icon={Archive}
 						onClick={() => setDeleteOpen(true)}
 					>
-						{t('delete')}
+						{t('archive')}
 					</DropdownActionItem>
 				)}
 			</AppDropdown>

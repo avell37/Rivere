@@ -7,6 +7,7 @@ export interface SessionProps {
 	title: string
 	description: string
 	span: string
+	badge?: string
 	isCurrent?: boolean
 	icon: React.ReactNode
 	currentSession: string

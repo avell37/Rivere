@@ -1,126 +1,123 @@
 'use client'
+
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Socket } from 'socket.io-client'
+import { toast } from 'sonner'
 
-import { IMessage, useChatStore, useGetChat } from '@/entities/Chat'
+import { useChatStore, useGetChat } from '@/entities/Chat'
 import { useUserStore } from '@/entities/User'
 
 import { useIsMobile } from '@/shared/config'
 
-import { EmojiData } from '../types/ChatProps'
-import { getChatSocket } from '../utils/chat.socket'
+import { EmojiData, UseChatParams } from '../types/ChatProps'
 
-export const useChat = ({ cardId }: { cardId: string }) => {
+import { useChatMention } from './useChatMention'
+import { useChatSocket } from './useChatSocket'
+
+export const useChat = ({ cardId, boardId }: UseChatParams) => {
 	const user = useUserStore(state => state.user)
-
-	const [message, setMessage] = useState<string>('')
+	const [message, setMessage] = useState('')
+	const [messageCardId, setMessageCardId] = useState(cardId)
 	const [showEmoji, setShowEmoji] = useState(false)
 
-	const socketRef = useRef<Socket | null>(null)
+	if (messageCardId !== cardId) {
+		setMessageCardId(cardId)
+		setMessage('')
+	}
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 
-	const { messages, setMessages, addMessage, markMessageDeleted } = useChatStore()
-
+	const { messages, setMessages, resetChat } = useChatStore()
 	const t = useTranslations('card.chat')
 	const locale = useLocale()
 	const isMobile = useIsMobile()
-
 	const { chat, chatPending } = useGetChat(cardId)
 
-	const handleKeySubmitMessage = (
-		e: React.KeyboardEvent<HTMLTextAreaElement>
-	) => {
-		if (isMobile) return
+	const chatId = chat?.id ?? null
+	const userId = user?.id ?? null
 
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault()
-			handleSubmitMessage()
-		}
-	}
+	const { emitMessage, emitDeleteMessage } = useChatSocket(chatId)
+
+	const {
+		textareaRef,
+		mentionQuery,
+		mentionCandidates,
+		handleMessageChange,
+		handleSelectMention,
+		resetMention
+	} = useChatMention({
+		boardId,
+		cardId,
+		userId,
+		message,
+		setMessage
+	})
 
 	useEffect(() => {
-		const socket = getChatSocket()
-		socketRef.current = socket
-
-		return () => {
-			socketRef.current = null
-		}
-	}, [])
+		resetChat()
+	}, [cardId, resetChat])
 
 	useEffect(() => {
 		if (!chat) return
-
-		setMessages(chat.messages)
-	}, [chat, setMessages])
-
-	const chatId = chat?.id ?? null
-
-	useEffect(() => {
-		if (!socketRef.current || !chatId) return
-
-		const socket = socketRef.current
-		socket.emit('join', { chatId })
-
-		const handleMessage = (msg: IMessage) => addMessage(msg)
-		const handleMessageDeleted = (payload: {
-			id: string
-			deletedAt: string
-		}) => markMessageDeleted(payload.id, payload.deletedAt)
-
-		socket.on('message:new', handleMessage)
-		socket.on('message:deleted', handleMessageDeleted)
-
-		return () => {
-			socket.emit('leave', { chatId })
-			socket.off('message:new', handleMessage)
-			socket.off('message:deleted', handleMessageDeleted)
-		}
-	}, [chatId, addMessage, markMessageDeleted])
-
-	const handleSubmitMessage = useCallback(() => {
-		if (!socketRef.current || !user || !chatId || !message?.trim()) return
-
-		socketRef.current.emit('message', {
-			chatId,
-			text: message
-		})
-		setMessage('')
-	}, [user, chatId, message])
-
-	const handleDeleteMessage = useCallback(
-		(messageId: string) => {
-			if (!socketRef.current || !chatId) return
-
-			socketRef.current.emit('message:delete', {
-				messageId,
-				chatId
-			})
-		},
-		[chatId]
-	)
-
-	const handleEmojiClick = (emojiData: EmojiData) => {
-		setMessage(prev => (prev || '') + emojiData.native)
-	}
+		setMessages(cardId, chat.messages)
+	}, [chat, cardId, setMessages])
 
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView()
 	}, [messages])
 
+	const handleSubmitMessage = useCallback(() => {
+		if (!user) return
+
+		if (!emitMessage(message)) {
+			toast.error(t('sendError'))
+			return
+		}
+
+		setMessage('')
+		resetMention()
+	}, [user, emitMessage, message, resetMention, t])
+
+	const handleKeySubmitMessage = useCallback(
+		(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+			if (isMobile) return
+
+			if (e.key === 'Enter' && !e.shiftKey) {
+				e.preventDefault()
+				handleSubmitMessage()
+			}
+		},
+		[isMobile, handleSubmitMessage]
+	)
+
+	const handleDeleteMessage = useCallback(
+		(messageId: string) => {
+			emitDeleteMessage(messageId)
+		},
+		[emitDeleteMessage]
+	)
+
+	const handleEmojiClick = useCallback((emojiData: EmojiData) => {
+		setMessage(prev => (prev || '') + emojiData.native)
+	}, [])
+
 	return {
 		t,
 		locale,
-		userId: user?.id ?? null,
+		userId,
+		messages,
 		message,
 		messagesEndRef,
+		textareaRef,
 		chatPending,
 		showEmoji,
+		mentionQuery,
+		mentionCandidates,
+		handleMessageChange,
+		handleSelectMention,
 		handleKeySubmitMessage,
 		handleSubmitMessage,
 		handleDeleteMessage,
 		handleEmojiClick,
-		setMessage,
 		setShowEmoji
 	}
 }

@@ -8,7 +8,7 @@ import {
 	FormInputController,
 	LoginFields
 } from '@/shared/ui/custom'
-import { Button } from '@/shared/ui/external'
+import { Button, Checkbox, Label } from '@/shared/ui/external'
 
 import { useLogin } from '../model/hooks/useLogin'
 
@@ -68,6 +68,19 @@ export const LoginForm = () => {
 					)}
 				</div>
 			))}
+			<div className='flex items-center gap-2'>
+				<Checkbox
+					id='rememberMe'
+					checked={form.watch('rememberMe')}
+					onCheckedChange={checked =>
+						form.setValue('rememberMe', checked === true)
+					}
+					disabled={loginPending}
+				/>
+				<Label htmlFor='rememberMe' className='text-sm font-normal'>
+					{t('rememberDevice')}
+				</Label>
+			</div>
 		</FormAuthWrapper>
 	)
 }

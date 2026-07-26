@@ -3,7 +3,7 @@ import { LayoutDashboard, Star } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useMemo, useState } from 'react'
 
-import { BoardList, BoardListSkeleton, useGetBoards } from '@/entities/Board'
+import { BoardList, BoardListSkeleton, useGetBoards, ArchivedBoardsSection } from '@/entities/Board'
 
 import { CreateBoardModal } from '@/features/board'
 
@@ -86,6 +86,8 @@ export const Boards = () => {
 								</div>
 							)}
 						</div>
+
+						<ArchivedBoardsSection />
 					</div>
 				)}
 			</div>

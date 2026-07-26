@@ -112,6 +112,19 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
             .emit('board:deleted', { boardId, deletedBy });
     }
 
+    boardArchived(boardId: string, archivedBy: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('board:archived', { boardId, archivedBy });
+        this.boardDeleted(boardId, archivedBy);
+    }
+
+    boardRestored(boardId: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('board:restored', { boardId });
+    }
+
     kickUser(userId: string, boardId: string) {
         const sockets = this.connections.get(userId);
         sockets?.forEach((socketId) => {
@@ -135,6 +148,23 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
             .emit('column:deleted', { columnId });
     }
 
+    columnArchived(boardId: string, columnId: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('column:archived', { columnId });
+        this.columnDeleted(boardId, columnId);
+    }
+
+    columnRestored(boardId: string, column: ColumnEventPayload) {
+        this.server.to(this.boardRoom(boardId)).emit('column:restored', column);
+    }
+
+    columnPermanentDeleted(boardId: string, columnId: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('column:permanent-deleted', { columnId });
+    }
+
     columnsReordered(boardId: string, columns: ColumnEventPayload[]) {
         this.server
             .to(this.boardRoom(boardId))
@@ -155,6 +185,23 @@ export class BoardGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.server
             .to(this.boardRoom(boardId))
             .emit('card:deleted', { cardId });
+    }
+
+    cardArchived(boardId: string, cardId: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('card:archived', { cardId });
+        this.cardDeleted(boardId, cardId);
+    }
+
+    cardRestored(boardId: string, card: CardEventPayload) {
+        this.server.to(this.boardRoom(boardId)).emit('card:restored', card);
+    }
+
+    cardPermanentDeleted(boardId: string, cardId: string) {
+        this.server
+            .to(this.boardRoom(boardId))
+            .emit('card:permanent-deleted', { cardId });
     }
 
     cardMoved(

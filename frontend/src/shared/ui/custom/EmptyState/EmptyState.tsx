@@ -6,16 +6,19 @@ type EmptyStateProps = {
 	children: ReactNode
 	centered?: boolean
 	className?: string
+	variant?: 'default' | 'inline'
 }
 
 export const EmptyState = ({
 	children,
 	centered = false,
-	className
+	className,
+	variant = 'default'
 }: EmptyStateProps) => (
 	<div
 		className={cn(
-			'rounded-xl border bg-card p-6 text-sm text-muted-foreground',
+			'text-sm text-muted-foreground',
+			variant === 'default' && 'rounded-xl border bg-card p-6',
 			centered && 'text-center',
 			className
 		)}

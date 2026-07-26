@@ -55,13 +55,43 @@ export class ColumnController {
     @HttpCode(200)
     @Authorization()
     @Post('reorder')
-    async reorder(@Body() input: ReorderColumnInput) {
-        return this.columnService.reorder(input);
+    async reorder(
+        @SessionUser('id') userId: string,
+        @Body() input: ReorderColumnInput,
+    ) {
+        return this.columnService.reorder(userId, input);
     }
 
     @ApiOperation({
-        summary: 'Удаление колонки',
-        description: 'Удаляет колонку для пользователя.',
+        summary: 'Безвозвратное удаление колонки из архива',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Delete(':id/permanent')
+    async permanentDelete(
+        @SessionUser('id') userId: string,
+        @Param('id') columnId: string,
+    ) {
+        return this.columnService.permanentDelete(userId, columnId);
+    }
+
+    @ApiOperation({
+        summary: 'Восстановление колонки из архива',
+    })
+    @HttpCode(200)
+    @Authorization()
+    @Post(':id/restore')
+    async restore(
+        @SessionUser('id') userId: string,
+        @Param('id') columnId: string,
+    ) {
+        return this.columnService.restore(userId, columnId);
+    }
+
+    @ApiOperation({
+        summary: 'Архивирование колонки',
+        description:
+            'Переносит колонку в архив вместо безвозвратного удаления.',
     })
     @HttpCode(200)
     @Authorization()

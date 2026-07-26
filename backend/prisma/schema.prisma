@@ -49,6 +49,7 @@ model User {
   reportsReceived Report[] @relation("ReportsReceived")
   reportsResolved Report[] @relation("ReportsResolved")
   adminAuditLogs  AdminAuditLog[] @relation("AdminAuditLogs")
+  cardAttachments CardAttachment[] @relation("CardAttachmentsUploaded")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -123,6 +124,8 @@ model Board {
   boardInvites BoardInvite[]
   activityLogs ActivityLog[]
 
+  archivedAt DateTime? @map("archived_at")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -180,6 +183,8 @@ model Column {
 
   cards Card[]
 
+  archivedAt DateTime? @map("archived_at")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -205,8 +210,12 @@ model Card {
 
   chat Chat?
 
+  attachments CardAttachment[]
+
   columnId String @map("column_id")
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
+
+  archivedAt DateTime? @map("archived_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -260,6 +269,25 @@ model Message {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("messages")
+}
+
+model CardAttachment {
+  id String @id @default(uuid())
+
+  key          String
+  originalName String @map("original_name")
+  mimeType     String @map("mime_type")
+  size         Int
+
+  cardId String @map("card_id")
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  uploadedById String @map("uploaded_by_id")
+  uploadedBy   User   @relation("CardAttachmentsUploaded", fields: [uploadedById], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("card_attachments")
 }
 
 model ActivityLog {
@@ -420,6 +448,8 @@ enum ActivityAction {
   CREATED
   UPDATED
   DELETED
+  ARCHIVED
+  RESTORED
   MOVED
   COMPLETED
   REOPENED

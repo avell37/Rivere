@@ -1,6 +1,5 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TextAlignJustify } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 
@@ -41,31 +40,31 @@ export const EditCardForm = ({ card, boardId }: CardPropsWithBoardId) => {
 						cardId={card.id}
 						done={card.done}
 						boardId={boardId}
-						className='mt-2 w-5 h-5'
+						className='mt-1 w-5 h-5'
 					/>
-					<EditableTitle cardId={card.id} />
+					<EditableTitle cardId={card.id} boardId={boardId} />
 				</div>
-				<div className='flex items-end gap-4 max-[470px]:flex-col max-sm:items-start'>
-					<EditablePriority cardId={card.id} t={t} />
-					<EditableDeadline cardId={card.id} t={t} />
-				</div>
-				<div className='flex items-end gap-4 max-[470px]:flex-col max-sm:items-start'>
+				<div className='flex flex-wrap items-end gap-4'>
+					<EditablePriority
+						cardId={card.id}
+						boardId={boardId}
+						t={t}
+						className='w-32 border-none bg-transparent'
+					/>
+					<EditableDeadline cardId={card.id} boardId={boardId} t={t} />
 					<EditableAssignee
 						cardId={card.id}
 						boardId={boardId}
 						t={t}
 					/>
 				</div>
-				<EditableTags cardId={card.id} tags={card.tags ?? []} t={t} />
-				<div className='flex flex-col gap-4 mb-8'>
-					<div className='flex items-center gap-2'>
-						<TextAlignJustify size='16' />
-						<span className='text-xs font-bold'>
-							{t('description')}
-						</span>
-					</div>
-					<EditableDescription cardId={card.id} t={t} />
-				</div>
+				<EditableTags
+					cardId={card.id}
+					boardId={boardId}
+					tags={card.tags ?? []}
+					t={t}
+				/>
+				<EditableDescription cardId={card.id} boardId={boardId} t={t} />
 			</div>
 		</Form>
 	)

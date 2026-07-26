@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CardService } from './card.service';
 import { CardController } from './card.controller';
+import { CardAttachmentService } from './card-attachment.service';
 import { ChatService } from '../chat/chat.service';
 import { StatisticsModule } from '../statistics/statistics.module';
 import { AchievementsModule } from '../achievements/achievements.module';
@@ -17,6 +18,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
         NotificationsModule,
     ],
     controllers: [CardController],
-    providers: [CardService, ChatService],
+    providers: [CardService, ChatService, CardAttachmentService],
+    exports: [CardAttachmentService],
 })
 export class CardModule {}

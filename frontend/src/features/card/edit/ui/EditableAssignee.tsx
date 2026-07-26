@@ -1,11 +1,10 @@
 'use client'
+
 import { UserCheck, UserX } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useFormContext } from 'react-hook-form'
-
-import { useGetAllBoardMembers } from '@/entities/Board'
 
 import { S3_URL } from '@/shared/libs'
+import { EmptyState } from '@/shared/ui/custom'
 import {
 	Avatar,
 	AvatarFallback,
@@ -17,13 +16,8 @@ import {
 } from '@/shared/ui/external'
 import { cn } from '@/shared/utils'
 
-import { useUpdateCard } from '../model/hooks/useUpdateCard'
-
-interface EditableAssigneeProps {
-	cardId: string
-	boardId: string
-	t: (key: string) => string
-}
+import { useEditableAssignee } from '../model/hooks/useEditableAssignee'
+import { EditableAssigneeProps } from '../model/types/EditableProps'
 
 export const EditableAssignee = ({
 	cardId,
@@ -31,24 +25,15 @@ export const EditableAssignee = ({
 	t
 }: EditableAssigneeProps) => {
 	const tGlobal = useTranslations()
-	const { watch, setValue } = useFormContext()
-	const assigneeId: string | null = watch('assigneeId') ?? null
-
-	const { handleChange, isLoading } = useUpdateCard(cardId, 'assigneeId')
-	const { boardMembers, membersPending } = useGetAllBoardMembers(boardId)
-
-	const currentAssignee = boardMembers.find(m => m.userId === assigneeId)
-
-	const handleSelect = (userId: string) => {
-		const next = assigneeId === userId ? null : userId
-		setValue('assigneeId', next)
-		handleChange(next)
-	}
-
-	const handleClear = () => {
-		setValue('assigneeId', null)
-		handleChange(null)
-	}
+	const {
+		assigneeId,
+		currentAssignee,
+		boardMembers,
+		membersPending,
+		isLoading,
+		handleSelect,
+		handleClear
+	} = useEditableAssignee({ cardId, boardId })
 
 	return (
 		<div className='flex flex-col gap-1.5'>
@@ -96,7 +81,7 @@ export const EditableAssignee = ({
 							)}
 						</Button>
 					</PopoverTrigger>
-					<PopoverContent className='w-56 p-1' align='start'>
+					<PopoverContent className='w-52 p-1' align='start'>
 						<div className='flex flex-col gap-0.5'>
 							{boardMembers.map(member => (
 								<Button
@@ -106,7 +91,7 @@ export const EditableAssignee = ({
 									size='none'
 									onClick={() => handleSelect(member.userId)}
 									className={cn(
-										'flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors w-full text-left',
+										'flex w-full items-center justify-start gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors text-left',
 										'hover:bg-accent',
 										assigneeId === member.userId &&
 											'bg-accent'
@@ -132,9 +117,12 @@ export const EditableAssignee = ({
 								</Button>
 							))}
 							{boardMembers.length === 0 && (
-								<p className='px-2 py-1.5 text-xs text-muted-foreground'>
+								<EmptyState
+									variant='inline'
+									className='px-2 py-1.5 text-xs'
+								>
 									{tGlobal('board.filters.noMembers')}
-								</p>
+								</EmptyState>
 							)}
 						</div>
 					</PopoverContent>

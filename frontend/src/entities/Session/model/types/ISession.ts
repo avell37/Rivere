@@ -17,6 +17,7 @@ export interface ISession {
 	id: string
 	createdAt: string
 	lastActiveAt: string
+	rememberMe?: boolean
 	metadata: Metadata
 	isCurrent: boolean
 }

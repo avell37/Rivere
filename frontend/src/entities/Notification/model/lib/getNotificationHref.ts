@@ -17,7 +17,8 @@ export const getNotificationHref = (notification: {
 		case 'achievement':
 			return '/achievements'
 		case 'assignment':
-		case 'deadline': {
+		case 'deadline':
+		case 'mention': {
 			const [boardId, cardId] = entityId.includes('|')
 				? entityId.split('|')
 				: [null, entityId]

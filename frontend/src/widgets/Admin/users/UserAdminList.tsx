@@ -5,11 +5,10 @@ import { useTranslations } from 'next-intl'
 import { AdminUsersFilters, UsersResponse } from '@/features/admin'
 import { toAdminUsersUrl } from '@/features/admin/users/model/lib/admin-users-query'
 
-import { CustomPagination } from '@/shared/ui/custom'
+import { CustomPagination, EmptyState } from '@/shared/ui/custom'
 import {
 	Table,
 	TableBody,
-	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow
@@ -25,6 +24,21 @@ export const UserAdminList = ({
 	filters: AdminUsersFilters
 }) => {
 	const t = useTranslations('admin.users.table')
+
+	if (data.users.length === 0) {
+		return (
+			<div className='flex flex-col gap-4'>
+				<EmptyState centered>{t('empty')}</EmptyState>
+				<CustomPagination
+					page={data.page}
+					totalPages={data.totalPages}
+					buildPageHref={page =>
+						toAdminUsersUrl({ ...filters, page })
+					}
+				/>
+			</div>
+		)
+	}
 
 	return (
 		<div className='flex flex-col gap-4'>
@@ -51,29 +65,16 @@ export const UserAdminList = ({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{data.users.length === 0 ? (
-							<TableRow>
-								<TableCell
-									colSpan={6}
-									className='p-6 text-center text-sm text-muted-foreground'
-								>
-									{t('empty')}
-								</TableCell>
-							</TableRow>
-						) : (
-							data.users.map(user => (
-								<UserAdminItem key={user.id} user={user} />
-							))
-						)}
+						{data.users.map(user => (
+							<UserAdminItem key={user.id} user={user} />
+						))}
 					</TableBody>
 				</Table>
 			</div>
 			<CustomPagination
 				page={data.page}
 				totalPages={data.totalPages}
-				buildPageHref={page =>
-					toAdminUsersUrl({ ...filters, page })
-				}
+				buildPageHref={page => toAdminUsersUrl({ ...filters, page })}
 			/>
 		</div>
 	)

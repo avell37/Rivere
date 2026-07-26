@@ -5,6 +5,8 @@ import { Socket } from 'socket.io-client'
 
 import { boardKeys } from '@/entities/Board'
 
+import { cardKeys } from '../hooks/useCardQueries'
+
 export const useCardEvents = (
 	socketRef: React.RefObject<Socket | null>,
 	boardId: string
@@ -19,18 +21,27 @@ export const useCardEvents = (
 			queryClient.invalidateQueries({
 				queryKey: boardKeys.single(boardId)
 			})
+			queryClient.invalidateQueries({
+				queryKey: cardKeys.archived(boardId)
+			})
 		}
 
 		socket.on('card:created', invalidateBoard)
 		socket.on('card:updated', invalidateBoard)
+		socket.on('card:archived', invalidateBoard)
 		socket.on('card:deleted', invalidateBoard)
+		socket.on('card:restored', invalidateBoard)
+		socket.on('card:permanent-deleted', invalidateBoard)
 		socket.on('card:moved', invalidateBoard)
 		socket.on('cards:reordered', invalidateBoard)
 
 		return () => {
 			socket.off('card:created', invalidateBoard)
 			socket.off('card:updated', invalidateBoard)
+			socket.off('card:archived', invalidateBoard)
 			socket.off('card:deleted', invalidateBoard)
+			socket.off('card:restored', invalidateBoard)
+			socket.off('card:permanent-deleted', invalidateBoard)
 			socket.off('card:moved', invalidateBoard)
 			socket.off('cards:reordered', invalidateBoard)
 		}

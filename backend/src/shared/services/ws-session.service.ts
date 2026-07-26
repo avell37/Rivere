@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { unsign } from 'cookie-signature';
 import type { Socket } from 'socket.io';
+import { PrismaService } from '@/core/prisma/prisma.service';
 import { RedisService } from '@/core/redis/redis.service';
 import type { SessionData } from '@/shared/types/session-types';
+import { assertUserNotBanned } from '@/shared/utils/assert-user-not-banned.util';
 import { parseCookieHeader } from '@/shared/utils/parse-cookie-header.util';
 
 @Injectable()
@@ -11,6 +13,7 @@ export class WsSessionService {
     constructor(
         private readonly config: ConfigService,
         private readonly redis: RedisService,
+        private readonly prisma: PrismaService,
     ) {}
 
     async getUserIdFromSocket(client: Socket): Promise<string | null> {
@@ -41,7 +44,13 @@ export class WsSessionService {
 
         try {
             const session = JSON.parse(sessionData) as SessionData;
-            return session.userId ?? null;
+            const userId = session.userId ?? null;
+
+            if (!userId) return null;
+
+            await assertUserNotBanned(this.prisma, userId);
+
+            return userId;
         } catch {
             return null;
         }

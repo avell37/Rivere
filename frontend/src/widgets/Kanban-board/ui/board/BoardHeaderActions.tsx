@@ -16,6 +16,8 @@ import { Modal } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
 import { BoardPermission } from '@/shared/utils'
 
+import { BoardArchivePopover } from '../archive/BoardArchivePopover'
+
 import { BoardActions } from './BoardActions'
 import { BoardCardSearch } from './BoardCardSearch'
 import { BoardSettings } from './BoardSettings'
@@ -53,6 +55,7 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 				<CreateInviteModal boardId={board.id} />
 			</Modal>
 			<BoardFiltersDropdown boardId={board.id} />
+			<BoardArchivePopover boardId={board.id} />
 			<Modal
 				trigger={
 					<Button

@@ -228,6 +228,13 @@
 			"updatedDesc": "Recently updated",
 			"titleAsc": "Title A-Z",
 			"titleDesc": "Title Z-A"
+		},
+		"archive": {
+			"title": "Archived boards",
+			"description": "Archived boards are hidden from the main list. You can restore them at any time.",
+			"archivedAt": "Archived since {date}",
+			"restore": "Restore",
+			"restoreSuccess": "Board restored"
 		}
 	},
 	"board": {
@@ -256,11 +263,34 @@
 			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
-			"deleteTitle": "Delete board?",
-			"deleteDescription": "This action cannot be undone, your board will be permanently deleted.",
-			"deleteActionText": "Delete",
+			"deleteTitle": "Archive board?",
+			"deleteDescription": "The board will be hidden from your list, but you can restore it from the archive on the boards page.",
+			"deleteActionText": "Archive",
 			"deleteCancelText": "Cancel",
-			"deleteSuccess": "Board has been successfully deleted."
+			"deleteSuccess": "Board moved to archive"
+		},
+		"archive": {
+			"title": "Archive",
+			"description": "Archived items are hidden from the board. Restore them or delete permanently.",
+			"loading": "Loading archive...",
+			"cardsSection": "Cards",
+			"columnsSection": "Columns",
+			"column": "Column: {name}",
+			"cardsInColumn": "{count, plural, one {# card} other {# cards}}",
+			"archivedAt": "since {date}",
+			"restore": "Restore",
+			"restoreCardSuccess": "Card restored",
+			"restoreColumnSuccess": "Column restored",
+			"permanentDelete": "Delete permanently",
+			"permanentDeleteAction": "Delete permanently",
+			"permanentDeleteCancel": "Cancel",
+			"permanentDeleteCardTitle": "Delete card permanently?",
+			"permanentDeleteCardDescription": "The card and all related data will be permanently deleted.",
+			"permanentDeleteColumnTitle": "Delete column permanently?",
+			"permanentDeleteColumnDescription": "The column and all {count} cards inside will be permanently deleted.",
+			"permanentDeleteCardSuccess": "Card deleted permanently",
+			"permanentDeleteColumnSuccess": "Column deleted permanently",
+			"manageForbidden": "You don't have permission to manage the archive."
 		},
 		"membersList": {
 			"title": "Board member list:",
@@ -301,7 +331,8 @@
 		},
 		"actions": {
 			"edit": "Edit",
-			"delete": "Delete"
+			"delete": "Delete",
+			"archive": "Archive"
 		},
 		"settings": {
 			"heading": "Board settings",
@@ -341,6 +372,8 @@
 				"created": "created {entity} «{title}»",
 				"updated": "updated {entity} «{title}»",
 				"deleted": "deleted {entity} «{title}»",
+				"archived": "archived {entity} «{title}»",
+				"restored": "restored {entity} «{title}»",
 				"moved": "moved card «{title}» from «{fromColumn}» to «{toColumn}»",
 				"completed": "completed card «{title}»",
 				"reopened": "reopened card «{title}»",
@@ -378,15 +411,15 @@
 			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
-			"deleteTitle": "Delete column?",
-			"deleteDescription": "The column and all its tasks will be permanently deleted.",
-			"deleteActionText": "Delete",
+			"deleteTitle": "Archive column?",
+			"deleteDescription": "The column will be hidden from the board, but you can restore it from the archive in the board header.",
+			"deleteActionText": "Archive",
 			"deleteCancelText": "Cancel",
-			"deleteSuccess": "Column has been successfully deleted."
+			"deleteSuccess": "Column moved to archive"
 		},
 		"actions": {
 			"edit": "Edit",
-			"delete": "Delete"
+			"archive": "Archive"
 		}
 	},
 	"card": {
@@ -402,12 +435,12 @@
 			"createPriorityModalPlaceholder": "Select priority",
 			"createDeadlineModalLabel": "Deadline (optional)",
 			"createDeadlineModalPlaceholder": "Select date",
+			"clearDeadline": "Remove deadline",
 			"createModalSubmit": "Add",
 			"createModalClose": "Close",
 			"createSuccess": "Card has been successfully created."
 		},
 		"edit": {
-			"comments": "Comments",
 			"description": "Description",
 			"addDeadline": "Add deadline",
 			"editDescription": "Empty...",
@@ -415,6 +448,7 @@
 			"editPriorityPlaceholder": "Select priority",
 			"editDeadlineLabel": "Deadline",
 			"editDeadlinePlaceholder": "Select deadline",
+			"clearDeadline": "Remove deadline",
 			"editAssigneeLabel": "Assignee",
 			"editAssigneePlaceholder": "Assign to...",
 			"editTagsLabel": "Tags",
@@ -426,20 +460,31 @@
 			"editSuccess": "Changes applied successfully"
 		},
 		"delete": {
-			"deleteTitle": "Delete card?",
-			"deleteDescription": "This action cannot be undone, your card will be permanently deleted.",
-			"deleteActionText": "Delete",
+			"deleteTitle": "Archive card?",
+			"deleteDescription": "The card will be hidden from the board, but you can restore it from the archive in the board header.",
+			"deleteActionText": "Archive",
 			"deleteCancelText": "Cancel",
-			"deleteSuccess": "Card has been successfully deleted."
+			"deleteSuccess": "Card moved to archive"
 		},
 		"chat": {
+			"heading": "Comments",
 			"inputPlaceholder": "Write a message...",
+			"sendError": "Failed to send message",
 			"deleteMessage": "Delete message",
 			"deleteConfirmTitle": "Delete this message?",
 			"deleteConfirmDescription": "The message will be hidden for everyone in this chat.",
 			"deleteConfirmAction": "Delete",
 			"deleteCancel": "Cancel",
 			"deletedMessage": "Message deleted"
+		},
+		"attachments": {
+			"title": "Attachments",
+			"upload": "Upload file",
+			"hint": "Up to 10 MB: images, PDF or TXT. Max 10 files per card.",
+			"loading": "Loading attachments...",
+			"empty": "No files yet",
+			"uploaded": "File attached",
+			"deleted": "Attachment removed"
 		},
 		"doneSuccess": "Successfully",
 		"expiresAt": "expires at: {date}",
@@ -533,13 +578,18 @@
 				"heading": "Active sessions",
 				"description": "Your sessions from different devices",
 				"browser": "Browser",
+				"empty": "No active sessions",
+				"unknownBrowser": "Unknown browser",
+				"unknownOs": "Unknown OS",
+				"createdAt": "Created {date}",
+				"rememberedDevice": "Remembered device",
 				"currentSession": "Current session",
 				"clearSessionsButton": "End all except current",
 				"clearSessionsTitle": "Are you sure?",
 				"clearSessionsDescription": "All sessions except the current one will be permanently ended.",
 				"clearSessionsActionText": "End",
 				"clearSessionsCancelText": "Cancel",
-				"lastActive": "{date} in {time}"
+				"lastActive": "{date} at {time}"
 			},
 			"dangerZone": {
 				"heading": "Danger zone",
@@ -560,7 +610,8 @@
 	"events": {
 		"board": {
 			"kicked": "You have been kicked from the board",
-			"boardDeleted": "Board deleted"
+			"boardDeleted": "Board deleted",
+			"boardArchived": "Board moved to archive"
 		},
 		"moderation": {
 			"banned": "You have been banned for reason: {reason}",
@@ -1113,6 +1164,21 @@
 			"submitting": "Submitting..."
 		}
 	},
+	"system": {
+		"loading": "Loading...",
+		"notFound": {
+			"title": "Page not found",
+			"description": "The page you are looking for does not exist or has been moved.",
+			"boards": "Go to boards",
+			"home": "Go home"
+		},
+		"error": {
+			"title": "Something went wrong",
+			"description": "An error occurred while loading this page. Please try again.",
+			"retry": "Try again",
+			"boards": "Go to boards"
+		}
+	},
 	"validation": {
 		"username": {
 			"min": "Minimum username length is 4 characters",
@@ -1204,7 +1270,12 @@
 		},
 		"card": {
 			"notFound": "Card not found",
-			"notFoundMultiple": "One or more cards not found"
+			"notFoundMultiple": "One or more cards not found",
+			"attachments": {
+				"limit": "Attachment limit reached for this card",
+				"notFound": "Attachment not found",
+				"forbidden": "You cannot delete this attachment"
+			}
 		},
 		"column": {
 			"notFound": "Column not found",

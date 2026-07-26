@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ChatGateway } from './chat.gateway';
-import { MessagesService } from '../messages/messages.service';
-import { NotificationsModule } from '../notifications/notifications.module';
+import { MessagesModule } from '../messages/messages.module';
 import { AchievementsModule } from '../achievements/achievements.module';
 
 @Module({
-    imports: [NotificationsModule, AchievementsModule],
-    providers: [ChatGateway, ChatService, MessagesService],
+    imports: [MessagesModule, AchievementsModule],
+    providers: [ChatGateway, ChatService],
     exports: [ChatService, ChatGateway],
 })
 export class ChatModule {}

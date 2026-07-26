@@ -6,6 +6,7 @@ export * from './model/hooks/useColumnQueries'
 
 export * from './model/types/ColumnPayload'
 export * from './model/types/ColumnProps'
+export * from './model/types/IArchivedColumn'
 export * from './model/types/IColumn'
 
 export * from './model/validation/create-column.z.validation'

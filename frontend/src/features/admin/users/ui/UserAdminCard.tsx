@@ -11,7 +11,7 @@ import {
 	UserX,
 	Users
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 import { IAdminUser, IUser, UserRole } from '@/entities/User'
 
@@ -29,7 +29,7 @@ import {
 	SelectValue,
 	Separator
 } from '@/shared/ui/external'
-import { isUserBanned } from '@/shared/utils'
+import { formatDateTime, isUserBanned } from '@/shared/utils'
 
 export const UserAdminCard = ({
 	currentUser,
@@ -43,6 +43,7 @@ export const UserAdminCard = ({
 	changeRole: (role: string) => void
 }) => {
 	const t = useTranslations('admin.users.card')
+	const locale = useLocale()
 
 	if (!user) return null
 
@@ -215,7 +216,7 @@ export const UserAdminCard = ({
 							<span className='text-muted-foreground'>
 								{t('banStatus.until')}
 							</span>
-							<p>{new Date(user.bannedUntil).toLocaleString()}</p>
+							<p>{formatDateTime(user.bannedUntil, locale)}</p>
 						</div>
 					)}
 					{user.banReason && (

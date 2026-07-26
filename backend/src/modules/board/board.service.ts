@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     ConflictException,
     Injectable,
     NotFoundException,
@@ -30,6 +31,7 @@ export class BoardService {
         const isExistsBoard = await this.prisma.board.findFirst({
             where: {
                 title,
+                archivedAt: null,
                 members: {
                     some: { userId },
                 },
@@ -126,11 +128,13 @@ export class BoardService {
                     },
                 },
                 columns: {
+                    where: { archivedAt: null },
                     orderBy: {
                         position: 'asc',
                     },
                     include: {
                         cards: {
+                            where: { archivedAt: null },
                             orderBy: {
                                 position: 'asc',
                             },
@@ -175,6 +179,13 @@ export class BoardService {
             });
         }
 
+        if (board.archivedAt) {
+            throw new NotFoundException({
+                code: 'errors.board.archived',
+                message: 'Доска находится в архиве',
+            });
+        }
+
         const member = board.members.find((member) => member.userId === userId);
 
         return {
@@ -187,6 +198,7 @@ export class BoardService {
     async getUserBoards(userId: string) {
         const boards = await this.prisma.board.findMany({
             where: {
+                archivedAt: null,
                 members: {
                     some: { userId },
                 },
@@ -240,6 +252,13 @@ export class BoardService {
             throw new NotFoundException({
                 code: 'errors.board.notFound',
                 message: 'Доска не найдена',
+            });
+        }
+
+        if (board.archivedAt) {
+            throw new NotFoundException({
+                code: 'errors.board.archived',
+                message: 'Доска находится в архиве',
             });
         }
 
@@ -325,6 +344,13 @@ export class BoardService {
             });
         }
 
+        if (board.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.board.alreadyArchived',
+                message: 'Доска уже в архиве',
+            });
+        }
+
         await checkBoardPermission({
             prisma: this.prisma,
             userId,
@@ -332,15 +358,222 @@ export class BoardService {
             permission: BoardPermission.DELETE_BOARD,
         });
 
-        await this.prisma.board.delete({
+        await this.prisma.board.update({
             where: { id: boardId },
+            data: { archivedAt: new Date() },
         });
 
-        this.boardGateway.boardDeleted(boardId, userId);
+        this.boardGateway.boardArchived(boardId, userId);
+
+        await this.activityLog.log({
+            boardId,
+            userId,
+            action: 'ARCHIVED',
+            entityType: 'BOARD',
+            entityId: boardId,
+            entityTitle: board.title,
+        });
 
         return {
             success: true,
-            message: 'Доска успешно удалена',
+            message: 'Доска перенесена в архив',
         };
+    }
+
+    async getArchivedBoards(userId: string) {
+        const boards = await this.prisma.board.findMany({
+            where: {
+                archivedAt: { not: null },
+                members: {
+                    some: { userId },
+                },
+            },
+            include: {
+                members: {
+                    select: {
+                        userId: true,
+                        isFavorite: true,
+                        user: {
+                            select: {
+                                username: true,
+                                email: true,
+                                nickname: true,
+                                avatar: true,
+                            },
+                        },
+                    },
+                },
+                columns: true,
+            },
+            orderBy: {
+                archivedAt: 'desc',
+            },
+        });
+
+        return boards.map((board) => {
+            const currentUser = board.members.find(
+                (member) => member.userId === userId,
+            );
+
+            return {
+                ...board,
+                isFavorite: currentUser?.isFavorite ?? false,
+            };
+        });
+    }
+
+    async restoreBoard(userId: string, boardId: string) {
+        const board = await this.prisma.board.findUnique({
+            where: { id: boardId },
+        });
+
+        if (!board) {
+            throw new NotFoundException({
+                code: 'errors.board.notFound',
+                message: 'Доска не найдена',
+            });
+        }
+
+        if (!board.archivedAt) {
+            throw new BadRequestException({
+                code: 'errors.board.notArchived',
+                message: 'Доска не находится в архиве',
+            });
+        }
+
+        await checkBoardPermission({
+            prisma: this.prisma,
+            userId,
+            boardId,
+            permission: BoardPermission.DELETE_BOARD,
+        });
+
+        const duplicate = await this.prisma.board.findFirst({
+            where: {
+                title: board.title,
+                archivedAt: null,
+                id: { not: boardId },
+                members: {
+                    some: { userId },
+                },
+            },
+        });
+
+        if (duplicate) {
+            throw new ConflictException({
+                code: 'errors.board.exists',
+                message: 'У вас уже есть активная доска с таким названием',
+            });
+        }
+
+        const restored = await this.prisma.board.update({
+            where: { id: boardId },
+            data: { archivedAt: null },
+        });
+
+        this.boardGateway.boardRestored(boardId);
+
+        await this.activityLog.log({
+            boardId,
+            userId,
+            action: 'RESTORED',
+            entityType: 'BOARD',
+            entityId: boardId,
+            entityTitle: board.title,
+        });
+
+        return restored;
+    }
+
+    async getArchivedCards(userId: string, boardId: string) {
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
+        const board = await this.prisma.board.findUnique({
+            where: { id: boardId },
+            select: { archivedAt: true },
+        });
+
+        if (!board) {
+            throw new NotFoundException({
+                code: 'errors.board.notFound',
+                message: 'Доска не найдена',
+            });
+        }
+
+        if (board.archivedAt) {
+            throw new NotFoundException({
+                code: 'errors.board.archived',
+                message: 'Доска находится в архиве',
+            });
+        }
+
+        return this.prisma.card.findMany({
+            where: {
+                archivedAt: { not: null },
+                column: { boardId },
+            },
+            orderBy: { archivedAt: 'desc' },
+            include: {
+                column: {
+                    select: { id: true, title: true },
+                },
+                assignee: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        avatar: true,
+                    },
+                },
+                tags: {
+                    orderBy: { createdAt: 'asc' },
+                },
+            },
+        });
+    }
+
+    async getArchivedColumns(userId: string, boardId: string) {
+        await checkBoardAccess({
+            prisma: this.prisma,
+            userId,
+            boardId,
+        });
+
+        const board = await this.prisma.board.findUnique({
+            where: { id: boardId },
+            select: { archivedAt: true },
+        });
+
+        if (!board) {
+            throw new NotFoundException({
+                code: 'errors.board.notFound',
+                message: 'Доска не найдена',
+            });
+        }
+
+        if (board.archivedAt) {
+            throw new NotFoundException({
+                code: 'errors.board.archived',
+                message: 'Доска находится в архиве',
+            });
+        }
+
+        return this.prisma.column.findMany({
+            where: {
+                boardId,
+                archivedAt: { not: null },
+            },
+            orderBy: { archivedAt: 'desc' },
+            include: {
+                _count: {
+                    select: {
+                        cards: true,
+                    },
+                },
+            },
+        });
     }
 }

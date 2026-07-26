@@ -11,19 +11,19 @@ export const UserMenuTrigger = ({ user, isMainPage }: UserMenuTriggerProps) => {
 			<UserAvatar avatar={user?.avatar} username={user?.username} />
 			<div className='flex flex-col leading-tight max-sm:hidden'>
 				<span
-					className={`truncate font-medium text-left ${isMainPage ? 'text-white' : 'text-black dark:text-white'}`}
+					className={`truncate text-left font-medium ${isMainPage ? 'text-zinc-900 dark:text-white' : 'text-black dark:text-white'}`}
 				>
 					{user?.nickname}
 				</span>
 				<span
-					className={`text-xs font-light ${isMainPage ? 'text-white' : 'text-black dark:text-white'}`}
+					className={`text-xs font-light ${isMainPage ? 'text-zinc-500 dark:text-white' : 'text-black dark:text-white'}`}
 				>
 					{user?.email}
 				</span>
 			</div>
 			<div className='ml-auto max-sm:hidden'>
 				<EllipsisVertical
-					className={`${isMainPage ? 'text-white' : 'text-black dark:text-white'}`}
+					className={`${isMainPage ? 'text-zinc-700 dark:text-white' : 'text-black dark:text-white'}`}
 				/>
 			</div>
 		</div>

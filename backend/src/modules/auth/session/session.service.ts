@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Injectable,
     NotFoundException,
     UnauthorizedException,
@@ -42,6 +43,7 @@ export class SessionService {
             id: sessionId,
             createdAt: session.createdAt,
             lastActiveAt: session.lastActiveAt,
+            rememberMe: session.rememberMe ?? false,
             metadata: session.metadata,
         };
     }
@@ -66,20 +68,26 @@ export class SessionService {
 
             if (sessionData) {
                 const session = JSON.parse(sessionData) as SessionData;
+                const sessionId = key.replace(prefix, '');
 
                 if (session.userId === userId) {
                     userSessions.push({
-                        id: key.split(':')[1],
+                        id: sessionId,
                         createdAt: session.createdAt,
                         lastActiveAt: session.lastActiveAt,
+                        rememberMe: session.rememberMe ?? false,
                         metadata: session.metadata,
-                        isCurrent: key.split(':')[1] === req.session.id,
+                        isCurrent: sessionId === req.session.id,
                     });
                 }
             }
         }
 
-        userSessions.sort((a, b) => b.createdAt - a.createdAt);
+        userSessions.sort(
+            (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime(),
+        );
 
         return userSessions;
     }
@@ -148,7 +156,7 @@ export class SessionService {
     }
 
     async login(req: Request, input: LoginInput, userAgent: string) {
-        const { login, password } = input;
+        const { login, password, rememberMe = false } = input;
 
         const user = await this.prisma.user.findFirst({
             where: {
@@ -175,6 +183,14 @@ export class SessionService {
             });
         }
 
+        if (user.bannedUntil && new Date(user.bannedUntil) > new Date()) {
+            throw new ForbiddenException({
+                message: 'Пользователь заблокирован',
+                code: 'errors.user.banned',
+                bannedUntil: user.bannedUntil,
+            });
+        }
+
         const metadata = getSessionMetadata(req, userAgent, this.config);
 
         await this.prisma.userStats.upsert({
@@ -188,7 +204,20 @@ export class SessionService {
             },
         });
 
-        await saveSession(req, user, metadata);
+        await new Promise<void>((resolve, reject) => {
+            req.session.regenerate((err) => {
+                if (err) {
+                    reject(err instanceof Error ? err : new Error(String(err)));
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        await saveSession(req, user, metadata, {
+            rememberMe,
+            config: this.config,
+        });
 
         return {
             success: true,

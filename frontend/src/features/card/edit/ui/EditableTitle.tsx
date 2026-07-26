@@ -5,12 +5,19 @@ import { FormInputController } from '@/shared/ui/custom'
 
 import { useUpdateCard } from '../model/hooks/useUpdateCard'
 
-export const EditableTitle = ({ cardId }: { cardId: string }) => {
+export const EditableTitle = ({
+	cardId,
+	boardId
+}: {
+	cardId: string
+	boardId: string
+}) => {
 	const { control, watch } = useFormContext()
 	const titleValue = watch('title')
 
 	const { isEditing, setIsEditing, handleBlur, isLoading } = useUpdateCard(
 		cardId,
+		boardId,
 		'title'
 	)
 

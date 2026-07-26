@@ -11,6 +11,7 @@ import {
     Query,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { InviteUserInput } from './input/invite-user.input';
 import { BoardInvitesService } from './board-invites.service';
 
@@ -24,6 +25,12 @@ export class BoardInvitesController {
     })
     @HttpCode(200)
     @Authorization()
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 10,
+            limit: 10,
+        },
+    })
     @Post(':boardId/invites')
     async createInvite(
         @SessionUser('id') userId: string,
@@ -37,6 +44,12 @@ export class BoardInvitesController {
         description: 'Ищет пользователей по username, nickname или email',
     })
     @Authorization()
+    @Throttle({
+        default: {
+            ttl: 60000,
+            limit: 30,
+        },
+    })
     @Get(':boardId/users/search')
     async searchUsers(
         @SessionUser('id') userId: string,
@@ -52,6 +65,12 @@ export class BoardInvitesController {
     })
     @HttpCode(200)
     @Authorization()
+    @Throttle({
+        default: {
+            ttl: 1000 * 60 * 10,
+            limit: 10,
+        },
+    })
     @Post(':boardId/invite-user')
     async inviteUser(
         @SessionUser('id') userId: string,

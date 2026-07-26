@@ -5,5 +5,6 @@ export const MESSAGE_KEYS = [
 	'boardInvite',
 	'boardInviteAccepted',
 	'boardInviteDeclined',
-	'emailVerification'
+	'emailVerification',
+	'mention'
 ] as const

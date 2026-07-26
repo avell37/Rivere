@@ -1,6 +1,8 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 
+import { useQueryApiError } from '@/shared/hooks/useQueryApiError'
+
 import { getAdminStats } from '../api/admin-statistics.api'
 
 export const adminStatisticsKeys = {
@@ -8,18 +10,16 @@ export const adminStatisticsKeys = {
 }
 
 export const useGetAdminStatistics = () => {
-	const {
-		data: stats,
-		isPending: statsPending,
-		isError: statsError
-	} = useQuery({
+	const query = useQuery({
 		queryKey: adminStatisticsKeys.all,
 		queryFn: () => getAdminStats()
 	})
 
+	useQueryApiError(query.error, query.isError)
+
 	return {
-		stats,
-		statsPending,
-		statsError
+		stats: query.data,
+		statsPending: query.isPending,
+		statsError: query.isError
 	}
 }

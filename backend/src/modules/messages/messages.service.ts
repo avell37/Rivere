@@ -6,10 +6,17 @@ import {
 } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { PrismaService } from '@/core/prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationMessageKey } from '../notifications/notification-message.keys';
+import { extractMentionUsernames } from '@/shared/utils/parse-mentions.util';
+import { MessageWithBoard } from './types/messages.types';
 
 @Injectable()
 export class MessagesService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly notifications: NotificationsService,
+    ) {}
 
     async create(userId: string, dto: CreateMessageDto) {
         const { chatId, text } = dto;
@@ -48,6 +55,43 @@ export class MessagesService {
                 },
             },
         });
+    }
+
+    async notifyMentions(authorId: string, message: MessageWithBoard) {
+        const board = message.chat?.card?.column?.board;
+        const card = message.chat?.card;
+
+        if (!board || !card) return;
+
+        const usernames = extractMentionUsernames(message.text);
+        if (!usernames.length) return;
+
+        const memberIds = new Set(board.members.map((member) => member.userId));
+
+        const mentionedUsers = await this.prisma.user.findMany({
+            where: {
+                username: { in: usernames, mode: 'insensitive' },
+            },
+            select: { id: true },
+        });
+
+        await Promise.all(
+            mentionedUsers
+                .filter(
+                    (user) => user.id !== authorId && memberIds.has(user.id),
+                )
+                .map((user) =>
+                    this.notifications.createNotification(user.id, {
+                        type: 'mention',
+                        messageKey: NotificationMessageKey.MENTION,
+                        messageParams: {
+                            authorNickname: message.user.nickname,
+                            cardTitle: card.title,
+                        },
+                        entityId: `${board.id}|${card.id}`,
+                    }),
+                ),
+        );
     }
 
     async softDelete(messageId: string, userId: string, chatId: string) {

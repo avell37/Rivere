@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 
 import { boardKeys } from '@/entities/Board'
 
+import { useQueryApiError } from '@/shared/hooks/useQueryApiError'
 import { ActionResponse } from '@/shared/types'
 import { handleApiError } from '@/shared/utils'
 
@@ -138,14 +139,16 @@ export const useInviteUserBySearch = ({
 	boardId: string
 	debouncedQuery: string
 }) => {
-	const { data, isFetching } = useQuery({
+	const query = useQuery({
 		queryKey: ['invite-user-search', boardId, debouncedQuery],
 		queryFn: () => searchInviteUsers(boardId, debouncedQuery),
 		enabled: debouncedQuery.trim().length >= 2
 	})
 
+	useQueryApiError(query.error, query.isError)
+
 	return {
-		data,
-		isFetching
+		data: query.data,
+		isFetching: query.isFetching
 	}
 }

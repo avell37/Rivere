@@ -2,15 +2,17 @@ import { SessionMetadata } from './session-metadata.types';
 
 export interface SessionData {
     userId: string;
-    createdAt: number;
-    lastActiveAt: number;
+    createdAt: string | number;
+    lastActiveAt: string | number;
+    rememberMe?: boolean;
     metadata: SessionMetadata;
 }
 
 export interface UserSession {
     id: string;
-    createdAt: number;
-    lastActiveAt: number;
+    createdAt: string | number;
+    lastActiveAt: string | number;
+    rememberMe?: boolean;
     metadata: SessionMetadata;
     isCurrent?: boolean;
 }

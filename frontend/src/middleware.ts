@@ -38,6 +38,13 @@ export async function middleware(req: NextRequest) {
 			if (!user.role || !ADMIN_ROLES.has(user.role)) {
 				return NextResponse.redirect(new URL('/boards', req.url))
 			}
+
+			if (
+				pathname.startsWith('/admin/audit') &&
+				user.role !== 'CREATOR'
+			) {
+				return NextResponse.redirect(new URL('/admin', req.url))
+			}
 		} catch {
 			return NextResponse.redirect(new URL('/auth/login', req.url))
 		}

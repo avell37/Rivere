@@ -1,5 +1,5 @@
 'use client'
-import { X } from 'lucide-react'
+import { Archive } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { memo, useState } from 'react'
 
@@ -22,13 +22,13 @@ const DeleteCardModalComponent = ({ cardId, boardId }: DeleteCardProps) => {
 		<Alert
 			trigger={
 				<Button
-					className='absolute top-4 right-4 cursor-pointer'
+					className='absolute top-4 right-4 cursor-pointer text-muted-foreground hover:text-foreground'
 					type='button'
 					size='none'
 					variant='none'
 					onClick={e => e.stopPropagation()}
 				>
-					<X />
+					<Archive className='size-4' />
 				</Button>
 			}
 			title={t('deleteTitle')}
