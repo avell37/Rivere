@@ -6,6 +6,12 @@ import {
     YandexTokenResponse,
     YandexUserInfo,
 } from '../types/social.types';
+import { SocialProvider } from '../social-provider.enum';
+import {
+    getSocialCallbackUrl,
+    getYandexClientId,
+    getYandexClientSecret,
+} from '../utils/oauth-config.util';
 
 @Injectable()
 export class YandexProvider implements SocialProviderHandler {
@@ -16,8 +22,8 @@ export class YandexProvider implements SocialProviderHandler {
     getAuthorizationUrl(state: string): string {
         const params = new URLSearchParams({
             response_type: 'code',
-            client_id: this.config.getOrThrow<string>('YANDEX_CLIENT_ID'),
-            redirect_uri: this.config.getOrThrow<string>('YANDEX_CALLBACK_URL'),
+            client_id: getYandexClientId(this.config),
+            redirect_uri: getSocialCallbackUrl(this.config, SocialProvider.YANDEX),
             state,
             scope: 'login:info login:email login:avatar',
         });
@@ -26,8 +32,9 @@ export class YandexProvider implements SocialProviderHandler {
     }
 
     async exchangeCodeForProfile(code: string): Promise<SocialProfile> {
-        const redirectUri = this.config.getOrThrow<string>(
-            'YANDEX_CALLBACK_URL',
+        const redirectUri = getSocialCallbackUrl(
+            this.config,
+            SocialProvider.YANDEX,
         );
 
         const tokenResponse = await fetch('https://oauth.yandex.ru/token', {
@@ -38,10 +45,8 @@ export class YandexProvider implements SocialProviderHandler {
             body: new URLSearchParams({
                 grant_type: 'authorization_code',
                 code,
-                client_id: this.config.getOrThrow<string>('YANDEX_CLIENT_ID'),
-                client_secret: this.config.getOrThrow<string>(
-                    'YANDEX_CLIENT_SECRET',
-                ),
+                client_id: getYandexClientId(this.config),
+                client_secret: getYandexClientSecret(this.config),
                 redirect_uri: redirectUri,
             }),
         });

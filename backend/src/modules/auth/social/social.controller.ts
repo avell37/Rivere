@@ -24,11 +24,19 @@ export class SocialController {
         description: 'Перенаправляет пользователя на страницу входа провайдера',
     })
     @Get(':provider')
-    initiate(@Param('provider') provider: string, @Res() res: Response) {
-        const authorizationUrl =
-            this.socialService.getAuthorizationUrl(provider);
+    async initiate(@Param('provider') provider: string, @Res() res: Response) {
+        try {
+            const authorizationUrl =
+                await this.socialService.getAuthorizationUrl(provider);
 
-        return res.redirect(authorizationUrl);
+            return res.redirect(authorizationUrl);
+        } catch (error) {
+            this.logger.error('OAuth initiate failed', error);
+
+            return res.redirect(
+                this.socialService.getFrontendErrorRedirectUrl('oauth_failed'),
+            );
+        }
     }
 
     @ApiOperation({
