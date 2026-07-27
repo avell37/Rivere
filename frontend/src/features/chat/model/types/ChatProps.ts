@@ -19,3 +19,15 @@ export type UseChatMentionParams = {
 	message: string
 	setMessage: Dispatch<SetStateAction<string>>
 }
+
+export type ChatSocketErrorPayload = {
+	code?: string
+	message?: string
+	error?: string
+}
+
+export type UseChatSocketOptions = {
+	onJoinError?: (payload: ChatSocketErrorPayload) => void
+	onMessageError?: (payload: ChatSocketErrorPayload) => void
+	onConnectError?: () => void
+}

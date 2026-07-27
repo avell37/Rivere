@@ -56,7 +56,7 @@ export const NotificationItem = ({
 			onClick={handleClick}
 			disabled={!href && read}
 			className={cn(
-				'flex w-full gap-3 rounded-lg border p-4 text-left transition-colors h-auto',
+				'flex w-full items-start gap-3 whitespace-normal rounded-lg border p-4 text-left transition-colors h-auto',
 				read
 					? 'bg-muted/60 border-border'
 					: 'bg-card hover:bg-muted/80',
@@ -77,16 +77,16 @@ export const NotificationItem = ({
 					)}
 				/>
 			</div>
-			<div className='flex flex-col gap-1 flex-1'>
+			<div className='flex min-w-0 flex-1 flex-col gap-1'>
 				<p
 					className={cn(
-						'text-sm',
+						'text-sm break-words',
 						read ? 'text-muted-foreground' : 'font-medium'
 					)}
 				>
 					{notificationMessage}
 				</p>
-				<span className='text-xs text-muted-foreground'>
+				<span className='text-xs text-muted-foreground break-words'>
 					{formatDate(new Date(createdAt), locale)}
 				</span>
 			</div>

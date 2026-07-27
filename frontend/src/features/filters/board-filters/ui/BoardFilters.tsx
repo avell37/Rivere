@@ -6,7 +6,6 @@ import { useMemo } from 'react'
 import { useBoardStore, useGetAllBoardMembers } from '@/entities/Board'
 import { ICardTag } from '@/entities/Card'
 
-import { S3_URL } from '@/shared/libs'
 import {
 	Avatar,
 	AvatarFallback,
@@ -15,7 +14,7 @@ import {
 	Input,
 	Separator
 } from '@/shared/ui/external'
-import { cn } from '@/shared/utils'
+import { cn, resolveAvatarUrl } from '@/shared/utils'
 
 import {
 	DEADLINE_OPTIONS,
@@ -218,7 +217,9 @@ export const BoardFilters = ({ boardId }: { boardId: string }) => {
 								>
 									<Avatar className='size-4 rounded-full'>
 										<AvatarImage
-											src={`${S3_URL}${member.user.avatar}`}
+											src={resolveAvatarUrl(
+												member.user.avatar
+											)}
 											alt={member.user.nickname}
 										/>
 										<AvatarFallback className='text-[8px]'>

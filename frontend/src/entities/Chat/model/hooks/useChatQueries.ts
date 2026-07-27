@@ -9,14 +9,20 @@ export const chatKeys = {
 }
 
 export const useGetChat = (cardId: string) => {
-	const { data: chat, isPending: chatPending } = useQuery<IChat>({
+	const {
+		data: chat,
+		isLoading: chatLoading,
+		isError: chatError
+	} = useQuery<IChat | null>({
 		queryKey: chatKeys.get(cardId),
 		queryFn: () => fetchChat(cardId),
-		enabled: Boolean(cardId)
+		enabled: Boolean(cardId),
+		retry: false
 	})
 
 	return {
 		chat,
-		chatPending
+		chatLoading,
+		chatError
 	}
 }

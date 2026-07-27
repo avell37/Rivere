@@ -16,7 +16,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { IAdminUser, IUser, UserRole } from '@/entities/User'
 
 import { customAvatar } from '@/shared/config'
-import { S3_URL } from '@/shared/libs'
+import { resolveAvatarUrl } from '@/shared/utils'
 import {
 	Avatar,
 	AvatarFallback,
@@ -60,7 +60,7 @@ export const UserAdminCard = ({
 					<Avatar className='w-20 h-20 rounded-md'>
 						{user?.avatar ? (
 							<AvatarImage
-								src={`${S3_URL}${user.avatar}`}
+								src={resolveAvatarUrl(user.avatar)}
 								alt={user.username}
 							/>
 						) : (

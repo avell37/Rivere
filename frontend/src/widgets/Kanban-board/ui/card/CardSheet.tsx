@@ -57,9 +57,9 @@ export const CardSheet = ({
 						})}
 					/>
 				</div>
-				<div className='flex flex-col gap-6 p-8 mb-10'>
-					<EditCardForm key={card.id} card={card} boardId={boardId} />
-					<Chat key={card.id} cardId={card.id} boardId={boardId} />
+				<div key={card.id} className='flex flex-col gap-6 p-8 mb-10'>
+					<EditCardForm card={card} boardId={boardId} />
+					<Chat cardId={card.id} boardId={boardId} />
 					<CardAttachments cardId={card.id} />
 				</div>
 			</SheetContent>

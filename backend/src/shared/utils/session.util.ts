@@ -3,6 +3,7 @@ import type { Request } from 'express';
 import { SessionMetadata } from '../types/session-metadata.types';
 import type { User } from '@prisma/client';
 import { ms, StringValue } from '../utils/ms.util';
+import { getSessionCookieOptions } from '../utils/session-cookie.util';
 
 export async function saveSession(
     req: Request,
@@ -52,6 +53,6 @@ export async function destroySession(
     });
 
     req.res?.clearCookie(configService.getOrThrow<string>('SESSION_NAME'), {
-        path: '/',
+        ...getSessionCookieOptions(configService),
     });
 }

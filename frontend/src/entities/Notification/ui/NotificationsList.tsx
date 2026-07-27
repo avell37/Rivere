@@ -10,7 +10,7 @@ export const NotificationsList = ({
 	onMarkRead?: (id: string) => void
 }) => {
 	return (
-		<div className='flex flex-col gap-2 max-h-[360px] overflow-y-auto pr-1'>
+		<div className='flex max-h-[360px] min-w-0 flex-col gap-2 overflow-x-hidden overflow-y-auto pr-1'>
 			{notifications.map(notification => (
 				<NotificationItem
 					key={notification.id}

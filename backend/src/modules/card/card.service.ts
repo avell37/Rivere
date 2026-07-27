@@ -636,6 +636,15 @@ export class CardService {
             cardId,
         });
 
+        const existingChat = await this.prisma.chat.findUnique({
+            where: { cardId },
+            select: { id: true },
+        });
+
+        if (!existingChat) {
+            await this.chat.createChat({ cardId });
+        }
+
         return this.prisma.chat.findUnique({
             where: { cardId },
             include: {

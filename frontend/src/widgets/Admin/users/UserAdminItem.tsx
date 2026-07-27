@@ -15,7 +15,7 @@ import {
 } from '@/features/admin'
 
 import { customAvatar } from '@/shared/config'
-import { S3_URL } from '@/shared/libs'
+import { resolveAvatarUrl } from '@/shared/utils'
 import { AppDropdown, Modal } from '@/shared/ui/custom'
 import {
 	Avatar,
@@ -51,7 +51,7 @@ export const UserAdminItem = ({ user }: { user: IAdminUser }) => {
 					<div className='flex items-center gap-3 min-w-0'>
 						<Avatar className='w-12 h-12'>
 							{user.avatar ? (
-								<AvatarImage src={`${S3_URL}${user.avatar}`} />
+								<AvatarImage src={resolveAvatarUrl(user.avatar)} />
 							) : (
 								<AvatarFallback>
 									{customAvatar(user.username)}

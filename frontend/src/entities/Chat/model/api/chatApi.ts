@@ -3,7 +3,7 @@ import { API_URL } from '@/shared/libs'
 
 import { IChat } from '../types/IChat'
 
-export const fetchChat = async (cardId: string): Promise<IChat> => {
+export const fetchChat = async (cardId: string): Promise<IChat | null> => {
 	const response = await authAxios.get(`${API_URL.cards()}${cardId}/chat`)
 	return response.data
 }

@@ -3,8 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -19,6 +19,19 @@ export const useLogin = () => {
 	const [showPassword, setShowPassword] = useState(false)
 	const router = useRouter()
 	const t = useTranslations()
+	const searchParams = useSearchParams()
+
+	useEffect(() => {
+		const error = searchParams.get('error')
+
+		if (error === 'oauth_failed') {
+			toast.error(t('oauthFailed'))
+		}
+
+		if (error === 'oauth_denied') {
+			toast.error(t('oauthDenied'))
+		}
+	}, [searchParams, t])
 
 	const form = useForm<SignInRequest, unknown>({
 		resolver: zodResolver(loginSchema),

@@ -77,7 +77,10 @@
 			"label": "Нет аккаунта?",
 			"submitButton": "Войти",
 			"navigationButton": "Создать",
-			"forgotPassword": "Забыли пароль?"
+			"forgotPassword": "Забыли пароль?",
+			"rememberDevice": "Запомнить это устройство",
+			"oauthFailed": "Не удалось войти через соцсеть. Попробуйте снова.",
+			"oauthDenied": "Вход через соцсеть был отменён."
 		},
 		"register": {
 			"heading": "Регистрация",
@@ -120,7 +123,6 @@
 			"confirmPasswordLabel": "Подтвердить пароль",
 			"confirmPasswordPlaceholder": "Подтвердите ваш новый пароль"
 		},
-		"google": "Продолжить с Google",
 		"yandex": "Продолжить через Яндекс"
 	},
 	"account": {
@@ -508,7 +510,8 @@
 			"boardInvite": "{inviterName, select, empty {Пользователь} other {{inviterName}}} пригласил вас на доску «{boardTitle}»",
 			"boardInviteAccepted": "{nickname, select, empty {Пользователь} other {{nickname}}} принял приглашение в доску: {boardTitle}",
 			"boardInviteDeclined": "{nickname, select, empty {Пользователь} other {{nickname}}} отклонил приглашение в доску: {boardTitle}",
-			"emailVerification": "Подтвердите почту, чтобы защитить аккаунт"
+			"emailVerification": "Подтвердите почту, чтобы защитить аккаунт",
+			"mention": "{authorNickname, select, empty {Пользователь} other {{authorNickname}}} упомянул(а) вас в карточке «{cardTitle}»"
 		},
 		"achievements": {
 			"earned": "Вы получили достижение: {title}"

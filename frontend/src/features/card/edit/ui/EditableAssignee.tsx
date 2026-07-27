@@ -3,7 +3,7 @@
 import { UserCheck, UserX } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { S3_URL } from '@/shared/libs'
+import { resolveAvatarUrl } from '@/shared/utils'
 import { EmptyState } from '@/shared/ui/custom'
 import {
 	Avatar,
@@ -58,7 +58,7 @@ export const EditableAssignee = ({
 								<>
 									<Avatar className='size-5 rounded-full'>
 										<AvatarImage
-											src={`${S3_URL}${currentAssignee.user.avatar}`}
+											src={resolveAvatarUrl(currentAssignee.user.avatar)}
 											alt={currentAssignee.user.nickname}
 										/>
 										<AvatarFallback className='text-[10px]'>
@@ -99,7 +99,7 @@ export const EditableAssignee = ({
 								>
 									<Avatar className='size-6 rounded-full flex-shrink-0'>
 										<AvatarImage
-											src={`${S3_URL}${member.user.avatar}`}
+											src={resolveAvatarUrl(member.user.avatar)}
 											alt={member.user.nickname}
 										/>
 										<AvatarFallback className='text-[10px]'>

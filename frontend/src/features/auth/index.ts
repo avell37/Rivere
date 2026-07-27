@@ -21,6 +21,8 @@ export * from './register/model/hooks/useRegister'
 export * from './register/model/validation/register.z.validation'
 export * from './register/ui/RegisterForm'
 
+export * from './social/ui/SocialAuthButtons'
+
 export * from './verify-email/model/api/verifyApi'
 export * from './verify-email/model/hooks/useVerifyEmail'
 export * from './verify-email/model/hooks/useVerifyQueries'

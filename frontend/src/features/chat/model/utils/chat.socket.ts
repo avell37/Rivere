@@ -1,13 +1,13 @@
 import { Socket } from 'socket.io-client'
 
-import { SERVER_URL } from '@/shared/libs'
+import { SOCKET_URL } from '@/shared/libs'
 import { createSocket } from '@/shared/utils'
 
 let socket: Socket | null = null
 
 export const getChatSocket = () => {
 	if (!socket) {
-		socket = createSocket(`${SERVER_URL}/chat`)
+		socket = createSocket(SOCKET_URL.chat)
 	}
 	return socket
 }

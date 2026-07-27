@@ -30,12 +30,31 @@ export const useChat = ({ cardId, boardId }: UseChatParams) => {
 	const t = useTranslations('card.chat')
 	const locale = useLocale()
 	const isMobile = useIsMobile()
-	const { chat, chatPending } = useGetChat(cardId)
+	const { chat, chatLoading, chatError } = useGetChat(cardId)
 
 	const chatId = chat?.id ?? null
 	const userId = user?.id ?? null
 
-	const { emitMessage, emitDeleteMessage } = useChatSocket(chatId)
+	const handleJoinError = useCallback(
+		(payload: { code?: string; message?: string }) => {
+			toast.error(payload.message ?? t('sendError'))
+		},
+		[t]
+	)
+
+	const handleMessageError = useCallback(() => {
+		toast.error(t('sendError'))
+	}, [t])
+
+	const handleConnectError = useCallback(() => {
+		toast.error(t('sendError'))
+	}, [t])
+
+	const { emitMessage, emitDeleteMessage } = useChatSocket(chatId, {
+		onJoinError: handleJoinError,
+		onMessageError: handleMessageError,
+		onConnectError: handleConnectError
+	})
 
 	const {
 		textareaRef,
@@ -66,16 +85,19 @@ export const useChat = ({ cardId, boardId }: UseChatParams) => {
 	}, [messages])
 
 	const handleSubmitMessage = useCallback(() => {
-		if (!user) return
+		if (!user || !chatId) return
 
-		if (!emitMessage(message)) {
+		const trimmedMessage = message.trim()
+		if (!trimmedMessage) return
+
+		if (!emitMessage(trimmedMessage)) {
 			toast.error(t('sendError'))
 			return
 		}
 
 		setMessage('')
 		resetMention()
-	}, [user, emitMessage, message, resetMention, t])
+	}, [user, chatId, emitMessage, message, resetMention, t])
 
 	const handleKeySubmitMessage = useCallback(
 		(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -108,7 +130,9 @@ export const useChat = ({ cardId, boardId }: UseChatParams) => {
 		message,
 		messagesEndRef,
 		textareaRef,
-		chatPending,
+		chatLoading,
+		chatError,
+		chatUnavailable: !chatLoading && !chat?.id,
 		showEmoji,
 		mentionQuery,
 		mentionCandidates,
