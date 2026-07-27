@@ -112,8 +112,10 @@ describe('SocialService', () => {
     });
 
     describe('getAuthorizationUrl', () => {
-        it('stores oauth state in redis and returns provider url', () => {
-            const url = service.getAuthorizationUrl('yandex');
+        it('stores oauth state in redis and returns provider url', async () => {
+            redis.setex.mockResolvedValue('OK');
+
+            const url = await service.getAuthorizationUrl('yandex');
 
             expect(url).toContain('oauth.yandex.ru');
             expect(redis.setex).toHaveBeenCalledWith(

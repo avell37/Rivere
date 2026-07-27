@@ -41,18 +41,18 @@ export class SocialService {
         private readonly yandexProvider: YandexProvider,
     ) {}
 
-    getAuthorizationUrl(providerName: string): string {
+    getAuthorizationUrl(providerName: string): Promise<string> {
         const provider = this.parseProvider(providerName);
         const state = randomUUID();
         const handler = this.getProviderHandler(provider);
 
-        void this.redis.setex(
-            `${OAUTH_STATE_PREFIX}${state}`,
-            OAUTH_STATE_TTL_SECONDS,
-            provider,
-        );
-
-        return handler.getAuthorizationUrl(state);
+        return this.redis
+            .setex(
+                `${OAUTH_STATE_PREFIX}${state}`,
+                OAUTH_STATE_TTL_SECONDS,
+                provider,
+            )
+            .then(() => handler.getAuthorizationUrl(state));
     }
 
     async handleCallback(

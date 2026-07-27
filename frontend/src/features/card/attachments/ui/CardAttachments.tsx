@@ -6,10 +6,9 @@ import { useRef } from 'react'
 
 import { useUserStore } from '@/entities/User'
 
-import { S3_URL } from '@/shared/libs'
 import { EmptyState } from '@/shared/ui/custom'
 import { Button } from '@/shared/ui/external'
-import { formatFileSize } from '@/shared/utils'
+import { formatFileSize, resolveAvatarUrl } from '@/shared/utils'
 
 import { useCardAttachments } from '../model/hooks/useCardAttachments'
 
@@ -78,7 +77,7 @@ export const CardAttachments = ({ cardId }: { cardId: string }) => {
 								<Icon className='size-4 shrink-0 text-muted-foreground' />
 								<div className='min-w-0 flex-1'>
 									<a
-										href={`${S3_URL}${attachment.key}`}
+										href={resolveAvatarUrl(attachment.key) ?? '#'}
 										target='_blank'
 										rel='noreferrer'
 										className='block truncate text-sm font-medium hover:underline'
