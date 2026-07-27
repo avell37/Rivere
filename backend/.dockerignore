@@ -6,3 +6,6 @@ Dockerfile
 docker-compose.yml
 uploads
 *.log
+.env
+.env.*
+!.env.example

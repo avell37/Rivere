@@ -29,7 +29,9 @@ export const Chat = ({
 		message,
 		messagesEndRef,
 		textareaRef,
-		chatPending,
+		chatLoading,
+		chatError,
+		chatUnavailable,
 		showEmoji,
 		mentionQuery,
 		mentionCandidates,
@@ -42,9 +44,11 @@ export const Chat = ({
 		setShowEmoji
 	} = useChat({ cardId, boardId })
 
-	if (chatPending) return <ChatSkeleton />
+	if (chatLoading) return <ChatSkeleton />
 
 	if (!userId) return null
+
+	const isInputDisabled = chatUnavailable || chatError
 
 	return (
 		<div className='min-w-0 overflow-x-hidden'>
@@ -52,7 +56,7 @@ export const Chat = ({
 				{t('heading')}
 			</span>
 			<div className='flex w-full min-w-0 max-h-86 flex-col overflow-hidden'>
-				<div className='max-h-90 min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-4 py-3'>
+				<div className='min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-4 py-3'>
 					<div className='flex w-full min-w-0 flex-col gap-3'>
 						{messages.map((message: IMessage, i) => (
 							<ChatUserMessage
@@ -70,7 +74,7 @@ export const Chat = ({
 					</div>
 				</div>
 
-				<div className='relative mt-2 flex items-center gap-2'>
+				<div className='relative mt-2 flex shrink-0 items-center gap-2'>
 					{mentionQuery !== null && (
 						<ChatMentionSuggestions
 							members={mentionCandidates}
@@ -85,7 +89,7 @@ export const Chat = ({
 						value={message || ''}
 						onChange={e => handleMessageChange(e.target.value)}
 						onKeyDown={handleKeySubmitMessage}
-						disabled={chatPending}
+						disabled={isInputDisabled}
 					/>
 
 					<div className='absolute bottom-2.5 right-11 flex'>
@@ -122,7 +126,7 @@ export const Chat = ({
 						variant='none'
 						className='absolute bottom-2.5 right-3'
 						onClick={handleSubmitMessage}
-						disabled={chatPending}
+						disabled={isInputDisabled}
 					>
 						<SendHorizonal className='group-hover:text-blue-400 transition-colors size-5' />
 					</Button>

@@ -1,4 +1,5 @@
 import { createPageMetadata } from '@/shared/libs'
+import { Suspense } from 'react'
 
 import { LoginForm } from '@/features/auth'
 
@@ -9,7 +10,9 @@ export const generateMetadata = () => createPageMetadata('auth.login')
 export default function LoginPage() {
 	return (
 		<AuthWrapper>
-			<LoginForm />
+			<Suspense fallback={null}>
+				<LoginForm />
+			</Suspense>
 		</AuthWrapper>
 	)
 }

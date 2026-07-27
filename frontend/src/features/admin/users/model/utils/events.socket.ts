@@ -1,13 +1,13 @@
 import { Socket } from 'socket.io-client'
 
-import { SERVER_URL } from '@/shared/libs'
+import { SOCKET_URL } from '@/shared/libs'
 import { createSocket } from '@/shared/utils'
 
 const sockets = new Map<string, Socket>()
 
 export const getEventsSocket = (userId: string) => {
 	if (!sockets.has(userId)) {
-		const socket = createSocket(`${SERVER_URL}/events`)
+		const socket = createSocket(SOCKET_URL.events)
 		sockets.set(userId, socket)
 	}
 	return sockets.get(userId)!

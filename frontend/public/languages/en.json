@@ -77,7 +77,10 @@
 			"label": "No account?",
 			"submitButton": "Login",
 			"navigationButton": "Create",
-			"forgotPassword": "Forgot password?"
+			"forgotPassword": "Forgot password?",
+			"rememberDevice": "Remember this device",
+			"oauthFailed": "Social sign-in failed. Please try again.",
+			"oauthDenied": "Social sign-in was cancelled."
 		},
 		"register": {
 			"heading": "Registration",
@@ -120,7 +123,6 @@
 			"confirmPasswordLabel": "Confirm password",
 			"confirmPasswordPlaceholder": "Confirm your new password"
 		},
-		"google": "Continue with Google",
 		"yandex": "Continue with Yandex"
 	},
 	"account": {
@@ -506,7 +508,8 @@
 			"boardInvite": "{inviterName, select, empty {Someone} other {{inviterName}}} invited you to board «{boardTitle}»",
 			"boardInviteAccepted": "{nickname, select, empty {A user} other {{nickname}}} accepted the invite to board: {boardTitle}",
 			"boardInviteDeclined": "{nickname, select, empty {A user} other {{nickname}}} declined the invite to board: {boardTitle}",
-			"emailVerification": "Please verify your email to secure your account"
+			"emailVerification": "Please verify your email to secure your account",
+			"mention": "{authorNickname, select, empty {Someone} other {{authorNickname}}} mentioned you in card «{cardTitle}»"
 		},
 		"achievements": {
 			"earned": "You earned the achievement: {title}"

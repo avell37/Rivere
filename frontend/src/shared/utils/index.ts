@@ -1,3 +1,4 @@
+export * from './resolveAvatarUrl'
 export * from './ban.utils'
 export * from './boardPermission'
 export * from './createSocket'

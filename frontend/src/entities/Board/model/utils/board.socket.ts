@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io-client'
 
-import { SERVER_URL } from '@/shared/libs'
+import { SOCKET_URL } from '@/shared/libs'
 import { createSocket } from '@/shared/utils'
 
 const sockets = new Map<string, Socket>()
@@ -9,7 +9,7 @@ export const getBoardSocket = (userId: string, boardId: string) => {
 	const key = `${userId}:${boardId}`
 
 	if (!sockets.has(key)) {
-		const socket = createSocket(`${SERVER_URL}/boards`)
+		const socket = createSocket(SOCKET_URL.boards)
 		sockets.set(key, socket)
 	}
 	return sockets.get(key)!

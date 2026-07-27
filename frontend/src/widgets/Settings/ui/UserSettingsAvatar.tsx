@@ -2,13 +2,13 @@
 import { useTranslations } from 'next-intl'
 
 import { customAvatar } from '@/shared/config'
-import { S3_URL } from '@/shared/libs'
 import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
 	Input
 } from '@/shared/ui/external'
+import { resolveAvatarUrl } from '@/shared/utils'
 
 import { UserSettingsAvatarProps } from '../model/types/SettingsProps'
 
@@ -28,7 +28,7 @@ export const UserSettingsAvatar = ({
 			>
 				{user.avatar ? (
 					<AvatarImage
-						src={`${S3_URL}${user.avatar}`}
+						src={resolveAvatarUrl(user.avatar)}
 						alt={user.username}
 						draggable={false}
 						style={{ pointerEvents: 'none' }}

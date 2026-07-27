@@ -54,7 +54,7 @@ export const NotificationsVisible = () => {
 					<NotificationBell />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className='w-[400px] p-0 max-h-[500px] overflow-y-auto z-100'>
+			<PopoverContent className='z-100 max-h-[500px] w-[400px] overflow-x-hidden overflow-y-auto p-0'>
 				<Notifications />
 			</PopoverContent>
 		</PopoverMain>

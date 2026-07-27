@@ -1,6 +1,6 @@
 'use client'
 import { customAvatar } from '@/shared/config'
-import { S3_URL } from '@/shared/libs'
+import { resolveAvatarUrl } from '@/shared/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/external'
 
 import { UserAvatarProps } from '../model/types/UserProps'
@@ -16,7 +16,7 @@ export const UserAvatar = ({
 		>
 			{avatar ? (
 				<AvatarImage
-					src={`${S3_URL}${avatar}`}
+					src={resolveAvatarUrl(avatar)}
 					alt={username}
 					draggable={false}
 				/>
