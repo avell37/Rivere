@@ -43,6 +43,7 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 						type='button'
 						variant='none'
 						size='none'
+						data-testid='board-invite-button'
 						className='p-2 rounded-md hover:bg-accent/80 dark:hover:bg-zinc-500 transition'
 					>
 						<Link size={18} />
@@ -62,6 +63,7 @@ const BoardHeaderActionsComponent = ({ board }: { board: IBoard }) => {
 						type='button'
 						variant='none'
 						size='none'
+						data-testid='board-settings-button'
 						className='p-2 rounded-md hover:bg-accent/80 dark:hover:bg-zinc-500 transition'
 					>
 						<Settings size={18} />

@@ -1,9 +1,14 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
 import { Montserrat } from 'next/font/google'
 
-import { SITE_DESCRIPTION, SITE_NAME } from '@/shared/libs/constants/seo.const'
+import {
+	SHARED_METADATA,
+	SITE_NAME,
+	THEME_COLOR,
+	THEME_COLOR_LIGHT
+} from '@/shared/libs/constants/seo.const'
 import {
 	QueryProvider,
 	ThemeProviderClient,
@@ -19,23 +24,20 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
+	...SHARED_METADATA,
 	title: {
 		absolute: SITE_NAME,
 		template: `%s | ${SITE_NAME}`
-	},
-	description: SITE_DESCRIPTION,
-	icons: {
-		icon: [
-			{ url: '/icons/favicon.svg', type: 'image/svg+xml' },
-			{ url: '/icons/favicon.png', sizes: '32x32', type: 'image/png' },
-			{
-				url: '/icons/favicon-512.png',
-				sizes: '512x512',
-				type: 'image/png'
-			}
-		],
-		apple: '/icons/favicon-256.png'
 	}
+}
+
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	themeColor: [
+		{ media: '(prefers-color-scheme: light)', color: THEME_COLOR_LIGHT },
+		{ media: '(prefers-color-scheme: dark)', color: THEME_COLOR }
+	]
 }
 
 export default async function RootLayout({
@@ -48,12 +50,6 @@ export default async function RootLayout({
 
 	return (
 		<html lang={locale} suppressHydrationWarning>
-			<head>
-				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
-				/>
-			</head>
 			<body className={`${montserrat.variable} antialiased h-full`}>
 				<NextIntlClientProvider messages={messages}>
 					<QueryProvider>

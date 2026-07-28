@@ -523,12 +523,19 @@
 	"profile": {
 		"settings": {
 			"heading": "Settings",
-			"title": "Your settings:",
+			"title": "Manage your profile, security, and connected accounts.",
+			"sidebar": {
+				"profile": "Profile",
+				"security": "Security",
+				"connections": "Connections",
+				"danger": "Danger zone"
+			},
 			"avatar": {
 				"avatarChangeButton": "Change"
 			},
 			"personalInformation": {
 				"heading": "Personal information",
+				"description": "Update your avatar, username, and display name.",
 				"usernameTitle": "Change username",
 				"usernameDescription": "Enter a new username. It must be unique and contain between 4 and 32 characters.",
 				"usernameLabel": "Username",
@@ -548,6 +555,7 @@
 			},
 			"security": {
 				"heading": "Security",
+				"description": "Manage email, password, and active sessions.",
 				"verifyEmail": "Verify your email",
 				"emailTitle": "Change email",
 				"emailDescription": "Enter a new email. It must be unique.",
@@ -576,6 +584,17 @@
 				"passwordChanged": "Password successfully changed!",
 				"usernameChanged": "Username successfully changed!",
 				"avatarChanged": "Avatar successfully changed!"
+			},
+			"connections": {
+				"heading": "Connected accounts",
+				"description": "Link external services to sign in faster.",
+				"yandex": {
+					"name": "Yandex",
+					"description": "Sign in with your Yandex account",
+					"linked": "Connected",
+					"notLinked": "Not connected",
+					"connect": "Connect"
+				}
 			},
 			"session": {
 				"heading": "Active sessions",

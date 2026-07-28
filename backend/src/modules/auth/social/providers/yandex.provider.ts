@@ -23,7 +23,10 @@ export class YandexProvider implements SocialProviderHandler {
         const params = new URLSearchParams({
             response_type: 'code',
             client_id: getYandexClientId(this.config),
-            redirect_uri: getSocialCallbackUrl(this.config, SocialProvider.YANDEX),
+            redirect_uri: getSocialCallbackUrl(
+                this.config,
+                SocialProvider.YANDEX,
+            ),
             state,
             scope: 'login:info login:email login:avatar',
         });

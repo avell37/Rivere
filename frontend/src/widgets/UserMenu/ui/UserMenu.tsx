@@ -43,7 +43,7 @@ export const UserMenu = ({ isMainPage }: { isMainPage?: boolean }) => {
 	return (
 		<AppDropdown
 			trigger={
-				<Button variant='ghost' size='none'>
+				<Button variant='ghost' size='none' data-testid='user-menu-trigger'>
 					<UserMenuTrigger user={user} isMainPage={isMainPage} />
 				</Button>
 			}

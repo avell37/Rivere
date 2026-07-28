@@ -9,6 +9,7 @@ export interface IUser {
 	avatar: string
 	boards: IUserBoard[]
 	isEmailVerified: boolean
+	isYandexLinked: boolean
 	bannedUntil?: string | null
 	banReason?: string | null
 	createdAt: Date
