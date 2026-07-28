@@ -44,13 +44,23 @@ export class AccountService {
                 avatar: true,
                 boards: true,
                 isEmailVerified: true,
+                yandexId: true,
                 banReason: true,
                 bannedUntil: true,
                 createdAt: true,
             },
         });
 
-        return user;
+        if (!user) {
+            return null;
+        }
+
+        const { yandexId, ...publicUser } = user;
+
+        return {
+            ...publicUser,
+            isYandexLinked: Boolean(yandexId),
+        };
     }
 
     async create(req: Request, input: CreateUserInput, userAgent: string) {

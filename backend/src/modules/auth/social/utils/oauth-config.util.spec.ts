@@ -1,9 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { SocialProvider } from '../social-provider.enum';
-import {
-    getSocialCallbackUrl,
-    getYandexClientId,
-} from './oauth-config.util';
+import { getSocialCallbackUrl, getYandexClientId } from './oauth-config.util';
 
 describe('oauth-config.util', () => {
     const createConfig = (values: Record<string, string | undefined>) =>
@@ -36,8 +33,8 @@ describe('oauth-config.util', () => {
     });
 
     it('throws when oauth client id is missing', () => {
-        expect(() =>
-            getYandexClientId(createConfig({})),
-        ).toThrow('YANDEX_CLIENT_ID is missing');
+        expect(() => getYandexClientId(createConfig({}))).toThrow(
+            'YANDEX_CLIENT_ID is missing',
+        );
     });
 });

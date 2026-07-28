@@ -84,6 +84,7 @@ export const Chat = ({
 
 					<Textarea
 						ref={textareaRef}
+						data-testid='chat-input'
 						className='border-b flex-1 w-full focus:rounded-md px-4 pr-16 py-2 resize-none min-h-10 max-h-[120px] focus-visible:ring-1 focus-visible:ring-blue-400'
 						placeholder={t('inputPlaceholder')}
 						value={message || ''}
@@ -124,6 +125,7 @@ export const Chat = ({
 					<Button
 						size='none'
 						variant='none'
+						data-testid='chat-send'
 						className='absolute bottom-2.5 right-3'
 						onClick={handleSubmitMessage}
 						disabled={isInputDisabled}

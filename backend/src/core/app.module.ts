@@ -22,6 +22,7 @@ import { SessionActivityMiddleware } from './middlewares/session-activity.middle
 import { CronModule } from '@/modules/cron/cron.module';
 import { ActivityLogModule } from '@/modules/activity-log/activity-log.module';
 import { SocialModule } from '@/modules/auth/social/social.module';
+import { MonitoringModule } from '@/modules/monitoring/monitoring.module';
 
 @Module({
     imports: [
@@ -40,6 +41,7 @@ import { SocialModule } from '@/modules/auth/social/social.module';
         FilesModule,
         MailModule,
         MessagesModule,
+        MonitoringModule,
         NotificationsModule,
         PasswordRecoveryModule,
         StatisticsModule,

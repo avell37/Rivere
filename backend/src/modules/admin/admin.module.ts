@@ -8,6 +8,6 @@ import { CoreModule } from '@/core/core.module';
     imports: [CoreModule],
     controllers: [AdminController],
     providers: [AdminService, AdminAuditService],
-    exports: [AdminAuditService],
+    exports: [AdminAuditService, AdminService],
 })
 export class AdminModule {}

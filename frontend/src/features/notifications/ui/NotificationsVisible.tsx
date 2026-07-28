@@ -26,7 +26,7 @@ export const NotificationsVisible = () => {
 		return (
 			<Drawer>
 				<DrawerTrigger asChild>
-					<Button variant='none' size='none'>
+					<Button variant='none' size='none' data-testid='notifications-trigger'>
 						<NotificationBell />
 					</Button>
 				</DrawerTrigger>
@@ -50,7 +50,7 @@ export const NotificationsVisible = () => {
 	return (
 		<PopoverMain>
 			<PopoverTrigger asChild>
-				<Button variant='none' size='none'>
+				<Button variant='none' size='none' data-testid='notifications-trigger'>
 					<NotificationBell />
 				</Button>
 			</PopoverTrigger>

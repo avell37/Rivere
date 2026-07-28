@@ -88,6 +88,7 @@ export const ChatUserMessage = ({
 				</div>
 
 				<p
+					data-testid='chat-message'
 					className={`min-w-0 max-w-full text-sm break-all whitespace-pre-wrap ${
 						isDeleted
 							? 'italic text-muted-foreground'
