@@ -1,4 +1,8 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import {
+    Injectable,
+    Logger,
+    ServiceUnavailableException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '@/core/prisma/prisma.service';
 import { RedisService } from '@/core/redis/redis.service';
@@ -6,6 +10,7 @@ import { AdminService } from '@/modules/admin/admin.service';
 
 import { SystemMetricsService } from './system-metrics.service';
 import { TelegramService } from './telegram.service';
+import { TelegramSendResult } from './telegram.types';
 
 export type DependencyHealth = {
     database: 'up' | 'down';
@@ -20,6 +25,7 @@ export type ReadinessResult = {
 
 @Injectable()
 export class MonitoringService {
+    private readonly logger = new Logger(MonitoringService.name);
     private lastAlertAt = 0;
 
     constructor(
@@ -117,13 +123,87 @@ export class MonitoringService {
         ].join('\n');
     }
 
-    async sendDailyReport(): Promise<boolean> {
+    async sendDailyReport(): Promise<TelegramSendResult> {
         if (!this.telegram.isEnabled()) {
-            return false;
+            return { success: false, error: 'Telegram monitoring is disabled' };
         }
 
         const report = await this.buildDailyReport();
-        return this.telegram.sendMessage(report);
+
+        return this.sendTelegramWithRetry(
+            () => this.telegram.sendMessage(report),
+            'Daily monitoring report',
+        );
+    }
+
+    private async sendTelegramWithRetry(
+        send: () => Promise<TelegramSendResult>,
+        label: string,
+    ): Promise<TelegramSendResult> {
+        const maxAttempts = this.getDailyReportMaxAttempts();
+        const delayMs = this.getDailyReportRetryDelayMs();
+        let lastResult: TelegramSendResult = {
+            success: false,
+            error: `${label} was not attempted`,
+        };
+
+        for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+            lastResult = await send();
+
+            if (lastResult.success) {
+                if (attempt > 1) {
+                    this.logger.log(
+                        `${label} delivered on attempt ${attempt}/${maxAttempts}`,
+                    );
+                }
+
+                return lastResult;
+            }
+
+            this.logger.warn(
+                `${label} attempt ${attempt}/${maxAttempts} failed: ${lastResult.error}`,
+            );
+
+            if (attempt < maxAttempts) {
+                await this.delay(delayMs);
+            }
+        }
+
+        return lastResult;
+    }
+
+    private getDailyReportMaxAttempts(): number {
+        const configured = Number(
+            this.configService.get<string>(
+                'MONITORING_DAILY_REPORT_MAX_ATTEMPTS',
+            ),
+        );
+
+        if (Number.isFinite(configured) && configured >= 1) {
+            return Math.floor(configured);
+        }
+
+        return 5;
+    }
+
+    private getDailyReportRetryDelayMs(): number {
+        const configured = Number(
+            this.configService.get<string>(
+                'MONITORING_DAILY_REPORT_RETRY_DELAY_MS',
+            ),
+        );
+
+        if (Number.isFinite(configured) && configured >= 0) {
+            return configured;
+        }
+
+        return 60_000;
+    }
+
+    private delay(ms: number): Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
     }
 
     async checkHealthAndMaybeAlert(): Promise<void> {
@@ -146,14 +226,12 @@ export class MonitoringService {
             return;
         }
 
-        this.lastAlertAt = now;
-
         const failedChecks = Object.entries(checks)
             .filter(([, status]) => status === 'down')
             .map(([name]) => name)
             .join(', ');
 
-        await this.telegram.sendMessage(
+        const alertResult = await this.telegram.sendMessage(
             [
                 '<b>🚨 Rivere alert</b>',
                 '',
@@ -161,6 +239,15 @@ export class MonitoringService {
                 `Failed checks: <code>${this.escapeHtml(failedChecks)}</code>`,
                 `Time: <i>${this.escapeHtml(this.formatDate(new Date()))}</i>`,
             ].join('\n'),
+        );
+
+        if (alertResult.success) {
+            this.lastAlertAt = now;
+            return;
+        }
+
+        this.logger.warn(
+            `Health alert was not delivered to Telegram: ${alertResult.error}`,
         );
     }
 

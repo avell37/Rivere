@@ -1,3 +1,5 @@
+import './shared/libs/sentry/instrument';
+
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';

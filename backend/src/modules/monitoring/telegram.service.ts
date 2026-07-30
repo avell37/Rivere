@@ -1,6 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+import {
+    parseTelegramSendResponse,
+    TelegramSendResult,
+} from './telegram.types';
+
 @Injectable()
 export class TelegramService {
     private readonly logger = new Logger(TelegramService.name);
@@ -19,13 +24,13 @@ export class TelegramService {
         return chatId || undefined;
     }
 
-    async sendMessage(text: string): Promise<boolean> {
+    async sendMessage(text: string): Promise<TelegramSendResult> {
         const botToken = this.getBotToken();
         const chatId = this.getAllowedChatId();
 
         if (!botToken || !chatId) {
             this.logger.debug('Telegram monitoring is disabled');
-            return false;
+            return { success: false, error: 'Telegram monitoring is disabled' };
         }
 
         try {
@@ -43,18 +48,31 @@ export class TelegramService {
                 },
             );
 
-            if (!response.ok) {
-                const body = await response.text();
+            const rawBody = await response.text();
+            const result = parseTelegramSendResponse(response.status, rawBody);
+
+            if (!result.success) {
                 this.logger.error(
-                    `Telegram API error (${response.status}): ${body}`,
+                    `Telegram send failed (HTTP ${response.status}): ${result.error}`,
                 );
-                return false;
+                return result;
             }
 
-            return true;
+            this.logger.log(
+                `Telegram message delivered (message_id=${result.messageId})`,
+            );
+
+            return result;
         } catch (error) {
-            this.logger.error('Failed to send Telegram message', error);
-            return false;
+            const message =
+                error instanceof Error ? error.message : String(error);
+
+            this.logger.error(`Telegram send failed: ${message}`, error);
+
+            return {
+                success: false,
+                error: `Telegram request failed: ${message}`,
+            };
         }
     }
 

@@ -1,6 +1,64 @@
 import { ConfigService } from '@nestjs/config';
 
+import { parseTelegramSendResponse } from './telegram.types';
 import { TelegramService } from './telegram.service';
+
+describe('parseTelegramSendResponse', () => {
+    it('accepts a valid Telegram success payload', () => {
+        const result = parseTelegramSendResponse(
+            200,
+            JSON.stringify({ ok: true, result: { message_id: 42 } }),
+        );
+
+        expect(result).toEqual({ success: true, messageId: 42 });
+    });
+
+    it('rejects empty body', () => {
+        const result = parseTelegramSendResponse(200, '');
+
+        expect(result).toEqual({
+            success: false,
+            error: 'Empty Telegram API response (HTTP 200)',
+        });
+    });
+
+    it('rejects non-json body', () => {
+        const result = parseTelegramSendResponse(200, '<html>blocked</html>');
+
+        expect(result.success).toBe(false);
+        if (!result.success) {
+            expect(result.error).toContain('not JSON');
+        }
+    });
+
+    it('rejects Telegram API error payload', () => {
+        const result = parseTelegramSendResponse(
+            400,
+            JSON.stringify({
+                ok: false,
+                error_code: 400,
+                description: 'Bad Request: chat not found',
+            }),
+        );
+
+        expect(result).toEqual({
+            success: false,
+            error: 'Telegram API error 400: Bad Request: chat not found',
+        });
+    });
+
+    it('rejects ok=true without message_id', () => {
+        const result = parseTelegramSendResponse(
+            200,
+            JSON.stringify({ ok: true, result: {} }),
+        );
+
+        expect(result).toEqual({
+            success: false,
+            error: 'Telegram API returned ok=true without message_id (HTTP 200)',
+        });
+    });
+});
 
 describe('TelegramService', () => {
     const createService = (env: Record<string, string | undefined>) => {
@@ -32,9 +90,30 @@ describe('TelegramService', () => {
         expect(service.isAllowedChatId('999')).toBe(false);
     });
 
-    it('sends message only to configured chat id', async () => {
-        const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValue({
+    it('returns message_id when Telegram accepts the message', async () => {
+        jest.spyOn(global, 'fetch').mockResolvedValue({
             ok: true,
+            status: 200,
+            text: () =>
+                Promise.resolve(
+                    JSON.stringify({ ok: true, result: { message_id: 777 } }),
+                ),
+        } as Response);
+
+        const service = createService({
+            TELEGRAM_BOT_TOKEN: 'test-token',
+            TELEGRAM_CHAT_ID: '777',
+        });
+
+        const result = await service.sendMessage('hello');
+
+        expect(result).toEqual({ success: true, messageId: 777 });
+    });
+
+    it('returns explicit error for invalid Telegram response', async () => {
+        jest.spyOn(global, 'fetch').mockResolvedValue({
+            ok: true,
+            status: 200,
             text: () => Promise.resolve(''),
         } as Response);
 
@@ -43,19 +122,11 @@ describe('TelegramService', () => {
             TELEGRAM_CHAT_ID: '777',
         });
 
-        await service.sendMessage('hello');
+        const result = await service.sendMessage('hello');
 
-        expect(fetchMock).toHaveBeenCalledWith(
-            'https://api.telegram.org/bottest-token/sendMessage',
-            expect.objectContaining({
-                method: 'POST',
-                body: JSON.stringify({
-                    chat_id: '777',
-                    text: 'hello',
-                    parse_mode: 'HTML',
-                    disable_web_page_preview: true,
-                }),
-            }),
-        );
+        expect(result).toEqual({
+            success: false,
+            error: 'Empty Telegram API response (HTTP 200)',
+        });
     });
 });
