@@ -89,4 +89,52 @@ describe('MonitoringService', () => {
         expect(service.isMonitoringSecretValid('wrong')).toBe(false);
         expect(service.isMonitoringSecretValid(undefined)).toBe(false);
     });
+
+    it('retries daily report delivery until Telegram accepts it', async () => {
+        jest.useFakeTimers();
+        telegram.isEnabled.mockReturnValue(true);
+        prisma.$queryRaw.mockResolvedValue([{ '?column?': 1 }]);
+        redis.ping.mockResolvedValue('PONG');
+        adminService.getAdminStats.mockResolvedValue({
+            users: { total: 1, today: 0 },
+            boards: { total: 1, today: 0 },
+            messages: { total: 1, today: 0 },
+            completedCards: { total: 1, today: 0 },
+            banned: { total: 0, today: 0 },
+        });
+        configService.get.mockImplementation((key: string) => {
+            if (key === 'MONITORING_SITE_URL') {
+                return 'https://rivere.ru';
+            }
+
+            if (key === 'MONITORING_DAILY_REPORT_MAX_ATTEMPTS') {
+                return '3';
+            }
+
+            if (key === 'MONITORING_DAILY_REPORT_RETRY_DELAY_MS') {
+                return '1000';
+            }
+
+            return undefined;
+        });
+
+        telegram.sendMessage
+            .mockResolvedValueOnce({
+                success: false,
+                error: 'Temporary Telegram API error',
+            })
+            .mockResolvedValueOnce({
+                success: true,
+                messageId: 99,
+            });
+
+        const resultPromise = service.sendDailyReport();
+
+        await jest.runAllTimersAsync();
+        const result = await resultPromise;
+
+        expect(result).toEqual({ success: true, messageId: 99 });
+        expect(telegram.sendMessage).toHaveBeenCalledTimes(2);
+        jest.useRealTimers();
+    });
 });

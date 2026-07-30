@@ -47,10 +47,12 @@ export class MonitoringController {
             throw new UnauthorizedException();
         }
 
-        const sent = await this.monitoringService.sendDailyReport();
+        const result = await this.monitoringService.sendDailyReport();
 
         return {
-            sent,
+            sent: result.success,
+            messageId: result.success ? result.messageId : undefined,
+            error: result.success ? undefined : result.error,
             timestamp: new Date().toISOString(),
         };
     }

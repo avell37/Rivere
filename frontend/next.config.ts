@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import { withSentryConfig } from '@sentry/nextjs'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const nextConfig: NextConfig = {
@@ -38,4 +39,14 @@ const nextConfig: NextConfig = {
 
 const withNextIntl = createNextIntlPlugin('./src/shared/libs/i18n/request.ts')
 
-export default withNextIntl(nextConfig)
+export default withSentryConfig(withNextIntl(nextConfig), {
+	org: 'rivere',
+	project: 'javascript-nextjs',
+	authToken: process.env.SENTRY_AUTH_TOKEN,
+	release: process.env.SENTRY_RELEASE
+		? { name: process.env.SENTRY_RELEASE }
+		: undefined,
+	silent: !process.env.CI,
+	widenClientFileUpload: true,
+	tunnelRoute: '/sentry-tunnel'
+})

@@ -1,4 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { SessionModule } from '../modules/auth/session/session.module';
 import { AccountModule } from '../modules/auth/account/account.module';
 import { CoreModule } from './core.module';
@@ -26,6 +28,7 @@ import { MonitoringModule } from '@/modules/monitoring/monitoring.module';
 
 @Module({
     imports: [
+        SentryModule.forRoot(),
         ReportsModule,
         ActivityLogModule,
         AdminModule,
@@ -49,6 +52,12 @@ import { MonitoringModule } from '@/modules/monitoring/monitoring.module';
         SocialModule,
         TokenModule,
         VerificationModule,
+    ],
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: SentryGlobalFilter,
+        },
     ],
 })
 export class AppModule implements NestModule {

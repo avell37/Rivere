@@ -1,64 +1,21 @@
-name: CI/CD
+name: Deploy
 
 on:
     push:
         branches:
             - main
 
+concurrency:
+    group: deploy-main
+    cancel-in-progress: false
+
 jobs:
-    build-and-lint:
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-
-            - name: Setup Node (backend)
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-
-            - name: Install backend deps
-              working-directory: ./backend
-              run: npm install
-
-            - name: Generate prisma
-              working-directory: ./backend
-              env:
-                  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-              run: npx prisma generate
-
-            - name: Lint backend
-              working-directory: ./backend
-              run: npm run lint
-
-            - name: Test backend
-              working-directory: ./backend
-              run: npm test
-
-            - name: Build backend
-              working-directory: ./backend
-              run: npm run build
-
-            - name: Install frontend deps
-              working-directory: ./frontend
-              run: npm install
-
-            - name: Lint frontend
-              working-directory: ./frontend
-              run: npm run lint
-
-            - name: Test frontend
-              working-directory: ./frontend
-              run: npm test
-
-            - name: Build frontend
-              working-directory: ./frontend
-              run: npm run build
+    check:
+        uses: ./.github/workflows/check.yml
 
     deploy:
         runs-on: ubuntu-latest
-        needs: build-and-lint
+        needs: check
 
         steps:
             - name: Deploy via SSH
@@ -68,8 +25,26 @@ jobs:
                   username: ${{ secrets.SERVER_USER }}
                   key: ${{ secrets.SERVER_SSH_KEY }}
                   script: |
+                      set -e
                       cd /var/www/Rivere
                       git reset --hard
                       git pull origin main
+                      export SENTRY_RELEASE="$(git rev-parse --short HEAD)"
                       docker compose down
                       docker compose up -d --build
+
+            - name: Smoke check — health
+              run: |
+                  for attempt in $(seq 1 12); do
+                      if curl -fsS https://rivere.ru/api/health; then
+                          echo "Health OK"
+                          exit 0
+                      fi
+                      echo "Attempt ${attempt}/12 failed, retrying in 10s..."
+                      sleep 10
+                  done
+                  echo "Health check failed after deploy"
+                  exit 1
+
+            - name: Smoke check — readiness
+              run: curl -fsS https://rivere.ru/api/ready
